@@ -1,6 +1,23 @@
+import 'package:dev_rpg/src/gameloop_screen.dart';
+import 'package:dev_rpg/src/shared_state/game/world.dart';
+import 'package:dev_rpg/src/shared_state/provider.dart';
+import 'package:dev_rpg/src/shared_state/user.dart';
+import 'package:dev_rpg/src/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  var providers = Providers();
+  providers.provideValue(User());
+
+  var world = World();
+  providers.provideValue(world);
+  providers.provideValue(world.quests);
+
+  runApp(ProviderNode(
+    providers: providers,
+    child: MyApp(),
+  ));
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -8,56 +25,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      routes: {
+        "/": (context) => WelcomeScreen(),
+        "/gameloop": (context) => GameloopScreen(),
+      },
     );
   }
 }
