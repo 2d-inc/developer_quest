@@ -3,6 +3,10 @@ import 'dart:collection';
 import 'package:dev_rpg/src/shared_state/game/quest.dart';
 import 'package:flutter/foundation.dart';
 
+/// A container of [Quest]s. There is only one of this per world.
+///
+/// This is better that `List<Quest>` because we can attach behavior
+/// to this (like [updateAll]) and only update the widgets once.
 class Quests extends ChangeNotifier with ListMixin<Quest> {
   static const _seedQuestNames = [
     "Refactor state management",
@@ -30,7 +34,7 @@ class Quests extends ChangeNotifier with ListMixin<Quest> {
   @override
   void operator []=(int index, Quest value) => list[index] = value;
 
-  void update() {
+  void updateAll() {
     for (final quest in this) {
       quest.update();
     }

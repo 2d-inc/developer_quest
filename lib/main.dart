@@ -11,6 +11,8 @@ void main() {
 
   var world = World();
   providers.provideValue(world);
+  // Provide specific parts of the world separately so that widgets that
+  // only care about quests, for example, can only listen to those.
   providers.provideValue(world.quests);
 
   runApp(ProviderNode(

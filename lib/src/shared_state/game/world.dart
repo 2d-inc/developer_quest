@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:dev_rpg/src/shared_state/game/quests.dart';
 import 'package:flutter/foundation.dart';
 
+/// The state of the game world.
+///
+/// Widgets should subscribe to aspects of the world (such as [quests])
+/// instead of this whole world unless they really care about every change.
 class World extends ChangeNotifier {
   Timer timer;
 
@@ -19,10 +23,8 @@ class World extends ChangeNotifier {
   }
 
   void update(Timer _) {
-    quests.update();
+    quests.updateAll();
 
-    // We don't notifyListeners here because we changed nothing outside
-    // quests (which is a ChangeNotifier itself). When we have some state
-    // that changes outside quests, we'll call notifyListeners here as well.
+    notifyListeners();
   }
 }
