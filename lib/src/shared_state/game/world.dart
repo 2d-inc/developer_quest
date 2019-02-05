@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/shared_state/game/quests.dart';
+import 'package:dev_rpg/src/shared_state/game/teams.dart';
 import 'package:flutter/foundation.dart';
 
 /// The state of the game world.
@@ -12,7 +13,11 @@ class World extends ChangeNotifier {
 
   final Quests quests;
 
-  World() : quests = Quests();
+  final Teams teams;
+
+  World()
+      : quests = Quests(),
+        teams = Teams();
 
   void pause() {
     timer.cancel();
@@ -23,6 +28,7 @@ class World extends ChangeNotifier {
   }
 
   void update(Timer _) {
+    teams.updateAll();
     quests.updateAll();
 
     notifyListeners();

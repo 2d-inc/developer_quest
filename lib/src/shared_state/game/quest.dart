@@ -1,20 +1,28 @@
-import 'dart:math';
-
-final _random = Random();
-
 /// A single task for the player and her team to complete.
 class Quest {
   final String name;
 
-  double percentComplete = 0;
+  int _percentComplete = 0;
+
+  /// The quest has changed since the last time [update] was called.
+  bool _isDirty = false;
 
   Quest(this.name);
 
-  void update() {
-    if (percentComplete == 1) return;
+  double get percentComplete => _percentComplete / 100;
 
-    percentComplete += _random.nextDouble() / 100;
+  void makeProgress(int percent) {
+    assert(percent >= 0);
+    if (percent == 0) return;
+    if (_percentComplete == 100) return;
+    _percentComplete += percent;
+    if (_percentComplete > 100) _percentComplete = 100;
+    _isDirty = true;
+  }
 
-    if (percentComplete > 1) percentComplete = 1;
+  bool update() {
+    var wasDirty = _isDirty;
+    _isDirty = false;
+    return wasDirty;
   }
 }

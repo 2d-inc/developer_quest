@@ -35,11 +35,12 @@ class Quests extends ChangeNotifier with ListMixin<Quest> {
   void operator []=(int index, Quest value) => list[index] = value;
 
   void updateAll() {
+    var needsNotify = false;
     for (final quest in this) {
-      quest.update();
+      needsNotify |= quest.update();
     }
 
     // Notify all widgets that depend on the state of the list.
-    notifyListeners();
+    if (needsNotify) notifyListeners();
   }
 }
