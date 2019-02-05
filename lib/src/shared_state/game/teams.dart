@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 class Teams extends ChangeNotifier {
   final List<Team> _list = [
-    Team(),
+    Team('Flutter DevRel'),
   ];
 
   /// Right now we only have one team.

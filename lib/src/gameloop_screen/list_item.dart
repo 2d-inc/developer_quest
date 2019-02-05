@@ -20,7 +20,11 @@ class QuestListItem extends StatelessWidget {
           children: [
             SizedBox(height: 20),
             Text(quest.name, style: Theme.of(context).textTheme.title),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
+            quest.assignedTeam == null
+                ? SizedBox()
+                : Text('Assigned to: ${quest.assignedTeam}'),
+            SizedBox(height: 10),
             LinearProgressIndicator(value: quest.percentComplete),
           ],
         ),
