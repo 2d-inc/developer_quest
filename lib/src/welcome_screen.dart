@@ -16,6 +16,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
             FlatButton(
               onPressed: () {
+                Provide.value<User>(context).signIn();
                 Provide.value<World>(context).start();
                 return Navigator.of(context).pushNamed('/gameloop');
               },
