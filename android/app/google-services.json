@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "604738524462",
+    "firebase_url": "https://dev-rpg.firebaseio.com",
+    "project_id": "dev-rpg",
+    "storage_bucket": "dev-rpg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:604738524462:android:60f3611c17d145a0",
+        "android_client_info": {
+          "package_name": "dev.flutter.devrpg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "604738524462-o0clrmbbl0161mgplfkdbob0cg63guil.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.flutter.devrpg",
+            "certificate_hash": "ad349193903e06539fd9c8704080e0d3bf11efbf"
+          }
+        },
+        {
+          "client_id": "604738524462-tepd6q5nf8l95ngorojr98dnrl45gtnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3W7pfUtWJTWiHYM6x3E6apCpsVMXSbUE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604738524462-tepd6q5nf8l95ngorojr98dnrl45gtnl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "604738524462-9j2c03ed76b0gdq8iiqmjn7c0vli9odi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.flutter.devRpg"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
