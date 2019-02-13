@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dev_rpg/src/shared_state/game/countdown_clock.dart';
 import 'package:dev_rpg/src/shared_state/game/quests.dart';
 import 'package:dev_rpg/src/shared_state/game/teams.dart';
 import 'package:flutter/foundation.dart';
@@ -16,27 +15,21 @@ class World extends ChangeNotifier {
 
   final Teams teams;
 
-  final CountdownClock countdown;
-
-  static final tickDuration = const Duration(milliseconds: 200);
-
   World()
       : quests = Quests(),
-        teams = Teams(),
-        countdown = CountdownClock();
+        teams = Teams();
 
   void pause() {
     timer.cancel();
   }
 
   void start() {
-    timer = Timer.periodic(tickDuration, update);
+    timer = Timer.periodic(const Duration(milliseconds: 200), update);
   }
 
   void update(Timer _) {
     teams.updateAll();
     quests.updateAll();
-    countdown.update();
 
     notifyListeners();
   }
