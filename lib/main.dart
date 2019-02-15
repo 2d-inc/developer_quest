@@ -16,6 +16,7 @@ void main() {
   // only care about quests, for example, can only listen to those.
   providers.provideValue(world.quests);
   providers.provideValue(world.teams);
+  providers.provideValue(world.countdown);
 
   runApp(ProviderNode(
     providers: providers,
