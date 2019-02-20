@@ -1,6 +1,13 @@
 import 'package:flutter/foundation.dart';
 
 /// An aspect of the game world that can be listened to.
+///
+/// This is like a [ChangeNotifier], but it uses the concept of dirtiness.
+///
+/// This is a very game-centric approach, geared toward state that is heavily
+/// interdependent (like in a game simulation) and that is changed all the time
+/// (again, like in a game simulation). You probably do not need this
+/// for a regular app. Use regular [ChangeNotifier], which is cleaner.
 abstract class Aspect extends ChangeNotifier {
   bool _dirty = false;
 

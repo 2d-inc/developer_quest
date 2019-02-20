@@ -1,6 +1,7 @@
 import 'package:dev_rpg/src/gameloop_screen/list_item.dart';
 import 'package:dev_rpg/src/shared_state/game/countdown_clock.dart';
-import 'package:dev_rpg/src/shared_state/game/quests.dart';
+import 'package:dev_rpg/src/shared_state/game/task.dart';
+import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,17 @@ class GameloopScreen extends StatelessWidget {
               Text("${countdown.remainingTime.inSeconds}s"),
         ),
       ),
-      body: Provide<Quests>(
-        builder: (context, child, quests) {
+      body: Provide<TaskPool>(
+        builder: (context, child, taskPool) {
           return ListView.builder(
-            itemCount: quests.length,
-            itemBuilder: (context, index) => QuestListItem(
-                  quest: quests[index],
-                  key: ValueKey(quests[index]),
+            itemCount: taskPool.length,
+            itemBuilder: (context, index) => ProviderNode(
+                  providers: Providers.withProviders({
+                    Task: Provider<Task>.value(taskPool[index]),
+                  }),
+                  child: TaskListItem(
+                    key: ValueKey(taskPool[index]),
+                  ),
                 ),
           );
         },
