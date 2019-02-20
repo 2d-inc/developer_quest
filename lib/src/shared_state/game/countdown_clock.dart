@@ -1,11 +1,12 @@
+import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
-import 'package:flutter/foundation.dart';
 
-class CountdownClock extends ChangeNotifier {
+class CountdownClock extends Aspect {
   Duration remainingTime = Duration(minutes: 10);
 
   void update() {
     remainingTime -= World.tickDuration;
-    notifyListeners();
+    markDirty();
+    super.update();
   }
 }

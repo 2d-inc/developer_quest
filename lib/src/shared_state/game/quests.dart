@@ -1,13 +1,13 @@
 import 'dart:collection';
 
 import 'package:dev_rpg/src/shared_state/game/quest.dart';
-import 'package:flutter/foundation.dart';
+import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 
 /// A container of [Quest]s. There is only one of this per world.
 ///
 /// This is better that `List<Quest>` because we can attach behavior
 /// to this (like [updateAll]) and only update the widgets once.
-class Quests extends ChangeNotifier with ListMixin<Quest> {
+class Quests extends Aspect with ListMixin<Quest> {
   static const _seedQuestNames = [
     "Refactor state management",
     "Add animations",
@@ -26,21 +26,25 @@ class Quests extends ChangeNotifier with ListMixin<Quest> {
   int get length => list.length;
 
   @override
-  set length(int newLength) => list.length = newLength;
+  set length(int newLength) {
+    list.length = newLength;
+    markDirty();
+  }
 
   @override
   Quest operator [](int index) => list[index];
 
   @override
-  void operator []=(int index, Quest value) => list[index] = value;
+  void operator []=(int index, Quest value) {
+    list[index] = value;
+    markDirty();
+  }
 
-  void updateAll() {
-    var needsNotify = false;
+  void update() {
     for (final quest in this) {
-      needsNotify |= quest.update();
+      if (quest.isDirty) markDirty();
     }
 
-    // Notify all widgets that depend on the state of the list.
-    if (needsNotify) notifyListeners();
+    super.update();
   }
 }

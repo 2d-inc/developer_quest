@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:dev_rpg/src/shared_state/game/countdown_clock.dart';
 import 'package:dev_rpg/src/shared_state/game/quests.dart';
+import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/teams.dart';
-import 'package:flutter/foundation.dart';
 
 /// The state of the game world.
 ///
 /// Widgets should subscribe to aspects of the world (such as [quests])
 /// instead of this whole world unless they really care about every change.
-class World extends ChangeNotifier {
+class World extends Aspect {
   static final tickDuration = const Duration(milliseconds: 200);
 
   Timer timer;
@@ -30,14 +30,18 @@ class World extends ChangeNotifier {
   }
 
   void start() {
-    timer = Timer.periodic(tickDuration, update);
+    timer = Timer.periodic(tickDuration, _performTick);
   }
 
-  void update(Timer _) {
-    teams.updateAll();
-    quests.updateAll();
+  void update() {
+    teams.update();
+    quests.update();
     countdown.update();
 
-    notifyListeners();
+    super.update();
+  }
+
+  void _performTick(Timer timer) {
+    update();
   }
 }
