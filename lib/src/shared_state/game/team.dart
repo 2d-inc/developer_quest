@@ -33,7 +33,8 @@ class Team extends Aspect {
 
     int progress;
     if (_assignedTo.isBlocked) {
-      progress = _random.nextInt(1);
+      // Seriously limit progress when the task is blocked.
+      progress = _random.nextInt(2);
     } else {
       progress = _random.nextInt(maxHit);
     }
