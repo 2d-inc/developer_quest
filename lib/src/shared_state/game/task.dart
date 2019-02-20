@@ -6,6 +6,9 @@ import 'package:dev_rpg/src/shared_state/game/team.dart';
 enum BlockingIssueState { none, shown, resolved, unresolved }
 
 /// A single task for the player and her team to complete.
+///
+/// The definition of the task is in [blueprint]. This class holds the runtime
+/// state (like [percentComplete]).
 class Task extends Aspect {
   final TaskBlueprint blueprint;
 
@@ -21,7 +24,7 @@ class Task extends Aspect {
     UnimplementedError();
   }
 
-  /// A development time shortcut for creating tasks. The finished game
+  /// A development-time shortcut for creating tasks. The finished game
   @Deprecated('Please create tasks that differ by more than just name')
   Task.sample(String name)
       : blueprint = TaskBlueprint(name, 100, BlockingIssue.sample());
@@ -37,6 +40,8 @@ class Task extends Aspect {
     markDirty();
   }
 
+  /// Makes progress by [percent]. The task can change [isBlocked]
+  /// during this call if [BlockingIssue.startsAtProgressLevel] is reached.
   void makeProgress(int percent) {
     assert(percent >= 0);
     if (percent == 0) return;
@@ -56,6 +61,13 @@ class Task extends Aspect {
     markDirty();
   }
 
+  /// Resolves the blocking issue.
+  void resolveIssue() {
+    assert(_blockingIssueState == BlockingIssueState.shown);
+    _blockingIssueState = BlockingIssueState.resolved;
+    markDirty();
+  }
+
   @override
   void update() {
     if (_blockingIssueState == BlockingIssueState.shown) {
@@ -67,12 +79,5 @@ class Task extends Aspect {
       }
     }
     super.update();
-  }
-
-  /// Resolves the blocking issue.
-  void resolveIssue() {
-    assert(_blockingIssueState == BlockingIssueState.shown);
-    _blockingIssueState = BlockingIssueState.resolved;
-    markDirty();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/team.dart';
 
+/// The collection of teams that are currently formed.
 class TeamPool extends Aspect {
   final List<Team> _list = [
     Team('Flutter DevRel Team'),

@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 
 /// A blueprint of a task.
 ///
-/// This is immutable.
+/// This class is immutable. Put runtime state into [Task].
 @immutable
 class TaskBlueprint {
   final String name;
