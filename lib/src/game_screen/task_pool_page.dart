@@ -1,4 +1,4 @@
-import 'package:dev_rpg/src/game_screen/list_item.dart';
+import 'package:dev_rpg/src/game_screen/task_list_item.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
