@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/shared_state/game/countdown_clock.dart';
+import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
-import 'package:dev_rpg/src/shared_state/game/team_pool.dart';
 
 /// The state of the game world.
 ///
@@ -17,15 +17,15 @@ class World extends Aspect {
 
   final TaskPool taskPool;
 
-  final TeamPool teamPool;
+  final NpcPool npcPool;
 
   final CountdownClock countdown;
 
   bool _isRunning = false;
 
   World()
-      : taskPool = TaskPool(),
-        teamPool = TeamPool(),
+      : npcPool = NpcPool(),
+        taskPool = TaskPool(),
         countdown = CountdownClock();
 
   /// Returns `true` when the simulation is currently running.
@@ -44,7 +44,7 @@ class World extends Aspect {
   }
 
   void update() {
-    teamPool.update();
+    npcPool.update();
     taskPool.update();
     countdown.update();
 

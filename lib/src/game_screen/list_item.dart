@@ -1,5 +1,6 @@
+import 'package:dev_rpg/src/game_screen/team_picker_modal.dart';
+import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
-import 'package:dev_rpg/src/shared_state/game/team_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,10 @@ class TaskListItem extends StatelessWidget {
       builder: (context, child, task) => Card(
             margin: EdgeInsets.all(8),
             child: InkWell(
-              onTap: () =>
-                  Provide.value<TeamPool>(context).single.assignTo(task),
+              onTap: () => showModalBottomSheet<Set<Npc>>(
+                    context: context,
+                    builder: (context) => TeamPickerModal(task),
+                  ).then((npcs) => _onAssigned(task, npcs)),
               child: Column(
                 children: [
                   SizedBox(height: 20),
@@ -43,5 +46,10 @@ class TaskListItem extends StatelessWidget {
             ),
           ),
     );
+  }
+
+  void _onAssigned(Task task, Set<Npc> value) {
+    if (value == null || value.isEmpty) return;
+    task.assignTeam(value);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:dev_rpg/src/gameloop_screen.dart';
+import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
@@ -14,8 +14,8 @@ void main() {
 
   // Provide specific parts of the world separately so that widgets that
   // only care about quests, for example, can only listen to those.
+  providers.provideValue(world.npcPool);
   providers.provideValue(world.taskPool);
-  providers.provideValue(world.teamPool);
   providers.provideValue(world.countdown);
 
   runApp(ProviderNode(
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         "/": (context) => WelcomeScreen(),
-        "/gameloop": (context) => GameloopScreen(),
+        "/gameloop": (context) => GameScreen(),
       },
     );
   }

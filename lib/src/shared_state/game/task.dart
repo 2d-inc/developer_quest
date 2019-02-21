@@ -1,7 +1,12 @@
+import 'dart:collection';
+import 'dart:math';
+
 import 'package:dev_rpg/src/shared_state/game/blocking_issue.dart';
+import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
-import 'package:dev_rpg/src/shared_state/game/team.dart';
+
+final _random = Random();
 
 enum BlockingIssueState { none, shown, resolved, unresolved }
 
@@ -18,46 +23,31 @@ class Task extends Aspect {
 
   BlockingIssueState _blockingIssueState = BlockingIssueState.none;
 
-  Team _assignedTeam;
+  List<Npc> _assignedTeam;
 
   Task(this.blueprint) {
     UnimplementedError();
   }
 
-  /// A development-time shortcut for creating tasks. The finished game
+  /// A development-time shortcut for creating tasks.
   @Deprecated('Please create tasks that differ by more than just name')
   Task.sample(String name)
       : blueprint = TaskBlueprint(name, 100, BlockingIssue.sample());
 
-  Team get assignedTeam => _assignedTeam;
+  UnmodifiableListView<Npc> get assignedTeam =>
+      _assignedTeam == null ? null : UnmodifiableListView(_assignedTeam);
 
   bool get isBlocked => _blockingIssueState == BlockingIssueState.shown;
 
+  /// The maximum number of percentage points done in a single game update
+  /// by the [_assignedTeam].
+  int get maxHit => (_assignedTeam?.length ?? 0) + 1;
+
   double get percentComplete => _percentComplete / 100;
 
-  void assignTeam(Team team) {
-    _assignedTeam = team;
-    markDirty();
-  }
-
-  /// Makes progress by [percent]. The task can change [isBlocked]
-  /// during this call if [BlockingIssue.startsAtProgressLevel] is reached.
-  void makeProgress(int percent) {
-    assert(percent >= 0);
-    if (percent == 0) return;
-    if (_percentComplete == 100) return;
-    _percentComplete += percent;
-    if (_blockingIssueStartTime == null &&
-        _percentComplete > blueprint.blockingIssue.startsAtProgressLevel) {
-      _blockingIssueState = BlockingIssueState.shown;
-      _blockingIssueStartTime = DateTime.now().toUtc();
-    }
-    if (_percentComplete > 100) {
-      _percentComplete = 100;
-      if (_blockingIssueState != BlockingIssueState.resolved) {
-        _blockingIssueState = BlockingIssueState.unresolved;
-      }
-    }
+  void assignTeam(Iterable<Npc> team) {
+    _assignedTeam = team.toList(growable: false);
+    _assignedTeam.forEach((npc) => npc.isBusy = true);
     markDirty();
   }
 
@@ -78,6 +68,41 @@ class Task extends Aspect {
         markDirty();
       }
     }
+
+    if (_assignedTeam != null) {
+      int progress;
+      if (isBlocked) {
+        // Seriously limit progress when the task is blocked.
+        progress = _random.nextInt(2);
+      } else {
+        progress = _random.nextInt(maxHit);
+      }
+      _makeProgress(progress);
+    }
+
     super.update();
+  }
+
+  /// Makes progress by [percent]. The task can change [isBlocked]
+  /// during this call if [BlockingIssue.startsAtProgressLevel] is reached.
+  void _makeProgress(int percent) {
+    assert(percent >= 0);
+    if (percent == 0) return;
+    if (_percentComplete == 100) return;
+    _percentComplete += percent;
+    if (_blockingIssueStartTime == null &&
+        _percentComplete > blueprint.blockingIssue.startsAtProgressLevel) {
+      _blockingIssueState = BlockingIssueState.shown;
+      _blockingIssueStartTime = DateTime.now().toUtc();
+    }
+    if (_percentComplete >= 100) {
+      _percentComplete = 100;
+      if (_blockingIssueState != BlockingIssueState.resolved) {
+        _blockingIssueState = BlockingIssueState.unresolved;
+      }
+      _assignedTeam.forEach((npc) => npc.isBusy = false);
+      _assignedTeam = null;
+    }
+    markDirty();
   }
 }
