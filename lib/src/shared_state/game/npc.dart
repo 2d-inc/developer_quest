@@ -1,6 +1,5 @@
+import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
-
-enum BlockingIssueState { none, shown, resolved, unresolved }
 
 /// A single task for the player and her team to complete.
 ///
@@ -8,15 +7,12 @@ enum BlockingIssueState { none, shown, resolved, unresolved }
 /// state (like [percentComplete]).
 class Npc extends Aspect {
   final String name;
-
-  /// TODO: make this mutable
+  final Map<Skill, double> prowess;
   final bool isHired = true;
 
   bool _isBusy = false;
 
-  /// A development-time shortcut for creating tasks.
-  @Deprecated('Please create NPCs that differ by more than just name')
-  Npc.sample(this.name);
+  Npc(this.name, this.prowess);
 
   bool get isBusy => _isBusy;
 

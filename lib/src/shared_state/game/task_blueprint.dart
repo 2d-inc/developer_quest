@@ -1,4 +1,4 @@
-import 'package:dev_rpg/src/shared_state/game/blocking_issue.dart';
+import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:meta/meta.dart';
 
 /// A blueprint of a task.
@@ -7,10 +7,17 @@ import 'package:meta/meta.dart';
 @immutable
 class TaskBlueprint {
   final String name;
+  final Map<Skill, double> difficulty;
 
-  final int xpReward;
+  List<Skill> get requirements
+  {
+	  List<Skill> skills = [];
+	  difficulty.forEach((Skill skill, double amount)
+	  {
+		  skills.add(skill);
+	  });
+	  return skills;
+  }
 
-  final BlockingIssue blockingIssue;
-
-  const TaskBlueprint(this.name, this.xpReward, this.blockingIssue);
+  const TaskBlueprint(this.name, this.difficulty);
 }

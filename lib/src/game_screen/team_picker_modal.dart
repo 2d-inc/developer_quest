@@ -1,3 +1,4 @@
+import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
@@ -48,7 +49,12 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                                     _selected.remove(npc);
                                   }
                                 }),
-                            cells: [DataCell(Text(npc.name))],
+                            cells: [
+                              DataCell(Row(children: <Widget>[
+                                Text(npc.name),
+                                Expanded(child:ProwessBadge(npc.prowess))
+                              ]))
+                            ],
                           ))
                       .toList(growable: false),
                 );

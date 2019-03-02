@@ -15,8 +15,7 @@ void main() {
   // Provide specific parts of the world separately so that widgets that
   // only care about quests, for example, can only listen to those.
   providers.provideValue(world.npcPool);
-  providers.provideValue(world.taskPool);
-  providers.provideValue(world.countdown);
+  providers.provideValue(world.projectPool);
 
   runApp(ProviderNode(
     providers: providers,

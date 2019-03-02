@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:dev_rpg/src/shared_state/game/countdown_clock.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/project_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
-import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 
 /// The state of the game world.
 ///
-/// Widgets should subscribe to aspects of the world (such as [taskPool])
+/// Widgets should subscribe to aspects of the world (such as [projectPool])
 /// instead of this whole world, unless they care about the most high-level
 /// stuff (like whether the simulation is running).
 class World extends Aspect {
@@ -15,18 +14,14 @@ class World extends Aspect {
 
   Timer _timer;
 
-  final TaskPool taskPool;
+  final ProjectPool projectPool;
 
   final NpcPool npcPool;
-
-  final CountdownClock countdown;
-
   bool _isRunning = false;
 
   World()
       : npcPool = NpcPool(),
-        taskPool = TaskPool(),
-        countdown = CountdownClock();
+        projectPool = ProjectPool();
 
   /// Returns `true` when the simulation is currently running.
   bool get isRunning => _isRunning;
@@ -45,8 +40,7 @@ class World extends Aspect {
 
   void update() {
     npcPool.update();
-    taskPool.update();
-    countdown.update();
+    projectPool.update();
 
     super.update();
   }

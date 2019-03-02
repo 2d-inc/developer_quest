@@ -1,8 +1,6 @@
 import 'package:dev_rpg/src/game_screen/npc_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/stats_page.dart';
-import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
-import 'package:dev_rpg/src/shared_state/game/countdown_clock.dart';
-import 'package:dev_rpg/src/shared_state/provider.dart';
+import 'package:dev_rpg/src/game_screen/project_pool_page.dart';
 import 'package:flutter/material.dart';
 
 class GameScreen extends StatefulWidget {
@@ -30,12 +28,6 @@ class GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Provide<CountdownClock>(
-          builder: (context, child, countdown) =>
-              Text("${countdown.remainingTime.inSeconds}s"),
-        ),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (index) => setState(() {
@@ -49,7 +41,7 @@ class GameScreenState extends State<GameScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.work),
-            title: Text('Tasks'),
+            title: Text('Projects'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timeline),
@@ -61,7 +53,7 @@ class GameScreenState extends State<GameScreen> {
         controller: _controller,
         children: [
           NpcPoolPage(),
-          TaskPoolPage(),
+          ProjectPoolPage(),
           StatsPage(),
         ],
       ),
