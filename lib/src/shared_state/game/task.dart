@@ -76,8 +76,8 @@ class Task extends Aspect {
       // Free up the workers if they are done!
       freeTeam();
     }
-    markDirty();
 
+    markDirty();
     super.update();
   }
 }
