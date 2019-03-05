@@ -52,7 +52,7 @@ class ProjectPickerModal extends StatelessWidget {
                             style: TextStyle(fontSize: 11)),
                       ),
                       Wrap(
-                          children: blueprint.requirements
+                          children: blueprint.skillsNeeded
                               .map((Skill skill) => SkillBadge(skill))
                               .toList()),
                     ],

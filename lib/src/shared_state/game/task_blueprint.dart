@@ -7,17 +7,12 @@ import 'package:meta/meta.dart';
 @immutable
 class TaskBlueprint {
   final String name;
+
   final Map<Skill, double> difficulty;
 
   final int xpReward;
 
-  List<Skill> get requirements {
-    List<Skill> skills = [];
-    difficulty.forEach((Skill skill, double amount) {
-      skills.add(skill);
-    });
-    return skills;
-  }
+  List<Skill> get skillsNeeded => difficulty.keys.toList(growable: false);
 
   const TaskBlueprint(this.name, this.difficulty, {this.xpReward = 100});
 }
