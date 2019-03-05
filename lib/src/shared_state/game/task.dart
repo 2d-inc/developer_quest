@@ -66,6 +66,7 @@ class Task extends Aspect {
 
     for (final npc in _assignedTeam) {
       for (final skill in npc.prowess.keys) {
+        if (!blueprint.requirements.contains(skill)) continue;
         var prowess = npc.prowess[skill];
         completion[skill] += prowess * boost;
       }
