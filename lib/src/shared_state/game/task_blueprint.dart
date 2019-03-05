@@ -9,15 +9,15 @@ class TaskBlueprint {
   final String name;
   final Map<Skill, double> difficulty;
 
-  List<Skill> get requirements
-  {
-	  List<Skill> skills = [];
-	  difficulty.forEach((Skill skill, double amount)
-	  {
-		  skills.add(skill);
-	  });
-	  return skills;
+  final int xpReward;
+
+  List<Skill> get requirements {
+    List<Skill> skills = [];
+    difficulty.forEach((Skill skill, double amount) {
+      skills.add(skill);
+    });
+    return skills;
   }
 
-  const TaskBlueprint(this.name, this.difficulty);
+  const TaskBlueprint(this.name, this.difficulty, {this.xpReward = 100});
 }

@@ -1,6 +1,6 @@
 import 'package:dev_rpg/src/game_screen/npc_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/stats_page.dart';
-import 'package:dev_rpg/src/game_screen/project_pool_page.dart';
+import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:flutter/material.dart';
 
 class GameScreen extends StatefulWidget {
@@ -41,7 +41,7 @@ class GameScreenState extends State<GameScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.work),
-            title: Text('Projects'),
+            title: Text('Tasks'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.timeline),
@@ -53,7 +53,7 @@ class GameScreenState extends State<GameScreen> {
         controller: _controller,
         children: [
           NpcPoolPage(),
-          ProjectPoolPage(),
+          TaskPoolPage(),
           StatsPage(),
         ],
       ),

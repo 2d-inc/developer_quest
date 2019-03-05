@@ -52,7 +52,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                             cells: [
                               DataCell(Row(children: <Widget>[
                                 Text(npc.name),
-                                Expanded(child:ProwessBadge(npc.prowess))
+                                Expanded(child: ProwessBadge(npc.prowess))
                               ]))
                             ],
                           ))

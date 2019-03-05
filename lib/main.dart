@@ -6,6 +6,7 @@ import 'package:dev_rpg/src/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  // TODO(filiph): switch to package:provider once that's baked
   var providers = Providers();
   providers.provideValue(User());
 
@@ -15,7 +16,7 @@ void main() {
   // Provide specific parts of the world separately so that widgets that
   // only care about quests, for example, can only listen to those.
   providers.provideValue(world.npcPool);
-  providers.provideValue(world.projectPool);
+  providers.provideValue(world.taskPool);
 
   runApp(ProviderNode(
     providers: providers,

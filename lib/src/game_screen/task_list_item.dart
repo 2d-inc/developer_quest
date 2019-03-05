@@ -22,7 +22,7 @@ class TaskListItem extends StatelessWidget {
                     builder: (context) => TeamPickerModal(task),
                   ).then((npcs) => _onAssigned(task, npcs)),
               child: Column(
-				  crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 20),
                   Padding(
@@ -43,13 +43,15 @@ class TaskListItem extends StatelessWidget {
                     child: LinearProgressIndicator(value: task.percentComplete),
                   ),
                   task.assignedTeam == null
-                        ? SizedBox()
-                        : Container(
-							//padding: const EdgeInsets.all(20.0), 
-							height:100.0, 
-							color: Colors.deepOrange, child:InkWell(
-                            onTap: () => task.boost += 2.5,
-                            child: Text('Team Pic Goes Here... assigned to: ${task.assignedTeam}. Tap to boost.'))),
+                      ? SizedBox()
+                      : Container(
+                          //padding: const EdgeInsets.all(20.0),
+                          height: 100.0,
+                          color: Colors.deepOrange,
+                          child: InkWell(
+                              onTap: () => task.boost += 2.5,
+                              child: Text(
+                                  'Team Pic Goes Here... assigned to: ${task.assignedTeam}. Tap to boost.'))),
                 ],
               ),
             ),

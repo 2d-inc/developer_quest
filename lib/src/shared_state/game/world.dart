@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
-import 'package:dev_rpg/src/shared_state/game/project_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
+import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 
 /// The state of the game world.
 ///
@@ -14,14 +14,15 @@ class World extends Aspect {
 
   Timer _timer;
 
-  final ProjectPool projectPool;
-
   final NpcPool npcPool;
+
+  final TaskPool taskPool;
+
   bool _isRunning = false;
 
   World()
       : npcPool = NpcPool(),
-        projectPool = ProjectPool();
+        taskPool = TaskPool();
 
   /// Returns `true` when the simulation is currently running.
   bool get isRunning => _isRunning;
@@ -40,7 +41,7 @@ class World extends Aspect {
 
   void update() {
     npcPool.update();
-    projectPool.update();
+    taskPool.update();
 
     super.update();
   }

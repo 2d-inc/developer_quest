@@ -1,22 +1,19 @@
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
-import 'package:dev_rpg/src/shared_state/game/project.dart';
-import 'package:dev_rpg/src/shared_state/game/project_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
+import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:flutter/material.dart';
 
 class ProjectPickerModal extends StatelessWidget {
-  final List<ProjectBlueprint> _projects;
+  final List<TaskBlueprint> _tasks;
 
-  const ProjectPickerModal(this._projects, {Key key}) : super(key: key);
+  const ProjectPickerModal(this._tasks, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: _projects.length +
-            1, // offset by one to include the "Available Projects" header, I'm sure there's a better way to do this.
+        itemCount: _tasks.length + 1,
         itemBuilder: (context, index) {
-          ProjectBlueprint blueprint =
-              index == 0 ? null : _projects[index - 1];
+          TaskBlueprint blueprint = index == 0 ? null : _tasks[index - 1];
           return index == 0
               ? Padding(
                   padding:
@@ -28,8 +25,7 @@ class ProjectPickerModal extends StatelessWidget {
                   child: Card(
                       margin: const EdgeInsets.all(0.0),
                       child: InkWell(
-                        onTap: () =>
-                            Navigator.pop(context, blueprint),
+                        onTap: () => Navigator.pop(context, blueprint),
                         child: Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: Column(
@@ -55,7 +51,7 @@ class ProjectPickerModal extends StatelessWidget {
                                         style: TextStyle(fontSize: 11)),
                                   ),
                                   Wrap(
-                                      children: blueprint.skills
+                                      children: blueprint.requirements
                                           .map((Skill skill) =>
                                               SkillBadge(skill))
                                           .toList()),

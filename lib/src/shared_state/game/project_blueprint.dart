@@ -6,6 +6,7 @@ import 'package:meta/meta.dart';
 ///
 /// This class is immutable. Put runtime state into [Project].
 @immutable
+@deprecated
 class ProjectBlueprint {
   final String name;
   final List<TaskBlueprint> taskBlueprints;
