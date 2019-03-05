@@ -1,6 +1,9 @@
 import 'package:dev_rpg/src/game_screen/npc_pool_page.dart';
+import 'package:dev_rpg/src/game_screen/stat_badge.dart';
 import 'package:dev_rpg/src/game_screen/stats_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
+import 'package:dev_rpg/src/shared_state/provider.dart';
+import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:flutter/material.dart';
 
 class GameScreen extends StatefulWidget {
@@ -28,6 +31,14 @@ class GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Provide<User>(
+              builder: (context, child, user) => Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        StatBadge("XP", user.xp),
+                        StatBadge("C", user.coin)
+                      ]))),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (index) => setState(() {
