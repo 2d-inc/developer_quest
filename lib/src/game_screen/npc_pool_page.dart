@@ -34,10 +34,10 @@ class NpcListItem extends StatelessWidget {
       builder: (context, _, npc) {
         return Card(
           child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-				  crossAxisAlignment: CrossAxisAlignment.start,
-				  children: <Widget>[
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -46,10 +46,12 @@ class NpcListItem extends StatelessWidget {
                     Text(npc.isBusy ? 'Busy' : 'Idle'),
                   ],
                 ),
-				SizedBox(height: 5),
+                SizedBox(height: 5),
                 ProwessBadge(npc.prowess),
-				SizedBox(height: 10)
-              ])),
+                SizedBox(height: 10)
+              ],
+            ),
+          ),
         );
       },
     );

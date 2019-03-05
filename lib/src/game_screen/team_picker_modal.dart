@@ -17,7 +17,7 @@ class TeamPickerModal extends StatefulWidget {
 }
 
 class TeamPickerModalState extends State<TeamPickerModal> {
-  Set<Npc> _selected = Set<Npc>();
+  final Set<Npc> _selected;
 
   TeamPickerModalState(Iterable<Npc> initialTeam)
       : _selected = Set<Npc>.from(initialTeam ?? []);
@@ -32,32 +32,10 @@ class TeamPickerModalState extends State<TeamPickerModal> {
           Expanded(
             child: Provide<NpcPool>(
               builder: (context, child, npcPool) {
-                return DataTable(
-                  columns: [
-                    DataColumn(label: Text('Name')),
-                  ],
-                  rows: npcPool
-                      .where((npc) =>
-                          npc.isHired &&
-                          (!npc.isBusy || _selected.contains(npc)))
-                      .map((npc) => DataRow(
-                            selected: _selected.contains(npc),
-                            onSelectChanged: (selected) => setState(() {
-                                  if (selected) {
-                                    _selected.add(npc);
-                                  } else {
-                                    _selected.remove(npc);
-                                  }
-                                }),
-                            cells: [
-                              DataCell(Row(children: <Widget>[
-                                Text(npc.name),
-                                Expanded(child: ProwessBadge(npc.prowess))
-                              ]))
-                            ],
-                          ))
-                      .toList(growable: false),
-                );
+                return _NpcDataTable(
+                    pool: npcPool,
+                    selected: _selected,
+                    onToggleSelect: _toggleNpcSelected);
               },
             ),
           ),
@@ -75,6 +53,60 @@ class TeamPickerModalState extends State<TeamPickerModal> {
           )
         ],
       ),
+    );
+  }
+
+  void _toggleNpcSelected(Npc npc, bool selected) {
+    setState(() {
+      if (selected) {
+        _selected.add(npc);
+      } else {
+        _selected.remove(npc);
+      }
+    });
+  }
+}
+
+class _NpcDataTable extends StatelessWidget {
+  final Set<Npc> selected;
+
+  final NpcPool pool;
+
+  final void Function(Npc npc, bool selected) onToggleSelect;
+
+  const _NpcDataTable({
+    Key key,
+    @required selected,
+    this.onToggleSelect,
+    this.pool,
+  })  : selected = selected,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var npcs = pool
+        .where((npc) => npc.isHired && (!npc.isBusy || selected.contains(npc)));
+
+    var rows = npcs.map((npc) {
+      return DataRow(
+        selected: selected.contains(npc),
+        onSelectChanged: (selected) => onToggleSelect(npc, selected),
+        cells: [
+          DataCell(
+            Row(
+              children: [
+                Text(npc.name),
+                Expanded(child: ProwessBadge(npc.prowess)),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
+
+    return DataTable(
+      columns: [DataColumn(label: Text('Name'))],
+      rows: rows.toList(growable: false),
     );
   }
 }

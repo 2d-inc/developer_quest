@@ -13,20 +13,20 @@ import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 class TaskPool extends Aspect {
   // All the projects in the system.
   static const List<TaskBlueprint> availableProjects = const [
-    TaskBlueprint("Compile project", {Skill.Coding: 110}),
-    TaskBlueprint("Add print statement", {Skill.Coding: 110}),
-    TaskBlueprint("Tweet about coding prowess", {Skill.Coding: 110}),
-    TaskBlueprint("Design app states", {Skill.Design: 130}),
-    TaskBlueprint("Implement interface", {Skill.Coding: 130}),
+    TaskBlueprint("Compile project", {Skill.coding: 110}),
+    TaskBlueprint("Add print statement", {Skill.coding: 110}),
+    TaskBlueprint("Tweet about coding prowess", {Skill.coding: 110}),
+    TaskBlueprint("Design app states", {Skill.design: 130}),
+    TaskBlueprint("Implement interface", {Skill.coding: 130}),
     TaskBlueprint(
-        "Plan features", {Skill.UX: 110, Skill.ProjectManagement: 110}),
-    TaskBlueprint("Wireframe experience", {Skill.UX: 110}),
-    TaskBlueprint("Design weather vignettes", {Skill.Design: 130}),
+        "Plan features", {Skill.ux: 110, Skill.projectManagement: 110}),
+    TaskBlueprint("Wireframe experience", {Skill.ux: 110}),
+    TaskBlueprint("Design weather vignettes", {Skill.design: 130}),
     TaskBlueprint(
-        "Design app states", {Skill.Design: 110, Skill.ProjectManagement: 110}),
-    TaskBlueprint("Build client model", {Skill.Coding: 110}),
-    TaskBlueprint("Implement interface", {Skill.Coding: 130}),
-    TaskBlueprint("Submit to store", {Skill.ProjectManagement: 110}),
+        "Design app states", {Skill.design: 110, Skill.projectManagement: 110}),
+    TaskBlueprint("Build client model", {Skill.coding: 110}),
+    TaskBlueprint("Implement interface", {Skill.coding: 130}),
+    TaskBlueprint("Submit to store", {Skill.projectManagement: 110}),
   ];
 
   // The projects that need to or are being worked on.

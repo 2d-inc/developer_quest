@@ -58,7 +58,7 @@ class Task extends Aspect {
     if (_assignedTeam != null) {
       // put everyone to work!
       for (Npc npc in _assignedTeam) {
-        npc.prowess.forEach((Skill skill, double amount) {
+        npc.prowess.forEach((Skill skill, int amount) {
           completion[skill] = (completion[skill] ?? 0.0) + amount * boost;
         });
       }

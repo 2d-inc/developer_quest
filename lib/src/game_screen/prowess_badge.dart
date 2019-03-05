@@ -3,16 +3,17 @@ import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:flutter/material.dart';
 
 class ProwessBadge extends StatelessWidget {
-  final Map<Skill, double> prowess;
+  final Map<Skill, int> prowess;
 
   ProwessBadge(this.prowess);
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> badges = [];
-    prowess.forEach((Skill skill, double value) {
-      badges.add(SkillBadge(skill, value));
-    });
-    return Wrap(alignment: WrapAlignment.end, children: badges);
+    return Wrap(
+      alignment: WrapAlignment.end,
+      children: prowess.entries
+          .map((e) => SkillBadge(e.key, e.value))
+          .toList(growable: false),
+    );
   }
 }

@@ -7,7 +7,9 @@ import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 /// state (like [percentComplete]).
 class Npc extends Aspect {
   final String name;
-  final Map<Skill, double> prowess;
+
+  final Map<Skill, int> prowess;
+
   final bool isHired = true;
 
   bool _isBusy = false;

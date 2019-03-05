@@ -1,6 +1,1 @@
-enum Skill {
-	Coding,
-	Design,
-	UX,
-	ProjectManagement
-}
+enum Skill { coding, design, ux, projectManagement }

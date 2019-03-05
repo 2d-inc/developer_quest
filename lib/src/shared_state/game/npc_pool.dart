@@ -10,12 +10,12 @@ class NpcPool extends Aspect with ListMixin<Npc> {
 
   NpcPool()
       : list = [
-          Npc("The Refactorer", {Skill.Coding: 1}),
-          Npc("The Architect", {Skill.Coding: 3, Skill.ProjectManagement: 1}),
-          Npc("TPM", {Skill.ProjectManagement: 3}),
-          Npc("Avant Garde Designer", {Skill.Design: 1}),
-          Npc("Leonardo", {Skill.UX: 2}),
-          Npc("Michelangelo", {Skill.Design: 2})
+          Npc("The Refactorer", {Skill.coding: 1}),
+          Npc("The Architect", {Skill.coding: 3, Skill.projectManagement: 1}),
+          Npc("TPM", {Skill.projectManagement: 3}),
+          Npc("Avant Garde Designer", {Skill.design: 1}),
+          Npc("Leonardo", {Skill.ux: 2}),
+          Npc("Michelangelo", {Skill.design: 2}),
         ];
 
   void update() {
@@ -31,7 +31,9 @@ class NpcPool extends Aspect with ListMixin<Npc> {
   int get length => list.length;
 
   @override
-  set length(int value) { UnsupportedError("cannot set length of npc pool, wysiwyg"); }
+  set length(int value) {
+    UnsupportedError("cannot set length of npc pool, wysiwyg");
+  }
 
   @override
   Npc operator [](int index) {
@@ -40,6 +42,6 @@ class NpcPool extends Aspect with ListMixin<Npc> {
 
   @override
   void operator []=(int index, Npc value) {
-    UnsupportedError("cannot change a person, freud 3:20");
+    UnsupportedError('cannot change a person, freud 3:20');
   }
 }

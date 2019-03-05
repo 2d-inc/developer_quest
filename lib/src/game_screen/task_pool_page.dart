@@ -14,38 +14,47 @@ class TaskPoolPage extends StatelessWidget {
         final tasks = taskPool.workingTasks
             .followedBy(taskPool.deadTasks)
             .toList(growable: false);
-        return new Stack(children: <Widget>[
-          Positioned.fill(
+        return new Stack(
+          children: <Widget>[
+            Positioned.fill(
               child: ListView.builder(
-                  padding: const EdgeInsets.only(top: 110),
-                  itemCount: tasks.length,
-                  itemBuilder: (context, index) {
-                    Task item = tasks[index];
+                padding: const EdgeInsets.only(top: 110),
+                itemCount: tasks.length,
+                itemBuilder: (context, index) {
+                  Task item = tasks[index];
 
-                    return ProviderNode(
-                        providers: Providers.withProviders({
-                          Task: Provider<Task>.value(item),
-                        }),
-                        child: TaskListItem());
-                  })),
-          new Positioned.fill(
+                  return ProviderNode(
+                      providers: Providers.withProviders({
+                        Task: Provider<Task>.value(item),
+                      }),
+                      child: TaskListItem());
+                },
+              ),
+            ),
+            new Positioned.fill(
               right: 20.0,
               top: 50.0,
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    FloatingActionButton(
-                        elevation: 0.0,
-                        child: new Icon(Icons.add),
-                        onPressed: () => showModalBottomSheet<TaskBlueprint>(
-                              context: context,
-                              builder: (context) => ProjectPickerModal(
-                                  TaskPool.availableProjects),
-                            ).then((TaskBlueprint project) => project != null
-                                ? taskPool.startTask(project)
-                                : null))
-                  ])),
-        ]);
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  FloatingActionButton(
+                    elevation: 0.0,
+                    child: new Icon(Icons.add),
+                    onPressed: () async {
+                      var project = await showModalBottomSheet<TaskBlueprint>(
+                        context: context,
+                        builder: (context) =>
+                            ProjectPickerModal(TaskPool.availableProjects),
+                      );
+                      if (project == null) return;
+                      taskPool.startTask(project);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
       },
     );
   }
