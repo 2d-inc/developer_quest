@@ -17,7 +17,11 @@ class Task extends Aspect {
 
   List<Npc> _assignedTeam;
 
-  Task(this.blueprint);
+  Task(this.blueprint) {
+    for (final skill in blueprint.requirements) {
+      completion[skill] = 0;
+    }
+  }
 
   UnmodifiableListView<Npc> get assignedTeam =>
       _assignedTeam == null ? null : UnmodifiableListView(_assignedTeam);
@@ -55,20 +59,23 @@ class Task extends Aspect {
 
   @override
   void update() {
-    if (_assignedTeam != null) {
-      // put everyone to work!
-      for (Npc npc in _assignedTeam) {
-        npc.prowess.forEach((Skill skill, int amount) {
-          completion[skill] = (completion[skill] ?? 0.0) + amount * boost;
-        });
-      }
-      boost = 1.0;
-      if (percentComplete >= 1.0) {
-        // Free up the workers if they are done!
-        freeTeam();
-      }
-      markDirty();
+    if (_assignedTeam == null) {
+      super.update();
+      return;
     }
+
+    for (final npc in _assignedTeam) {
+      for (final skill in npc.prowess.keys) {
+        var prowess = npc.prowess[skill];
+        completion[skill] += prowess * boost;
+      }
+    }
+    boost = 1.0;
+    if (percentComplete >= 1.0) {
+      // Free up the workers if they are done!
+      freeTeam();
+    }
+    markDirty();
 
     super.update();
   }
