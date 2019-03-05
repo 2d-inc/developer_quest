@@ -33,7 +33,7 @@ class TaskListItem extends StatelessWidget {
                           Expanded(
                             child: Wrap(
                               alignment: WrapAlignment.end,
-                              children: task.blueprint.requirements
+                              children: task.blueprint.skillsNeeded
                                   .map((Skill skill) => SkillBadge(skill))
                                   .toList(),
                             ),

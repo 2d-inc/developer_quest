@@ -18,7 +18,7 @@ class Task extends Aspect {
   List<Npc> _assignedTeam;
 
   Task(this.blueprint) {
-    for (final skill in blueprint.requirements) {
+    for (final skill in blueprint.skillsNeeded) {
       completion[skill] = 0;
     }
   }
@@ -28,7 +28,7 @@ class Task extends Aspect {
 
   bool get isComplete => percentComplete == 1.0;
 
-  /// get progress of this task
+  /// Get progress of this task.
   double get percentComplete {
     double required = 0.0;
     double completed = 0.0;
@@ -66,7 +66,7 @@ class Task extends Aspect {
 
     for (final npc in _assignedTeam) {
       for (final skill in npc.prowess.keys) {
-        if (!blueprint.requirements.contains(skill)) continue;
+        if (!blueprint.skillsNeeded.contains(skill)) continue;
         var prowess = npc.prowess[skill];
         completion[skill] += prowess * boost;
       }

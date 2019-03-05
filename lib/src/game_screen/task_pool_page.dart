@@ -12,7 +12,7 @@ class TaskPoolPage extends StatelessWidget {
     return Provide<TaskPool>(
       builder: (context, child, taskPool) {
         final tasks = taskPool.workingTasks
-            .followedBy(taskPool.deadTasks)
+            .followedBy(taskPool.doneTasks)
             .toList(growable: false);
         return new Stack(
           children: <Widget>[
@@ -43,8 +43,7 @@ class TaskPoolPage extends StatelessWidget {
                     onPressed: () async {
                       var project = await showModalBottomSheet<TaskBlueprint>(
                         context: context,
-                        builder: (context) =>
-                            ProjectPickerModal(TaskPool.availableProjects),
+                        builder: (context) => ProjectPickerModal(),
                       );
                       if (project == null) return;
                       taskPool.startTask(project);
