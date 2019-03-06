@@ -57,40 +57,4 @@ class TaskPool extends AspectContainer with ChildAspect {
     archivedTasks.add(task);
     removeAspect(task);
   }
-
-//   void update() {
-//     final List<Task> justCompleted = [];
-//     for (final task in workingTasks) {
-//       task.update();
-//       if (task.state == TaskState.completed) {
-//         // TODO: update stats (add happiness, growth, etc.)
-//         justCompleted.add(task);
-//       }
-//     }
-
-//     for (final task in justCompleted) {
-//       workingTasks.remove(task);
-//       completedTasks.add(task);
-//     }
-
-//     // we also update the done tasks (the ones we're waiting for the user to collect their reward from).
-//     final List<Task> justArchived = [];
-//     for (final task in completedTasks) {
-//       task.update();
-//       if (task.state == TaskState.rewarded) {
-//         justArchived.add(task);
-//       }
-//     }
-
-//     for (final task in justArchived) {
-//       completedTasks.remove(task);
-//       archivedTasks.add(task);
-//     }
-
-//     if ((justCompleted + justArchived).isNotEmpty) {
-//       markDirty();
-//     }
-
-//     super.update();
-//   }
 }
