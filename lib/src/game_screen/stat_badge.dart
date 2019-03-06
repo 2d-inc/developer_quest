@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+/// Displays a game statistic with its name and value.
 class StatBadge extends StatelessWidget {
   final String stat;
   final int value;

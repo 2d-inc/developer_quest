@@ -5,6 +5,7 @@ import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
+/// Present a list of [Npc]s for the player to choose from.
 class TeamPickerModal extends StatefulWidget {
   final Task task;
 

@@ -7,6 +7,8 @@ import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:flutter/material.dart';
 
+/// Displays a [Task] that can be tapped on to assign it to a team.
+/// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
   final Task task;
 

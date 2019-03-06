@@ -5,6 +5,7 @@ import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
+/// Displays a list of the currently available [TaskBlueprint]s
 class ProjectPickerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

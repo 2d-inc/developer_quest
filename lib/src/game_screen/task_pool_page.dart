@@ -6,6 +6,9 @@ import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
+/// Displays a list of the [Task]s the player has interacted with.
+/// These are [Task]s that have been added into the game, are being
+/// actively worked on, or have been completed and/or archived.
 class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class TaskPoolPage extends StatelessWidget {
       builder: (context, child, taskPool) {
         final tasks = taskPool.workingTasks
             .followedBy(taskPool.doneTasks)
-			.followedBy(taskPool.archivedTasks)
+            .followedBy(taskPool.archivedTasks)
             .toList(growable: false);
         return new Stack(
           children: <Widget>[
