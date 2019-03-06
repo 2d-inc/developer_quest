@@ -83,7 +83,7 @@ class Task extends Aspect with ChildAspect {
       // Free up the workers if they are done!
       _state = TaskState.completed;
       freeTeam();
-	  get<TaskPool>().completeTask(this);
+      get<TaskPool>().completeTask(this);
     }
 
     markDirty();
@@ -95,8 +95,8 @@ class Task extends Aspect with ChildAspect {
       _state = TaskState.rewarded;
       markDirty();
 
-	  get<World>().collectReward(this);	  
-	  get<TaskPool>().archiveTask(this);
+      get<World>().collectReward(this);
+      get<TaskPool>().archiveTask(this);
     }
   }
 }

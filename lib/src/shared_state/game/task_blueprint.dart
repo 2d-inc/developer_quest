@@ -18,13 +18,9 @@ class TaskBlueprint implements Prerequisite {
   final int xpReward;
   final int coinReward;
 
-  const TaskBlueprint(
-    this.name,
-    this.difficulty, {
-    @required this.requirements,
-    this.xpReward = 100,
-	this.coinReward = 300
-  })  : assert(name != null),
+  const TaskBlueprint(this.name, this.difficulty,
+      {@required this.requirements, this.xpReward = 100, this.coinReward = 300})
+      : assert(name != null),
         assert(difficulty != null),
         assert(requirements != null);
 
