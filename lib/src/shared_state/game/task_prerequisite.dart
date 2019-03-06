@@ -1,3 +1,5 @@
+import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
+
 /// A prerequisite that is always satisfied.
 const Prerequisite none = _None();
 
@@ -11,9 +13,9 @@ class AllOf implements Prerequisite {
   @override
   bool isSatisfiedIn(Iterable<Prerequisite> done) {
     for (final prerequisite in prerequisites) {
-      if (prerequisite.isSatisfiedIn(done)) return true;
+      if (!prerequisite.isSatisfiedIn(done)) return false;
     }
-    return false;
+    return true;
   }
 }
 
@@ -27,7 +29,32 @@ class AnyOf implements Prerequisite {
   @override
   bool isSatisfiedIn(Iterable<Prerequisite> done) {
     for (final prerequisite in prerequisites) {
-      if (!prerequisite.isSatisfiedIn(done)) return false;
+      if (prerequisite.isSatisfiedIn(done)) return true;
+    }
+    return false;
+  }
+}
+
+/// A prerequisite that is satisfied only if the [child] is _not_ satisfied.
+///
+/// Use this when you want two tasks to be mutually exclusive.
+///
+/// Because we can't construct two tasks that depend on each other, this
+/// operator takes the [TaskBlueprint.name] instead of the
+/// [TaskBlueprint] itself.
+class Not implements Prerequisite {
+  final String name;
+
+  const Not(this.name);
+
+  @override
+  bool isSatisfiedIn(Iterable<Prerequisite> done) {
+    for (final prerequisite in done) {
+      if (prerequisite is! TaskBlueprint) {
+        throw ArgumentError(
+            'Not was used with non-TaskBlueprint argument: $prerequisite');
+      }
+      if ((prerequisite as TaskBlueprint).name == name) return false;
     }
     return true;
   }

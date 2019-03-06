@@ -25,7 +25,7 @@ const _0_backendPrototype = TaskBlueprint(
 const _0_basicUI = TaskBlueprint(
   "Basic UI",
   {Skill.design: 100},
-  requirements: AllOf([_0_workingPrototype]),
+  requirements: AllOf([_0_workingPrototype, Not("Programmer Art UI")]),
 );
 
 const _0_fastBackend = TaskBlueprint(
@@ -43,7 +43,7 @@ const _0_pretendotype = TaskBlueprint(
 const _0_programmerArtUI = TaskBlueprint(
   "Programmer Art UI",
   {Skill.coding: 100},
-  requirements: AllOf([_0_workingPrototype]),
+  requirements: AllOf([_0_workingPrototype, Not("Basic UI")]),
 );
 
 const _0_scalableBackend = TaskBlueprint(
