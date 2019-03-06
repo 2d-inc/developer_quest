@@ -14,96 +14,96 @@ class TaskListItem extends StatelessWidget {
 
   TaskListItem({@required this.task, Key key}) : super(key: key);
 
+  void _handleTap(BuildContext context, Task task) async {
+    User user = Provide.value<User>(context);
+    switch (task.state) {
+      case TaskState.completed:
+        task.reward(user);
+        break;
+      case TaskState.working:
+        var npcs = await showModalBottomSheet<Set<Npc>>(
+          context: context,
+          builder: (context) => TeamPickerModal(task),
+        );
+        _onAssigned(task, npcs);
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 20),
-        child: ProvideMulti(
-            requestedValues: <Type>[Task, User],
-            builder: (context, child, values) {
-              Task task = values.get<Task>();
-              User user = values.get<User>();
-              return Card(
-                  color: task.state == TaskState.rewarded
-                      ? Colors.grey
-                      : Colors.white,
-                  child: InkWell(
-                    onTap: () async {
-                      switch (task.state) {
-                        case TaskState.completed:
-                          task.reward(user);
-                          break;
-                        case TaskState.working:
-                          var npcs = await showModalBottomSheet<Set<Npc>>(
-                            context: context,
-                            builder: (context) => TeamPickerModal(task),
-                          );
-                          _onAssigned(task, npcs);
-                          break;
-                        default:
-                          break;
-                      }
-                    },
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(height: 20),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              children: <Widget>[
-                                Text(task.blueprint.name,
-                                    style: TextStyle(fontSize: 14)),
-                                task.state != TaskState.completed
-                                    ? Container()
-                                    : Container(
-                                        margin: EdgeInsets.only(left: 5.0),
-                                        padding: EdgeInsets.all(5.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.yellow,
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          "REWARD!!",
-                                          style: TextStyle(
-                                              fontSize: 10.0,
-                                              color: Colors.black),
+        child: Provide<Task>(
+          builder: (context, child, task) => Card(
+                color: task.state == TaskState.rewarded
+                    ? Colors.grey
+                    : Colors.white,
+                child: (InkWell(
+                  onTap: () => _handleTap(context, task),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              Text(task.blueprint.name,
+                                  style: TextStyle(fontSize: 14)),
+                              task.state != TaskState.completed
+                                  ? Container()
+                                  : Container(
+                                      margin: EdgeInsets.only(left: 5.0),
+                                      padding: EdgeInsets.all(5.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
                                         ),
                                       ),
-                                Expanded(
-                                  child: Wrap(
-                                    alignment: WrapAlignment.end,
-                                    children: task.blueprint.skillsNeeded
-                                        .map((Skill skill) => SkillBadge(skill))
-                                        .toList(),
-                                  ),
-                                )
-                              ],
-                            ),
+                                      child: Text(
+                                        "REWARD!!",
+                                        style: TextStyle(
+                                            fontSize: 10.0,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                              Expanded(
+                                child: Wrap(
+                                  alignment: WrapAlignment.end,
+                                  children: task.blueprint.skillsNeeded
+                                      .map((Skill skill) => SkillBadge(skill))
+                                      .toList(),
+                                ),
+                              )
+                            ],
                           ),
-                          SizedBox(height: 10),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: LinearProgressIndicator(
-                                value: task.percentComplete),
-                          ),
-                          task.assignedTeam == null
-                              ? SizedBox()
-                              : Container(
-                                  height: 100.0,
-                                  color: Colors.deepOrange,
-                                  child: InkWell(
-                                    onTap: () => task.boost += 2.5,
-                                    child: Text(
-                                        'Team Pic Goes Here... assigned to: '
-                                        '${task.assignedTeam}. Tap to boost.'),
-                                  ),
-                                )
-                        ]),
-                  ));
-            }));
+                        ),
+                        SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: LinearProgressIndicator(
+                              value: task.percentComplete),
+                        ),
+                        task.assignedTeam == null
+                            ? SizedBox()
+                            : Container(
+                                height: 100.0,
+                                color: Colors.deepOrange,
+                                child: InkWell(
+                                  onTap: () => task.boost += 2.5,
+                                  child: Text(
+                                      'Team Pic Goes Here... assigned to: '
+                                      '${task.assignedTeam}. Tap to boost.'),
+                                ),
+                              )
+                      ]),
+                )),
+              ),
+        ));
   }
 
   void _onAssigned(Task task, Set<Npc> value) {

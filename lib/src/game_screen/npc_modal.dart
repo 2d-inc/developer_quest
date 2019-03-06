@@ -9,71 +9,64 @@ import 'package:flutter/material.dart';
 class NpcModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ProvideMulti(
-        requestedValues: <Type>[User, Npc],
-        builder: (context, _, values) {
-          Npc npc = values.get<Npc>();
-          User user = values.get<User>();
-
-          return AlertDialog(
-            title: new Text(npc.name),
-            content: ProviderNode(
-              providers: Providers.withProviders(
-                {
-                  Npc: Provider<Npc>.value(npc),
-                  //User: Provider<User>.value(user)
-                }
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: npc.prowess.keys
-                    .map(
-                      (Skill skill) => Padding(
-                            padding: EdgeInsets.only(bottom: 20.0),
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    SkillBadge(skill),
-                                    Expanded(
-                                      child: Text(
-                                        npc.prowess[skill].toString(),
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: LinearProgressIndicator(
-                                      value: npc.prowess[skill] / 100),
-                                )
-                              ],
-                            ),
+    return AlertDialog(
+      title: Provide<Npc>(builder: (context, _, npc) => Text(npc.name)),
+      content: Provide<Npc>(
+        builder: (context, _, npc) => Column(
+              mainAxisSize: MainAxisSize.min,
+              children: npc.prowess.keys
+                  .map(
+                    (Skill skill) => Padding(
+                          padding: EdgeInsets.only(bottom: 20.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SkillBadge(skill),
+                                  Expanded(
+                                    child: Text(
+                                      npc.prowess[skill].toString(),
+                                      textAlign: TextAlign.end,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: LinearProgressIndicator(
+                                    value: npc.prowess[skill] / 100),
+                              )
+                            ],
                           ),
-                    )
-                    .toList(),
-              ),
+                        ),
+                  )
+                  .toList(),
             ),
-            actions: <Widget>[
-              // usually buttons at the bottom of the dialog
-              new FlatButton(
+      ),
+      actions: [
+        ProvideMulti(
+            requestedValues: [Npc, User],
+            builder: (context, child, values) {
+              Npc npc = values.get<Npc>();
+              User user = values.get<User>();
+
+              void upgradeNpc() {
+                user.spend(npc.upgradeCost);
+                npc.upgrade();
+              }
+
+              return new FlatButton(
                 child: Text("Upgrade: ${npc.upgradeCost}"),
-                onPressed: user.coin >= npc.upgradeCost
-                    ? () {
-                        user.spend(npc.upgradeCost);
-                        npc.upgrade();
-                      }
-                    : null,
-              ),
-              new FlatButton(
-                child: new Text("Close"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
+                onPressed: user.coin >= npc.upgradeCost ? upgradeNpc : null,
+              );
+            }),
+        new FlatButton(
+          child: new Text("Close"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }
