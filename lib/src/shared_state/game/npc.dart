@@ -43,9 +43,9 @@ class Npc extends Aspect with ChildAspect {
     if (!company.spend(upgradeCost)) {
       return false;
     }
-    prowess.forEach((Skill skill, int value) {
+    for (final Skill skill in prowess.keys) {
       prowess[skill] += 1;
-    });
+    }
     markDirty();
     return true;
   }
