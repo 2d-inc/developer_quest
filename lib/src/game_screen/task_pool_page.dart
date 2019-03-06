@@ -28,7 +28,7 @@ class TaskPoolPage extends StatelessWidget {
                       providers: Providers.withProviders({
                         Task: Provider<Task>.value(item),
                       }),
-                      child: TaskListItem());
+                      child: TaskListItem(task: item));
                 },
               ),
             ),
