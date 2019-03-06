@@ -4,7 +4,6 @@ import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
-import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:flutter/material.dart';
 
 /// Displays a [Task] that can be tapped on to assign it to a team.
@@ -15,10 +14,9 @@ class TaskListItem extends StatelessWidget {
   TaskListItem({@required this.task, Key key}) : super(key: key);
 
   void _handleTap(BuildContext context, Task task) async {
-    User user = Provide.value<User>(context);
     switch (task.state) {
       case TaskState.completed:
-        task.reward(user);
+        task.collectReward();
         break;
       case TaskState.working:
         var npcs = await showModalBottomSheet<Set<Npc>>(

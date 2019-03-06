@@ -1,4 +1,5 @@
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
+import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
@@ -44,22 +45,12 @@ class NpcModal extends StatelessWidget {
             ),
       ),
       actions: [
-        ProvideMulti(
-            requestedValues: [Npc, User],
-            builder: (context, child, values) {
-              Npc npc = values.get<Npc>();
-              User user = values.get<User>();
-
-              void upgradeNpc() {
-                user.spend(npc.upgradeCost);
-                npc.upgrade();
-              }
-
-              return new FlatButton(
-                child: Text("Upgrade: ${npc.upgradeCost}"),
-                onPressed: user.coin >= npc.upgradeCost ? upgradeNpc : null,
-              );
-            }),
+        Provide<Npc>(builder: (context, child, npc) {
+          return new FlatButton(
+            child: Text("Upgrade: ${npc.upgradeCost}"),
+            onPressed: npc.canUpgrade ? npc.upgrade : null,
+          );
+        }),
         new FlatButton(
           child: new Text("Close"),
           onPressed: () {

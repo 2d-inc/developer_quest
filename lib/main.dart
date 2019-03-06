@@ -17,6 +17,7 @@ void main() {
   // only care about quests, for example, can only listen to those.
   providers.provideValue(world.npcPool);
   providers.provideValue(world.taskPool);
+  providers.provideValue(world.company);
 
   runApp(ProviderNode(
     providers: providers,

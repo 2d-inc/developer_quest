@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
+import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
-import 'package:dev_rpg/src/shared_state/user.dart';
+import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/world.dart';
 
 enum TaskState { working, completed, rewarded }
 
@@ -13,7 +15,7 @@ enum TaskState { working, completed, rewarded }
 ///
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
-class Task extends Aspect {
+class Task extends Aspect with ChildAspect {
   final TaskBlueprint blueprint;
   final Map<Skill, double> completion = {};
   double boost = 1.0;
@@ -81,21 +83,20 @@ class Task extends Aspect {
       // Free up the workers if they are done!
       _state = TaskState.completed;
       freeTeam();
+	  get<TaskPool>().completeTask(this);
     }
 
     markDirty();
     super.update();
   }
 
-  void reward(User user) {
+  void collectReward() {
     if (_state == TaskState.completed) {
       _state = TaskState.rewarded;
-
-	  // Todo: modify these values by how quickly the user completed the task
-	  // some bonus system?
-	  user.award(blueprint.xpReward, blueprint.coinReward);
-	  
       markDirty();
+
+	  get<World>().collectReward(this);	  
+	  get<TaskPool>().archiveTask(this);
     }
   }
 }
