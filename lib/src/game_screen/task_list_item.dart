@@ -17,10 +17,13 @@ class TaskListItem extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20),
       child: Card(
         child: InkWell(
-          onTap: () => showModalBottomSheet<Set<Npc>>(
-                context: context,
-                builder: (context) => TeamPickerModal(task),
-              ).then((npcs) => _onAssigned(task, npcs)),
+          onTap: () async {
+            var npcs = await showModalBottomSheet<Set<Npc>>(
+              context: context,
+              builder: (context) => TeamPickerModal(task),
+            );
+            _onAssigned(task, npcs);
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
