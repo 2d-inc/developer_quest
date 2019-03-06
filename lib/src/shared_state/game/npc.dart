@@ -25,4 +25,15 @@ class Npc extends Aspect {
 
   @override
   String toString() => name;
+
+  int get upgradeCost =>
+      prowess.values.fold(0, (int previous, int value) => previous + value) *
+      110;
+
+  void upgrade() {
+    prowess.forEach((Skill skill, int value) {
+      prowess[skill] += 1;
+    });
+    markDirty();
+  }
 }

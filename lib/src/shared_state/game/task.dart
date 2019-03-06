@@ -5,6 +5,9 @@ import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
+import 'package:dev_rpg/src/shared_state/user.dart';
+
+enum TaskState { working, completed, rewarded }
 
 /// A single task for the player and her team to complete.
 ///
@@ -16,6 +19,8 @@ class Task extends Aspect {
   double boost = 1.0;
 
   List<Npc> _assignedTeam;
+  TaskState _state = TaskState.working;
+  TaskState get state => _state;
 
   Task(this.blueprint) {
     for (final skill in blueprint.skillsNeeded) {
@@ -74,10 +79,23 @@ class Task extends Aspect {
     boost = 1.0;
     if (percentComplete >= 1.0) {
       // Free up the workers if they are done!
+      _state = TaskState.completed;
       freeTeam();
     }
 
     markDirty();
     super.update();
+  }
+
+  void reward(User user) {
+    if (_state == TaskState.completed) {
+      _state = TaskState.rewarded;
+
+	  // Todo: modify these values by how quickly the user completed the task
+	  // some bonus system?
+	  user.award(blueprint.xpReward, blueprint.coinReward);
+	  
+      markDirty();
+    }
   }
 }

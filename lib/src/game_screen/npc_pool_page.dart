@@ -1,7 +1,9 @@
+import 'package:dev_rpg/src/game_screen/npc_modal.dart';
 import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
+import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:flutter/material.dart';
 
 class NpcPoolPage extends StatelessWidget {
@@ -33,6 +35,17 @@ class NpcListItem extends StatelessWidget {
     return Provide<Npc>(
       builder: (context, _, npc) {
         return Card(
+            child: InkWell(
+          onTap: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return ProviderNode(
+                    providers: Providers.withProviders({
+                      Npc: Provider<Npc>.value(npc),
+                    }),
+                    child: NpcModal());
+              }),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -52,7 +65,7 @@ class NpcListItem extends StatelessWidget {
               ],
             ),
           ),
-        );
+        ));
       },
     );
   }

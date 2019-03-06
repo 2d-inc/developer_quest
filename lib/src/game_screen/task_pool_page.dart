@@ -13,6 +13,7 @@ class TaskPoolPage extends StatelessWidget {
       builder: (context, child, taskPool) {
         final tasks = taskPool.workingTasks
             .followedBy(taskPool.doneTasks)
+			.followedBy(taskPool.archivedTasks)
             .toList(growable: false);
         return new Stack(
           children: <Widget>[

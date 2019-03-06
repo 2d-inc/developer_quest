@@ -14,8 +14,11 @@ class TaskPool extends Aspect {
   // The projects that need to or are being worked on.
   final List<Task> workingTasks = [];
 
-  // The projects that are done.
+  // The tasks that are done.
   final List<Task> doneTasks = [];
+
+  // The tasks that are archived (user got their rewad).
+  final List<Task> archivedTasks = [];
 
   TaskPool();
 
@@ -24,7 +27,8 @@ class TaskPool extends Aspect {
   Iterable<TaskBlueprint> get availableTasks => taskTree.where((blueprint) =>
       !doneTasks.any((task) => task.blueprint == blueprint) &&
       !workingTasks.any((task) => task.blueprint == blueprint) &&
-      blueprint.requirements.isSatisfiedIn(doneTasks.map((t) => t.blueprint)));
+      !archivedTasks.any((task) => task.blueprint == blueprint) &&
+      blueprint.requirements.isSatisfiedIn((doneTasks+archivedTasks).map((t) => t.blueprint)));
 
   void startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
@@ -36,19 +40,33 @@ class TaskPool extends Aspect {
     final List<Task> justCompleted = [];
     for (final task in workingTasks) {
       task.update();
-      if (task.isComplete) {
+      if (task.state == TaskState.completed) {
         // TODO: update stats (add happiness, growth, etc.)
         justCompleted.add(task);
       }
     }
 
-    if (justCompleted.isNotEmpty) {
-      markDirty();
-    }
-
     for (final task in justCompleted) {
       workingTasks.remove(task);
       doneTasks.add(task);
+    }
+
+    // we also update the done tasks (the ones we're waiting for the user to collect their reward from).
+    final List<Task> justArchived = [];
+    for (final task in doneTasks) {
+      task.update();
+      if (task.state == TaskState.rewarded) {
+        justArchived.add(task);
+      }
+    }
+
+    for (final task in justArchived) {
+      doneTasks.remove(task);
+      archivedTasks.add(task);
+    }
+
+    if ((justCompleted + justArchived).isNotEmpty) {
+      markDirty();
     }
 
     super.update();
