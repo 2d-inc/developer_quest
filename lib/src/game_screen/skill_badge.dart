@@ -15,6 +15,8 @@ Map<Skill, Color> skillColor = {
   Skill.projectManagement: Colors.lightGreen
 };
 
+/// Displays a skill in a nicely readable format along with
+/// the value if present.
 class SkillBadge extends StatelessWidget {
   final Skill skill;
   final int value;

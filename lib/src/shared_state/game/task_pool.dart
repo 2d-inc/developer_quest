@@ -1,4 +1,5 @@
-import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
+import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
+import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_tree.dart';
@@ -10,47 +11,50 @@ import 'package:dev_rpg/src/shared_state/game/task_tree.dart';
 ///
 /// This is better that `List<Task>` because we can attach behavior
 /// to this (like [update]) and only update the widgets once.
-class TaskPool extends Aspect {
+class TaskPool extends AspectContainer with ChildAspect {
   // The projects that need to or are being worked on.
   final List<Task> workingTasks = [];
 
-  // The projects that are done.
-  final List<Task> doneTasks = [];
+  // The tasks that are done.
+  final List<Task> completedTasks = [];
+
+  // The tasks that are archived (user got their rewad).
+  final List<Task> archivedTasks = [];
 
   TaskPool();
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
   Iterable<TaskBlueprint> get availableTasks => taskTree.where((blueprint) =>
-      !doneTasks.any((task) => task.blueprint == blueprint) &&
+      !completedTasks.any((task) => task.blueprint == blueprint) &&
       !workingTasks.any((task) => task.blueprint == blueprint) &&
-      blueprint.requirements.isSatisfiedIn(doneTasks.map((t) => t.blueprint)));
+      !archivedTasks.any((task) => task.blueprint == blueprint) &&
+      blueprint.requirements.isSatisfiedIn(
+          (completedTasks + archivedTasks).map((t) => t.blueprint)));
 
   void startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
+    addAspect(task);
     workingTasks.add(task);
     markDirty();
   }
 
-  void update() {
-    final List<Task> justCompleted = [];
-    for (final task in workingTasks) {
-      task.update();
-      if (task.isComplete) {
-        // TODO: update stats (add happiness, growth, etc.)
-        justCompleted.add(task);
-      }
+  void completeTask(Task task) {
+    // sanity check, only complete tasks that we were working on
+    if (!workingTasks.contains(task)) {
+      return;
     }
+    workingTasks.remove(task);
+    completedTasks.add(task);
+  }
 
-    if (justCompleted.isNotEmpty) {
-      markDirty();
+  void archiveTask(Task task) {
+    // sanity check, archive tasks only after they are complete
+    if (!completedTasks.contains(task)) {
+      return;
     }
-
-    for (final task in justCompleted) {
-      workingTasks.remove(task);
-      doneTasks.add(task);
-    }
-
-    super.update();
+    completedTasks.remove(task);
+    archivedTasks.add(task);
+    removeAspect(task);
   }
 }

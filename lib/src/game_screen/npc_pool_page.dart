@@ -1,9 +1,11 @@
+import 'package:dev_rpg/src/game_screen/npc_modal.dart';
 import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
+/// Displays a list of [Npc]s that are available to the player.
 class NpcPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,9 @@ class NpcPoolPage extends StatelessWidget {
   }
 }
 
+/// Displays the current state of an individual [Npc]
+/// Tapping on the [Npc] opens up a modal window which
+/// offers more details about stats and options to upgrade.
 class NpcListItem extends StatelessWidget {
   NpcListItem({Key key}) : super(key: key);
 
@@ -33,6 +38,17 @@ class NpcListItem extends StatelessWidget {
     return Provide<Npc>(
       builder: (context, _, npc) {
         return Card(
+            child: InkWell(
+          onTap: () => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                return ProviderNode(
+                    providers: Providers.withProviders({
+                      Npc: Provider<Npc>.value(npc),
+                    }),
+                    child: NpcModal());
+              }),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -52,7 +68,7 @@ class NpcListItem extends StatelessWidget {
               ],
             ),
           ),
-        );
+        ));
       },
     );
   }

@@ -2,33 +2,27 @@ import 'dart:collection';
 
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
-import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
+import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
+import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 
 /// A list of [Npc]s.
-class NpcPool extends Aspect with ListMixin<Npc> {
-  final List<Npc> list;
-
-  NpcPool()
-      : list = [
-          Npc("The Refactorer", {Skill.coding: 1}),
-          Npc("The Architect", {Skill.coding: 3, Skill.projectManagement: 1}),
-          Npc("TPM", {Skill.projectManagement: 3}),
-          Npc("Avant Garde Designer", {Skill.design: 1}),
-          Npc("Leonardo", {Skill.ux: 2}),
-          Npc("Michelangelo", {Skill.design: 2}),
-        ];
-
-  void update() {
-    for (final npc in list) {
-      if (npc.isDirty) markDirty();
-      npc.update();
-    }
-
-    super.update();
+class NpcPool extends AspectContainer with ListMixin<Npc>, ChildAspect {
+  NpcPool() {
+    addAspects([
+      Npc("The Refactorer", {Skill.coding: 1}),
+      Npc("The Architect", {Skill.coding: 3, Skill.projectManagement: 1}),
+      Npc("TPM", {Skill.projectManagement: 3}),
+      Npc("Avant Garde Designer", {Skill.design: 1}),
+      Npc("Leonardo", {Skill.ux: 2}),
+      Npc("Michelangelo", {Skill.design: 2}),
+    ]);
   }
 
+  // Mark this Aspect dirty when any child is dirty.
+  bool get inheritsDirt => true;
+
   @override
-  int get length => list.length;
+  int get length => children.length;
 
   @override
   set length(int value) {
@@ -37,7 +31,7 @@ class NpcPool extends Aspect with ListMixin<Npc> {
 
   @override
   Npc operator [](int index) {
-    return list[index];
+    return children[index];
   }
 
   @override
