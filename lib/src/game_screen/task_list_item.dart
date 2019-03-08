@@ -15,7 +15,7 @@ class TaskListItem extends StatelessWidget {
       switch (workItem.state) {
         case TaskState.completed:
           workItem.shipFeature();
-          break;
+          return;
         case TaskState.rewarded:
           return;
         default:
