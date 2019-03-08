@@ -3,44 +3,43 @@ import 'package:dev_rpg/src/game_screen/team_picker_modal.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
+import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
-  final Task task;
-
-  TaskListItem({@required this.task, Key key}) : super(key: key);
-
-  void _handleTap(BuildContext context, Task task) async {
-    switch (task.state) {
-      case TaskState.completed:
-        task.collectReward();
-        break;
-      case TaskState.working:
-        var npcs = await showModalBottomSheet<Set<Npc>>(
-          context: context,
-          builder: (context) => TeamPickerModal(task),
-        );
-        _onAssigned(task, npcs);
-        break;
-      default:
-        break;
+  void _handleTap(BuildContext context, WorkItem workItem) async {
+    if (workItem is Task) {
+      switch (workItem.state) {
+        case TaskState.completed:
+          workItem.shipFeature();
+          break;
+        case TaskState.rewarded:
+          return;
+        default:
+          break;
+      }
     }
+    var npcs = await showModalBottomSheet<Set<Npc>>(
+      context: context,
+      builder: (context) => TeamPickerModal(workItem),
+    );
+    _onAssigned(workItem, npcs);
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 20),
-        child: Provide<Task>(
-          builder: (context, child, task) => Card(
-                color: task.state == TaskState.rewarded
+        child: Provide<WorkItem>(
+          builder: (context, child, workItem) => Card(
+                color: workItem is Task && workItem.state == TaskState.rewarded
                     ? Colors.grey
                     : Colors.white,
                 child: (InkWell(
-                  onTap: () => _handleTap(context, task),
+                  onTap: () => _handleTap(context, workItem),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -49,11 +48,11 @@ class TaskListItem extends StatelessWidget {
                           padding: const EdgeInsets.all(10.0),
                           child: Row(
                             children: [
-                              Text(task.blueprint.name,
+                              Text(workItem.name,
                                   style: TextStyle(fontSize: 14)),
-                              task.state != TaskState.completed
-                                  ? Container()
-                                  : Container(
+                              workItem is Task &&
+                                      workItem.state == TaskState.completed
+                                  ? Container(
                                       margin: EdgeInsets.only(left: 5.0),
                                       padding: EdgeInsets.all(5.0),
                                       decoration: BoxDecoration(
@@ -63,16 +62,17 @@ class TaskListItem extends StatelessWidget {
                                         ),
                                       ),
                                       child: Text(
-                                        "REWARD!!",
+                                        "Ship it!!",
                                         style: TextStyle(
                                             fontSize: 10.0,
                                             color: Colors.black),
                                       ),
-                                    ),
+                                    )
+                                  : Container(),
                               Expanded(
                                 child: Wrap(
                                   alignment: WrapAlignment.end,
-                                  children: task.blueprint.skillsNeeded
+                                  children: workItem.skillsNeeded
                                       .map((Skill skill) => SkillBadge(skill))
                                       .toList(),
                                 ),
@@ -84,18 +84,18 @@ class TaskListItem extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: LinearProgressIndicator(
-                              value: task.percentComplete),
+                              value: workItem.percentComplete),
                         ),
-                        task.assignedTeam == null
+                        workItem.assignedTeam == null
                             ? SizedBox()
                             : Container(
                                 height: 100.0,
                                 color: Colors.deepOrange,
                                 child: InkWell(
-                                  onTap: () => task.boost += 2.5,
+                                  onTap: () => workItem.boost += 2.5,
                                   child: Text(
                                       'Team Pic Goes Here... assigned to: '
-                                      '${task.assignedTeam}. Tap to boost.'),
+                                      '${workItem.assignedTeam}. Tap to boost.'),
                                 ),
                               )
                       ]),
@@ -104,8 +104,8 @@ class TaskListItem extends StatelessWidget {
         ));
   }
 
-  void _onAssigned(Task task, Set<Npc> value) {
+  void _onAssigned(WorkItem workItem, Set<Npc> value) {
     if (value == null || value.isEmpty) return;
-    task.assignTeam(value);
+    workItem.assignTeam(value);
   }
 }

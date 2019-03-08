@@ -1,19 +1,19 @@
 import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
-import 'package:dev_rpg/src/shared_state/game/task.dart';
+import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
 /// Present a list of [Npc]s for the player to choose from.
 class TeamPickerModal extends StatefulWidget {
-  final Task task;
+  final WorkItem workItem;
 
-  TeamPickerModal(this.task);
+  TeamPickerModal(this.workItem);
 
   @override
   TeamPickerModalState createState() {
-    return new TeamPickerModalState(task.assignedTeam);
+    return new TeamPickerModalState(workItem.assignedTeam);
   }
 }
 
@@ -29,7 +29,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Text('Pick team for "${widget.task.blueprint.name}"'),
+          Text('Pick team for "${widget.workItem.name}"'),
           Expanded(
             child: Provide<NpcPool>(
               builder: (context, child, npcPool) {

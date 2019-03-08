@@ -47,7 +47,7 @@ class ProjectPickerModal extends StatelessWidget {
                         ),
                         Row(children: <Widget>[
                           Icon(Icons.stars, size: 16),
-                          Text(blueprint.xpReward.toString(),
+                          Text(blueprint.userReward.toString(),
                               style: TextStyle(fontSize: 12))
                         ]),
                         Padding(

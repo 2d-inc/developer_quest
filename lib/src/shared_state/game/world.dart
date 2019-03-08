@@ -52,9 +52,19 @@ class World extends AspectContainer {
     update();
   }
 
-  void collectReward(Task task) {
+  // Feature joy should probably depend on the feature (might be another stat for the feature/task).
+  static const double FeatureJoy = 5.0;
+
+  void shipFeature(Task task) {
     // Todo: modify these values by how quickly the user completed the task
     // some bonus system?
-    company.award(task.blueprint.xpReward, task.blueprint.coinReward);
+
+    // Give some joy for the new feature, at least for a while.
+    company.joy += FeatureJoy;
+    Timer(Duration(seconds: 5), () {
+      company.joy -= FeatureJoy;
+    });
+
+    company.award(task.blueprint.userReward, task.blueprint.coinReward);
   }
 }
