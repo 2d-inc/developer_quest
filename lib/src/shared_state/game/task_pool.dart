@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dev_rpg/src/shared_state/game/bug.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';

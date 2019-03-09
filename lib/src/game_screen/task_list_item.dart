@@ -92,7 +92,7 @@ class TaskListItem extends StatelessWidget {
                                 height: 100.0,
                                 color: Colors.deepOrange,
                                 child: InkWell(
-                                  onTap: () => workItem.boost += 2.5,
+                                  onTap: workItem.addBoost,
                                   child: Text(
                                       'Team Pic Goes Here... assigned to: '
                                       '${workItem.assignedTeam}. Tap to boost.'),
@@ -106,6 +106,6 @@ class TaskListItem extends StatelessWidget {
 
   void _onAssigned(WorkItem workItem, Set<Npc> value) {
     if (value == null || value.isEmpty) return;
-    workItem.assignTeam(value);
+    workItem.assignTeam(value.toList());
   }
 }

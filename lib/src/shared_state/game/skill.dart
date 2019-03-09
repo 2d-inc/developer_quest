@@ -7,18 +7,11 @@ Map<Skill, double> randomDifficulty(Random randomizer,
     {double maxDifficulty = 100}) {
   Map<Skill, double> difficulty = {};
 
-  for (Skill skill in Skill.values) {
-    if (randomizer.nextBool()) {
-      difficulty[skill] = randomizer.nextDouble() * maxDifficulty;
-      if (difficulty.length == 2) {
-        // don't allow more than 2 required skills
-        break;
-      }
-    }
-  }
+  // Add one or two skills.
+  do {
+    var skill = Skill.values[randomizer.nextInt(Skill.values.length)];
+    difficulty[skill] = randomizer.nextDouble() * maxDifficulty;
+  } while (difficulty.length <= 2 && randomizer.nextBool());
 
-  if (difficulty.isEmpty) {
-    difficulty[Skill.coding] = 20.0;
-  }
   return difficulty;
 }
