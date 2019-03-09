@@ -13,8 +13,7 @@ abstract class WorkItem extends Aspect with ChildAspect {
   final Map<Skill, double> completion;
 
   List<Npc> _assignedTeam;
-  UnmodifiableListView<Npc> get assignedTeam =>
-      _assignedTeam == null ? null : UnmodifiableListView(_assignedTeam);
+  List<Npc> get assignedTeam => _assignedTeam;
 
   bool get isComplete => percentComplete == 1.0;
   List<Skill> get skillsNeeded => difficulty.keys.toList(growable: false);
