@@ -82,8 +82,12 @@ class TaskPool extends AspectContainer with ChildAspect {
   void update() {
     super.update();
 
+    // Decrement remaining ticks to the next bugroll and wrap back around when we get to 0.
     _ticksToBugRoll = (_ticksToBugRoll - 1 + BugRollTicks) % BugRollTicks;
+
+    // No ticks left, roll the die.
     if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
+      // Winner! Well...
       _bugChance = AmbientBugChance;
       addWorkItem(Bug.random());
     }
