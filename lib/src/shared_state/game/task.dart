@@ -1,4 +1,3 @@
-import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
@@ -11,13 +10,11 @@ enum TaskState { working, completed, rewarded }
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
 class Task extends WorkItem {
-  String get name => blueprint.name;
   final TaskBlueprint blueprint;
   TaskState _state = TaskState.working;
   TaskState get state => _state;
-  Map<Skill, double> get difficulty => blueprint.difficulty;
 
-  Task(this.blueprint);
+  Task(this.blueprint) : super(blueprint.name, blueprint.difficulty);
 
   @override
   void onCompleted() {
