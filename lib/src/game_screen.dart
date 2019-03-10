@@ -36,7 +36,8 @@ class GameScreenState extends State<GameScreen> {
               builder: (context, child, company) => Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        StatBadge("XP", company.xp),
+                        StatBadge("Users", company.users),
+                        StatBadge("Joy", company.joy),
                         StatBadge("C", company.coin)
                       ]))),
       bottomNavigationBar: BottomNavigationBar(

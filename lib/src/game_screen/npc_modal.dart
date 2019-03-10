@@ -1,9 +1,7 @@
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
-import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
-import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:flutter/material.dart';
 
 /// Displays the stats of an [Npc] and offers the option to upgrade them.

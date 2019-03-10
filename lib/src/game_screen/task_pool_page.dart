@@ -3,6 +3,7 @@ import 'package:dev_rpg/src/game_screen/task_list_item.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class TaskPoolPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Provide<TaskPool>(
       builder: (context, child, taskPool) {
-        final tasks = taskPool.workingTasks
+        final workItems = taskPool.workItems
             .followedBy(taskPool.completedTasks)
             .followedBy(taskPool.archivedTasks)
             .toList(growable: false);
@@ -23,15 +24,15 @@ class TaskPoolPage extends StatelessWidget {
             Positioned.fill(
               child: ListView.builder(
                 padding: const EdgeInsets.only(top: 110),
-                itemCount: tasks.length,
+                itemCount: workItems.length,
                 itemBuilder: (context, index) {
-                  Task item = tasks[index];
+                  WorkItem item = workItems[index];
 
                   return ProviderNode(
                       providers: Providers.withProviders({
-                        Task: Provider<Task>.value(item),
+                        WorkItem: Provider<WorkItem>.value(item),
                       }),
-                      child: TaskListItem(task: item));
+                      child: TaskListItem());
                 },
               ),
             ),
