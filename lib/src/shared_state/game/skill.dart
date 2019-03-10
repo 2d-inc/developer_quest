@@ -11,7 +11,7 @@ Map<Skill, double> randomDifficulty(Random randomizer,
   do {
     var skill = Skill.values[randomizer.nextInt(Skill.values.length)];
     difficulty[skill] = randomizer.nextDouble() * maxDifficulty;
-  } while (difficulty.length <= 2 && randomizer.nextBool());
+  } while (difficulty.length < 2 && randomizer.nextBool());
 
   return difficulty;
 }
