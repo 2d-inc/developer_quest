@@ -13,34 +13,38 @@ import 'package:provider/provider.dart';
 class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var taskPool = Provider.of<TaskPool>(context);
-    final workItems = taskPool.workItems
-        .followedBy(taskPool.completedTasks)
-        .followedBy(taskPool.archivedTasks)
-        .toList(growable: false);
-    return new Stack(
-      children: <Widget>[
+    return Stack(
+      children: [
         Positioned.fill(
-          child: ListView.builder(
-            padding: const EdgeInsets.only(top: 110),
-            itemCount: workItems.length,
-            itemBuilder: (context, index) {
-              WorkItem item = workItems[index];
+          child: Consumer<TaskPool>(
+            builder: (context, taskPool) {
+              final workItems = taskPool.workItems
+                  .followedBy(taskPool.completedTasks)
+                  .followedBy(taskPool.archivedTasks)
+                  .toList(growable: false);
 
-              return ChangeNotifierProvider<WorkItem>(
-                notifier: item,
-                key: ValueKey(item),
-                child: TaskListItem(),
+              return ListView.builder(
+                padding: const EdgeInsets.only(top: 110),
+                itemCount: workItems.length,
+                itemBuilder: (context, index) {
+                  WorkItem item = workItems[index];
+
+                  return ChangeNotifierProvider<WorkItem>(
+                    notifier: item,
+                    key: ValueKey(item),
+                    child: TaskListItem(),
+                  );
+                },
               );
             },
           ),
         ),
-        new Positioned.fill(
+        Positioned.fill(
           right: 20.0,
           top: 50.0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
+            children: [
               FloatingActionButton(
                 elevation: 0.0,
                 child: new Icon(Icons.add),
@@ -50,7 +54,8 @@ class TaskPoolPage extends StatelessWidget {
                     builder: (context) => ProjectPickerModal(),
                   );
                   if (project == null) return;
-                  taskPool.startTask(project);
+                  Provider.of<TaskPool>(context, listen: false)
+                      .startTask(project);
                 },
               ),
             ],

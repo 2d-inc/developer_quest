@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dev_rpg/src/shared_state/game/bug.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
@@ -5,8 +7,6 @@ import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
-import 'dart:math';
-
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 
 /// A list of [Task]s. It represents the problems that need to be solved
