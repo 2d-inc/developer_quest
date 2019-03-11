@@ -32,7 +32,9 @@ abstract class WorkItem extends Aspect with ChildAspect {
     if (_assignedTeam == null) {
       return;
     }
-    _assignedTeam.forEach((npc) => npc.isBusy = false);
+    for (final npc in _assignedTeam) {
+      npc.isBusy = false;
+    }
     _assignedTeam = null;
   }
 
@@ -64,7 +66,7 @@ abstract class WorkItem extends Aspect with ChildAspect {
     super.update();
   }
 
-  addBoost() => _boost += 2.5;
+  void addBoost() => _boost += 2.5;
 
   /// Get progress of this task.
   double get percentComplete {

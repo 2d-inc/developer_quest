@@ -47,7 +47,7 @@ class TaskPoolPage extends StatelessWidget {
             children: [
               FloatingActionButton(
                 elevation: 0.0,
-                child: new Icon(Icons.add),
+                child: const Icon(Icons.add),
                 onPressed: () async {
                   var project = await showModalBottomSheet<TaskBlueprint>(
                     context: context,

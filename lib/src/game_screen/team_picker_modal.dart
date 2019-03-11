@@ -9,11 +9,11 @@ import 'package:provider/provider.dart';
 class TeamPickerModal extends StatefulWidget {
   final WorkItem workItem;
 
-  TeamPickerModal(this.workItem);
+  const TeamPickerModal(this.workItem);
 
   @override
   TeamPickerModalState createState() {
-    return new TeamPickerModalState(workItem.assignedTeam);
+    return TeamPickerModalState(workItem.assignedTeam);
   }
 }
 
@@ -21,7 +21,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
   final Set<Npc> _selected;
 
   TeamPickerModalState(Iterable<Npc> initialTeam)
-      : _selected = Set<Npc>.from(initialTeam ?? []);
+      : _selected = Set<Npc>.from(initialTeam ?? <Npc>[]);
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +45,10 @@ class TeamPickerModalState extends State<TeamPickerModal> {
               children: [
                 FlatButton(
                     onPressed: () => Navigator.pop(context, _selected),
-                    child: Text('OK')),
+                    child: const Text('OK')),
                 FlatButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Cancel')),
+                    child: const Text('Cancel')),
               ],
             ),
           )
@@ -76,16 +76,15 @@ class _NpcDataTable extends StatelessWidget {
   final void Function(Npc npc, bool selected) onToggleSelect;
 
   const _NpcDataTable({
+    @required this.selected,
     Key key,
-    @required selected,
     this.onToggleSelect,
     this.pool,
-  })  : selected = selected,
-        super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var npcs = pool
+    var npcs = pool.children
         .where((npc) => npc.isHired && (!npc.isBusy || selected.contains(npc)));
 
     var rows = npcs.map((npc) {
@@ -106,7 +105,7 @@ class _NpcDataTable extends StatelessWidget {
     });
 
     return DataTable(
-      columns: [DataColumn(label: Text('Name'))],
+      columns: const [DataColumn(label: Text('Name'))],
       rows: rows.toList(growable: false),
     );
   }

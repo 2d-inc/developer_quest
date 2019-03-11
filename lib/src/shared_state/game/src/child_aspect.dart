@@ -2,7 +2,7 @@ import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 
 /// A mixin that allows for hierarchical [Aspect]s
 /// and also allows searching for specific parent [Aspect]s
-abstract class ChildAspect {
+mixin ChildAspect {
   Aspect parent;
 
   T get<T>() {

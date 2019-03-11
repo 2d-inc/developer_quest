@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class ProwessBadge extends StatelessWidget {
   final Map<Skill, int> prowess;
 
-  ProwessBadge(this.prowess);
+  const ProwessBadge(this.prowess);
 
   @override
   Widget build(BuildContext context) {

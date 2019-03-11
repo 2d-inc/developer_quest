@@ -16,6 +16,8 @@ const List<TaskBlueprint> taskTree = [
   _1_basicAnimations,
 ];
 
+// ignore_for_file: constant_identifier_names
+
 const _0_backendPrototype = TaskBlueprint(
   "Backend Prototype",
   {Skill.coding: 100},

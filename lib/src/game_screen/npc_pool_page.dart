@@ -11,10 +11,10 @@ class NpcPoolPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var npcPool = Provider.of<NpcPool>(context);
     return ListView.builder(
-      itemCount: npcPool.length,
+      itemCount: npcPool.children.length,
       itemBuilder: (context, index) => ChangeNotifierProvider<Npc>(
-            notifier: npcPool[index],
-            key: ValueKey(npcPool[index]),
+            notifier: npcPool.children[index],
+            key: ValueKey(npcPool.children[index]),
             child: NpcListItem(),
           ),
     );
@@ -25,14 +25,12 @@ class NpcPoolPage extends StatelessWidget {
 /// Tapping on the [Npc] opens up a modal window which
 /// offers more details about stats and options to upgrade.
 class NpcListItem extends StatelessWidget {
-  NpcListItem({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     var npc = Provider.of<Npc>(context);
     return Card(
         child: InkWell(
-      onTap: () => showDialog(
+      onTap: () => showDialog<void>(
           context: context,
           builder: (BuildContext context) {
             // TODO: return object of type Dialog
@@ -51,9 +49,9 @@ class NpcListItem extends StatelessWidget {
                 Text(npc.isBusy ? 'Busy' : 'Idle'),
               ],
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             ProwessBadge(npc.prowess),
-            SizedBox(height: 10)
+            const SizedBox(height: 10)
           ],
         ),
       ),

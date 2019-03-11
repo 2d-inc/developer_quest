@@ -6,7 +6,7 @@ class StatBadge<T> extends StatelessWidget {
   final String stat;
   final T value;
 
-  StatBadge(this.stat, this.value);
+  const StatBadge(this.stat, this.value);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +14,10 @@ class StatBadge<T> extends StatelessWidget {
         padding: const EdgeInsets.only(left: 10.0),
         child: Row(children: <Widget>[
           Container(
-            padding: EdgeInsets.all(5.0),
+            padding: const EdgeInsets.all(5.0),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(
+              borderRadius: const BorderRadius.all(
                 Radius.circular(5.0),
               ),
             ),
