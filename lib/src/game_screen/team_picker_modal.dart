@@ -2,8 +2,8 @@ import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
-import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// Present a list of [Npc]s for the player to choose from.
 class TeamPickerModal extends StatefulWidget {
@@ -31,8 +31,8 @@ class TeamPickerModalState extends State<TeamPickerModal> {
         children: [
           Text('Pick team for "${widget.workItem.name}"'),
           Expanded(
-            child: Provide<NpcPool>(
-              builder: (context, child, npcPool) {
+            child: Consumer<NpcPool>(
+              builder: (context, npcPool) {
                 return _NpcDataTable(
                     pool: npcPool,
                     selected: _selected,

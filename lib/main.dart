@@ -1,28 +1,25 @@
 import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
-import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:dev_rpg/src/welcome_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  // TODO(filiph): switch to package:provider once that's baked
-  var providers = Providers();
-  providers.provideValue(User());
-
   var world = World();
-  providers.provideValue(world);
 
-  // Provide specific parts of the world separately so that widgets that
-  // only care about quests, for example, can only listen to those.
-  providers.provideValue(world.npcPool);
-  providers.provideValue(world.taskPool);
-  providers.provideValue(world.company);
-
-  runApp(ProviderNode(
-    providers: providers,
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(notifier: User()),
+        ChangeNotifierProvider(notifier: world),
+        ChangeNotifierProvider(notifier: world.npcPool),
+        ChangeNotifierProvider(notifier: world.taskPool),
+        ChangeNotifierProvider(notifier: world.company),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

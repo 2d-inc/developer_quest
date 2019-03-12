@@ -12,7 +12,7 @@ import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 /// instead of this whole world, unless they care about the most high-level
 /// stuff (like whether the simulation is running).
 class World extends AspectContainer {
-  static final tickDuration = const Duration(milliseconds: 200);
+  static const tickDuration = Duration(milliseconds: 200);
 
   Timer _timer;
 

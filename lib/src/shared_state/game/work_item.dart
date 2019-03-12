@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:math';
 
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
@@ -44,7 +43,7 @@ abstract class WorkItem extends Aspect with ChildAspect {
 
   @override
   void update() {
-    if (_assignedTeam == null) {
+    if (isComplete || _assignedTeam == null) {
       super.update();
       return;
     }

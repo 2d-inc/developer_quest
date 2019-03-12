@@ -4,8 +4,8 @@ import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
-import 'package:dev_rpg/src/shared_state/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
@@ -31,77 +31,73 @@ class TaskListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var workItem = Provider.of<WorkItem>(context);
     return Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: Provide<WorkItem>(
-          builder: (context, child, workItem) => Card(
-                color: workItem is Task && workItem.state == TaskState.rewarded
-                    ? Colors.grey
-                    : Colors.white,
-                child: (InkWell(
-                  onTap: () => _handleTap(context, workItem),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              Text(workItem.name,
-                                  style: TextStyle(fontSize: 14)),
-                              workItem is Task &&
-                                      workItem.state == TaskState.completed
-                                  ? Container(
-                                      margin: EdgeInsets.only(left: 5.0),
-                                      padding: EdgeInsets.all(5.0),
-                                      decoration: BoxDecoration(
-                                        color: Colors.yellow,
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        "Ship it!!",
-                                        style: TextStyle(
-                                            fontSize: 10.0,
-                                            color: Colors.black),
-                                      ),
-                                    )
-                                  : Container(),
-                              Expanded(
-                                child: Wrap(
-                                  alignment: WrapAlignment.end,
-                                  children: workItem.skillsNeeded
-                                      .map((Skill skill) => SkillBadge(skill))
-                                      .toList(),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: LinearProgressIndicator(
-                              value: workItem.percentComplete),
-                        ),
-                        workItem.assignedTeam == null
-                            ? SizedBox()
-                            : Container(
-                                height: 100.0,
-                                color: Colors.deepOrange,
-                                child: InkWell(
-                                  onTap: workItem.addBoost,
-                                  child: Text(
-                                      'Team Pic Goes Here... assigned to: '
-                                      '${workItem.assignedTeam}. Tap to boost.'),
-                                ),
-                              )
-                      ]),
-                )),
+      padding: const EdgeInsets.only(left: 20),
+      child: Card(
+        color: workItem is Task && workItem.state == TaskState.rewarded
+            ? Colors.grey
+            : Colors.white,
+        child: InkWell(
+          onTap: () => _handleTap(context, workItem),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  children: [
+                    Text(workItem.name, style: TextStyle(fontSize: 14)),
+                    workItem is Task && workItem.state == TaskState.completed
+                        ? Container(
+                            margin: EdgeInsets.only(left: 5.0),
+                            padding: EdgeInsets.all(5.0),
+                            decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                            ),
+                            child: Text(
+                              "Ship it!!",
+                              style: TextStyle(
+                                  fontSize: 10.0, color: Colors.black),
+                            ),
+                          )
+                        : Container(),
+                    Expanded(
+                      child: Wrap(
+                        alignment: WrapAlignment.end,
+                        children: workItem.skillsNeeded
+                            .map((Skill skill) => SkillBadge(skill))
+                            .toList(),
+                      ),
+                    )
+                  ],
+                ),
               ),
-        ));
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: LinearProgressIndicator(value: workItem.percentComplete),
+              ),
+              workItem.assignedTeam == null
+                  ? SizedBox()
+                  : Container(
+                      height: 100.0,
+                      color: Colors.deepOrange,
+                      child: InkWell(
+                        onTap: workItem.addBoost,
+                        child: Text('Team Pic Goes Here... assigned to: '
+                            '${workItem.assignedTeam}. Tap to boost.'),
+                      ),
+                    )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _onAssigned(WorkItem workItem, Set<Npc> value) {

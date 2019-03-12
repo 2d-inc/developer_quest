@@ -28,6 +28,7 @@ abstract class AspectContainer extends Aspect {
       for (final Aspect aspect in _queuedRemoval) {
         children.remove(aspect);
       }
+      _queuedRemoval = null;
       markDirty();
     }
 
