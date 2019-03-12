@@ -102,6 +102,7 @@ class TaskListItem extends StatelessWidget {
 
   void _onAssigned(WorkItem workItem, Set<Npc> value) {
     if (value == null || value.isEmpty) return;
+    if (workItem.isComplete) return;
     workItem.assignTeam(value.toList());
   }
 }
