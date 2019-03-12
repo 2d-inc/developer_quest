@@ -2,8 +2,6 @@ analyzer:
   strong-mode:
     implicit-casts: false
     implicit-dynamic: false
-  exclude:
-  - egamebook/**
 
 linter:
   rules:
@@ -83,7 +81,6 @@ linter:
   - prefer_final_in_for_each
   - prefer_foreach
   - prefer_function_declarations_over_variables
-  # - prefer_generic_function_type_aliases (TODO: enable and rewrite)
   - prefer_initializing_formals
   - prefer_is_empty
   - prefer_is_not_empty
