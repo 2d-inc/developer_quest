@@ -33,8 +33,10 @@ class NpcListItem extends StatelessWidget {
       onTap: () => showDialog<void>(
           context: context,
           builder: (BuildContext context) {
-            // TODO: return object of type Dialog
-            return NpcModal(npc: npc);
+            return ChangeNotifierProvider<Npc>(
+              notifier: npc,
+              child: NpcModal(),
+            );
           }),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
