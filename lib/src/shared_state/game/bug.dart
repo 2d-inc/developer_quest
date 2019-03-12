@@ -4,6 +4,8 @@ import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 
+/// Build weighted list of priorities. Put each BugPriority type in the list
+/// n times, where n is the value in bugFrequency.
 List<BugPriority> bugChances = bugFrequency.keys
     .expand((bug) => List.generate(bugFrequency[bug], (_) => bug))
     .toList();
@@ -17,8 +19,7 @@ Map<BugPriority, int> bugFrequency = {
   BugPriority("P4", 0.1): 3,
 };
 
-// Build weighted list of priorities. Put each BugPriority type in the list
-// n times, where n is the value in bugFrequency.
+/// A bug that randomly shows up in the work queue.
 class Bug extends WorkItem {
   static final Random _randomizer = Random();
   final BugPriority priority;
@@ -34,10 +35,10 @@ class Bug extends WorkItem {
   void onCompleted() {
     get<TaskPool>().squashBug(this);
     super.onCompleted();
+    markDirty();
   }
 }
 
-// A bug that randomly shows up in the work queue.
 class BugPriority {
   final double drainOfJoy;
   final String name;

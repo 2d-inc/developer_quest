@@ -25,12 +25,11 @@ class Task extends WorkItem {
   }
 
   void shipFeature() {
-    if (_state == TaskState.completed) {
-      _state = TaskState.rewarded;
-      markDirty();
+    assert(_state == TaskState.completed);
+    _state = TaskState.rewarded;
+    markDirty();
 
-      get<World>().shipFeature(this);
-      get<TaskPool>().archiveTask(this);
-    }
+    get<World>().shipFeature(this);
+    get<TaskPool>().archiveTask(this);
   }
 }
