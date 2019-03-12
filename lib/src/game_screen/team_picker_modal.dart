@@ -37,7 +37,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                 .map((Skill skill) => SkillBadge(skill))
                 .toList(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Expanded(
             child: Consumer<NpcPool>(
               builder: (context, npcPool) {
@@ -92,7 +92,7 @@ class _NpcDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var npcs = pool.where((npc) => npc.isHired);
+    var npcs = pool.children.where((npc) => npc.isHired);
 
     var rows = npcs.map((npc) {
       var selectable = !npc.isBusy || selected.contains(npc);
@@ -111,7 +111,7 @@ class _NpcDataTable extends StatelessWidget {
     });
 
     return DataTable(
-      columns: [
+      columns: const [
         DataColumn(label: Text('Name')),
         DataColumn(label: Text('Skills')),
       ],
