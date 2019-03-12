@@ -12,7 +12,7 @@ import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 /// instead of this whole world, unless they care about the most high-level
 /// stuff (like whether the simulation is running).
 class World extends AspectContainer {
-  static const tickDuration = Duration(milliseconds: 200);
+  static const Duration tickDuration = Duration(milliseconds: 200);
 
   Timer _timer;
 
@@ -53,16 +53,16 @@ class World extends AspectContainer {
   }
 
   // Feature joy should probably depend on the feature (might be another stat for the feature/task).
-  static const double FeatureJoy = 5.0;
+  static const double featureJoy = 5.0;
 
   void shipFeature(Task task) {
     // Todo: modify these values by how quickly the user completed the task
     // some bonus system?
 
     // Give some joy for the new feature, at least for a while.
-    company.joy += FeatureJoy;
-    Timer(Duration(seconds: 5), () {
-      company.joy -= FeatureJoy;
+    company.joy += featureJoy;
+    Timer(const Duration(seconds: 5), () {
+      company.joy -= featureJoy;
     });
 
     company.award(task.blueprint.userReward, task.blueprint.coinReward);

@@ -28,17 +28,18 @@ class TaskPool extends AspectContainer with ChildAspect {
 
   TaskPool();
 
-  // The chance that a bug will show up on the next update. Mutate this as you wish when tasks are completed.
-  // consider increasing this more if the player completes an issue faster (by tapping on it).
+  // The chance that a bug will show up on the next update. Mutate this as you
+  // wish when tasks are completed. Consider increasing this more if the player
+  // completes an issue faster (by tapping on it).
   double _bugChance = 0.0;
-  Random _bugRandom = Random();
+  static final Random _bugRandom = Random();
   int _ticksToBugRoll = 0;
-  static const int BugRollTicks = 3;
+  static const int bugRollTicks = 3;
 
   // Bug chance after adding a feature.
-  static const double FeatureBugChance = 0.3;
+  static const double featureBugChance = 0.3;
   // Bug chance after a bug hits.
-  static const double AmbientBugChance = 0.005;
+  static const double ambientBugChance = 0.005;
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
@@ -72,21 +73,23 @@ class TaskPool extends AspectContainer with ChildAspect {
     workItems.remove(task);
     completedTasks.add(task);
 
-    // For now we simply slightly increase the chance of a bug as a task completes, consider using the time taken as a factor
-    _bugChance += FeatureBugChance;
+    // For now we simply slightly increase the chance of a bug as a task
+    // completes, consider using the time taken as a factor
+    _bugChance += featureBugChance;
   }
 
   @override
   void update() {
     super.update();
 
-    // Decrement remaining ticks to the next bugroll and wrap back around when we get to 0.
-    _ticksToBugRoll = (_ticksToBugRoll - 1 + BugRollTicks) % BugRollTicks;
+    // Decrement remaining ticks to the next bugroll and wrap back around
+    // when we get to 0.
+    _ticksToBugRoll = (_ticksToBugRoll - 1 + bugRollTicks) % bugRollTicks;
 
     // No ticks left, roll the die.
     if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
-      _bugChance = AmbientBugChance;
+      _bugChance = ambientBugChance;
       addWorkItem(Bug.random());
     }
   }

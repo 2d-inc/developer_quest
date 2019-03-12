@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class NpcModal extends StatelessWidget {
   final Npc npc;
 
-  NpcModal({this.npc, Key key}) : super(key: key);
+  const NpcModal({this.npc, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class NpcModal extends StatelessWidget {
             children: npc.prowess.keys
                 .map(
                   (Skill skill) => Padding(
-                        padding: EdgeInsets.only(bottom: 20.0),
+                        padding: const EdgeInsets.only(bottom: 20.0),
                         child: Column(
                           children: [
                             Row(
@@ -54,8 +54,8 @@ class NpcModal extends StatelessWidget {
               //       while this modal is open
               onPressed: npc.canUpgrade ? npc.upgrade : null,
             ),
-            new FlatButton(
-              child: new Text("Close"),
+            FlatButton(
+              child: const Text("Close"),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],

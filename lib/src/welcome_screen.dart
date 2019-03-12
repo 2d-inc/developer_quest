@@ -17,10 +17,10 @@ class WelcomeScreen extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 Provider.of<World>(context, listen: false).start();
-                return Navigator.of(context).pushNamed('/gameloop');
+                Navigator.of(context).pushNamed('/gameloop');
               },
               color: Colors.orangeAccent,
-              child: Text("Start"),
+              child: const Text("Start"),
             )
           ],
         ),

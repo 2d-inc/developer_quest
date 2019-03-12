@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class GameScreen extends StatefulWidget {
   @override
   GameScreenState createState() {
-    return new GameScreenState();
+    return GameScreenState();
   }
 }
 
@@ -49,7 +49,7 @@ class GameScreenState extends State<GameScreen> {
               _index = index;
               _controller.jumpToPage(index);
             }),
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             title: Text('Team'),

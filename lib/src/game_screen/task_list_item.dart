@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
-  void _handleTap(BuildContext context, WorkItem workItem) async {
+  Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
     if (workItem is Task) {
       switch (workItem.state) {
         case TaskState.completed:
@@ -43,7 +43,7 @@ class TaskListItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
@@ -51,11 +51,11 @@ class TaskListItem extends StatelessWidget {
                     Text(workItem.name, style: TextStyle(fontSize: 14)),
                     workItem is Task && workItem.state == TaskState.completed
                         ? Container(
-                            margin: EdgeInsets.only(left: 5.0),
-                            padding: EdgeInsets.all(5.0),
+                            margin: const EdgeInsets.only(left: 5.0),
+                            padding: const EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
                               color: Colors.yellow,
-                              borderRadius: BorderRadius.all(
+                              borderRadius: const BorderRadius.all(
                                 Radius.circular(5.0),
                               ),
                             ),
@@ -77,13 +77,13 @@ class TaskListItem extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: LinearProgressIndicator(value: workItem.percentComplete),
               ),
               workItem.assignedTeam == null
-                  ? SizedBox()
+                  ? const SizedBox()
                   : Container(
                       height: 100.0,
                       color: Colors.deepOrange,

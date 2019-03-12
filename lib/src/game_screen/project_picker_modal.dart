@@ -27,7 +27,7 @@ class ProjectPickerModal extends StatelessWidget {
         }
 
         return Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Card(
             margin: EdgeInsets.zero,
             child: InkWell(
@@ -44,7 +44,7 @@ class ProjectPickerModal extends StatelessWidget {
                           style: TextStyle(fontSize: 11)),
                     ),
                     Row(children: <Widget>[
-                      Icon(Icons.stars, size: 16),
+                      const Icon(Icons.stars, size: 16),
                       Text(blueprint.userReward.toString(),
                           style: TextStyle(fontSize: 12))
                     ]),

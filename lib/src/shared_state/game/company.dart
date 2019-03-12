@@ -41,7 +41,7 @@ class Company extends Aspect {
   }
 
   @override
-  update() {
+  void update() {
     super.update();
 
     double oldUsers = _users;

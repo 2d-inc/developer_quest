@@ -63,6 +63,7 @@ class Not implements Prerequisite {
 /// An abstract class representing something that can be satisfied or not.
 ///
 /// Implemented by operators ([AnyOf], [AllOf]) and by [TaskBlueprint].
+// ignore: one_member_abstracts
 abstract class Prerequisite {
   bool isSatisfiedIn(Iterable<Prerequisite> done);
 }
