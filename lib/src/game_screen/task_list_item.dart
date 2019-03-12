@@ -22,7 +22,7 @@ class TaskListItem extends StatelessWidget {
           break;
       }
     }
-    var npcs = await showModalBottomSheet<Set<Npc>>(
+    var npcs = await showDialog<Set<Npc>>(
       context: context,
       builder: (context) => TeamPickerModal(workItem),
     );
