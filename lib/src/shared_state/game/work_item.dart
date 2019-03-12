@@ -24,7 +24,12 @@ abstract class WorkItem extends Aspect with ChildAspect {
       : completion = difficulty.map((Skill s, _) => MapEntry(s, 0));
 
   void assignTeam(List<Npc> team) {
-    _assignedTeam = team..forEach((npc) => npc.isBusy = true);
+    if (_assignedTeam != null) {
+      // First, mark member who were unassigned as not busy.
+      _assignedTeam.forEach((npc) => npc.isBusy = false);
+    }
+    _assignedTeam = team;
+    _assignedTeam.forEach((npc) => npc.isBusy = true);
     markDirty();
   }
 

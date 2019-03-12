@@ -1,6 +1,8 @@
 import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
+import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,11 +27,17 @@ class TeamPickerModalState extends State<TeamPickerModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Dialog(
       child: Column(
         children: [
           Text('Pick team for "${widget.workItem.name}"'),
+          Wrap(
+            alignment: WrapAlignment.end,
+            children: widget.workItem.skillsNeeded
+                .map((Skill skill) => SkillBadge(skill))
+                .toList(),
+          ),
+          SizedBox(height: 16),
           Expanded(
             child: Consumer<NpcPool>(
               builder: (context, npcPool) {
@@ -85,28 +93,29 @@ class _NpcDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var npcs = pool
-        .where((npc) => npc.isHired && (!npc.isBusy || selected.contains(npc)));
+    var npcs = pool.where((npc) => npc.isHired);
 
     var rows = npcs.map((npc) {
+      var selectable = !npc.isBusy || selected.contains(npc);
       return DataRow(
         selected: selected.contains(npc),
-        onSelectChanged: (selected) => onToggleSelect(npc, selected),
+        onSelectChanged:
+            selectable ? (selected) => onToggleSelect(npc, selected) : null,
         cells: [
           DataCell(
-            Row(
-              children: [
-                Text(npc.name),
-                Expanded(child: ProwessBadge(npc.prowess)),
-              ],
-            ),
+            Text(npc.name,
+                style: TextStyle(color: selectable ? null : Colors.grey)),
           ),
+          DataCell(ProwessBadge(npc.prowess)),
         ],
       );
     });
 
     return DataTable(
-      columns: [DataColumn(label: Text('Name'))],
+      columns: [
+        DataColumn(label: Text('Name')),
+        DataColumn(label: Text('Skills')),
+      ],
       rows: rows.toList(growable: false),
     );
   }
