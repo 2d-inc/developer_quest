@@ -2,17 +2,17 @@ import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:flutter/material.dart';
 
 Map<Skill, String> skillDisplayName = {
-  Skill.coding: "Code",
-  Skill.design: "Design",
+  Skill.coding: "Coding",
+  Skill.engineering: "Engineering",
   Skill.ux: "UX",
-  Skill.projectManagement: "Project Management"
+  Skill.coordination: "Coordination"
 };
 
 Map<Skill, Color> skillColor = {
   Skill.coding: Colors.blueGrey,
-  Skill.design: Colors.deepPurple,
-  Skill.ux: Colors.deepOrange,
-  Skill.projectManagement: Colors.lightGreen
+  Skill.engineering: Colors.blueAccent,
+  Skill.ux: Colors.deepPurple,
+  Skill.coordination: Colors.lightGreen
 };
 
 /// Displays a skill in a nicely readable format along with

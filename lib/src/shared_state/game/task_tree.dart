@@ -26,7 +26,7 @@ const _0_backendPrototype = TaskBlueprint(
 
 const _0_basicUI = TaskBlueprint(
   "Basic UI",
-  {Skill.design: 100},
+  {Skill.ux: 100},
   requirements: AllOf([_0_workingPrototype, Not("Programmer Art UI")]),
 );
 
@@ -38,7 +38,7 @@ const _0_fastBackend = TaskBlueprint(
 
 const _0_pretendotype = TaskBlueprint(
   "Pretendotype",
-  {Skill.design: 50, Skill.ux: 20},
+  {Skill.ux: 50, Skill.coordination: 20},
   requirements: none,
 );
 
@@ -68,7 +68,7 @@ const _0_workingPrototype = TaskBlueprint(
 
 const _1_alpha = TaskBlueprint(
   "Alpha release",
-  {Skill.projectManagement: 100, Skill.coding: 100},
+  {Skill.coordination: 100, Skill.coding: 100},
   requirements: AllOf([
     AnyOf([_0_programmerArtUI, _0_basicUI]),
     AnyOf([_0_scalableBackend, _0_fastBackend]),
@@ -77,6 +77,6 @@ const _1_alpha = TaskBlueprint(
 
 const _1_basicAnimations = TaskBlueprint(
   "Basic Animations",
-  {Skill.ux: 100, Skill.design: 100},
+  {Skill.ux: 100},
   requirements: AnyOf([_0_programmerArtUI, _0_basicUI]),
 );

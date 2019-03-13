@@ -1,6 +1,6 @@
 import 'dart:math';
 
-enum Skill { coding, design, ux, projectManagement }
+enum Skill { coding, engineering, ux, coordination }
 
 // get a random set of skills and difficutly values
 Map<Skill, double> randomDifficulty(Random randomizer,
