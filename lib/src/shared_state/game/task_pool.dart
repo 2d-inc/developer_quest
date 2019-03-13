@@ -66,12 +66,10 @@ class TaskPool extends AspectContainer with ChildAspect {
   }
 
   void completeTask(Task task) {
-    // sanity check, only complete tasks that we were working on
-    if (!workItems.contains(task)) {
-      return;
-    }
+    assert(workItems.contains(task));
     workItems.remove(task);
     completedTasks.add(task);
+    markDirty();
 
     // For now we simply slightly increase the chance of a bug as a task
     // completes, consider using the time taken as a factor
@@ -95,13 +93,11 @@ class TaskPool extends AspectContainer with ChildAspect {
   }
 
   void archiveTask(Task task) {
-    // sanity check, archive tasks only after they are complete
-    if (!completedTasks.contains(task)) {
-      return;
-    }
+    assert(completedTasks.contains(task));
     completedTasks.remove(task);
     archivedTasks.add(task);
     removeAspect(task);
+    markDirty();
   }
 
   void squashBug(Bug bug) {
@@ -109,5 +105,6 @@ class TaskPool extends AspectContainer with ChildAspect {
     get<World>().company.joy += bug.priority.drainOfJoy;
     workItems.remove(bug);
     removeAspect(bug);
+    markDirty();
   }
 }
