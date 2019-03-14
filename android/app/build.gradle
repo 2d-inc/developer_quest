@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "dev.flutter.rpg"
+        applicationId "dev.flutter.devRpg"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode flutterVersionCode.toInteger()
