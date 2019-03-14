@@ -6,34 +6,41 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  var world = World();
-
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(notifier: User()),
-        ChangeNotifierProvider(notifier: world),
-        ChangeNotifierProvider(notifier: world.npcPool),
-        ChangeNotifierProvider(notifier: world.taskPool),
-        ChangeNotifierProvider(notifier: world.company),
-      ],
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  final World world = World();
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      routes: {
-        "/": (context) => WelcomeScreen(),
-        "/gameloop": (context) => GameScreen(),
-      },
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(notifier: User()),
+          ChangeNotifierProvider(notifier: widget.world),
+          ChangeNotifierProvider(notifier: widget.world.npcPool),
+          ChangeNotifierProvider(notifier: widget.world.taskPool),
+          ChangeNotifierProvider(notifier: widget.world.company),
+        ],
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.orange,
+          ),
+          routes: {
+            "/": (context) => WelcomeScreen(),
+            "/gameloop": (context) => GameScreen(),
+          },
+        ));
+  }
+
+  @override
+  void dispose() {
+    widget.world.shutdown();
+    super.dispose();
   }
 }
