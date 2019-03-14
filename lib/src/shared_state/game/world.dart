@@ -67,4 +67,10 @@ class World extends AspectContainer {
 
     company.award(task.blueprint.userReward, task.blueprint.coinReward);
   }
+
+  void shutdown() {
+    if (_timer.isActive) {
+      _timer.cancel();
+    }
+  }
 }
