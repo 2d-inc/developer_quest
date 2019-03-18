@@ -26,6 +26,13 @@ class TaskPool extends AspectContainer with ChildAspect {
   // The tasks that are archived (user got their rewad).
   final List<Task> archivedTasks = [];
 
+  // The bugs that are in the active work items.
+  // Consider storing these in their own list if performance becomes an issue.
+  Iterable<Bug> get bugs => workItems.whereType<Bug>();
+
+  // The tasks from the active work items.
+  Iterable<Task> get tasks => workItems.whereType<Task>();
+
   TaskPool();
 
   // The chance that a bug will show up on the next update. Mutate this as you
