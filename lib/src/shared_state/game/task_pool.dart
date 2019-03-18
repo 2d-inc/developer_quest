@@ -41,12 +41,12 @@ class TaskPool extends AspectContainer with ChildAspect {
   double _bugChance = 0.0;
   static final Random _bugRandom = Random();
   int _ticksToBugRoll = 0;
-  static const int bugRollTicks = 3;
+  static const int bugRollTicks = 5;
 
   // Bug chance after adding a feature.
-  static const double featureBugChance = 0.3;
+  static const double featureBugChance = 0.1;
   // Bug chance after a bug hits.
-  static const double ambientBugChance = 0.005;
+  static const double ambientBugChance = 0.0001;
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
