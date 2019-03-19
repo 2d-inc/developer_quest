@@ -5,7 +5,7 @@ import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
-import 'package:dev_rpg/src/shared_state/game/task_tree.dart';
+import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 
