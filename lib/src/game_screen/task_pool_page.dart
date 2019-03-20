@@ -18,7 +18,8 @@ class TaskPoolPage extends StatelessWidget {
         Positioned.fill(
           child: Consumer<TaskPool>(
             builder: (context, taskPool) {
-              final workItems = taskPool.workItems
+              final workItems = taskPool.tasks.cast<WorkItem>()
+                  .followedBy(taskPool.bugs)
                   .followedBy(taskPool.completedTasks)
                   .followedBy(taskPool.archivedTasks)
                   .toList(growable: false);

@@ -27,6 +27,13 @@ class TaskPool extends AspectContainer with ChildAspect {
   // The tasks that are archived (user got their rewad).
   final List<Task> archivedTasks = [];
 
+  // The bugs that are in the active work items.
+  // Consider storing these in their own list if performance becomes an issue.
+  Iterable<Bug> get bugs => workItems.whereType<Bug>();
+
+  // The tasks from the active work items.
+  Iterable<Task> get tasks => workItems.whereType<Task>();
+
   TaskPool();
 
   // The chance that a bug will show up on the next update. Mutate this as you
@@ -35,12 +42,12 @@ class TaskPool extends AspectContainer with ChildAspect {
   double _bugChance = 0.0;
   static final Random _bugRandom = Random();
   int _ticksToBugRoll = 0;
-  static const int bugRollTicks = 3;
+  static const int bugRollTicks = 5;
 
   // Bug chance after adding a feature.
-  static const double featureBugChance = 0.3;
+  static const double featureBugChance = 0.1;
   // Bug chance after a bug hits.
-  static const double ambientBugChance = 0.005;
+  static const double ambientBugChance = 0.0001;
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
