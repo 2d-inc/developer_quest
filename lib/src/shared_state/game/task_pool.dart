@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dev_rpg/src/shared_state/game/bug.dart';
+import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
@@ -88,7 +89,7 @@ class TaskPool extends AspectContainer with ChildAspect {
     if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      addWorkItem(Bug.random());
+      addWorkItem(Bug.random(get<World>().npcPool.availableSkills));
     }
   }
 

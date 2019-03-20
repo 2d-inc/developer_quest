@@ -27,9 +27,9 @@ class Bug extends WorkItem {
   Bug(this.priority, Map<Skill, double> difficulty)
       : super(priority.name + " Bug!!", difficulty);
 
-  Bug.random()
+  Bug.random(Set<Skill> availableSkills)
       : this(bugChances[_randomizer.nextInt(bugChances.length)],
-            randomDifficulty(_randomizer));
+            randomDifficulty(_randomizer, availableSkills));
 
   @override
   void onCompleted() {

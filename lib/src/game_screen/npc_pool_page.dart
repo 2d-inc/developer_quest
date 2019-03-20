@@ -10,8 +10,10 @@ class NpcPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var npcPool = Provider.of<NpcPool>(context);
-    return ListView.builder(
+    return GridView.builder(
       itemCount: npcPool.children.length,
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (context, index) => ChangeNotifierProvider<Npc>(
             notifier: npcPool.children[index],
             key: ValueKey(npcPool.children[index]),
@@ -43,10 +45,13 @@ class NpcListItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(npc.name),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Text(npc.name, style: TextStyle(fontSize: 16.0))),
                 Text(npc.isHired ? 'Hired' : 'For hire'),
                 Text(npc.isBusy ? 'Busy' : 'Idle'),
               ],

@@ -13,11 +13,12 @@ class Npc extends Aspect with ChildAspect {
 
   final Map<Skill, int> prowess;
 
-  final bool isHired = true;
+  bool _isHired;
+  bool get isHired => _isHired;
 
   bool _isBusy = false;
 
-  Npc(this.name, this.prowess);
+  Npc(this.name, this.prowess, [this._isHired = false]);
 
   bool get isBusy => _isBusy;
 
@@ -31,14 +32,28 @@ class Npc extends Aspect with ChildAspect {
 
   int get upgradeCost =>
       prowess.values.fold(0, (int previous, int value) => previous + value) *
-      110;
+      (_isHired ? 110 : 220);
 
   bool get canUpgrade {
     Company company = get<World>().company;
     return company.coin >= upgradeCost;
   }
 
+  bool hire() {
+    assert(!_isHired);
+    Company company = get<World>().company;
+    if (!company.spend(upgradeCost)) {
+      return false;
+    }
+    _isHired = true;
+    markDirty();
+    return true;
+  }
+
   bool upgrade() {
+    if (!_isHired) {
+      return hire();
+    }
     Company company = get<World>().company;
     if (!company.spend(upgradeCost)) {
       return false;
