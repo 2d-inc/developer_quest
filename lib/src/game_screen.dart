@@ -33,13 +33,15 @@ class GameScreenState extends State<GameScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<Company>(
-          builder: (context, company) => Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  StatBadge("Users", company.users),
-                  StatBadge("Joy", company.joy),
-                  StatBadge("C", company.coin),
-                ],
+          builder: (context, company) => RepaintBoundary(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    StatBadge("Users", company.users),
+                    StatBadge("Joy", company.joy),
+                    StatBadge("C", company.coin),
+                  ],
+                ),
               ),
         ),
       ),

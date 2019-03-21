@@ -35,7 +35,7 @@ class Npc extends Aspect with ChildAspect {
 
   bool get canUpgrade {
     Company company = get<World>().company;
-    return company.coin >= upgradeCost;
+    return company.coin.number >= upgradeCost;
   }
 
   bool upgrade() {

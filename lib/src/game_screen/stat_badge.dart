@@ -1,18 +1,23 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 /// Displays a game statistic with its name and value.
-class StatBadge<T> extends StatelessWidget {
+class StatBadge extends StatelessWidget {
   final String stat;
-  final T value;
+  final ValueListenable<String> listenable;
 
-  const StatBadge(this.stat, this.value);
+  const StatBadge(this.stat, this.listenable);
+
+  static const _valueStyle = TextStyle(fontSize: 12.0, color: Colors.white);
+
+  static const _nameStyle = TextStyle(fontSize: 10.0, color: Colors.black);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: Row(children: <Widget>[
+      padding: const EdgeInsets.only(left: 10.0),
+      child: Row(
+        children: <Widget>[
           Container(
             padding: const EdgeInsets.all(5.0),
             decoration: BoxDecoration(
@@ -21,16 +26,20 @@ class StatBadge<T> extends StatelessWidget {
                 Radius.circular(5.0),
               ),
             ),
-            child: Text(
-              stat,
-              style: TextStyle(fontSize: 10.0, color: Colors.black),
-            ),
+            child: Text(stat, style: _nameStyle),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 3.0),
-            child: Text(NumberFormat.compact().format(value),
-                style: TextStyle(fontSize: 12.0, color: Colors.white)),
-          )
-        ]));
+            child: ValueListenableBuilder(
+              valueListenable: listenable,
+              builder: (context, String value, child) => Text(
+                    value,
+                    style: _valueStyle,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
