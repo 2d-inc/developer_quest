@@ -10,7 +10,8 @@ class ProjectPickerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var taskPool = Provider.of<TaskPool>(context);
-    var _tasks = taskPool.availableTasks.toList(growable: false);
+    var _tasks = taskPool.availableTasks.toList(growable: false)
+      ..sort((a, b) => -a.priority.compareTo(b.priority));
 
     return ListView.builder(
       itemCount: _tasks.length + 1,

@@ -11,15 +11,6 @@ const _beta = TaskBlueprint(
     AnyOf([_retroDesign, _scifiDesign, _mainstreamDesign]),
     // Color theme.
     AnyOf([_redTheme, _greenTheme, _blueTheme]),
-    // An important feature.
-    AnyOf([
-      _advancedMotionDesign,
-      _accessibility,
-      _internationalization,
-      _animatedGifSupport,
-      _imageFilters,
-      _memeGenerator,
-      _arMessages
-    ]),
   ]),
+  priority: 100,
 );

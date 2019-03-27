@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:dev_rpg/src/shared_state/game/bug.dart';
-import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
@@ -18,7 +17,7 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 /// This is better that `List<Task>` because we can attach behavior
 /// to this (like [update]) and only update the widgets once.
 class TaskPool extends AspectContainer with ChildAspect {
-  // The projects that need to or are being worked on.
+  // The projects that are being worked on.
   final List<WorkItem> workItems = [];
 
   // The tasks that are done.
@@ -52,11 +51,12 @@ class TaskPool extends AspectContainer with ChildAspect {
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
   Iterable<TaskBlueprint> get availableTasks => taskTree.where((blueprint) =>
+      !tasks.any((item) => item.blueprint == blueprint) &&
       !completedTasks.any((task) => task.blueprint == blueprint) &&
-      !workItems.any((item) => item is Task && item.blueprint == blueprint) &&
       !archivedTasks.any((task) => task.blueprint == blueprint) &&
       blueprint.requirements.isSatisfiedIn(
-          (completedTasks + archivedTasks).map((t) => t.blueprint)));
+          (completedTasks.followedBy(archivedTasks)).map((t) => t.blueprint)) &&
+      blueprint.mutuallyExclusive.every(_hasNotStartedTask));
 
   void startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
@@ -114,5 +114,18 @@ class TaskPool extends AspectContainer with ChildAspect {
     workItems.remove(bug);
     removeAspect(bug);
     markDirty();
+  }
+
+  bool _hasNotStartedTask(String name) {
+    for (final task in tasks) {
+      if (task.name == name) return false;
+    }
+    for (final task in completedTasks) {
+      if (task.name == name) return false;
+    }
+    for (final task in archivedTasks) {
+      if (task.name == name) return false;
+    }
+    return true;
   }
 }
