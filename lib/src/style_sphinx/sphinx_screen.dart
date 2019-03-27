@@ -14,7 +14,7 @@ class SphinxScreen extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/style_sphinx/pyramid.png',
+              'pyramid.png',
               fit: BoxFit.cover,
             ),
           ),
@@ -25,7 +25,7 @@ class SphinxScreen extends StatelessWidget {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    Image.asset('assets/style_sphinx/sphinx.png'),
+                    Image.asset('sphinx.png'),
                     const SizedBox(height: 60),
                     const JoystixText(
                       'Welcome, friend. \n\nI am the Style Sphinx. \n\nIn order to proceed, style for me these layouts three!',

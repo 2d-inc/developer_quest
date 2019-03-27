@@ -1,0 +1,18 @@
+[
+  {
+    "family": "Joystix",
+    "fonts": [
+      {
+        "asset": "joystix_monospace.ttf"
+      }
+    ]
+  },
+  {
+    "family": "RobotoMono",
+    "fonts": [
+      {
+        "asset": "RobotoMono-Regular.ttf"
+      }
+    ]
+  }
+]
