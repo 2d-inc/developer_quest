@@ -62,9 +62,9 @@ class StatValue<V extends num> extends ChangeNotifier
   /// The formatter to be used to convert [number] into a String [value].
   final String Function(V) formatter;
 
-  StatValue(this._number, {Formatter formatter})
+  StatValue(this._number, {Formatter statFormatter})
       : assert(_number != null),
-        formatter = formatter ?? StatValue.defaultFormatter {
+        formatter = statFormatter ?? StatValue.defaultFormatter {
     _shownValue = formatter(_number);
   }
 
