@@ -1,5 +1,6 @@
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,13 @@ class WelcomeScreen extends StatelessWidget {
               },
               color: Colors.orangeAccent,
               child: const Text("Start"),
+            ),
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(SphinxScreen.routeName);
+              },
+              color: Colors.orangeAccent,
+              child: const Text("Face the Style Sphinx"),
             )
           ],
         ),

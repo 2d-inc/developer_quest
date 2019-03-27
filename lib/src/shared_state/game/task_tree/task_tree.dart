@@ -25,6 +25,8 @@ const Set<TaskBlueprint> taskTree = {
   _advancedMotionDesign,
   // backend_infrastructure.dart
   _backendInfrastructure,
+  _fastBackend,
+  _scalableBackend,
   // beta.dart
   _beta,
   // design.dart
@@ -52,14 +54,10 @@ const Set<TaskBlueprint> taskTree = {
   _automatedBots,
   _conversationalChatbots,
   // pre_alpha.dart
-  _backendPrototype,
+  _prototype,
   _basicUI,
-  _fastBackend,
-  _pretendotype,
+  _basicBackend,
   _programmerArtUI,
-  _scalableBackend,
-  _uiPrototype,
-  _workingPrototype,
   _alpha,
   // pre_launch.dart
   _backendPerformanceOptimization,

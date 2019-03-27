@@ -44,7 +44,9 @@ class NpcModal extends StatelessWidget {
       ),
       actions: [
         FlatButton(
-          child: Text("Upgrade: ${npc.upgradeCost}"),
+          child: Text(npc.isHired
+              ? "Upgrade: ${npc.upgradeCost}"
+              : "Hire: ${npc.upgradeCost}"),
           // TODO: fix for the case when company gets (or spends) some money
           //       while this modal is open
           onPressed: npc.canUpgrade ? npc.upgrade : null,

@@ -17,7 +17,7 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 /// This is better that `List<Task>` because we can attach behavior
 /// to this (like [update]) and only update the widgets once.
 class TaskPool extends AspectContainer with ChildAspect {
-  // The projects that need to or are being worked on.
+  // The projects that are being worked on.
   final List<WorkItem> workItems = [];
 
   // The tasks that are done.
@@ -25,6 +25,13 @@ class TaskPool extends AspectContainer with ChildAspect {
 
   // The tasks that are archived (user got their rewad).
   final List<Task> archivedTasks = [];
+
+  // The bugs that are in the active work items.
+  // Consider storing these in their own list if performance becomes an issue.
+  Iterable<Bug> get bugs => workItems.whereType<Bug>();
+
+  // The tasks from the active work items.
+  Iterable<Task> get tasks => workItems.whereType<Task>();
 
   TaskPool();
 
@@ -34,21 +41,22 @@ class TaskPool extends AspectContainer with ChildAspect {
   double _bugChance = 0.0;
   static final Random _bugRandom = Random();
   int _ticksToBugRoll = 0;
-  static const int bugRollTicks = 3;
+  static const int bugRollTicks = 5;
 
   // Bug chance after adding a feature.
-  static const double featureBugChance = 0.3;
+  static const double featureBugChance = 0.1;
   // Bug chance after a bug hits.
-  static const double ambientBugChance = 0.005;
+  static const double ambientBugChance = 0.0001;
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
   Iterable<TaskBlueprint> get availableTasks => taskTree.where((blueprint) =>
+      !tasks.any((item) => item.blueprint == blueprint) &&
       !completedTasks.any((task) => task.blueprint == blueprint) &&
-      !workItems.any((item) => item is Task && item.blueprint == blueprint) &&
       !archivedTasks.any((task) => task.blueprint == blueprint) &&
       blueprint.requirements.isSatisfiedIn(
-          (completedTasks + archivedTasks).map((t) => t.blueprint)));
+          (completedTasks.followedBy(archivedTasks)).map((t) => t.blueprint)) &&
+      blueprint.mutuallyExclusive.every(_hasNotStartedTask));
 
   void startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
@@ -88,7 +96,7 @@ class TaskPool extends AspectContainer with ChildAspect {
     if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      addWorkItem(Bug.random());
+      addWorkItem(Bug.random(get<World>().npcPool.availableSkills));
     }
   }
 
@@ -106,5 +114,18 @@ class TaskPool extends AspectContainer with ChildAspect {
     workItems.remove(bug);
     removeAspect(bug);
     markDirty();
+  }
+
+  bool _hasNotStartedTask(String name) {
+    for (final task in tasks) {
+      if (task.name == name) return false;
+    }
+    for (final task in completedTasks) {
+      if (task.name == name) return false;
+    }
+    for (final task in archivedTasks) {
+      if (task.name == name) return false;
+    }
+    return true;
   }
 }

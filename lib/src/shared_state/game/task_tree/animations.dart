@@ -3,7 +3,7 @@ part of task_tree;
 const _basicAnimations = TaskBlueprint(
   "Basic Animations",
   {Skill.ux: 100},
-  requirements: AnyOf([_programmerArtUI, _basicUI]),
+  requirements: AllOf([_alpha]),
 );
 
 const _advancedMotionDesign = TaskBlueprint(
