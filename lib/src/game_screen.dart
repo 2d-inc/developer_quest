@@ -34,7 +34,11 @@ class GameScreenState extends State<GameScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<Company>(
-          builder: (context, company) => Row(
+          builder: (context, company) {
+            // Using RepaintBoundary here because this part of the UI changes
+            // frequently.
+            return RepaintBoundary(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   StatBadge("Users", company.users),
@@ -42,6 +46,8 @@ class GameScreenState extends State<GameScreen> {
                   StatBadge("C", company.coin),
                 ],
               ),
+            );
+          },
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

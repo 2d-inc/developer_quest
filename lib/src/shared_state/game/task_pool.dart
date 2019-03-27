@@ -68,7 +68,7 @@ class TaskPool extends AspectContainer with ChildAspect {
     workItems.add(item);
     if (item is Bug) {
       // Dark days ahead...
-      get<World>().company.joy -= item.priority.drainOfJoy;
+      get<World>().company.joy.number -= item.priority.drainOfJoy;
     }
     markDirty();
   }
@@ -110,7 +110,7 @@ class TaskPool extends AspectContainer with ChildAspect {
 
   void squashBug(Bug bug) {
     // Give back the joy.
-    get<World>().company.joy += bug.priority.drainOfJoy;
+    get<World>().company.joy.number += bug.priority.drainOfJoy;
     workItems.remove(bug);
     removeAspect(bug);
     markDirty();

@@ -28,9 +28,8 @@ class NpcPool extends AspectContainer<Npc> with ChildAspect {
 
   @override
   void update() {
-    int coin = get<World>().company.coin;
-    bool upgradeAvailable =
-        children.any((npc) => npc.upgradeCost <= coin);
+    int coin = get<World>().company.coin.number;
+    bool upgradeAvailable = children.any((npc) => npc.upgradeCost <= coin);
     if (upgradeAvailable != _isUpgradeAvailable) {
       _isUpgradeAvailable = upgradeAvailable;
       markDirty();
