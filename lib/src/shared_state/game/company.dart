@@ -7,13 +7,11 @@ import 'package:intl/intl.dart';
 /// The company the user is playing on behalf of.
 /// The company owns resources like experience and coin.
 class Company extends Aspect {
-  final StatValue<double> joy =
-      StatValue<double>(0, StatValue.defaultFormatter);
+  final StatValue<double> joy = StatValue<double>(0);
 
-  final StatValue<double> _users =
-      StatValue<double>(0, StatValue.defaultFormatter);
+  final StatValue<double> _users = StatValue<double>(0);
 
-  final StatValue<int> coin = StatValue<int>(100, StatValue.defaultFormatter);
+  final StatValue<int> coin = StatValue<int>(100);
 
   ValueListenable<String> get users => _users;
 
@@ -50,8 +48,7 @@ class StatValue<V extends num> extends ChangeNotifier
     implements ValueListenable<String> {
   /// The default formatter of stats. It uses `package:intl`'s
   /// [NumberFormat.compact].
-  static final String Function(num) defaultFormatter =
-      NumberFormat.compact().format;
+  static final Formatter defaultFormatter = NumberFormat.compact().format;
 
   /// The current value.
   V _number;
@@ -65,9 +62,11 @@ class StatValue<V extends num> extends ChangeNotifier
   /// The formatter to be used to convert [number] into a String [value].
   final String Function(V) formatter;
 
-  StatValue(this._number, this.formatter)
+  StatValue(this._number, {Formatter formatter})
       : assert(_number != null),
-        _shownValue = formatter(_number);
+        formatter = formatter ?? StatValue.defaultFormatter {
+    _shownValue = formatter(_number);
+  }
 
   V get number => _number;
 
@@ -98,3 +97,6 @@ class StatValue<V extends num> extends ChangeNotifier
   @override
   String get value => _shownValue;
 }
+
+/// A function that takes a number and returns its string representation.
+typedef Formatter = String Function(num);
