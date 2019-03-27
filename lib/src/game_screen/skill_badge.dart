@@ -38,7 +38,7 @@ class SkillBadge extends StatelessWidget {
         child: Text(
           skillDisplayName[skill] +
               (value != null ? " (${value.round()})" : ""),
-          style: TextStyle(fontSize: 10.0, color: Colors.white),
+          style: const TextStyle(fontSize: 10.0, color: Colors.white),
         ),
       ),
     );

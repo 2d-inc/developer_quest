@@ -15,4 +15,5 @@ const _launch = TaskBlueprint(
       _uiPolish,
     ]),
   ]),
+  priority: 100,
 );
