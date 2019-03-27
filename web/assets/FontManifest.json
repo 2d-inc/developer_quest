@@ -1,5 +1,13 @@
 [
   {
+    "family": "MaterialIcons",
+    "fonts": [
+      {
+        "asset": "MaterialIcons.woff2"
+      }
+    ]
+  },
+  {
     "family": "Joystix",
     "fonts": [
       {
