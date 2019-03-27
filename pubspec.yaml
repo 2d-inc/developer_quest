@@ -10,18 +10,15 @@ description: Become a tech lead, slay bugs, and don't get fired.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   intl: any
-  provider:
-    git:
-      url: https://github.com/rrousselGit/provider.git
-      # Pin the package to a specific commit in the v2.0 branch.
-      # TODO: use pub once 2.0 lands there
-      ref: ac6813432f1700b24cf7e4e8ff3f173e105c7d66
+  flutter_web: any
+  flutter_web_ui: any
+  provider_web: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -30,6 +27,28 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # Enables the `pub run build_runner` command
+  build_runner: ^1.1.2
+  # Includes the JavaScript compilers
+  build_web_compilers: ^1.0.0
+
+dependency_overrides:
+  flutter_web:
+    git:
+      url: https://github.com/flutter/flutter_web
+      path: packages/flutter_web
+  flutter_web_ui:
+    git:
+      url: https://github.com/flutter/flutter_web
+      path: packages/flutter_web_ui
+  provider_web:
+    git:
+      url: https://github.com/efortuna/provider_web
+      path: packages/provider_web
+  flutter_hooks_web:
+    git:
+      url: https://github.com/efortuna/flutter_hooks_web
+      path: packages/flutter_hooks_web
 
 
 # For information on the generic Dart part of this file, see the

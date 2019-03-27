@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/style_sphinx/feature_discovery/feature_discovery.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_web/material.dart';
+import 'package:flutter_web/widgets.dart';
 
 class SphinxScreen extends StatelessWidget {
   static const String routeName = '/sphinx';
