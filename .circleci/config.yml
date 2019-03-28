@@ -27,9 +27,9 @@ jobs:
             ./flutter/bin/flutter test
 
       - run:
-        name: Build App
-        command: |
-          ./flutter/bin/flutter build apk
+          name: Build App
+          command: |
+            ./flutter/bin/flutter build apk
             
 workflows:
   version: 2
