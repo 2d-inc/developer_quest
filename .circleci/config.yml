@@ -22,10 +22,14 @@ jobs:
             ./flutter/bin/flutter doctor
 
       - run:
-          name: Build App
+          name: Test App
           command: |
             ./flutter/bin/flutter test
-            ./flutter/bin/flutter build apk --release --build-number=$CIRCLE_BUILD_NUM
+
+      - run:
+        name: Build App
+        command: |
+          ./flutter/bin/flutter build apk
             
 workflows:
   version: 2
