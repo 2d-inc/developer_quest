@@ -15,7 +15,6 @@ jobs:
           command: |
             git submodule init
             git submodule update --recursive
-      - run: bundle install
       - run:
           name: Install Flutter
           command: |
