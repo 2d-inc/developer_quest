@@ -39,25 +39,29 @@ class _AddTaskButtonState extends State<AddTaskButton> {
     widget.onPressed?.call();
   }
 
+  bool get isDisabled => widget.count == 0;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: onTapDown,
-      onTapUp: onTapUp,
-      onTap: onTap,
+      onTapDown: isDisabled ? null : onTapDown,
+      onTapUp: isDisabled ? null : onTapUp,
+      onTap: isDisabled ? null : onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
         padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-                color: widget.color.withOpacity(0.3),
+                color: widget.color.withOpacity(isDisabled ? 0.1 : 0.3),
                 offset: const Offset(0.0, 10.0),
                 blurRadius: _isPressed ? 10.0 : 15.0,
                 spreadRadius: 0.0),
           ],
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-          color: _isPressed ? widget.color.withOpacity(0.8) : widget.color,
+          color: isDisabled
+              ? widget.color.withOpacity(0.5)
+              : _isPressed ? widget.color.withOpacity(0.8) : widget.color,
         ),
         child: Row(
           children: [
