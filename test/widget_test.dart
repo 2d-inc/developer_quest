@@ -19,8 +19,8 @@ void main() {
     expect(find.text('Start'), findsOneWidget);
 
     // Start the game.
-    expect(find.byType(FlatButton), findsOneWidget);
-    await tester.tap(find.byType(FlatButton));
+    expect(find.byType(FlatButton), findsNWidgets(2));
+    await tester.tap(find.text('Start'));
     await tester.pumpAndSettle();
 
     // We made it to the game screen.
