@@ -24,8 +24,8 @@ jobs:
       - run:
           name: Build App
           command: |
-            ../flutter/bin/flutter test
-            ../flutter/bin/flutter build apk --release --build-number=$CIRCLE_BUILD_NUM
+            ./flutter/bin/flutter test
+            ./flutter/bin/flutter build apk --release --build-number=$CIRCLE_BUILD_NUM
             
 workflows:
   version: 2
