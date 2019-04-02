@@ -5,7 +5,7 @@ enum KittyType { blue, brown, purple }
 class KittyBed extends StatelessWidget {
   final KittyType type;
 
-  const KittyBed({Key key, this.type}) : super(key: key);
+  const KittyBed({@required this.type, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class KittyBed extends StatelessWidget {
 class Kitty extends StatelessWidget {
   final KittyType type;
 
-  const Kitty({Key key, this.type}) : super(key: key);
+  const Kitty({@required this.type, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
