@@ -11,12 +11,12 @@ class KittyBed extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (type) {
       case KittyType.blue:
-        return Image.asset('assets/style_sphinx/kitty_bed_blue.png');
+        return Image.asset('kitty_bed_blue.png');
       case KittyType.brown:
-        return Image.asset('assets/style_sphinx/kitty_bed_brown.png');
+        return Image.asset('kitty_bed_brown.png');
       case KittyType.purple:
       default:
-        return Image.asset('assets/style_sphinx/kitty_bed_purple.png');
+        return Image.asset('kitty_bed_purple.png');
     }
   }
 }
@@ -30,12 +30,12 @@ class Kitty extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (type) {
       case KittyType.blue:
-        return Image.asset('assets/style_sphinx/kitty_blue.png');
+        return Image.asset('kitty_blue.png');
       case KittyType.brown:
-        return Image.asset('assets/style_sphinx/kitty_brown.png');
+        return Image.asset('kitty_brown.png');
       case KittyType.purple:
       default:
-        return Image.asset('assets/style_sphinx/kitty_purple.png');
+        return Image.asset('kitty_purple.png');
     }
   }
 }

@@ -12,7 +12,7 @@ class TextBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final corner = Image.asset('assets/style_sphinx/chat_bubble_corner.png');
+    final corner = Image.asset('chat_bubble_corner.png');
 
     return Stack(
       children: [
@@ -104,7 +104,7 @@ class TextBubble extends StatelessWidget {
           child: SizedBox(
             width: 40,
             height: 40,
-            child: Image.asset('assets/style_sphinx/chat_bubble_indicator.png'),
+            child: Image.asset('chat_bubble_indicator.png'),
           ),
         ),
 

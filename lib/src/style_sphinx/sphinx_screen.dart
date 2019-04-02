@@ -16,7 +16,7 @@ class SphinxScreen extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('assets/style_sphinx/pyramid.png'),
+            image: const AssetImage('pyramid.png'),
             fit: BoxFit.cover,
           ),
         ),
