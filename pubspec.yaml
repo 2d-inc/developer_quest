@@ -43,11 +43,11 @@ dependency_overrides:
       path: packages/flutter_web_ui
   provider_web:
     git:
-      url: https://github.com/efortuna/provider_web
+      url: https://github.com/efortuna/provider_web.git
       path: packages/provider_web
   flutter_hooks_web:
     git:
-      url: https://github.com/efortuna/flutter_hooks_web
+      url: https://github.com/efortuna/flutter_hooks_web.git
       path: packages/flutter_hooks_web
 
 
