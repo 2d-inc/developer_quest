@@ -1,5 +1,5 @@
-import 'package:dev_rpg/src/style_sphinx/column_question.dart';
 import 'package:dev_rpg/src/style_sphinx/fonts.dart';
+import 'package:dev_rpg/src/style_sphinx/question.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,30 @@ class SphinxScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute<void>(
                           builder: (context) {
-                            return const ColumnQuestion();
+                            return const FlexQuestion(
+                              type: Column,
+                              instructions:
+                                  '''Select the correct Widget to move the kitties to their beds''',
+                              successTitle: 'You\'ve done it!',
+                              successMessage:
+                                  '''A Column widget displays its children one after the next in a vertical direction.''',
+                              nextQuestion: FlexQuestion(
+                                type: Row,
+                                instructions:
+                                    '''Select the correct Widget to move the kitties to their beds''',
+                                successTitle: 'Nice one!',
+                                successMessage:
+                                    '''A Row widget displays its children side by side in a horizontal direction.''',
+                                nextQuestion: FlexQuestion(
+                                  type: Stack,
+                                  instructions:
+                                      '''Select the correct Widget to position on kitty on top of the other''',
+                                  successTitle: 'Victory!',
+                                  successMessage:
+                                      '''A Stack widget layers its children one on top of the next.''',
+                                ),
+                              ),
+                            );
                           },
                         ),
                       );
