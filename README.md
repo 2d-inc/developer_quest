@@ -27,9 +27,8 @@ This will do an automated run-through of the app, and will save the output to fi
 * Run `Rscript test_driver/generate-graphs.R` (assuming you have R installed) to generate
   boxplots of the latest runs.
 
-If you want to get several runs at once, you can use something like the following command
-(don't forget to kill it with Ctrl-C at some point):
+If you want to get several runs at once, you can use something like the following command:
 
 ```sh
-DESC="my change" bash -c 'while [ 0 ]; do flutter drive --target=test_driver/performance.dart --profile; sleep 1; done'
+DESC="my change" bash -c 'for i in {1..5}; do flutter drive --target=test_driver/performance.dart --profile; sleep 1; done'
 ```
