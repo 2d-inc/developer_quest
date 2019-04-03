@@ -11,3 +11,23 @@ in `lib/src/shared_state/task_tree` but for clarity it is also kept as a diagram
 in `assets/docs`. Here's the PNG.
 
 ![The task "research tree"](https://github.com/2d-inc/dev_rpg/blob/master/assets/docs/research-tree.png)
+
+## Performance testing
+
+Attach a real device and run the following command from the root of the repo:
+
+```sh
+flutter drive --target=test_driver/performance.dart --profile
+```
+
+This will do an automated run-through of the app, and will save the output to files.
+
+* Look into to `build/walkthrough-*.json` files for detailed summaries of each run.
+* Look at `test_driver/perf_stats.tsv` to compare latest runs with historical data.
+
+If you want to get several runs at once, you can use something like the following command
+(don't forget to kill it with Ctrl-C at some point):
+
+```sh
+bash -c 'while [ 0 ]; do flutter drive --target=test_driver/performance.dart --profile; sleep 1; done'
+```

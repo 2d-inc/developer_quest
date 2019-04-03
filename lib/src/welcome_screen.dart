@@ -16,6 +16,7 @@ class WelcomeScreen extends StatelessWidget {
               builder: (context, value) => Text("Welcome, $value!"),
             ),
             FlatButton(
+              key: const Key('start_game'),
               onPressed: () {
                 Provider.of<World>(context, listen: false).start();
                 Navigator.of(context).pushNamed('/gameloop');

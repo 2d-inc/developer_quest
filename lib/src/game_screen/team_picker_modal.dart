@@ -52,6 +52,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
             child: ButtonBar(
               children: [
                 FlatButton(
+                    key: const Key('team_pick_ok'),
                     onPressed: () => Navigator.pop(context, _selected),
                     child: const Text('OK')),
                 FlatButton(
