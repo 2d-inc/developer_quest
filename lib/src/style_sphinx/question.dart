@@ -62,12 +62,6 @@ class _FlexQuestionState extends State<FlexQuestion> {
                   Wrap(
                     children: [
                       DropdownButton<Type>(
-                        underline: Faded(
-                          child: Container(
-                            height: 1,
-                            color: Colors.black,
-                          ),
-                        ),
                         hint: const Faded(
                           child: MonoText(
                             'Widget',
