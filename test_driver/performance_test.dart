@@ -41,6 +41,9 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.waitFor(refactorer);
   await driver.tap(refactorer);
 
+  var tpm = find.text('TPM');
+  await driver.tap(tpm);
+
   await driver.tap(_teamPickOkButtonFinder);
 
   var shipIt = find.text('Ship it!!');
@@ -65,6 +68,8 @@ Future<TimelineSummary> _run(FlutterDriver driver) async {
 
   await _completeTask(driver, 'Prototype');
   await _completeTask(driver, 'Basic Backend');
+  await _completeTask(driver, 'Programmer Art UI');
+  await _completeTask(driver, 'Alpha release');
 
   var timeline = await driver.stopTracingAndDownloadTimeline();
 
