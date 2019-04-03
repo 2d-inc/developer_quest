@@ -1,14 +1,17 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter_driver/flutter_driver.dart';
+import 'package:git/git.dart';
 import 'package:t_stats/t_stats.dart';
 
-Future<void> main() async {
+Future<void> main(List<String> args) async {
   FlutterDriver driver;
 
   try {
     driver = await FlutterDriver.connect();
-    await _run(driver);
+    var summary = await _run(driver);
+    await _save(summary);
   } finally {
     if (driver != null) {
       await driver.close();
@@ -45,7 +48,7 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.tap(shipIt);
 }
 
-Future<void> _run(FlutterDriver driver) async {
+Future<TimelineSummary> _run(FlutterDriver driver) async {
   var health = await driver.checkHealth();
   if (health.status != HealthStatus.ok) {
     throw StateError('FlutterDriver health: $health');
@@ -56,7 +59,7 @@ Future<void> _run(FlutterDriver driver) async {
   await driver.tap(find.text("Tasks"));
 
   // Give the UI time to settle down before starting the trace.
-  await Future<void>.delayed(const Duration(milliseconds: 300));
+  await Future<void>.delayed(const Duration(seconds: 1));
 
   await driver.startTracing();
 
@@ -65,31 +68,83 @@ Future<void> _run(FlutterDriver driver) async {
 
   var timeline = await driver.stopTracingAndDownloadTimeline();
 
-  var now = DateTime.now();
-  var name = 'walkthrough-${now.toIso8601String()}';
-  var filename = name.replaceAll(':', '-');
+  return TimelineSummary.summarize(timeline);
+}
 
-  var summary = TimelineSummary.summarize(timeline);
+Future<void> _save(TimelineSummary summary) async {
+  var description = Platform.environment['DESC'];
+
+  if (description == null) {
+    stderr.writeln('[WARNING] No description of the run through provided. '
+        'You can do so via the \$DESC shell variable. '
+        'For example, run the command like this: \n\n'
+        '\$> DESC="run with foo" '
+        'flutter drive --target=test_driver/performance.dart --profile\n');
+    description = '';
+  }
+
+  var gitSha = '';
+  if (await GitDir.isGitDir('.')) {
+    var gitDir = await GitDir.fromExisting('.');
+    var branch = await gitDir.getCurrentBranch();
+    gitSha = branch.sha.substring(0, 8);
+  }
+
+  var now = DateTime.now();
+  var id = 'performance_test-${now.toIso8601String()}';
+  var filename = id.replaceAll(':', '-');
+
   await summary.writeSummaryToFile(filename, pretty: true);
   await summary.writeTimelineToFile(filename);
 
-  var stat = Statistic.from(
-    summary.summaryJson['frame_build_times'] as List<int>,
-    name: name,
+  var rasterizerTimes =
+      summary.summaryJson['frame_rasterizer_times'] as List<int>;
+  var buildTimes = summary.summaryJson['frame_build_times'] as List<int>;
+  var buildTimesStat = Statistic.from(
+    buildTimes,
+    name: id,
   );
-  var tsv = File('test_driver/perf_stats.tsv').openWrite(mode: FileMode.append);
-  // Add general build time statistics.
-  tsv.write(stat.toTSV());
-  // Add additional useful stats from the TimelineSummary.
-  tsv.write('\t');
-  tsv.write(summary.computePercentileFrameBuildTimeMillis(90.0));
-  tsv.write('\t');
-  tsv.write(summary.computePercentileFrameBuildTimeMillis(99.0));
-  tsv.write('\t');
-  tsv.write(summary.computeWorstFrameBuildTimeMillis());
-  tsv.write('\t');
-  tsv.write(summary.computeMissedFrameBuildBudgetCount());
-  tsv.writeln();
-  await tsv.close();
-  print(stat);
+
+  IOSink stats;
+  try {
+    stats = File('test_driver/perf_stats.tsv').openWrite(mode: FileMode.append);
+    // Add general build time statistics.
+    stats.write(buildTimesStat.toTSV());
+    // Add additional useful stats from the TimelineSummary.
+    stats.write('\t');
+    stats.write(summary.computePercentileFrameBuildTimeMillis(90.0));
+    stats.write('\t');
+    stats.write(summary.computePercentileFrameBuildTimeMillis(99.0));
+    stats.write('\t');
+    stats.write(summary.computeWorstFrameBuildTimeMillis());
+    stats.write('\t');
+    stats.write(summary.computeMissedFrameBuildBudgetCount());
+    stats.writeln();
+  } finally {
+    await stats?.close();
+  }
+
+  IOSink durations;
+  try {
+    durations =
+        File('test_driver/durations.tsv').openWrite(mode: FileMode.append);
+    var length = max(buildTimes.length, rasterizerTimes.length);
+    for (int i = 0; i < length; i++) {
+      var build = i < buildTimes.length ? buildTimes[i].toString() : '';
+      var rasterizer =
+          i < rasterizerTimes.length ? rasterizerTimes[i].toString() : '';
+      var row = <String>[
+        id,
+        build,
+        rasterizer,
+        gitSha,
+        description,
+      ].join('\t');
+      durations.writeln(row);
+    }
+  } finally {
+    await durations?.close();
+  }
+
+  print(buildTimesStat);
 }
