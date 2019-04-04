@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 
+import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
 import 'package:dev_rpg/src/widgets/flare/flare_cache.dart';
 import 'package:flare_dart/actor_artboard.dart';
 import 'package:flare_flutter/flare.dart';
@@ -96,7 +97,14 @@ class HiringBustRenderObject extends FlareRenderBox {
     }
 
     cachedActor(assetBundle, _filename).then((FlutterActor actor) {
-      _artboard = actor.artboard.makeInstance() as FlutterActorArtboard;
+      //DesaturatedActor
+      //actor.artboard.makeInstance()
+      DesaturatedActor desaturatedActor = DesaturatedActor();
+      desaturatedActor.copyFlutterActor(actor);
+      _artboard = desaturatedActor.artboard
+          as FlutterActorArtboard; //(DesaturatedActor());
+      //_artboard.copyArtboard(actor.artboard);
+      //_artboard = actor.artboard.makeInstance() as FlutterActorArtboard;
       _artboard.initializeGraphics();
       advance(0.0);
       markNeedsPaint();
