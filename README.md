@@ -43,6 +43,9 @@ brought any performance improvement or not. Running several times also eliminate
 the effect of extremely bad luck, like for example when Android decides to update some app while
 test is running.
 
+TODO(filiph): Explain how to lock CPU speeds, and why it's needed
+    https://github.com/google/skia/blob/master/infra/bots/recipe_modules/flavor/android.py
+
 You probably don't want to check the `*.tsv` output files into the repo. For that,
 run `git update-index --assume-unchanged test_driver/*.tsv` in the root dir. This is a one time
 command per machine.
