@@ -9,7 +9,7 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
 class Npc extends Aspect with ChildAspect {
-  final String name;
+  final String id;
 
   final Map<Skill, int> prowess;
 
@@ -18,7 +18,7 @@ class Npc extends Aspect with ChildAspect {
 
   bool _isBusy = false;
 
-  Npc(this.name, this.prowess, [this._isHired = false]);
+  Npc(this.id, this.prowess, [this._isHired = false]);
 
   bool get isBusy => _isBusy;
 
@@ -28,7 +28,7 @@ class Npc extends Aspect with ChildAspect {
   }
 
   @override
-  String toString() => name;
+  String toString() => id;
 
   int get upgradeCost =>
       prowess.values.fold(0, (int previous, int value) => previous + value) *

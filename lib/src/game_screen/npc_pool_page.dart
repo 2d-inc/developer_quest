@@ -51,7 +51,7 @@ class NpcListItem extends StatelessWidget {
               children: [
                 Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Text(npc.name, style: TextStyle(fontSize: 16.0))),
+                    child: Text(npc.id, style: TextStyle(fontSize: 16.0))),
                 Text(npc.isHired ? 'Hired' : 'For hire'),
                 Text(npc.isBusy ? 'Busy' : 'Idle'),
               ],

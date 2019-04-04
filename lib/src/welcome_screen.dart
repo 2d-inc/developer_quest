@@ -1,28 +1,26 @@
 import 'dart:async';
 
+import 'package:dev_rpg/src/game_screen/npc_style.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/theme.dart';
-import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
-import 'package:dev_rpg/src/theme.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import "package:flare_flutter/flare_actor.dart";
 
-class WelcomeHero {
-  final String filename;
-  final Color accent;
-  WelcomeHero(this.filename, this.accent);
-}
+// class WelcomeHero {
+//   final String filename;
+//   final Color accent;
+//   WelcomeHero(this.filename, this.accent);
+// }
 
-List<WelcomeHero> heros = [
-  WelcomeHero(
-      "assets/flare/TheRefactorer.flr", const Color.fromRGBO(75, 58, 185, 1.0)),
-  WelcomeHero(
-      "assets/flare/TheArchitect.flr", const Color.fromRGBO(236, 41, 117, 1.0))
-];
+// List<WelcomeHero> heros = [
+//   WelcomeHero(
+//       "assets/flare/TheRefactorer.flr", const Color.fromRGBO(75, 58, 185, 1.0)),
+//   WelcomeHero(
+//       "assets/flare/TheArchitect.flr", const Color.fromRGBO(236, 41, 117, 1.0))
+// ];
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -30,52 +28,23 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  WelcomeHero hero;
+  NpcStyle hero;
 
   @override
   void initState() {
-    setNextHero();
+    chooseHero();
     super.initState();
   }
 
-  void setNextHero() {
-    int index = heros.indexOf(hero);
+  void chooseHero() {
     setState(() {
-      hero = heros[(index + 1) % heros.length];
+      hero = NpcStyle.random();
     });
-    Timer(Duration(seconds: 10), setNextHero);
+    Timer(Duration(seconds: 10), chooseHero);
   }
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: Center(
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       children: [
-    //         Consumer<User>(
-    //           builder: (context, value) => Text("Welcome, $value!"),
-    //         ),
-    //         FlatButton(
-    //           onPressed: () {
-    //             Provider.of<World>(context, listen: false).start();
-    //             Navigator.of(context).pushNamed('/gameloop');
-    //           },
-    //           color: Colors.orangeAccent,
-    //           child: const Text("Start"),
-    //         ),
-    //         FlatButton(
-    //           onPressed: () {
-    //             Navigator.of(context).pushNamed(SphinxScreen.routeName);
-    //           },
-    //           color: Colors.orangeAccent,
-    //           child: const Text("Face the Style Sphinx"),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
-
     return Scaffold(
       body: Container(
         color: backgroundColor,
@@ -90,19 +59,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             children: [
               Expanded(
                 child: StartScreenHero(
-                  filename: hero.filename,
+                  filename: hero.flare,
                   alignment: Alignment.bottomCenter,
                   fit: BoxFit.cover,
                   gradient: backgroundColor,
                 ),
-
-                //     child: FlareActor("assets/flare/TheRefactorer.flr",
-                //         alignment: Alignment.bottomCenter,
-                //         shouldClip: false,
-                //         fit: BoxFit.cover,
-                //         animation: "idle"),
               ),
-              Text("FLUTTER FANTASY", style: titleStyle),
+              const Text(
+                "FLUTTER FANTASY",
+                style: TextStyle(
+                    fontFamily: "GothamXNarrow",
+                    fontSize: 22.0,
+                    letterSpacing: 7.5),
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 11, bottom: 15),
                 child: Container(
@@ -126,8 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 constraints: const BoxConstraints(minWidth: double.infinity),
                 child: WelcomeButton(
                     onPressed: () {
-                      Provider.of<World>(context, listen: false).start();
-                      Navigator.of(context).pushNamed('/gameloop');
+                      Navigator.of(context).pushNamed(SphinxScreen.routeName);
                     },
                     background: Colors.white.withOpacity(0.15),
                     icon: Icons.settings,

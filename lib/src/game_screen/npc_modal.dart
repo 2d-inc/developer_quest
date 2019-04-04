@@ -11,7 +11,7 @@ class NpcModal extends StatelessWidget {
     var npc = Provider.of<Npc>(context);
 
     return AlertDialog(
-      title: Text(npc.name),
+      title: Text(npc.id),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: npc.prowess.keys

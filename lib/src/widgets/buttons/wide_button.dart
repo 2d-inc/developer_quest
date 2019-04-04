@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A styled button that takes up all of the available horizontal space.
 class WideButton extends StatelessWidget {
   final Widget child;
   final Color background;

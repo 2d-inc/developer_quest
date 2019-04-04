@@ -1,6 +1,7 @@
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
 import 'package:flutter/material.dart';
 
+/// A styled button that animates its accent color.
 class WelcomeButton extends StatefulWidget {
   final Widget child;
   final Color background;
@@ -22,8 +23,8 @@ class _WelcomeButtonState extends State<WelcomeButton>
 
   @override
   void initState() {
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _animationController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 3100));
     _colorTween = ColorTween(begin: widget.background, end: widget.background)
         .animate(_animationController);
     super.initState();
