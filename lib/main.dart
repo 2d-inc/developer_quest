@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
+            brightness: Brightness.dark,
             primarySwatch: Colors.orange,
           ),
           routes: {
