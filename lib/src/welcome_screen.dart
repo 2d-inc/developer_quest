@@ -2,25 +2,11 @@ import 'dart:async';
 
 import 'package:dev_rpg/src/game_screen/npc_style.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
-import 'package:dev_rpg/src/theme.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-// class WelcomeHero {
-//   final String filename;
-//   final Color accent;
-//   WelcomeHero(this.filename, this.accent);
-// }
-
-// List<WelcomeHero> heros = [
-//   WelcomeHero(
-//       "assets/flare/TheRefactorer.flr", const Color.fromRGBO(75, 58, 185, 1.0)),
-//   WelcomeHero(
-//       "assets/flare/TheArchitect.flr", const Color.fromRGBO(236, 41, 117, 1.0))
-// ];
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -29,7 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   NpcStyle hero;
-
+  static const Color backgroundColor = Color.fromRGBO(38, 38, 47, 1.0);
   @override
   void initState() {
     chooseHero();
