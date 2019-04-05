@@ -10,7 +10,13 @@ class WelcomeButton extends StatefulWidget {
   @required
   final VoidCallback onPressed;
   const WelcomeButton(
-      {this.child, this.onPressed, this.background, this.icon, this.label});
+      {Key key,
+      this.child,
+      this.onPressed,
+      this.background,
+      this.icon,
+      this.label})
+      : super(key: key);
 
   @override
   _WelcomeButtonState createState() => _WelcomeButtonState();

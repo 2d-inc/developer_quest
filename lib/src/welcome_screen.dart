@@ -69,6 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 56.0, bottom: 15),
                 child: WelcomeButton(
+                    key: const Key('start_game'),
                     onPressed: () {
                       Provider.of<World>(context, listen: false).start();
                       Navigator.of(context).pushNamed('/gameloop');
