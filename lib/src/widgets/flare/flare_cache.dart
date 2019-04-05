@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 typedef void OnFlareLoaded<FlutterActor>(FlutterActor resource);
 
 /// Store a Flare file along with callbacks for clients that 
-/// are waiting for the load to complete
+/// are waiting for the load to complete.
 class FlareAsset {
   FlutterActor _resource;
   FlutterActor get resource => _resource;
@@ -54,7 +54,7 @@ class FlareAsset {
 /// A mapping of loaded Flare assets.
 final Map<AssetBundle, Map<String, FlareAsset>> _cache = {};
 
-/// Get a cached Flare actor, or load it.
+/// Get a cached Flare actor, or load it if it's not yet available.
 Future<FlutterActor> cachedActor(AssetBundle bundle, String filename) async {
   Map<String, FlareAsset> assets = _cache[bundle];
   if (assets == null) {

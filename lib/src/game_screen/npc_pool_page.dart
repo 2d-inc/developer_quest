@@ -63,6 +63,11 @@ class NpcListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var npc = Provider.of<Npc>(context);
     var npcStyle = NpcStyle.from(npc);
+
+    HiringBustState bustState = npc.isHired
+        ? HiringBustState.hired
+        : npc.canUpgrade ? HiringBustState.available : HiringBustState.locked;
+
     return Padding(
       padding: const EdgeInsets.only(top: 40.0),
       child: Stack(
@@ -101,7 +106,7 @@ class NpcListItem extends StatelessWidget {
                     filename: npcStyle.flare,
                     fit: BoxFit.cover,
                     alignment: Alignment.center,
-                    hiringState: HiringBustState.locked,
+                    hiringState: bustState,
                   )),
                   const SizedBox(height: 20.0),
                   Opacity(
@@ -112,15 +117,25 @@ class NpcListItem extends StatelessWidget {
                         npc.isHired
                             ? Container()
                             : Icon(
-                                npc.canUpgrade ? Icons.add_circle : Icons.lock),
+                                bustState == HiringBustState.available
+                                    ? Icons.add_circle
+                                    : Icons.lock,
+                                color: !npc.isHired && npc.canUpgrade
+                                    ? const Color.fromRGBO(0, 152, 255, 1.0)
+                                    : Colors.white),
                         const SizedBox(width: 4.0),
                         Text(
-                            npc.isHired
+                            bustState == HiringBustState.hired
                                 ? 'Hired'
-                                : npc.canUpgrade ? 'For hire' : 'Locked',
+                                : bustState == HiringBustState.available
+                                    ? 'Hire!'
+                                    : 'Locked',
                             style: TextStyle(
                                 fontFamily: "MontserratRegular",
-                                fontSize: 16.0))
+                                fontSize: 16.0,
+                                color: bustState == HiringBustState.available
+                                    ? const Color.fromRGBO(0, 152, 255, 1.0)
+                                    : Colors.white))
                       ],
                     ),
                   ),

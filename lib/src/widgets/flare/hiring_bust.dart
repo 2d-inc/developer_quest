@@ -3,7 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
 import 'package:dev_rpg/src/widgets/flare/flare_cache.dart';
-import 'package:flare_dart/actor_artboard.dart';
+import 'package:dev_rpg/src/widgets/flare/hiring_particles.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -59,6 +59,8 @@ class HiringBustRenderObject extends FlareRenderBox {
   FlutterActorArtboard _artboard;
   String _filename;
   HiringBustState _hiringState;
+  DesaturatedActor _actor;
+  HiringParticles _particles;
 
   HiringBustState get hiringState => _hiringState;
   set hiringState(HiringBustState value) {
@@ -66,12 +68,22 @@ class HiringBustRenderObject extends FlareRenderBox {
       return;
     }
     _hiringState = value;
+    _actor?.desaturate = value != HiringBustState.hired;
+    if (value == HiringBustState.available) {
+      _particles = HiringParticles();
+    } else {
+      _particles = null;
+    }
   }
+
+  double get shadowWidth => min(size.width, size.height) * 0.85;
+  double get shadowHeight => shadowWidth * 0.22;
 
   @override
   bool advance(double elapsedSeconds) {
     _artboard?.advance(elapsedSeconds);
-    return false;
+    _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
+    return _particles != null;
   }
 
   @override
@@ -81,18 +93,19 @@ class HiringBustRenderObject extends FlareRenderBox {
   void prePaint(Canvas canvas, Offset offset) {
     // Draw shadow
 
-    double shadowDiameter = min(size.width, size.height) * 0.85;
-    double shadowHeight = shadowDiameter * 0.22;
+    double shadowDiameter = shadowWidth;
 
     canvas.drawOval(
         Offset(offset.dx + size.width / 2.0 - shadowDiameter / 2.0,
                 offset.dy + size.height - shadowHeight) &
             Size(shadowDiameter, shadowHeight),
         Paint()
-          ..color = Colors.black.withOpacity(0.15)
+          ..color = _hiringState == HiringBustState.available
+              ? const Color.fromRGBO(84, 114, 239, 0.26)
+              : Colors.black.withOpacity(0.15)
           ..style = PaintingStyle.fill);
 
-	canvas.translate(0.0, -shadowHeight/1.5);
+    canvas.translate(0.0, -shadowHeight / 1.5);
     Path clip = Path();
     double clipDiameter = min(size.width, size.height);
     clip.addOval(Offset(offset.dx + size.width / 2.0 - clipDiameter / 2.0,
@@ -111,11 +124,8 @@ class HiringBustRenderObject extends FlareRenderBox {
 
   @override
   void postPaint(Canvas canvas, Offset offset) {
-    if (_artboard == null) {
-      return;
-    }
-
-    //_artboard.width/2.0
+    _particles?.paint(canvas,
+        offset + Offset((size.width - shadowWidth) / 2.0, -shadowHeight / 2.0));
   }
 
   String get filename => _filename;
@@ -134,16 +144,14 @@ class HiringBustRenderObject extends FlareRenderBox {
     }
 
     cachedActor(assetBundle, _filename).then((FlutterActor actor) {
-      //DesaturatedActor
-      //actor.artboard.makeInstance()
-      DesaturatedActor desaturatedActor = DesaturatedActor();
-      desaturatedActor.copyFlutterActor(actor);
-      _artboard = desaturatedActor.artboard
-          as FlutterActorArtboard; //(DesaturatedActor());
-      //_artboard.copyArtboard(actor.artboard);
-      //_artboard = actor.artboard.makeInstance() as FlutterActorArtboard;
-	  _artboard.getAnimation("bust")?.apply(0.0, _artboard, 1.0);
+      _actor = DesaturatedActor();
+      _actor.copyFlutterActor(actor);
+      _artboard = _actor.artboard as FlutterActorArtboard;
+      // apply the bust animation state.
+      _artboard.getAnimation("bust")?.apply(0.0, _artboard, 1.0);
       _artboard.initializeGraphics();
+      _actor.desaturate = _hiringState != HiringBustState.hired;
+
       advance(0.0);
       markNeedsPaint();
     });
