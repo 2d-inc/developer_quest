@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
@@ -77,8 +78,44 @@ class HiringBustRenderObject extends FlareRenderBox {
   AABB get aabb => _artboard?.artboardAABB();
 
   @override
+  void prePaint(Canvas canvas, Offset offset) {
+    // Draw shadow
+
+    double shadowDiameter = min(size.width, size.height) * 0.85;
+    double shadowHeight = shadowDiameter * 0.22;
+
+    canvas.drawOval(
+        Offset(offset.dx + size.width / 2.0 - shadowDiameter / 2.0,
+                offset.dy + size.height - shadowHeight) &
+            Size(shadowDiameter, shadowHeight),
+        Paint()
+          ..color = Colors.black.withOpacity(0.15)
+          ..style = PaintingStyle.fill);
+
+	canvas.translate(0.0, -shadowHeight/1.5);
+    Path clip = Path();
+    double clipDiameter = min(size.width, size.height);
+    clip.addOval(Offset(offset.dx + size.width / 2.0 - clipDiameter / 2.0,
+            offset.dy + size.height / 2.0 - clipDiameter / 2.0) &
+        Size(clipDiameter, clipDiameter));
+
+    clip.addRect(const Offset(0.0, 0.0) &
+        Size(ui.window.physicalSize.width, offset.dy + size.height / 1.25));
+    canvas.clipPath(clip);
+  }
+
+  @override
   void paintFlare(Canvas canvas, Mat2D viewTransform) {
     _artboard?.draw(canvas);
+  }
+
+  @override
+  void postPaint(Canvas canvas, Offset offset) {
+    if (_artboard == null) {
+      return;
+    }
+
+    //_artboard.width/2.0
   }
 
   String get filename => _filename;
@@ -105,6 +142,7 @@ class HiringBustRenderObject extends FlareRenderBox {
           as FlutterActorArtboard; //(DesaturatedActor());
       //_artboard.copyArtboard(actor.artboard);
       //_artboard = actor.artboard.makeInstance() as FlutterActorArtboard;
+	  _artboard.getAnimation("bust")?.apply(0.0, _artboard, 1.0);
       _artboard.initializeGraphics();
       advance(0.0);
       markNeedsPaint();

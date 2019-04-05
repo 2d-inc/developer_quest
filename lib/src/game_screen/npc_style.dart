@@ -21,11 +21,11 @@ class NpcStyle {
         accent: const Color.fromRGBO(236, 41, 117, 1.0)),
     "tpm": NpcStyle(
         name: "TPM",
-        flare: "assets/flare/TheRefactorer.flr",
+        flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0)),
     "avant_garde_designer": NpcStyle(
         name: "Avant Garde Designer",
-        flare: "assets/flare/TheArchitect.flr",
+        flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0)),
     "leo": NpcStyle(
         name: "Leonardo",

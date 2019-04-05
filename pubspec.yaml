@@ -61,6 +61,9 @@ flutter:
       - family: MontserratMedium
         fonts: 
           - asset: assets/fonts/Montserrat-Medium.otf
+      - family: MontserratRegular
+        fonts: 
+          - asset: assets/fonts/Montserrat-Regular.otf
       - family: Joystix
         fonts:
           - asset: assets/style_sphinx/joystix_monospace.ttf

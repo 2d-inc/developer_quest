@@ -12,21 +12,45 @@ class NpcPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var npcPool = Provider.of<NpcPool>(context);
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-      child: GridView.builder(
-        itemCount: npcPool.children.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 0.0,
-            crossAxisSpacing: 15.0,
-            childAspectRatio: 0.75),
-        itemBuilder: (context, index) => ChangeNotifierProvider<Npc>(
-              notifier: npcPool.children[index],
-              key: ValueKey(npcPool.children[index]),
-              child: NpcListItem(),
+    return Stack(
+      children: [
+        GridView.builder(
+          padding:
+              const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 128.0),
+          itemCount: npcPool.children.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 0.0,
+              crossAxisSpacing: 15.0,
+              childAspectRatio: 0.65),
+          itemBuilder: (context, index) => ChangeNotifierProvider<Npc>(
+                notifier: npcPool.children[index],
+                key: ValueKey(npcPool.children[index]),
+                child: NpcListItem(),
+              ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            heightFactor: 1.0,
+            child: Container(
+              height: 128,
+              decoration: BoxDecoration(
+                // Box decoration takes a gradient
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromRGBO(59, 59, 73, 0.0),
+                    Color.fromRGBO(59, 59, 73, 1.0)
+                  ],
+                  stops: [0.0, 1.0],
+                ),
+              ),
             ),
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -39,42 +63,74 @@ class NpcListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var npc = Provider.of<Npc>(context);
     var npcStyle = NpcStyle.from(npc);
-    return Card(
-        margin: const EdgeInsets.only(top: 15.0),
-        color: const Color.fromRGBO(69, 69, 82, 1.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: InkWell(
-          onTap: () => showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return ChangeNotifierProvider<Npc>(
-                  notifier: npc,
-                  child: NpcModal(),
-                );
-              }),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                    child: HiringBust(
-                      filename: npcStyle.flare,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
-                      hiringState: HiringBustState.locked,
-                    )),
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child:
-                        Text(npcStyle.name, style: TextStyle(fontSize: 16.0))),
-                Text(npc.isHired ? 'Hired' : 'For hire'),
-                Text(npc.isBusy ? 'Busy' : 'Idle'),
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: const Color.fromRGBO(69, 69, 82, 1.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.03),
+                  blurRadius: 10.0,
+                ),
               ],
             ),
           ),
-        ));
+          Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              customBorder: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              onTap: () => showDialog<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ChangeNotifierProvider<Npc>(
+                      notifier: npc,
+                      child: NpcModal(),
+                    );
+                  }),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                      child: HiringBust(
+                    filename: npcStyle.flare,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    hiringState: HiringBustState.locked,
+                  )),
+                  const SizedBox(height: 20.0),
+                  Opacity(
+                    opacity: npc.isHired || npc.canUpgrade ? 1.0 : 0.25,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        npc.isHired
+                            ? Container()
+                            : Icon(
+                                npc.canUpgrade ? Icons.add_circle : Icons.lock),
+                        const SizedBox(width: 4.0),
+                        Text(
+                            npc.isHired
+                                ? 'Hired'
+                                : npc.canUpgrade ? 'For hire' : 'Locked',
+                            style: TextStyle(
+                                fontFamily: "MontserratRegular",
+                                fontSize: 16.0))
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20.0),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

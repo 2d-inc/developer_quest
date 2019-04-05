@@ -117,11 +117,13 @@ abstract class FlareRenderBox extends RenderBox {
   AABB get aabb;
 
   void paintFlare(Canvas canvas, Mat2D viewTransform);
+  void prePaint(Canvas canvas, Offset offset) {}
+  void postPaint(Canvas canvas, Offset offset) {}
 
   @override
   void paint(PaintingContext context, Offset offset) {
     final Canvas canvas = context.canvas;
-	
+
     AABB bounds = aabb;
     if (bounds != null) {
       double contentWidth = bounds[2] - bounds[0];
@@ -135,6 +137,7 @@ abstract class FlareRenderBox extends RenderBox {
       double scaleX = 1.0, scaleY = 1.0;
 
       canvas.save();
+      prePaint(canvas, offset);
 
       switch (_fit) {
         case BoxFit.fill:
@@ -191,6 +194,7 @@ abstract class FlareRenderBox extends RenderBox {
       paintFlare(canvas, transform);
 
       canvas.restore();
+	  postPaint(canvas, offset);
     }
   }
 
