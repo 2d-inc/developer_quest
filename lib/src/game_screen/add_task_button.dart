@@ -9,7 +9,8 @@ class AddTaskButton extends StatefulWidget {
   final VoidCallback onPressed;
 
   const AddTaskButton(this.label,
-      {this.count = 0, this.icon, this.color, this.onPressed});
+      {Key key, this.count = 0, this.icon, this.color, this.onPressed})
+      : super(key: key);
 
   @override
   _AddTaskButtonState createState() => _AddTaskButtonState();

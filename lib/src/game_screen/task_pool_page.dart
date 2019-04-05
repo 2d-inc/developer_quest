@@ -57,6 +57,7 @@ class TaskPoolPage extends StatelessWidget {
                       Expanded(
                         child: AddTaskButton(
                           "Tasks",
+                          key: const Key('add_task'),
                           count: taskPool.availableTasks.length,
                           icon: Icons.add,
                           color: const Color(0xff5472ee),
@@ -80,8 +81,7 @@ class TaskPoolPage extends StatelessWidget {
                           icon: Icons.bug_report,
                           color: const Color(0xffeb2875),
                           onPressed: () async {
-                            var bug =
-                                await showModalBottomSheet<Bug>(
+                            var bug = await showModalBottomSheet<Bug>(
                               context: context,
                               builder: (context) => BugPickerModal(),
                             );

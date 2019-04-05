@@ -14,7 +14,7 @@ import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 class World extends AspectContainer {
   static const Duration newFeatureJoyDuration = Duration(seconds: 5);
 
-  static const Duration tickDuration = Duration(milliseconds: 200);
+  static Duration tickDuration = const Duration(milliseconds: 200);
 
   Timer _timer;
 
