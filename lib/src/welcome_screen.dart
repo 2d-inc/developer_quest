@@ -25,9 +25,7 @@ class WelcomeScreen extends StatelessWidget {
               child: const Text("Start"),
             ),
             FlatButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(SphinxScreen.routeName);
-              },
+              onPressed: () => navigateToSphinxMiniGame(context),
               color: Colors.orangeAccent,
               child: const Text("Face the Style Sphinx"),
             )
