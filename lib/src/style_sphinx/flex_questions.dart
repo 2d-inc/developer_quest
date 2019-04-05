@@ -206,3 +206,60 @@ class _FlexQuestionState extends State<FlexQuestion> {
     );
   }
 }
+
+class ColumnQuestion extends StatelessWidget {
+  final Widget child;
+
+  const ColumnQuestion({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FlexQuestion(
+      type: Column,
+      instructions:
+          '''Select the correct Widget to move the kitties to their beds''',
+      successTitle: 'You\'ve done it!',
+      successMessage:
+          '''A Column widget displays its children one after the next in a vertical direction.''',
+      nextQuestion: child,
+    );
+  }
+}
+
+class RowQuestion extends StatelessWidget {
+  final Widget child;
+
+  const RowQuestion({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FlexQuestion(
+      type: Row,
+      instructions:
+          '''Select the correct Widget to move the kitties to their beds''',
+      successTitle: 'Nice one!',
+      successMessage:
+          '''A Row widget displays its children side by side in a horizontal direction.''',
+      nextQuestion: child,
+    );
+  }
+}
+
+class StackQuestion extends StatelessWidget {
+  final Widget child;
+
+  const StackQuestion({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FlexQuestion(
+      type: Stack,
+      instructions:
+          '''Select the correct Widget to position on kitty on top of the other''',
+      successTitle: 'Victory!',
+      successMessage:
+          '''A Stack widget layers its children one on top of the next.''',
+      nextQuestion: child,
+    );
+  }
+}
