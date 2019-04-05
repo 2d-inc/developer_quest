@@ -13,6 +13,10 @@ class Npc extends Aspect with ChildAspect {
 
   final Map<Skill, int> prowess;
 
+  // basically a upgrade counter
+  int _level = 1;
+  int get level => _level;
+
   bool _isHired;
   bool get isHired => _isHired;
 
@@ -61,6 +65,7 @@ class Npc extends Aspect with ChildAspect {
     for (final Skill skill in prowess.keys) {
       prowess[skill] += 1;
     }
+	_level++;
     markDirty();
     return true;
   }

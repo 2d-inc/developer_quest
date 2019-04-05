@@ -6,15 +6,25 @@ class WideButton extends StatelessWidget {
   final Color background;
   @required
   final VoidCallback onPressed;
-  const WideButton({this.child, this.onPressed, this.background});
+  /// Use the padding tweak to allow negative adjustments to padding.
+  final EdgeInsets paddingTweak;
+
+  const WideButton(
+      {this.child,
+      this.onPressed,
+      this.background,
+      this.paddingTweak = const EdgeInsets.all(0.0)});
 
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: double.infinity),
       child: FlatButton(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 11, bottom: 11),
+          padding: EdgeInsets.only(
+              left: 20 + paddingTweak.left,
+              right: 20 + paddingTweak.right,
+              top: 11 + paddingTweak.top,
+              bottom: 11 + paddingTweak.bottom),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(9.0),
           ),
