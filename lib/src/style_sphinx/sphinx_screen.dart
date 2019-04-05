@@ -34,10 +34,13 @@ class _SphinxScreenState extends State<SphinxScreen> {
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Center(
-                  child: TextBubble(
+            child: SizedBox(
+              height: 500,
+              width: 300,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextBubble(
                     child: Column(
                       children: const [
                         Padding(
@@ -62,53 +65,54 @@ class _SphinxScreenState extends State<SphinxScreen> {
                       ],
                     ),
                   ),
-                ),
-                const Expanded(child: SphinxImage()),
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: FlatButton(
-                    color: Colors.red,
-                    child: const JoystixText('Face the Sphinx'),
-                    onPressed: () {
-                      // When the user presses the buttons, navigate to the
-                      // first question by creating the original
-                      // QuestionArguments.
-                      //
-                      // The QuestionArguments are configured up front and then
-                      // passed from one question screen to the next in order
-                      // to drive the game forward.
-                      final args = QuestionArguments(
-                        originalRoute:
-                            ModalRoute.of(context).settings.arguments as String,
-                        questionRoutes: widget.fullGame
-                            ? [
-                                ColumnQuestion.routeName,
-                                RowQuestion.routeName,
-                                StackQuestion.routeName,
-                                // Todo: Add real Qs here. Just for testing.
-                                ColumnQuestion.routeName,
-                                RowQuestion.routeName,
-                                StackQuestion.routeName,
-                                ColumnQuestion.routeName,
-                                RowQuestion.routeName,
-                                StackQuestion.routeName,
-                              ]
-                            : [
-                                ColumnQuestion.routeName,
-                                RowQuestion.routeName,
-                                StackQuestion.routeName,
-                              ],
-                      );
+                  const Flexible(child: SphinxImage()),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: FlatButton(
+                      color: Colors.red,
+                      child: const JoystixText('Face the Sphinx'),
+                      onPressed: () {
+                        // When the user presses the buttons, navigate to the
+                        // first question by creating the original
+                        // QuestionArguments.
+                        //
+                        // The QuestionArguments are configured up front and
+                        // then passed from one question screen to the next in
+                        // order to drive the game forward.
+                        final args = QuestionArguments(
+                          originalRoute: ModalRoute.of(context)
+                              .settings
+                              .arguments as String,
+                          questionRoutes: widget.fullGame
+                              ? [
+                                  ColumnQuestion.routeName,
+                                  RowQuestion.routeName,
+                                  StackQuestion.routeName,
+                                  // Todo: Add real Qs here. Just for testing.
+                                  ColumnQuestion.routeName,
+                                  RowQuestion.routeName,
+                                  StackQuestion.routeName,
+                                  ColumnQuestion.routeName,
+                                  RowQuestion.routeName,
+                                  StackQuestion.routeName,
+                                ]
+                              : [
+                                  ColumnQuestion.routeName,
+                                  RowQuestion.routeName,
+                                  StackQuestion.routeName,
+                                ],
+                        );
 
-                      Navigator.pushNamed<void>(
-                        context,
-                        args.routeName,
-                        arguments: args,
-                      );
-                    },
+                        Navigator.pushNamed<void>(
+                          context,
+                          args.routeName,
+                          arguments: args,
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

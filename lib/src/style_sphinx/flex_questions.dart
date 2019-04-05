@@ -2,17 +2,67 @@ import 'package:dev_rpg/src/style_sphinx/breathing_animations.dart';
 import 'package:dev_rpg/src/style_sphinx/fonts.dart';
 import 'package:dev_rpg/src/style_sphinx/kittens.dart';
 import 'package:dev_rpg/src/style_sphinx/question_scaffold.dart';
-import 'package:dev_rpg/src/style_sphinx/starting_position.dart';
 import 'package:dev_rpg/src/style_sphinx/success_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class FlexQuestion extends StatefulWidget {
+class ColumnQuestion extends StatelessWidget {
+  static const String routeName = '/sphinx/column';
+
+  const ColumnQuestion({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const _FlexQuestion(
+      type: Column,
+      instructions:
+          '''Select the correct Widget to move the kitties to their beds''',
+      successMessage:
+          '''A Column widget displays its children one after the next in a vertical direction.''',
+    );
+  }
+}
+
+class RowQuestion extends StatelessWidget {
+  static const String routeName = '/sphinx/row';
+
+  const RowQuestion({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const _FlexQuestion(
+      type: Row,
+      instructions:
+          '''Select the correct Widget to move the kitties to their beds''',
+      successMessage:
+          '''A Row widget displays its children side by side in a horizontal direction.''',
+    );
+  }
+}
+
+class StackQuestion extends StatelessWidget {
+  static const String routeName = '/sphinx/stack';
+
+  const StackQuestion({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const _FlexQuestion(
+      type: Stack,
+      instructions:
+          '''Select the correct Widget to position on kitty on top of the other''',
+      successMessage:
+          '''A Stack widget layers its children one on top of the next.''',
+    );
+  }
+}
+
+class _FlexQuestion extends StatefulWidget {
   final Type type;
   final String successMessage;
   final String instructions;
 
-  const FlexQuestion({
+  const _FlexQuestion({
     @required this.type,
     @required this.successMessage,
     @required this.instructions,
@@ -23,7 +73,7 @@ class FlexQuestion extends StatefulWidget {
   _FlexQuestionState createState() => _FlexQuestionState();
 }
 
-class _FlexQuestionState extends State<FlexQuestion> {
+class _FlexQuestionState extends State<_FlexQuestion> {
   Type _type;
   final _kittens = <KittyType>[
     KittyType.blue,
@@ -126,57 +176,6 @@ class _FlexQuestionState extends State<FlexQuestion> {
   }
 }
 
-class ColumnQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/column';
-
-  const ColumnQuestion({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const FlexQuestion(
-      type: Column,
-      instructions:
-          '''Select the correct Widget to move the kitties to their beds''',
-      successMessage:
-          '''A Column widget displays its children one after the next in a vertical direction.''',
-    );
-  }
-}
-
-class RowQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/row';
-
-  const RowQuestion({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const FlexQuestion(
-      type: Row,
-      instructions:
-          '''Select the correct Widget to move the kitties to their beds''',
-      successMessage:
-          '''A Row widget displays its children side by side in a horizontal direction.''',
-    );
-  }
-}
-
-class StackQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/stack';
-
-  const StackQuestion({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const FlexQuestion(
-      type: Stack,
-      instructions:
-          '''Select the correct Widget to position on kitty on top of the other''',
-      successMessage:
-          '''A Stack widget layers its children one on top of the next.''',
-    );
-  }
-}
-
 class FlexQuestionExpected extends StatelessWidget {
   final List<KittyType> kittens;
   final Type type;
@@ -275,9 +274,39 @@ class FlexQuestionActual extends StatelessWidget {
       case Row:
         return Row(children: bouncingChildren);
       default:
-        return StartPosition(
+        return _StartingPosition(
           children: bouncingChildren,
           type: type,
+        );
+    }
+  }
+}
+
+class _StartingPosition extends StatelessWidget {
+  final List<Widget> children;
+  final Type type;
+
+  const _StartingPosition({
+    @required this.children,
+    @required this.type,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    switch (type) {
+      case Column:
+        return Row(
+          children: children,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+        );
+      case Row:
+      default:
+        return Column(
+          children: children,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
         );
     }
   }
