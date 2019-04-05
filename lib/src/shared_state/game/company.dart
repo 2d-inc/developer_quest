@@ -11,7 +11,7 @@ class Company extends Aspect {
 
   final StatValue<double> _users = StatValue<double>(0);
 
-  final StatValue<int> coin = StatValue<int>(1000);
+  final StatValue<int> coin = StatValue<int>(100);
 
   ValueListenable<String> get users => _users;
 
