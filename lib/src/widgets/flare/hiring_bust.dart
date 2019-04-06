@@ -12,6 +12,11 @@ import 'package:flare_dart/math/aabb.dart';
 
 import 'flare_render_box.dart';
 
+/// The HiringBust displays three different visual states.
+/// [locked] is for when the character is not available for hire, 
+/// because presumably the user doesn't have the resources to hire them.
+/// [available] is for when the character can be hired, but has not been yet.
+/// [hired] is for when the character has been added to the team.
 enum HiringBustState { locked, available, hired }
 
 /// Avatar displayed on the hiring page, has clipping and is desaturated.
@@ -55,6 +60,10 @@ class HiringBust extends LeafRenderObjectWidget {
   }
 }
 
+/// A render object used by the HiringBust to display a Flare file with clipping
+/// around the head to isolate the bust. Also provides a shadow underneath the
+/// bust and draws a particle effect when the [hiringState] is set to
+/// [HiringBustState.available]
 class HiringBustRenderObject extends FlareRenderBox {
   FlutterActorArtboard _artboard;
   String _filename;
@@ -86,12 +95,18 @@ class HiringBustRenderObject extends FlareRenderBox {
     return _particles != null;
   }
 
+  /// Provide the correct bounding box for the content we want to draw
+  /// in this case it's simply the bounds of the artist defined artboard.
+  /// The base FlareRenderBox will use this to compute the correct scale
+  /// and translation to apply to the canvas before calling [paintFlare].
   @override
   AABB get aabb => _artboard?.artboardAABB();
 
+  /// This is called before the canvas is translated and scaled for the
+  /// bounds retuerned by the [aabb] getter.
   @override
   void prePaint(Canvas canvas, Offset offset) {
-    // Draw shadow
+    // Use this opportunity to draw the shadow under the bust.
 
     double shadowDiameter = shadowWidth;
 
@@ -122,6 +137,8 @@ class HiringBustRenderObject extends FlareRenderBox {
     _artboard?.draw(canvas);
   }
 
+  /// This is called after we've painted the Flare content, the canvas
+  /// is back in widget transform space.
   @override
   void postPaint(Canvas canvas, Offset offset) {
     _particles?.paint(canvas,
@@ -137,6 +154,8 @@ class HiringBustRenderObject extends FlareRenderBox {
     load();
   }
 
+  /// The FlareRenderBox leaves the responsibility of loading content 
+  /// to the implementation, so we need to load our content here.
   @override
   void load() {
     if (assetBundle == null || _filename == null) {

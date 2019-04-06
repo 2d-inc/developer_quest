@@ -1,15 +1,28 @@
 import 'dart:math';
 import 'dart:ui';
 
-// Data for each particle in the system.
+/// Data for each particle in the [HiringParticles] system.
+/// [HiringParticles] will create and destroy as many [HiringParticle]
+/// instances as it needs to show the effect.
 class HiringParticle {
+  /// The position of the particle.
   Offset offset;
+
+  /// The brightness of the particle.
   double opacity;
+
+  /// The scale in 0-1 range, gets multiplied by the desired particle display
+  /// size by [HiringParticles] at draw time.
   double scale;
+
+  /// The phase the particle is in for its horizontal motion which is driven
+  /// by an LFO (simple sin wave).
   double phase;
 }
 
-// List of particles to draw for the hiring availability state.
+/// This is the class that manages the list of particles that are displayed
+/// for the hiring bust. It's reponsible for instancing, destroying, moving, and
+/// painting the particles.
 class HiringParticles {
   final List<HiringParticle> _particles = [];
   static const int particleCount = 20;
