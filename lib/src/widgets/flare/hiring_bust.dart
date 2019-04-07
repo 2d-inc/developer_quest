@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
-import 'package:dev_rpg/src/widgets/flare/flare_cache.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_particles.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +9,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_dart/math/aabb.dart';
 
-import 'flare_render_box.dart';
+import 'package:flare_flutter/flare_render_box.dart';
 
 /// The HiringBust displays three different visual states.
-/// [locked] is for when the character is not available for hire, 
+/// [locked] is for when the character is not available for hire,
 /// because presumably the user doesn't have the resources to hire them.
 /// [available] is for when the character can be hired, but has not been yet.
 /// [hired] is for when the character has been added to the team.
@@ -154,15 +153,15 @@ class HiringBustRenderObject extends FlareRenderBox {
     load();
   }
 
-  /// The FlareRenderBox leaves the responsibility of loading content 
+  /// The FlareRenderBox leaves the responsibility of loading content
   /// to the implementation, so we need to load our content here.
   @override
   void load() {
-    if (assetBundle == null || _filename == null) {
-      return;
-    }
-
-    cachedActor(assetBundle, _filename).then((FlutterActor actor) {
+    super.load();
+    loadFlare(_filename).then((FlutterActor actor) {
+      if (actor == null) {
+        return;
+      }
       _actor = DesaturatedActor();
       _actor.copyFlutterActor(actor);
       _artboard = _actor.artboard as FlutterActorArtboard;

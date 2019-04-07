@@ -15,6 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   NpcStyle hero;
+  Timer _swapHeroTimer;
   static const Color backgroundColor = Color.fromRGBO(38, 38, 47, 1.0);
   @override
   void initState() {
@@ -26,7 +27,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     setState(() {
       hero = NpcStyle.random();
     });
-    Timer(Duration(seconds: 10), chooseHero);
+    _swapHeroTimer?.cancel();
+    _swapHeroTimer = Timer(Duration(seconds: 10), chooseHero);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _swapHeroTimer?.cancel();
   }
 
   @override
@@ -70,9 +78,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 padding: const EdgeInsets.only(top: 56.0, bottom: 15),
                 child: WelcomeButton(
                     key: const Key('start_game'),
-                    onPressed: () {
+                    onPressed: () async {
                       Provider.of<World>(context, listen: false).start();
-                      Navigator.of(context).pushNamed('/gameloop');
+                      // Stop the hero cycling.
+                      _swapHeroTimer?.cancel();
+                      await Navigator.of(context).pushNamed('/gameloop');
+                      // Back to cycling.
+                      chooseHero();
                     },
                     background: hero.accent,
                     icon: Icons.chevron_right,
@@ -81,8 +93,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ConstrainedBox(
                 constraints: const BoxConstraints(minWidth: double.infinity),
                 child: WelcomeButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(SphinxScreen.routeName);
+                    onPressed: () async {
+                      // Stop the hero cycling.
+                      _swapHeroTimer?.cancel();
+                      await Navigator.of(context)
+                          .pushNamed(SphinxScreen.routeName);
+                      // Back to cycling.
+                      chooseHero();
                     },
                     background: Colors.white.withOpacity(0.15),
                     icon: Icons.settings,

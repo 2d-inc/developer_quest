@@ -1,14 +1,12 @@
 import 'dart:ui' as ui;
 
-import 'package:dev_rpg/src/widgets/flare/flare_cache.dart';
-import 'package:flare_dart/actor_artboard.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_dart/math/aabb.dart';
 
-import 'flare_render_box.dart';
+import 'package:flare_flutter/flare_render_box.dart';
 
 /// Hero avatar for the start screen.
 /// Has a gradient across the bottom.
@@ -145,10 +143,11 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
 
   @override
   void load() {
-    if (assetBundle == null || _filename == null) {
-      return;
-    }
-    cachedActor(assetBundle, _filename).then((FlutterActor actor) {
+    super.load();
+    loadFlare(_filename).then((FlutterActor actor) {
+      if (actor == null) {
+        return;
+      }
       if (_character != null) {
         _crossFade = double.minPositive;
         _nextCharacter = actor.artboard.makeInstance() as FlutterActorArtboard;
@@ -158,7 +157,7 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
       _idle = _character.getAnimation("idle");
       _character.initializeGraphics();
       advance(0.0);
-	  markNeedsPaint();
+      markNeedsPaint();
     });
   }
 }
