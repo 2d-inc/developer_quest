@@ -24,12 +24,14 @@ class HiringBust extends LeafRenderObjectWidget {
   final Alignment alignment;
   final HiringBustState hiringState;
   final String filename;
+  final bool isPlaying;
 
   const HiringBust(
       {this.fit = BoxFit.contain,
       this.alignment = Alignment.center,
       this.hiringState,
-      this.filename});
+      this.filename,
+	  this.isPlaying = false});
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -39,7 +41,7 @@ class HiringBust extends LeafRenderObjectWidget {
       ..fit = fit
       ..alignment = alignment
       ..hiringState = hiringState
-      ..isPlaying = true;
+      ..isPlaying = isPlaying;
   }
 
   @override
@@ -50,7 +52,8 @@ class HiringBust extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..hiringState = hiringState
-      ..alignment = alignment;
+      ..alignment = alignment
+      ..isPlaying = isPlaying;
   }
 
   @override
@@ -69,6 +72,11 @@ class HiringBustRenderObject extends FlareRenderBox {
   HiringBustState _hiringState;
   DesaturatedActor _actor;
   HiringParticles _particles;
+
+  ActorAnimation _idleAnimation;
+  double _idleTime = 0.0;
+
+  ActorAnimation _bust;
 
   HiringBustState get hiringState => _hiringState;
   set hiringState(HiringBustState value) {
@@ -89,9 +97,14 @@ class HiringBustRenderObject extends FlareRenderBox {
 
   @override
   bool advance(double elapsedSeconds) {
+    if (isPlaying && _idleAnimation != null) {
+      _idleTime += elapsedSeconds;
+	  _idleAnimation.apply(_idleTime%_idleAnimation.duration, _artboard, 1.0);
+	  _bust?.apply(0.0, _artboard, 1.0);
+    }
     _artboard?.advance(elapsedSeconds);
     _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
-    return _particles != null;
+    return _particles != null || isPlaying;
   }
 
   /// Provide the correct bounding box for the content we want to draw
@@ -166,7 +179,9 @@ class HiringBustRenderObject extends FlareRenderBox {
       _actor.copyFlutterActor(actor);
       _artboard = _actor.artboard as FlutterActorArtboard;
       // apply the bust animation state.
-      _artboard.getAnimation("bust")?.apply(0.0, _artboard, 1.0);
+      _bust = _artboard.getAnimation("bust");
+	  _bust?.apply(0.0, _artboard, 1.0);
+      _idleAnimation = _artboard.getAnimation("idle");
       _artboard.initializeGraphics();
       _actor.desaturate = _hiringState != HiringBustState.hired;
 
