@@ -20,9 +20,8 @@ class ProjectPickerModal extends StatelessWidget {
 
         if (index == 0) {
           // TODO: extract this above the list view
-          return Padding(
-              padding:
-                  const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+          return const Padding(
+              padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
               child:
                   Text("AVAILABLE PROJECTS", style: TextStyle(fontSize: 11)));
         }
@@ -38,19 +37,19 @@ class ProjectPickerModal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(blueprint.name, style: TextStyle(fontSize: 16)),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                    Text(blueprint.name, style: const TextStyle(fontSize: 16)),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
                       child: Text("COMPLETION REWARD:",
                           style: TextStyle(fontSize: 11)),
                     ),
                     Row(children: <Widget>[
                       const Icon(Icons.stars, size: 16),
                       Text(blueprint.userReward.toString(),
-                          style: TextStyle(fontSize: 12))
+                          style: const TextStyle(fontSize: 12))
                     ]),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
                       child: Text("SKILLS REQUIRED:",
                           style: TextStyle(fontSize: 11)),
                     ),

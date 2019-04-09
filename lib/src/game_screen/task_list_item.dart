@@ -47,7 +47,8 @@ class TaskListItem extends StatelessWidget {
               child: Row(
                 children: [
                   Text(workItem.name,
-                      style: TextStyle(fontSize: 14, color: Colors.black)),
+                      style:
+                          const TextStyle(fontSize: 14, color: Colors.black)),
                   workItem is Task && workItem.state == TaskState.completed
                       ? Container(
                           margin: const EdgeInsets.only(left: 5.0),
@@ -58,7 +59,7 @@ class TaskListItem extends StatelessWidget {
                               Radius.circular(5.0),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Ship it!!",
                             style:
                                 TextStyle(fontSize: 10.0, color: Colors.black),
