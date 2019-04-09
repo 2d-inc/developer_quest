@@ -90,8 +90,19 @@ sleep 5
 ACTUAL_CPU_FREQ=`adb shell "cat ${ROOT}/scaling_cur_freq"`
 echo "                - actual: ${ACTUAL_CPU_FREQ}"
 
-# No need to disable CPUs on a Nexus 5.
+# According to Skia, no need to disable CPUs on a Nexus 5.
 # https://github.com/google/skia/blob/e25b4472cdd9f09cd393c9c34651218507c9847b/infra/bots/recipe_modules/flavor/android.py#L145
+# But actually, Nexus 5 does scale other CPUs.
+
+CPU_ONLINE=0
+for n in 1 2 3
+do
+    echo "Turning CPU ${n} to: ${CPU_ONLINE}"
+    adb shell "echo ${CPU_ONLINE} > /sys/devices/system/cpu/cpu${n}/online"
+    ACTUAL=`adb shell "cat /sys/devices/system/cpu/cpu${n}/online"`
+    echo "        - actual: ${ACTUAL}"
+done
+
 
 # --- GPU ---
 
