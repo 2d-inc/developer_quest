@@ -111,8 +111,9 @@ Future<void> _save(Timeline timeline) async {
     buildTimes,
     name: id,
   );
-
   var additional = parse(timeline, summary);
+  var frameRequestStats = Statistic.from(
+      additional.frameRequestDurations.map((d) => d.inMicroseconds));
 
   IOSink stats;
   try {
@@ -139,6 +140,8 @@ Future<void> _save(Timeline timeline) async {
     stats.write('\t');
     stats.write(additional.fps);
     stats.write('\t');
+    stats.write(frameRequestStats.mean);
+    stats.write('\t');
     stats.write(additional.dartPercentage);
     stats.write('\t');
     stats.write(additional.dartPhaseEvents);
@@ -161,15 +164,23 @@ Future<void> _save(Timeline timeline) async {
   try {
     durations =
         File('test_driver/durations.tsv').openWrite(mode: FileMode.append);
-    var length = max(buildTimes.length, rasterizerTimes.length);
+    var length = [
+      buildTimes.length,
+      rasterizerTimes.length,
+      additional.frameRequestDurations.length
+    ].fold(0, max);
     for (int i = 0; i < length; i++) {
       var build = i < buildTimes.length ? buildTimes[i].toString() : '';
       var rasterizer =
           i < rasterizerTimes.length ? rasterizerTimes[i].toString() : '';
+      var frameRequest = i < additional.frameRequestDurations.length
+          ? additional.frameRequestDurations[i].inMicroseconds.toString()
+          : '';
       var row = <String>[
         id,
         build,
         rasterizer,
+        frameRequest,
         gitSha,
         description,
       ].join('\t');
