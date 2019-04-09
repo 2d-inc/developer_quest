@@ -119,9 +119,10 @@ Future<void> _save(Timeline timeline) async {
     stats = File('test_driver/perf_stats.tsv').openWrite(mode: FileMode.append);
     // Add general build time statistics.
     stats.write(buildTimesStat.toTSV());
-    // Add additional useful stats from the TimelineSummary.
+    // Add description.
     stats.write('\t');
     stats.write(description);
+    // Add additional useful stats from the TimelineSummary.
     stats.write('\t');
     stats.write(summary.computePercentileFrameBuildTimeMillis(90.0));
     stats.write('\t');
@@ -131,6 +132,7 @@ Future<void> _save(Timeline timeline) async {
     stats.write('\t');
     stats.write(summary.computeMissedFrameBuildBudgetCount());
     stats.write('\t');
+    // Add things from parse_timeline.dart.
     stats.write(additional.length.inMicroseconds);
     stats.write('\t');
     stats.write(additional.frames);
@@ -146,6 +148,10 @@ Future<void> _save(Timeline timeline) async {
     stats.write(additional.expiredTasksEvents);
     stats.write('\t');
     stats.write(additional.expiredTasksDuration.inMicroseconds);
+    // Add timestamp.
+    stats.write('\t');
+    stats.write(now.toIso8601String());
+    // End line.
     stats.writeln();
   } finally {
     await stats?.close();
