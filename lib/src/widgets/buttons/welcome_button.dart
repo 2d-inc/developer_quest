@@ -1,3 +1,4 @@
+import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
 import 'package:flutter/material.dart';
 
@@ -65,8 +66,7 @@ class _WelcomeButtonState extends State<WelcomeButton>
                     ),
                     const SizedBox(width: 13),
                     Text(widget.label.toUpperCase(),
-                        style: TextStyle(
-                            fontFamily: "MontserratMedium", fontSize: 16))
+                        style: buttonTextStyle.apply(color: Colors.white))
                   ],
                 ),
               ),

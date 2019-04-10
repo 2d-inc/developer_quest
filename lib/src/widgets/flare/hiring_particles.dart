@@ -24,12 +24,14 @@ class HiringParticle {
 /// for the hiring bust. It's reponsible for instancing, destroying, moving, and
 /// painting the particles.
 class HiringParticles {
+  final Color color;
   final List<HiringParticle> _particles = [];
   static const int particleCount = 20;
   static const double particleSize = 10.0;
   final Random _random = Random();
   double elapsedSinceEmission = 0.0;
 
+  HiringParticles({this.color});
   void advance(double elapsedSeconds, Size size) {
     if (_particles.isEmpty) {
       while (_particles.length < particleCount) {
@@ -85,8 +87,8 @@ class HiringParticles {
               ox + po.dx - radius, po.dy + fullRadius - radius, size, size),
           Paint()
             ..style = PaintingStyle.fill
-            ..color = Color.fromRGBO(
-                0, 152, 255, particle.opacity.clamp(0.0, 1.0).toDouble()));
+            ..color =
+                color.withOpacity(particle.opacity.clamp(0.0, 1.0).toDouble()));
     }
   }
 }

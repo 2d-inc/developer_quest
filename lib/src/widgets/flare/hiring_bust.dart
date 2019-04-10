@@ -25,35 +25,41 @@ class HiringBust extends LeafRenderObjectWidget {
   final HiringBustState hiringState;
   final String filename;
   final bool isPlaying;
+  final Color particleColor;
 
   const HiringBust(
       {this.fit = BoxFit.contain,
       this.alignment = Alignment.center,
       this.hiringState,
       this.filename,
-	  this.isPlaying = false});
+      this.particleColor,
+      this.isPlaying = false});
 
   @override
   RenderObject createRenderObject(BuildContext context) {
     return HiringBustRenderObject()
+      ..particleColor = particleColor
       ..assetBundle = DefaultAssetBundle.of(context)
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
       ..hiringState = hiringState
-      ..isPlaying = isPlaying;
+      ..playIdleAnimation = isPlaying
+      ..isPlaying = isPlaying || hiringState == HiringBustState.available;
   }
 
   @override
   void updateRenderObject(
       BuildContext context, covariant HiringBustRenderObject renderObject) {
     renderObject
+      ..particleColor = particleColor
       ..assetBundle = DefaultAssetBundle.of(context)
       ..filename = filename
       ..fit = fit
       ..hiringState = hiringState
       ..alignment = alignment
-      ..isPlaying = isPlaying;
+      ..playIdleAnimation = isPlaying
+      ..isPlaying = isPlaying || hiringState == HiringBustState.available;
   }
 
   @override
@@ -75,6 +81,8 @@ class HiringBustRenderObject extends FlareRenderBox {
 
   ActorAnimation _idleAnimation;
   double _idleTime = 0.0;
+  Color particleColor;
+  bool playIdleAnimation;
 
   ActorAnimation _bust;
 
@@ -86,7 +94,7 @@ class HiringBustRenderObject extends FlareRenderBox {
     _hiringState = value;
     _actor?.desaturate = value != HiringBustState.hired;
     if (value == HiringBustState.available) {
-      _particles = HiringParticles();
+      _particles = HiringParticles(color: particleColor);
     } else {
       _particles = null;
     }
@@ -97,14 +105,14 @@ class HiringBustRenderObject extends FlareRenderBox {
 
   @override
   bool advance(double elapsedSeconds) {
-    if (isPlaying && _idleAnimation != null) {
+    if (playIdleAnimation && _idleAnimation != null) {
       _idleTime += elapsedSeconds;
-	  _idleAnimation.apply(_idleTime%_idleAnimation.duration, _artboard, 1.0);
-	  _bust?.apply(0.0, _artboard, 1.0);
+      _idleAnimation.apply(_idleTime % _idleAnimation.duration, _artboard, 1.0);
+      _bust?.apply(0.0, _artboard, 1.0);
     }
     _artboard?.advance(elapsedSeconds);
     _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
-    return _particles != null || isPlaying;
+    return isPlaying;
   }
 
   /// Provide the correct bounding box for the content we want to draw
@@ -180,7 +188,7 @@ class HiringBustRenderObject extends FlareRenderBox {
       _artboard = _actor.artboard as FlutterActorArtboard;
       // apply the bust animation state.
       _bust = _artboard.getAnimation("bust");
-	  _bust?.apply(0.0, _artboard, 1.0);
+      _bust?.apply(0.0, _artboard, 1.0);
       _idleAnimation = _artboard.getAnimation("idle");
       _artboard.initializeGraphics();
       _actor.desaturate = _hiringState != HiringBustState.hired;

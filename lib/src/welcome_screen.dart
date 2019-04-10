@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dev_rpg/src/game_screen/npc_style.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
@@ -16,7 +17,6 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   NpcStyle hero;
   Timer _swapHeroTimer;
-  static const Color backgroundColor = Color.fromRGBO(38, 38, 47, 1.0);
   @override
   void initState() {
     chooseHero();
@@ -41,7 +41,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: backgroundColor,
+        color: contentColor,
         child: Padding(
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 83.0,
@@ -56,7 +56,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   filename: hero.flare,
                   alignment: Alignment.bottomCenter,
                   fit: BoxFit.cover,
-                  gradient: backgroundColor,
+                  gradient: contentColor,
                 ),
               ),
               const Text(
