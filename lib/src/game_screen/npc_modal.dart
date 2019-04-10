@@ -2,6 +2,7 @@ import 'package:dev_rpg/src/game_screen/npc_style.dart';
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:flutter/material.dart';
@@ -82,30 +83,18 @@ class NpcModal extends StatelessWidget {
                     children: [
                       Text(
                         "Level ${npc.level}",
-                        style: const TextStyle(
-                          fontFamily: "MontserratRegular",
-                          fontSize: 16,
-                          color: Color.fromRGBO(111, 111, 118, 1.0),
-                        ),
+                        style: contentStyle.apply(color: secondaryContentColor),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 7.0, bottom: 6.0),
                         child: Text(
                           npcStyle.name,
-                          style: const TextStyle(
-                            fontFamily: "MontserratRegular",
-                            fontSize: 24,
-                            color: Color.fromRGBO(38, 38, 47, 1.0),
-                          ),
+                          style: contentLargeStyle,
                         ),
                       ),
                       Text(
                         npcStyle.description,
-                        style: const TextStyle(
-                          fontFamily: "MontserratRegular",
-                          fontSize: 14,
-                          color: Color.fromRGBO(111, 111, 118, 1.0),
-                        ),
+                        style: contentSmallStyle,
                       ),
                       Column(
                         children: npc.prowess.keys
@@ -118,29 +107,18 @@ class NpcModal extends StatelessWidget {
                                           children: [
                                             Row(children: [
                                               const Icon(Icons.chevron_right,
-                                                  color: Color.fromRGBO(
-                                                      5, 59, 73, 1.0)),
+                                                  color: skillTextColor),
                                               const SizedBox(width: 4),
                                               Text(
                                                 skillDisplayName[skill],
-                                                style: const TextStyle(
-                                                  fontFamily:
-                                                      "MontserratRegular",
-                                                  fontSize: 16,
-                                                  color: Color.fromRGBO(
-                                                      5, 59, 73, 1.0),
-                                                ),
+                                                style: contentStyle.apply(
+                                                    color: skillTextColor),
                                               )
                                             ]),
                                             Expanded(child: Container()),
                                             Text(
                                               npc.prowess[skill].toString(),
-                                              style: const TextStyle(
-                                                fontFamily: "MontserratRegular",
-                                                fontSize: 24,
-                                                color: Color.fromRGBO(
-                                                    38, 38, 47, 1.0),
-                                              ),
+                                              style: contentLargeStyle,
                                             )
                                           ],
                                         ),
@@ -168,17 +146,15 @@ class NpcModal extends StatelessWidget {
                         paddingTweak: const EdgeInsets.only(right: -7.0),
                         background: npc.canUpgrade
                             ? const Color.fromRGBO(84, 114, 239, 1.0)
-                            : const Color.fromRGBO(38, 38, 47, 0.1),
+                            : contentColor.withOpacity(0.1),
                         child: Row(
                           children: [
                             Text(
                               npc.isHired ? "UPGRADE" : "HIRE",
-                              style: TextStyle(
-                                fontFamily: "MontserratMedium",
-                                fontSize: 16,
+                              style: buttonTextStyle.apply(
                                 color: npc.canUpgrade
                                     ? Colors.white
-                                    : const Color.fromRGBO(38, 38, 47, 0.25),
+                                    : contentColor.withOpacity(0.25),
                               ),
                             ),
                             Expanded(child: Container()),
@@ -187,12 +163,11 @@ class NpcModal extends StatelessWidget {
                             const SizedBox(width: 4),
                             Text(
                               npc.upgradeCost.toString(),
-                              style: TextStyle(
-                                fontFamily: "MontserratMedium",
-                                fontSize: 14,
+                              style: buttonTextStyle.apply(
+                                fontSizeDelta: -2,
                                 color: npc.canUpgrade
                                     ? const Color.fromRGBO(241, 241, 241, 1.0)
-                                    : const Color.fromRGBO(38, 38, 47, 0.25),
+                                    : contentColor.withOpacity(0.25),
                               ),
                             )
                           ],
