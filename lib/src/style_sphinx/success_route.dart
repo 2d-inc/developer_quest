@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:dev_rpg/src/style_sphinx/fonts.dart';
 import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
@@ -106,15 +105,14 @@ class SuccessRoute extends PageRoute<Animation<double>> {
             child: Column(
               children: [
                 TextBubble(
-                  bottomPadding: 28,
                   child: Column(
                     children: [
-                      JoystixText(
+                      Text(
                         title,
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 16),
-                      JoystixText(
+                      Text(
                         message,
                       ),
                       const SizedBox(height: 16),
@@ -156,7 +154,7 @@ class ProceedButton extends StatelessWidget {
       child: FlatButton(
         onPressed: () {},
         color: Colors.black,
-        child: JoystixText(
+        child: Text(
           text,
           style: const TextStyle(
             color: Colors.white,

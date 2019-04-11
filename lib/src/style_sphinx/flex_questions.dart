@@ -1,5 +1,4 @@
 import 'package:dev_rpg/src/style_sphinx/breathing_animations.dart';
-import 'package:dev_rpg/src/style_sphinx/fonts.dart';
 import 'package:dev_rpg/src/style_sphinx/kittens.dart';
 import 'package:dev_rpg/src/style_sphinx/question_scaffold.dart';
 import 'package:dev_rpg/src/style_sphinx/success_route.dart';
@@ -95,7 +94,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          JoystixText(
+          Text(
             widget.instructions,
             style: const TextStyle(fontSize: 16),
           ),
@@ -104,7 +103,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
             children: [
               DropdownButton<Type>(
                 hint: const Faded(
-                  child: MonoText(
+                  child: Text(
                     'Widget',
                     style: TextStyle(
                       color: Colors.black,
@@ -114,7 +113,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
                 ),
                 items: const [
                   DropdownMenuItem<Type>(
-                    child: MonoText(
+                    child: Text(
                       'Row',
                       style: TextStyle(
                         fontSize: 22,
@@ -123,7 +122,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
                     value: Row,
                   ),
                   DropdownMenuItem<Type>(
-                    child: MonoText(
+                    child: Text(
                       'Column',
                       style: TextStyle(
                         fontSize: 22,
@@ -132,7 +131,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
                     value: Column,
                   ),
                   DropdownMenuItem<Type>(
-                    child: MonoText(
+                    child: Text(
                       'Stack',
                       style: TextStyle(
                         fontSize: 22,
@@ -145,15 +144,15 @@ class _FlexQuestionState extends State<_FlexQuestion> {
                 // When a user selects an option from the Dropdown
                 onChanged: onDropdownChange,
               ),
-              const MonoText('(')
+              const Text('(')
             ],
             crossAxisAlignment: WrapCrossAlignment.center,
           ),
-          const MonoText('  children: <Widget>['),
-          const MonoText('    Image.asset(\'blue_kitty.png\')'),
-          const MonoText('    Image.asset(\'brown_kitty.png\')'),
-          const MonoText('  ],'),
-          const MonoText('),'),
+          const Text('  children: <Widget>['),
+          const Text('    Image.asset(\'blue_kitty.png\')'),
+          const Text('    Image.asset(\'brown_kitty.png\')'),
+          const Text('  ],'),
+          const Text('),'),
         ],
       ),
     );
