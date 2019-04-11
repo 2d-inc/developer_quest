@@ -51,6 +51,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/style_sphinx/
+    - assets/style_sphinx/2.0x/
+    - assets/style_sphinx/3.0x/
     - assets/images/
     - assets/images/2.0x/
     - assets/images/3.0x/
@@ -66,9 +68,3 @@ flutter:
       - family: MontserratRegular
         fonts:
           - asset: assets/fonts/Montserrat-Regular.otf
-      - family: Joystix
-        fonts:
-          - asset: assets/style_sphinx/joystix_monospace.ttf
-      - family: RobotoMono
-        fonts:
-          - asset: assets/style_sphinx/RobotoMono-Regular.ttf
