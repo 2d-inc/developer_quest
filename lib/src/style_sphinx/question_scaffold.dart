@@ -15,6 +15,7 @@ class QuestionScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(246, 216, 204, 1),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,7 +34,9 @@ class QuestionScaffold extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Positioned.fill(
-                  child: Container(color: Colors.grey[300]),
+                  child: Container(
+                    color: const Color.fromRGBO(252, 235, 227, 1),
+                  ),
                 ),
                 Positioned.fill(
                   child: Padding(

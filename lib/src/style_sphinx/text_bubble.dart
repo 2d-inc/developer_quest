@@ -16,7 +16,7 @@ class TextBubble extends StatelessWidget {
   const TextBubble({
     @required this.child,
     Key key,
-    this.padding = const EdgeInsets.all(24),
+    this.padding = const EdgeInsets.all(16),
     this.direction = TextBubbleDirection.left,
     this.radius = const Radius.circular(10),
     this.indicatorSize = const Size(35, 20),
@@ -52,6 +52,7 @@ class TextBubble extends StatelessWidget {
                 style: TextStyle(
                   color: Colors.black,
                   fontFamily: 'MontserratRegular',
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -100,7 +101,7 @@ class _TextBubbleBackgroundPainter extends CustomPainter {
     // After drawing the top and bottom-right corner, use the direction to
     // determine which indicator to draw: Facing left or right.
     if (direction == TextBubbleDirection.left) {
-      final startX = 0 + radius.x + size.width / 4;
+      final startX = size.width - radius.x - size.width / 6;
       final endX = startX - indicatorSize.width;
 
       path
@@ -108,7 +109,7 @@ class _TextBubbleBackgroundPainter extends CustomPainter {
         ..lineTo(endX, bubbleBottom + indicatorSize.height)
         ..lineTo(endX, bubbleBottom);
     } else {
-      final startX = size.width - radius.x - (size.width / 4);
+      final startX = radius.x + indicatorSize.width + size.width / 6;
       final endX = startX - indicatorSize.width;
 
       path

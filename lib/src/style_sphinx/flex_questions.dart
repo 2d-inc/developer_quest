@@ -75,8 +75,8 @@ class _FlexQuestion extends StatefulWidget {
 class _FlexQuestionState extends State<_FlexQuestion> {
   Type _type;
   final _kittens = <KittyType>[
-    KittyType.blue,
-    KittyType.brown,
+    KittyType.orange,
+    KittyType.yellow,
   ];
 
   @override
