@@ -16,6 +16,7 @@ abstract class WorkItem extends Aspect with ChildAspect {
 
   bool get isComplete => percentComplete == 1.0;
   List<Skill> get skillsNeeded => difficulty.keys.toList(growable: false);
+  bool get isBeingWorkedOn => _assignedTeam?.isNotEmpty ?? false;
 
   /// Reduce the length of time to complete a task with a boost.
   double _boost = 1.0;
