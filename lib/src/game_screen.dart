@@ -32,6 +32,7 @@ class GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(59, 59, 73, 1.0),
       appBar: AppBar(
         title: Consumer<Company>(
           builder: (context, company) {
