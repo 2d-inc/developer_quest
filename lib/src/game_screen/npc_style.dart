@@ -18,30 +18,29 @@ class NpcStyle {
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description:
             "Digital Druid-type. She is so at-one with the code that 1s and 0s "
-			"are falling from her hair. Her skin is partially a mesh wireframe "
-			"as she becomes ever-closer to the code."),
+            "are falling from her hair. Her skin is partially a mesh wireframe "
+            "as she becomes ever-closer to the code."),
     "architect": NpcStyle(
         name: "The Architect",
         flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
         description:
             "Helps provide structure and improve code health ​when with other "
-			"characters​. Probably has a ton of books and a head full of ideas. "
-			"A real wizard."),
+            "characters​. Probably has a ton of books and a head full of ideas. "
+            "A real wizard."),
     "tpm": NpcStyle(
         name: "TPM",
         flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
-		description: 
-			"The good ol' bard. Promotes group harmony and increases "
-			"everyone else's abilities if sent on a task with others."),
+        description: "The good ol' bard. Promotes group harmony and increases "
+            "everyone else's abilities if sent on a task with others."),
     "avant_garde_designer": NpcStyle(
         name: "Avant Garde Designer",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
-		description: 
-			"Super stylish, always wears chic glasses. Improves team execution "
-			"by inspiring them with great designs for the app."),
+        description:
+            "Super stylish, always wears chic glasses. Improves team execution "
+            "by inspiring them with great designs for the app."),
     "leo": NpcStyle(
         name: "Leonardo",
         flare: "assets/flare/TheRefactorer.flr",
@@ -50,10 +49,10 @@ class NpcStyle {
         name: "The Hacker",
         flare: "assets/flare/TheHacker.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
-		description: 
-			"A reasonable coder on her own, but excels at finding and fixing "
-			"security flaws and discovering unique solutions to problems. She "
-			"may have sniffed your email password while you read this description."),
+        description:
+            "A reasonable coder on her own, but excels at finding and fixing "
+            "security flaws and discovering unique solutions to problems. She "
+            "may have sniffed your email password while you read this description."),
   };
 
   NpcStyle({this.flare, this.accent, this.name, this.description = "N/A"});
