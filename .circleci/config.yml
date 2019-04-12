@@ -21,7 +21,6 @@ jobs:
             git clone https://github.com/flutter/flutter.git -b master
             ./flutter/bin/flutter doctor
 
-
       - run:
           name: Check formatting
           command: |

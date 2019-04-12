@@ -71,7 +71,7 @@ class _AddTaskButtonState extends State<AddTaskButton> {
             Expanded(
               child: Text(
                 widget.label,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
             Container(
