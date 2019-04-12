@@ -20,9 +20,9 @@ class StatBadge extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: const EdgeInsets.all(5.0),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: const BorderRadius.all(
+              borderRadius: BorderRadius.all(
                 Radius.circular(5.0),
               ),
             ),
