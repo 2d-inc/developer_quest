@@ -40,13 +40,23 @@ class QuestionScaffold extends StatelessWidget {
                 ),
                 Positioned.fill(
                   child: Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                      top: 0,
+                      bottom: 48,
+                    ),
                     child: expected,
                   ),
                 ),
                 Positioned.fill(
                   child: Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                      top: 0,
+                      bottom: 48,
+                    ),
                     child: actual,
                   ),
                 ),

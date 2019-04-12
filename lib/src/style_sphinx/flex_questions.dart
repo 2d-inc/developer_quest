@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dev_rpg/src/style_sphinx/breathing_animations.dart';
 import 'package:dev_rpg/src/style_sphinx/kittens.dart';
 import 'package:dev_rpg/src/style_sphinx/question_scaffold.dart';
@@ -85,6 +86,12 @@ class _FlexQuestionState extends State<_FlexQuestion> {
 
   @override
   Widget build(BuildContext context) {
+    const dropdownTextStyle = TextStyle(
+      color: Colors.white,
+      fontSize: 16,
+      fontFamily: 'MontserratRegular',
+    );
+
     return QuestionScaffold(
       expected: FlexQuestionExpected(
         kittens: _kittens,
@@ -103,64 +110,75 @@ class _FlexQuestionState extends State<_FlexQuestion> {
           color: Color.fromRGBO(85, 34, 34, 1),
           fontFamily: 'MontserratMedium',
           fontSize: 16,
-          height: 1,
+          height: 1.2,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            Text(
+            AutoSizeText(
               widget.instructions,
-              style: const TextStyle(
-                fontSize: 24,
-                height: 1,
-              ),
+              style: const TextStyle(fontSize: 24, height: 1),
+              maxLines: 2,
             ),
             const SizedBox(height: 16),
             Wrap(
               children: [
-                DropdownButton<Type>(
-                  hint: const Faded(
-                    child: Text(
-                      'Widget',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    right: 6,
+                    top: 4,
+                    bottom: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    color: const Color.fromRGBO(85, 34, 34, 1),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        canvasColor: const Color.fromRGBO(85, 34, 34, 1),
+                      ),
+                      child: DropdownButton<Type>(
+                        iconEnabledColor: Colors.white,
+                        isDense: true,
+                        hint: const Faded(
+                          child: Text(
+                            'Widget',
+                            style: dropdownTextStyle,
+                          ),
+                        ),
+                        items: const [
+                          DropdownMenuItem<Type>(
+                            child: Text(
+                              'Row',
+                              style: dropdownTextStyle,
+                            ),
+                            value: Row,
+                          ),
+                          DropdownMenuItem<Type>(
+                            child: Text(
+                              'Column',
+                              style: dropdownTextStyle,
+                            ),
+                            value: Column,
+                          ),
+                          DropdownMenuItem<Type>(
+                            child: Text(
+                              'Stack',
+                              style: dropdownTextStyle,
+                            ),
+                            value: Stack,
+                          ),
+                        ],
+                        value: _type,
+                        // When a user selects an option from the Dropdown
+                        onChanged: _onDropdownChange,
                       ),
                     ),
                   ),
-                  items: const [
-                    DropdownMenuItem<Type>(
-                      child: Text(
-                        'Row',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
-                      value: Row,
-                    ),
-                    DropdownMenuItem<Type>(
-                      child: Text(
-                        'Column',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
-                      value: Column,
-                    ),
-                    DropdownMenuItem<Type>(
-                      child: Text(
-                        'Stack',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
-                      value: Stack,
-                    ),
-                  ],
-                  value: _type,
-                  // When a user selects an option from the Dropdown
-                  onChanged: _onDropdownChange,
                 ),
                 const Text('(')
               ],
@@ -170,7 +188,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
             const Text('        Image.asset(\'orange_kitty.png\')'),
             const Text('        Image.asset(\'yellow_kitty.png\')'),
             const Text('    ],'),
-            const Text('),'),
+            const Text(');'),
           ],
         ),
       ),
