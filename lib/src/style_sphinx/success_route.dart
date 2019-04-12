@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
 import 'package:flutter/material.dart';
@@ -85,8 +86,12 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     final scaleAnimation =
         Tween<double>(begin: 0.3, end: 1).chain(curveTween).animate(animation);
 
+    void proceed() {
+      Navigator.pop(context, animation);
+    }
+
     return GestureDetector(
-      onTap: () => Navigator.pop(context, animation),
+      onTap: proceed,
       child: AnimatedBuilder(
         animation: animation,
         builder: (context, child) {
@@ -103,6 +108,7 @@ class SuccessRoute extends PageRoute<Animation<double>> {
           child: Material(
             color: Colors.transparent,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextBubble(
                   child: Column(
@@ -116,11 +122,14 @@ class SuccessRoute extends PageRoute<Animation<double>> {
                         message,
                       ),
                       const SizedBox(height: 16),
-                      ProceedButton(text: buttonText),
+                      SphinxButton(
+                        child: Text(buttonText),
+                        onPressed: proceed,
+                      ),
                     ],
                   ),
                 ),
-                const SphinxImage(),
+                const Flexible(child: SphinxImage()),
               ],
             ),
           ),

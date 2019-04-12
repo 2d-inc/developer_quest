@@ -49,7 +49,7 @@ class StackQuestion extends StatelessWidget {
     return const _FlexQuestion(
       type: Stack,
       instructions:
-          '''Select the correct Widget to position on kitty on top of the other''',
+          '''Select the correct Widget to position both kitties on the same bed''',
       successMessage:
           '''A Stack widget layers its children one on top of the next.''',
     );
@@ -60,11 +60,13 @@ class _FlexQuestion extends StatefulWidget {
   final Type type;
   final String successMessage;
   final String instructions;
+  final double itemWidth;
 
   const _FlexQuestion({
     @required this.type,
     @required this.successMessage,
     @required this.instructions,
+    this.itemWidth = 120,
     Key key,
   }) : super(key: key);
 
@@ -73,11 +75,13 @@ class _FlexQuestion extends StatefulWidget {
 }
 
 class _FlexQuestionState extends State<_FlexQuestion> {
-  Type _type;
   final _kittens = <KittyType>[
     KittyType.orange,
     KittyType.yellow,
   ];
+  Type _type;
+
+  bool get _isCorrect => _type == widget.type;
 
   @override
   Widget build(BuildContext context) {
@@ -85,88 +89,101 @@ class _FlexQuestionState extends State<_FlexQuestion> {
       expected: FlexQuestionExpected(
         kittens: _kittens,
         type: widget.type,
+        bedWidth: widget.itemWidth,
       ),
       actual: FlexQuestionActual(
         kittens: _kittens,
-        type: _type,
+        actualType: _type,
+        expectedType: widget.type,
+        bouncing: !_isCorrect,
+        kittyWidth: widget.itemWidth,
       ),
-      question: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          Text(
-            widget.instructions,
-            style: const TextStyle(fontSize: 16),
-          ),
-          const SizedBox(height: 16),
-          Wrap(
-            children: [
-              DropdownButton<Type>(
-                hint: const Faded(
-                  child: Text(
-                    'Widget',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-                items: const [
-                  DropdownMenuItem<Type>(
-                    child: Text(
-                      'Row',
-                      style: TextStyle(
-                        fontSize: 22,
-                      ),
-                    ),
-                    value: Row,
-                  ),
-                  DropdownMenuItem<Type>(
-                    child: Text(
-                      'Column',
-                      style: TextStyle(
-                        fontSize: 22,
-                      ),
-                    ),
-                    value: Column,
-                  ),
-                  DropdownMenuItem<Type>(
-                    child: Text(
-                      'Stack',
-                      style: TextStyle(
-                        fontSize: 22,
-                      ),
-                    ),
-                    value: Stack,
-                  ),
-                ],
-                value: _type,
-                // When a user selects an option from the Dropdown
-                onChanged: onDropdownChange,
+      question: DefaultTextStyle(
+        style: const TextStyle(
+          color: Color.fromRGBO(85, 34, 34, 1),
+          fontFamily: 'MontserratMedium',
+          fontSize: 16,
+          height: 1,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            Text(
+              widget.instructions,
+              style: const TextStyle(
+                fontSize: 24,
+                height: 1,
               ),
-              const Text('(')
-            ],
-            crossAxisAlignment: WrapCrossAlignment.center,
-          ),
-          const Text('  children: <Widget>['),
-          const Text('    Image.asset(\'blue_kitty.png\')'),
-          const Text('    Image.asset(\'brown_kitty.png\')'),
-          const Text('  ],'),
-          const Text('),'),
-        ],
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              children: [
+                DropdownButton<Type>(
+                  hint: const Faded(
+                    child: Text(
+                      'Widget',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem<Type>(
+                      child: Text(
+                        'Row',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                      value: Row,
+                    ),
+                    DropdownMenuItem<Type>(
+                      child: Text(
+                        'Column',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                      value: Column,
+                    ),
+                    DropdownMenuItem<Type>(
+                      child: Text(
+                        'Stack',
+                        style: TextStyle(
+                          fontSize: 22,
+                        ),
+                      ),
+                      value: Stack,
+                    ),
+                  ],
+                  value: _type,
+                  // When a user selects an option from the Dropdown
+                  onChanged: _onDropdownChange,
+                ),
+                const Text('(')
+              ],
+              crossAxisAlignment: WrapCrossAlignment.center,
+            ),
+            const Text('    children: <Widget>['),
+            const Text('        Image.asset(\'orange_kitty.png\')'),
+            const Text('        Image.asset(\'yellow_kitty.png\')'),
+            const Text('    ],'),
+            const Text('),'),
+          ],
+        ),
       ),
     );
   }
 
-  void onDropdownChange(Type type) {
+  void _onDropdownChange(Type type) {
     // Update the state to show the change
-    setState(() {
-      _type = type;
-    });
+    setState(() => _type = type);
 
     // Then, if the user has selected the correct option, display the Success
     // Sphinx!
-    if (type == widget.type) {
+    if (_isCorrect) {
       navigateToNextQuestion(
         context,
         widget.successMessage,
@@ -179,30 +196,34 @@ class FlexQuestionExpected extends StatelessWidget {
   final List<KittyType> kittens;
   final Type type;
   final EdgeInsets iconPadding;
-  final double iconSize;
+  final double bedWidth;
 
   const FlexQuestionExpected({
     @required this.kittens,
     @required this.type,
+    @required this.bedWidth,
     this.iconPadding = const EdgeInsets.all(4),
-    this.iconSize = 100,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final children = kittens.map((type) {
-      return Padding(
-        padding: iconPadding,
-        child: SizedBox(
-          width: iconSize,
-          height: iconSize,
-          child: KittyBed(
-            type: type,
-          ),
+    var children = kittens.map<Widget>((type) {
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: bedWidth,
+        ),
+        child: KittyBed(
+          type: type,
         ),
       );
     }).toList();
+
+    if (type == Column || type == Row) {
+      children = children
+          .map((child) => Expanded(child: Align(child: child)))
+          .toList();
+    }
 
     switch (type) {
       case Column:
@@ -211,72 +232,62 @@ class FlexQuestionExpected extends StatelessWidget {
         return Row(children: children);
       case Stack:
       default:
-        return Stack(
-          children: List.generate(
-            children.length,
-            (i) {
-              return Padding(
-                padding: EdgeInsets.all(i * 8.0),
-                child: children[i],
-              );
-            },
-          ),
-        );
+        return Stack(children: [children.first]);
     }
   }
 }
 
 class FlexQuestionActual extends StatelessWidget {
   final List<KittyType> kittens;
-  final Type type;
+  final Type actualType;
+  final Type expectedType;
   final EdgeInsets iconPadding;
-  final double iconSize;
+  final double kittyWidth;
+  final bool bouncing;
 
   const FlexQuestionActual({
     @required this.kittens,
-    @required this.type,
+    @required this.actualType,
+    @required this.expectedType,
+    @required this.bouncing,
+    @required this.kittyWidth,
     this.iconPadding = const EdgeInsets.all(4),
-    this.iconSize = 100,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bouncingChildren = kittens.map((type) {
-      return Padding(
-        padding: iconPadding,
-        child: Bouncy(
-          child: SizedBox(
-            child: Kitty(type: type),
-            width: iconSize,
-            height: iconSize,
-          ),
-        ),
+    final children = kittens.map<Widget>((type) {
+      final kitty = Kitty(type: type);
+      final child = ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: kittyWidth),
+        child: bouncing ? Bouncy(child: kitty) : kitty,
       );
+
+      return _shouldExpand ? Expanded(child: Align(child: child)) : child;
     }).toList();
 
-    switch (type) {
+    switch (actualType) {
       case Stack:
-        return Stack(
-          children: List.generate(
-            bouncingChildren.length,
-            (i) {
-              return Padding(
-                padding: EdgeInsets.all(i * 8.0),
-                child: bouncingChildren[i],
-              );
-            },
-          ),
-        );
+        return Stack(children: children);
       case Column:
-        return Column(children: bouncingChildren);
+        return Column(children: children);
       case Row:
-        return Row(children: bouncingChildren);
+        return Row(children: children);
       default:
         return _StartingPosition(
-          children: bouncingChildren,
-          type: type,
+          children: children,
+          type: expectedType,
         );
+    }
+  }
+
+  bool get _shouldExpand {
+    switch (actualType) {
+      case Stack:
+        return false;
+      default:
+        return true;
     }
   }
 }
@@ -294,15 +305,15 @@ class _StartingPosition extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case Column:
-        return Row(
+      case Row:
+        return Column(
           children: children,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
         );
-      case Row:
+      case Column:
       default:
-        return Column(
+        return Row(
           children: children,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
