@@ -108,9 +108,9 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
     ];
 
     Offset start = Offset(
-      _character.origin[0] * _character.width * -1,
-      _character.origin[1] * _character.height + _character.height / 2.0 * -1,
-    );
+        -1 * _character.origin[0] * _character.width,
+        -1 * _character.origin[1] * _character.height +
+            _character.height / 2.0);
     Offset end = Offset(start.dx, start.dy + height);
     Paint paint = Paint()
       ..shader = ui.Gradient.linear(start, end, colors, stops)
@@ -124,11 +124,10 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
         ..style = PaintingStyle.fill
         ..color = gradient.withOpacity(_crossFade.clamp(0.0, 1.0).toDouble());
       canvas.drawRect(
-          // Note: There is an error with the
           Offset(
-                  _character.origin[0] * _character.width * -1,
-                  _character.origin[1] * _character.height -
-                      _character.height * -1) &
+                  -1 * _character.origin[0] * _character.width,
+                  -1 * _character.origin[1] * _character.height -
+                      _character.height) &
               Size(_character.width, _character.height * 3.0),
           darken);
     }

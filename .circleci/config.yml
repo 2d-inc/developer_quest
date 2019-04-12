@@ -20,6 +20,7 @@ jobs:
           command: |
             git clone https://github.com/flutter/flutter.git -b master
             ./flutter/bin/flutter doctor
+            ./flutter/bin/flutter packages get
 
       - run:
           name: Check formatting
