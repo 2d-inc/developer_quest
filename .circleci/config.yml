@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   test:
-    
+
     docker:
       - image: circleci/android:api-28
 
@@ -22,6 +22,16 @@ jobs:
             ./flutter/bin/flutter doctor
 
       - run:
+          name: Static Analysis
+          command: |
+            ./flutter/bin/cache/dart-sdk/bin/dartanalyzer --fatal-infos --fatal-warnings ./lib
+
+      - run:
+          name: Check formatting
+          command: |
+            ./flutter/bin/cache/dart-sdk/bin/dartfmt -n --set-exit-if-changed ./lib
+
+      - run:
           name: Test App
           command: |
             ./flutter/bin/flutter test
@@ -30,7 +40,7 @@ jobs:
           name: Build App
           command: |
             ./flutter/bin/flutter build apk
-            
+
 workflows:
   version: 2
   build:
