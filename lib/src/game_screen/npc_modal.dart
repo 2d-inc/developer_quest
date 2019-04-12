@@ -127,6 +127,7 @@ class NpcModal extends StatelessWidget {
                                               const EdgeInsets.only(top: 5.0),
                                           child: ProwessProgress(
                                               color: skillColor[skill],
+											  borderRadius: BorderRadius.circular(3.5),
                                               progress:
                                                   npc.prowess[skill] / 100),
                                         )
