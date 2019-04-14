@@ -2,6 +2,7 @@ import 'package:dev_rpg/src/game_screen/team_picker_modal.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
+import 'package:dev_rpg/src/widgets/flare/work_team.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,14 @@ class WorkListItem extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Expanded(child: Container()),
+                    Expanded(
+                      child: Container(
+                        child: WorkTeam(
+                            alignment: Alignment.bottomLeft,
+                            fit: BoxFit.contain,
+                            team: workItem.assignedTeam),
+                      ),
+                    ),
                     ProwessProgress(
                         color: progressColor,
                         progress: workItem.percentComplete)

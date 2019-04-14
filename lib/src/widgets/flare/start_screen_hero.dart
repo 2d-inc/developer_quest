@@ -13,14 +13,12 @@ import 'package:flare_flutter/flare_render_box.dart';
 class StartScreenHero extends LeafRenderObjectWidget {
   final BoxFit fit;
   final Alignment alignment;
-  final bool isPlaying;
   final String filename;
   final Color gradient;
 
   const StartScreenHero(
       {this.fit = BoxFit.contain,
       this.alignment = Alignment.center,
-      this.isPlaying = true,
       this.filename,
       this.gradient});
 
@@ -31,7 +29,6 @@ class StartScreenHero extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
-      ..isPlaying = isPlaying
       ..gradient = gradient;
   }
 
@@ -43,7 +40,6 @@ class StartScreenHero extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
-      ..isPlaying = isPlaying
       ..gradient = gradient;
   }
 
@@ -62,6 +58,9 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
   String _filename;
   Color gradient;
   double _crossFade = 0.0;
+
+  @override
+  bool get isPlaying => true;
 
   @override
   bool advance(double elapsedSeconds) {

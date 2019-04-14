@@ -16,11 +16,11 @@ void main() {
     await tester.pumpWidget(MyApp());
 
     // Find the start text
-    expect(find.text('Start'), findsOneWidget);
+    expect(find.text('START'), findsOneWidget);
 
     // Start the game.
     expect(find.byType(FlatButton), findsNWidgets(2));
-    await tester.tap(find.text('Start'));
+    await tester.tap(find.text('START'));
     await tester.pumpAndSettle();
 
     // We made it to the game screen.

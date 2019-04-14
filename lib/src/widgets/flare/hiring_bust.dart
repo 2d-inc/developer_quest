@@ -78,6 +78,17 @@ class HiringBustRenderObject extends FlareRenderBox {
   HiringBustState _hiringState;
   DesaturatedActor _actor;
   HiringParticles _particles;
+  bool _isPlaying;
+  @override
+  bool get isPlaying => _isPlaying;
+  
+  set isPlaying(bool value) {
+    if (value == _isPlaying) {
+      return;
+    }
+    _isPlaying = value;
+    updatePlayState();
+  }
 
   ActorAnimation _idleAnimation;
   double _idleTime = 0.0;
