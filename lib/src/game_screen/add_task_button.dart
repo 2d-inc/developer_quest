@@ -38,7 +38,9 @@ class _AddTaskButtonState extends State<AddTaskButton> {
   }
 
   void onTap() {
-    widget.onPressed?.call();
+    if (widget.onPressed != null) {
+      widget.onPressed();
+    }
   }
 
   bool get isDisabled => widget.count == 0;

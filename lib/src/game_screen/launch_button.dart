@@ -32,7 +32,9 @@ class _LaunchButtonState extends State<LaunchButton> {
   }
 
   void onTap() {
-    widget.onPressed?.call();
+    if (widget.onPressed != null) {
+      widget.onPressed();
+    }
   }
 
   static const _color = Color.fromRGBO(84, 114, 239, 1.0);
