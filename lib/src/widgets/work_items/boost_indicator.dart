@@ -160,6 +160,11 @@ class BoostIndicatorRenderObject extends RenderBox {
 /// indications.
 class BoostParagraph {
   static const double maxWidth = 4096.0;
+  static const double fadeIn = 0.5;
+  static const double fadeHold = 0.2;
+  static const double blurFrom = 0.3;
+  static const double fadeOut = 1.0 - (fadeIn + fadeHold);
+  
   ui.Paragraph paragraph;
   Size size;
   Offset center;
@@ -177,12 +182,9 @@ class BoostParagraph {
   }
 
   bool advanceSeconds(double v) {
-    secondsElapsed = v.clamp(0.0, 1.0).toDouble();
     double opacity;
-    const double fadeIn = 0.5;
-    const double fadeHold = 0.2;
-    const double blurFrom = 0.3;
-    const double fadeOut = 1.0 - (fadeIn + fadeHold);
+
+    secondsElapsed = v.clamp(0.0, 1.0).toDouble();
     if (secondsElapsed < fadeIn) {
       opacity = secondsElapsed / fadeIn;
     } else if (secondsElapsed < fadeHold) {
