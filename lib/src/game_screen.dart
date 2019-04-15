@@ -1,9 +1,12 @@
 import 'package:dev_rpg/src/game_screen/npc_pool_page.dart';
-import 'package:dev_rpg/src/game_screen/stat_badge.dart';
 import 'package:dev_rpg/src/game_screen/stats_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
+import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
+import 'package:dev_rpg/src/widgets/app_bar/stat_separator.dart';
+import 'package:dev_rpg/src/widgets/app_bar/users_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,17 +37,20 @@ class GameScreenState extends State<GameScreen> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(59, 59, 73, 1.0),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 0.0,
         title: Consumer<Company>(
           builder: (context, company) {
             // Using RepaintBoundary here because this part of the UI changes
             // frequently.
             return RepaintBoundary(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  StatBadge("Users", company.users),
-                  StatBadge("Joy", company.joy),
-                  StatBadge("C", company.coin),
+                  Expanded(child: UsersBadge(company.users)),
+                  StatSeparator(),
+                  Expanded(child: JoyBadge(company.joy)),
+                  StatSeparator(),
+                  Expanded(child: CoinBadge(company.coin)),
                 ],
               ),
             );
