@@ -4,12 +4,13 @@ import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/work_team.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
+import 'package:dev_rpg/src/widgets/work_items/boost_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Shared containing widget for [WorkItem] (bug/task) styling. Handles assignment of [WorkItem]
 /// to a set of [Npc]s and shows progress as work is done.
-class WorkListItem extends StatelessWidget {
+class WorkListItem extends StatefulWidget {
   final Widget button;
   final String coinReward;
   final bool isExpanded;
@@ -21,6 +22,14 @@ class WorkListItem extends StatelessWidget {
       this.isExpanded = true,
       this.heading,
       this.progressColor});
+
+  @override
+  _WorkListItemState createState() => _WorkListItemState();
+}
+
+class _WorkListItemState extends State<WorkListItem> {
+  bool showTapHint = true;
+  final BoostController _boostController = BoostController();
 
   Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
     var npcs = await showDialog<Set<Npc>>(
@@ -34,6 +43,16 @@ class WorkListItem extends StatelessWidget {
     if (value == null || value.isEmpty) return;
     if (workItem.isComplete) return;
     workItem.assignTeam(value.toList());
+  }
+
+  void _boostProgress(WorkItem item) {
+    if (item.addBoost()) {
+      setState(() {
+        showTapHint = false;
+      });
+
+      _boostController.showIndicator();
+    }
   }
 
   @override
@@ -57,9 +76,9 @@ class WorkListItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             GestureDetector(
-              onTap: workItem.addBoost,
+              onTap: () => _boostProgress(workItem),
               child: AnimatedContainer(
-                height: isExpanded ? 140 : 0,
+                height: widget.isExpanded ? 140 : 0,
                 duration: const Duration(milliseconds: 100),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -68,17 +87,30 @@ class WorkListItem extends StatelessWidget {
                   color: Color(0xFF2D344E),
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
                       child: Container(
-                        child: WorkTeam(
-                            alignment: Alignment.bottomLeft,
-                            fit: BoxFit.contain,
-                            team: workItem.assignedTeam),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(9.0),
+                              topRight: Radius.circular(9.0)),
+                          child: Stack(
+                            children: [
+                              WorkTeam(
+                                  skillsNeeded: workItem.skillsNeeded,
+                                  isComplete: workItem.isComplete,
+                                  team: workItem.assignedTeam),
+                              showTapHint ? TapHint() : Container(),
+                              Positioned.fill(
+                                  child: BoostIndicator(_boostController))
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     ProwessProgress(
-                        color: progressColor,
+                        color: widget.progressColor,
                         progress: workItem.percentComplete)
                   ],
                 ),
@@ -97,10 +129,10 @@ class WorkListItem extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          heading,
+                          widget.heading,
                           const SizedBox(height: 12),
                           Text(workItem.name,
-                              style: isExpanded
+                              style: widget.isExpanded
                                   ? contentStyle
                                   : contentStyle.apply(color: disabledColor))
                         ],
@@ -108,12 +140,42 @@ class WorkListItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                button ?? Container()
+                widget.button ?? Container()
               ],
             )
           ],
         ),
       ),
     );
+  }
+}
+
+/// A visual indicator that a region can be tapped on.
+class TapHint extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(children: [
+      Center(
+        child: Container(
+          width: 78.0,
+          height: 78.0,
+          decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color.fromRGBO(84, 114, 239, 0.32)),
+        ),
+      ),
+      Center(
+        child: Container(
+          width: 42.0,
+          height: 42.0,
+          decoration: const BoxDecoration(
+              shape: BoxShape.circle, color: Color.fromRGBO(0, 152, 255, 1.0)),
+        ),
+      ),
+      Center(
+          child: Text("TAP",
+              style: buttonTextStyle.apply(
+                  fontSizeDelta: -4, color: Colors.white))),
+    ]);
   }
 }

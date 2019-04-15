@@ -31,6 +31,15 @@ class Npc extends Aspect with ChildAspect {
     markDirty();
   }
 
+  bool contributes(List<Skill> skills) {
+    for (final Skill skill in skills) {
+      if (prowess.containsKey(skill)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   String toString() => id;
 

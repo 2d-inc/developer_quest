@@ -73,7 +73,13 @@ abstract class WorkItem extends Aspect with ChildAspect {
     super.update();
   }
 
-  void addBoost() => _boost += 2.5;
+  bool addBoost() {
+    if (!isBeingWorkedOn) {
+      return false;
+    }
+    _boost += 2.5;
+    return true;
+  }
 
   /// Get progress of this task.
   double get percentComplete {
