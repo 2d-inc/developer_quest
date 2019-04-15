@@ -15,6 +15,7 @@ class BugListItem extends StatelessWidget {
     var bug = Provider.of<WorkItem>(context) as Bug;
 
     return WorkListItem(
+      workItem: bug,
       isExpanded: bug.isBeingWorkedOn,
       progressColor: accent,
       heading: !bug.isComplete

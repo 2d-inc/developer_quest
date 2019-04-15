@@ -6,7 +6,6 @@ import 'package:dev_rpg/src/widgets/flare/work_team.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:dev_rpg/src/widgets/work_items/boost_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 /// Shared containing widget for [WorkItem] (bug/task) styling. Handles assignment of [WorkItem]
 /// to a set of [Npc]s and shows progress as work is done.
@@ -16,8 +15,11 @@ class WorkListItem extends StatefulWidget {
   final bool isExpanded;
   final Widget heading;
   final Color progressColor;
+  final WorkItem workItem;
+
   const WorkListItem(
-      {this.button,
+      {this.workItem,
+      this.button,
       this.coinReward,
       this.isExpanded = true,
       this.heading,
@@ -28,7 +30,7 @@ class WorkListItem extends StatefulWidget {
 }
 
 class _WorkListItemState extends State<WorkListItem> {
-  bool showTapHint = true;
+  bool showTapHint;
   final BoostController _boostController = BoostController();
 
   Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
@@ -45,6 +47,12 @@ class _WorkListItemState extends State<WorkListItem> {
     workItem.assignTeam(value.toList());
   }
 
+  @override
+  void initState() {
+    super.initState();
+    showTapHint = !widget.workItem.isComplete;
+  }
+
   void _boostProgress(WorkItem item) {
     if (item.addBoost()) {
       setState(() {
@@ -57,7 +65,7 @@ class _WorkListItemState extends State<WorkListItem> {
 
   @override
   Widget build(BuildContext context) {
-    var workItem = Provider.of<WorkItem>(context);
+    var workItem = widget.workItem;
 
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),

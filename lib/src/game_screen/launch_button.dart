@@ -45,8 +45,7 @@ class _LaunchButtonState extends State<LaunchButton> {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
-        padding: const EdgeInsets.only(
-            left: 14.0, right: 14.0, top: 11.0, bottom: 11.0),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(

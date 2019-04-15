@@ -81,7 +81,7 @@ class HiringBustRenderObject extends FlareRenderBox {
   bool _isPlaying;
   @override
   bool get isPlaying => _isPlaying;
-  
+
   set isPlaying(bool value) {
     if (value == _isPlaying) {
       return;

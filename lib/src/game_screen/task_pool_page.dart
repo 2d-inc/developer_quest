@@ -13,26 +13,26 @@ import 'package:provider/provider.dart';
 /// These are [Task]s that have been added into the game, are being
 /// actively worked on, or have been completed and/or archived.
 class TaskPoolPage extends StatelessWidget {
-  List<Widget> makeWorkSectionSlivers(String title, List<WorkItem> workItems) {
+  /// Builds a section of the task list with [title] and a list of [workItems].
+  /// This returns slivers to be used in a [SliverList].
+  void _buildSection(
+      List<Widget> slivers, String title, List<WorkItem> workItems) {
     if (workItems.isNotEmpty) {
-      return [
-        SliverPersistentHeader(
-          pinned: false,
-          delegate: TasksSectionHeader(title),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            WorkItem item = workItems[index];
-            return ChangeNotifierProvider<WorkItem>(
-              notifier: item,
-              key: ValueKey(item),
-              child: item is Bug ? BugListItem() : TaskListItem(),
-            );
-          }, childCount: workItems.length),
-        ),
-      ];
+      slivers.add(SliverPersistentHeader(
+        pinned: false,
+        delegate: TasksSectionHeader(title),
+      ));
+      slivers.add(SliverList(
+        delegate: SliverChildBuilderDelegate((context, index) {
+          WorkItem item = workItems[index];
+          return ChangeNotifierProvider<WorkItem>(
+            notifier: item,
+            key: ValueKey(item),
+            child: item is Bug ? BugListItem() : TaskListItem(),
+          );
+        }, childCount: workItems.length),
+      ));
     }
-    return [];
   }
 
   @override
@@ -41,19 +41,21 @@ class TaskPoolPage extends StatelessWidget {
       color: const Color.fromRGBO(241, 241, 241, 1.0),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
-          return CustomScrollView(
-              slivers: <Widget>[
-                    SliverPersistentHeader(
-                      pinned: false,
-                      delegate: TasksButtonHeader(taskPool: taskPool),
-                    ),
-                  ] +
-                  makeWorkSectionSlivers("IN PROGRESS", taskPool.workItems) +
-                  makeWorkSectionSlivers(
-                      "COMPLETED",
-                      taskPool.completedTasks
-                          .followedBy(taskPool.archivedTasks)
-                          .toList(growable: false)));
+          var slivers = <Widget>[
+            SliverPersistentHeader(
+              pinned: false,
+              delegate: TasksButtonHeader(taskPool: taskPool),
+            ),
+          ];
+          _buildSection(slivers, "IN PROGRESS", taskPool.workItems);
+          _buildSection(
+              slivers,
+              "COMPLETED",
+              taskPool.completedTasks
+                  .followedBy(taskPool.archivedTasks)
+                  .toList(growable: false));
+
+          return CustomScrollView(slivers: slivers);
         },
       ),
     );

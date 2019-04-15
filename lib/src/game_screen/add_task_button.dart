@@ -52,7 +52,7 @@ class _AddTaskButtonState extends State<AddTaskButton> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
         height: 40,
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           boxShadow: isDisabled
               ? null
@@ -65,23 +65,20 @@ class _AddTaskButtonState extends State<AddTaskButton> {
                 ],
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
           color: isDisabled
-              ? const Color.fromRGBO(38, 38, 47, 0.10)
+              ? disabledTaskColor.withOpacity(0.10)
               : _isPressed ? widget.color.withOpacity(0.8) : widget.color,
         ),
         child: Row(
           children: [
             Icon(widget.icon,
-                color: isDisabled
-                    ? const Color.fromRGBO(38, 38, 47, 0.25)
-                    : Colors.white),
+                color: isDisabled ? disabledTaskColor : Colors.white),
             const SizedBox(width: 4.0),
             Expanded(
               child: Text(
                 widget.label,
                 style: buttonTextStyle.apply(
-                    fontSizeDelta: -2, color: isDisabled
-                    ? const Color.fromRGBO(38, 38, 47, 0.25)
-                    : Colors.white),
+                    fontSizeDelta: -2,
+                    color: isDisabled ? disabledTaskColor : Colors.white),
               ),
             ),
             isDisabled

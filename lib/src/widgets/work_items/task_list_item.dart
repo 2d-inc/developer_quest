@@ -18,6 +18,7 @@ class TaskListItem extends StatelessWidget {
 
     bool isExpanded = task.isBeingWorkedOn || task.state == TaskState.completed;
     return WorkListItem(
+        workItem: task,
         isExpanded: isExpanded,
         progressColor: const Color.fromRGBO(0, 152, 255, 1.0),
         heading: task.state != TaskState.rewarded

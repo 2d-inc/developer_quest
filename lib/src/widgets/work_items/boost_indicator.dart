@@ -164,7 +164,7 @@ class BoostParagraph {
   static const double fadeHold = 0.2;
   static const double blurFrom = 0.3;
   static const double fadeOut = 1.0 - (fadeIn + fadeHold);
-  
+
   ui.Paragraph paragraph;
   Size size;
   Offset center;
