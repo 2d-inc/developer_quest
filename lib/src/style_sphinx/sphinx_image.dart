@@ -5,6 +5,6 @@ class SphinxImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('sphinx.png');
+    return Image.asset('style_sphinx/sphinx.png');
   }
 }

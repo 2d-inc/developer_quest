@@ -8,18 +8,18 @@
     ]
   },
   {
-    "family": "Joystix",
+    "family": "MontserratMedium",
     "fonts": [
       {
-        "asset": "joystix_monospace.ttf"
+        "asset": "Montserrat-Medium.otf"
       }
     ]
   },
   {
-    "family": "RobotoMono",
+    "family": "MontserratRegular",
     "fonts": [
       {
-        "asset": "RobotoMono-Regular.ttf"
+        "asset": "Montserrat-Regular.otf"
       }
     ]
   }

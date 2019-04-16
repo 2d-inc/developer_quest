@@ -1,6 +1,6 @@
 import 'package:flutter_web/widgets.dart';
 
-enum KittyType { blue, brown, purple }
+enum KittyType { orange, yellow }
 
 class KittyBed extends StatelessWidget {
   final KittyType type;
@@ -10,13 +10,11 @@ class KittyBed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case KittyType.blue:
-        return Image.asset('kitty_bed_blue.png');
-      case KittyType.brown:
-        return Image.asset('kitty_bed_brown.png');
-      case KittyType.purple:
+      case KittyType.orange:
+        return Image.asset('style_sphinx/normalized/red_bed.png');
+      case KittyType.yellow:
       default:
-        return Image.asset('kitty_bed_purple.png');
+        return Image.asset('style_sphinx/normalized/green_bed.png');
     }
   }
 }
@@ -29,13 +27,11 @@ class Kitty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case KittyType.blue:
-        return Image.asset('kitty_blue.png');
-      case KittyType.brown:
-        return Image.asset('kitty_brown.png');
-      case KittyType.purple:
+      case KittyType.orange:
+        return Image.asset('style_sphinx/normalized/orange_cat.png');
+      case KittyType.yellow:
       default:
-        return Image.asset('kitty_purple.png');
+        return Image.asset('style_sphinx/normalized/yellow_cat.png');
     }
   }
 }

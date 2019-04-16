@@ -81,15 +81,22 @@ class Bouncy extends StatelessWidget {
 // using a Tween<double> with a FadeTransition Widget
 class Faded extends StatelessWidget {
   final Widget child;
+  final double begin;
+  final double end;
 
-  const Faded({@required this.child, Key key}) : super(key: key);
+  const Faded({
+    @required this.child,
+    this.begin = 1.0,
+    this.end = 0.8,
+    Key key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return _BreathingBase<double>(
       tween: Tween<double>(
-        begin: 1.0,
-        end: 0.5,
+        begin: begin,
+        end: end,
       ),
       builder: (context, animation) {
         return FadeTransition(
