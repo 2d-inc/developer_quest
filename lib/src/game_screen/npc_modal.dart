@@ -4,7 +4,7 @@ import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
-import 'package:dev_rpg/src/widgets/keyboard_listener.dart';
+import 'package:dev_rpg/src/widgets/keyboard.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
