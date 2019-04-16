@@ -20,11 +20,15 @@ class NpcModal extends StatelessWidget {
   Widget build(BuildContext context) {
     var npc = Provider.of<Npc>(context);
     var npcStyle = NpcStyle.from(npc);
+    FocusScope.of(context).requestFocus(_focusNode);
     return RawKeyboardListener(
       focusNode: _focusNode,
       onKey: (RawKeyEvent event) {
-        if (event.runtimeType == RawKeyDownEvent)
-          print('my key is! ${event.logicalKey}');
+        if (event.runtimeType == RawKeyDownEvent &&
+            (event.logicalKey.keyId == KeyCode.backspace ||
+                event.logicalKey.keyId == KeyCode.escape)) {
+          Navigator.pop(context, null);
+        }
       },
       child: Center(
         child: Padding(
