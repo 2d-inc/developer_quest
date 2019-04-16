@@ -24,11 +24,11 @@ class SphinxButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
           child: DefaultTextStyle(
             child: child,
-            style: TextStyle(
+            style: const TextStyle(
                 fontFamily: 'MontserratRegular',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: const Color.fromRGBO(85, 34, 34, 1)),
+                color: Color.fromRGBO(85, 34, 34, 1)),
           ),
         ),
         onTap: onPressed,

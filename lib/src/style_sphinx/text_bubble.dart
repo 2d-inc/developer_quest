@@ -49,7 +49,7 @@ class TextBubble extends StatelessWidget {
               ),
               child: DefaultTextStyle(
                 child: child,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontFamily: 'MontserratRegular',
                   fontSize: 16,

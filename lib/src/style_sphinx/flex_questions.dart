@@ -93,12 +93,12 @@ class _FlexQuestionState extends State<_FlexQuestion> {
     );
 
     return QuestionScaffold(
-      expected: FlexQuestionExpected(
+      expected: _FlexQuestionExpected(
         kittens: _kittens,
         type: widget.type,
         bedWidth: widget.itemWidth,
       ),
-      actual: FlexQuestionActual(
+      actual: _FlexQuestionActual(
         kittens: _kittens,
         actualType: _type,
         expectedType: widget.type,
@@ -110,7 +110,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
           color: Color.fromRGBO(85, 34, 34, 1),
           fontFamily: 'MontserratMedium',
           fontSize: 16,
-          height: 1.2,
+          height: 1.4,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,6 +123,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
             ),
             const SizedBox(height: 16),
             Wrap(
+              crossAxisAlignment: WrapCrossAlignment.start,
               children: [
                 Container(
                   margin: const EdgeInsets.only(right: 10),
@@ -182,7 +183,6 @@ class _FlexQuestionState extends State<_FlexQuestion> {
                 ),
                 const Text('(')
               ],
-              crossAxisAlignment: WrapCrossAlignment.center,
             ),
             const Text('    children: <Widget>['),
             const Text('        Image.asset(\'orange_kitty.png\')'),
@@ -210,13 +210,13 @@ class _FlexQuestionState extends State<_FlexQuestion> {
   }
 }
 
-class FlexQuestionExpected extends StatelessWidget {
+class _FlexQuestionExpected extends StatelessWidget {
   final List<KittyType> kittens;
   final Type type;
   final EdgeInsets iconPadding;
   final double bedWidth;
 
-  const FlexQuestionExpected({
+  const _FlexQuestionExpected({
     @required this.kittens,
     @required this.type,
     @required this.bedWidth,
@@ -255,7 +255,7 @@ class FlexQuestionExpected extends StatelessWidget {
   }
 }
 
-class FlexQuestionActual extends StatelessWidget {
+class _FlexQuestionActual extends StatelessWidget {
   final List<KittyType> kittens;
   final Type actualType;
   final Type expectedType;
@@ -263,7 +263,7 @@ class FlexQuestionActual extends StatelessWidget {
   final double kittyWidth;
   final bool bouncing;
 
-  const FlexQuestionActual({
+  const _FlexQuestionActual({
     @required this.kittens,
     @required this.actualType,
     @required this.expectedType,
