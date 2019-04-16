@@ -4,6 +4,7 @@ import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,7 +59,24 @@ class NpcPoolPage extends StatelessWidget {
 /// Displays the current state of an individual [Npc]
 /// Tapping on the [Npc] opens up a modal window which
 /// offers more details about stats and options to upgrade.
-class NpcListItem extends StatelessWidget {
+class NpcListItem extends StatefulWidget {
+  @override
+  _NpcListItemState createState() => _NpcListItemState();
+}
+
+class _NpcListItemState extends State<NpcListItem> {
+  // True if the *mouse* is hovering over this widget.
+  bool _isOver;
+
+  @override
+  void initState() {
+    super.initState();
+    _isOver = false;
+  }
+
+  void _startPlaying(PointerEnterEvent _) => setState(() => _isOver = true);
+  void _stopPlaying(PointerExitEvent _) => setState(() => _isOver = false);
+
   @override
   Widget build(BuildContext context) {
     var npc = Provider.of<Npc>(context);
@@ -68,83 +86,88 @@ class NpcListItem extends StatelessWidget {
         ? HiringBustState.hired
         : npc.canUpgrade ? HiringBustState.available : HiringBustState.locked;
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 40.0),
-      child: Stack(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: const Color.fromRGBO(69, 69, 82, 1.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 10.0,
-                ),
-              ],
-            ),
-          ),
-          Material(
-            type: MaterialType.transparency,
-            child: InkWell(
-              customBorder: RoundedRectangleBorder(
+    return Listener(
+      onPointerEnter: _startPlaying,
+      onPointerExit: _stopPlaying,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40.0),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
-              ),
-              onTap: () => showDialog<void>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ChangeNotifierProvider<Npc>(
-                      notifier: npc,
-                      child: NpcModal(),
-                    );
-                  }),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                      child: HiringBust(
-                    particleColor: attentionColor,
-                    filename: npcStyle.flare,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                    hiringState: bustState,
-                  )),
-                  const SizedBox(height: 20.0),
-                  Opacity(
-                    opacity: npc.isHired || npc.canUpgrade ? 1.0 : 0.25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        npc.isHired
-                            ? Container()
-                            : Icon(
-                                bustState == HiringBustState.available
-                                    ? Icons.add_circle
-                                    : Icons.lock,
-                                color: !npc.isHired && npc.canUpgrade
-                                    ? attentionColor
-                                    : Colors.white),
-                        const SizedBox(width: 4.0),
-                        Text(
-                          bustState == HiringBustState.hired
-                              ? 'Hired'
-                              : bustState == HiringBustState.available
-                                  ? 'Hire!'
-                                  : 'Locked',
-                          style: contentStyle.apply(
-                              color: bustState == HiringBustState.available
-                                  ? attentionColor
-                                  : Colors.white),
-                        )
-                      ],
-                    ),
+                color: const Color.fromRGBO(69, 69, 82, 1.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 10.0,
                   ),
-                  const SizedBox(height: 20.0),
                 ],
               ),
             ),
-          ),
-        ],
+            Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                onTap: () => showDialog<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ChangeNotifierProvider<Npc>(
+                        notifier: npc,
+                        child: NpcModal(),
+                      );
+                    }),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: HiringBust(
+                      particleColor: attentionColor,
+                      filename: npcStyle.flare,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      hiringState: bustState,
+                      isPlaying: _isOver,
+                    )),
+                    const SizedBox(height: 20.0),
+                    Opacity(
+                      opacity: npc.isHired || npc.canUpgrade ? 1.0 : 0.25,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          npc.isHired
+                              ? Container()
+                              : Icon(
+                                  bustState == HiringBustState.available
+                                      ? Icons.add_circle
+                                      : Icons.lock,
+                                  color: !npc.isHired && npc.canUpgrade
+                                      ? attentionColor
+                                      : Colors.white),
+                          const SizedBox(width: 4.0),
+                          Text(
+                            bustState == HiringBustState.hired
+                                ? 'Hired'
+                                : bustState == HiringBustState.available
+                                    ? 'Hire!'
+                                    : 'Locked',
+                            style: contentStyle.apply(
+                                color: bustState == HiringBustState.available
+                                    ? attentionColor
+                                    : Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
