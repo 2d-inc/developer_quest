@@ -10,7 +10,7 @@ description: Become a tech lead, slay bugs, and don't get fired.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -58,13 +58,13 @@ flutter:
 
   fonts:
       - family: GothamXNarrow
-        fonts: 
+        fonts:
           - asset: assets/fonts/Gotham XNarrow Medium.otf
       - family: MontserratMedium
-        fonts: 
+        fonts:
           - asset: assets/fonts/Montserrat-Medium.otf
       - family: MontserratRegular
-        fonts: 
+        fonts:
           - asset: assets/fonts/Montserrat-Regular.otf
       - family: Joystix
         fonts:

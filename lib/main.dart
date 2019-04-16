@@ -11,7 +11,7 @@ void main() {
   // Don't prune the Flare cache, keep loaded Flare files warm and ready
   // to be re-displayed.
   FlareCache.doesPrune = false;
-  
+
   runApp(MyApp());
 }
 

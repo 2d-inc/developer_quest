@@ -28,7 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       hero = NpcStyle.random();
     });
     _swapHeroTimer?.cancel();
-    _swapHeroTimer = Timer(Duration(seconds: 10), chooseHero);
+    _swapHeroTimer = Timer(const Duration(seconds: 10), chooseHero);
   }
 
   @override

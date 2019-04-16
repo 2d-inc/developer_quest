@@ -1,6 +1,5 @@
 import 'package:dev_rpg/src/game_screen/npc_modal.dart';
 import 'package:dev_rpg/src/game_screen/npc_style.dart';
-import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/style.dart';
