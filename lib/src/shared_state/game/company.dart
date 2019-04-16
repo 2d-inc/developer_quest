@@ -9,14 +9,12 @@ import 'package:intl/intl.dart';
 class Company extends Aspect {
   final StatValue<double> joy = StatValue<double>(0);
 
-  final StatValue<double> _users = StatValue<double>(0);
+  final StatValue<double> users = StatValue<double>(0);
 
   final StatValue<int> coin = StatValue<int>(100);
 
-  ValueListenable<String> get users => _users;
-
   void award(int newUsers, int coinReward) {
-    _users.number += newUsers;
+    users.number += newUsers;
     coin.number += coinReward;
   }
 
@@ -38,7 +36,7 @@ class Company extends Aspect {
       joy.number = 0.0;
     }
 
-    _users.number = max(0.0, _users.number + joy.number);
+    users.number = max(0.0, users.number + joy.number);
   }
 }
 
