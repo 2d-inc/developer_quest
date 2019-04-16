@@ -1,10 +1,10 @@
 import 'package:dev_rpg/src/game_screen/npc_modal.dart';
 import 'package:dev_rpg/src/game_screen/npc_style.dart';
-import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -74,6 +74,9 @@ class _NpcListItemState extends State<NpcListItem> {
     _isOver = false;
   }
 
+  void _startPlaying(PointerEnterEvent _) => setState(() => _isOver = true);
+  void _stopPlaying(PointerExitEvent _) => setState(() => _isOver = false);
+
   @override
   Widget build(BuildContext context) {
     var npc = Provider.of<Npc>(context);
@@ -84,8 +87,8 @@ class _NpcListItemState extends State<NpcListItem> {
         : npc.canUpgrade ? HiringBustState.available : HiringBustState.locked;
 
     return Listener(
-      onPointerEnter: (_) => setState(() => _isOver = true),
-      onPointerExit: (_) => setState(() => _isOver = false),
+      onPointerEnter: _startPlaying,
+      onPointerExit: _stopPlaying,
       child: Padding(
         padding: const EdgeInsets.only(top: 40.0),
         child: Stack(
