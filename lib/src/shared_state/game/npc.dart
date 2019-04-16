@@ -65,7 +65,7 @@ class Npc extends Aspect with ChildAspect {
     for (final Skill skill in prowess.keys) {
       prowess[skill] += 1;
     }
-	_level++;
+    _level++;
     markDirty();
     return true;
   }

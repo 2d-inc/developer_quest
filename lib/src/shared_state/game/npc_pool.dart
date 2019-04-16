@@ -10,10 +10,10 @@ class NpcPool extends AspectContainer<Npc> with ChildAspect {
     addAspects([
       Npc("refactorer", {Skill.coding: 1}, true),
       Npc("architect", {Skill.coding: 3, Skill.coordination: 1}),
+      Npc("hacker", {Skill.engineering: 2}),
       Npc("tpm", {Skill.coordination: 3}, true),
       Npc("avant_garde_designer", {Skill.engineering: 1}),
       Npc("leo", {Skill.ux: 2}, true),
-      Npc("mike", {Skill.engineering: 2}),
     ]);
   }
 

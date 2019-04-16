@@ -3,6 +3,7 @@ import 'package:dev_rpg/src/game_screen/npc_style.dart';
 import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -120,6 +121,7 @@ class _NpcListItemState extends State<NpcListItem> {
                   children: [
                     Expanded(
                         child: HiringBust(
+                      particleColor: attentionColor,
                       filename: npcStyle.flare,
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
@@ -139,21 +141,20 @@ class _NpcListItemState extends State<NpcListItem> {
                                       ? Icons.add_circle
                                       : Icons.lock,
                                   color: !npc.isHired && npc.canUpgrade
-                                      ? const Color.fromRGBO(0, 152, 255, 1.0)
+                                      ? attentionColor
                                       : Colors.white),
                           const SizedBox(width: 4.0),
                           Text(
-                              bustState == HiringBustState.hired
-                                  ? 'Hired'
-                                  : bustState == HiringBustState.available
-                                      ? 'Hire!'
-                                      : 'Locked',
-                              style: TextStyle(
-                                  fontFamily: "MontserratRegular",
-                                  fontSize: 16.0,
-                                  color: bustState == HiringBustState.available
-                                      ? const Color.fromRGBO(0, 152, 255, 1.0)
-                                      : Colors.white))
+                            bustState == HiringBustState.hired
+                                ? 'Hired'
+                                : bustState == HiringBustState.available
+                                    ? 'Hire!'
+                                    : 'Locked',
+                            style: contentStyle.apply(
+                                color: bustState == HiringBustState.available
+                                    ? attentionColor
+                                    : Colors.white),
+                          )
                         ],
                       ),
                     ),
