@@ -36,6 +36,7 @@ dev_dependencies:
     sdk: flutter
   flutter_driver:
     sdk: flutter
+  logging: ^0.11.3+2
   git: ^0.5.1+1
   t_stats: ^2.0.0
 

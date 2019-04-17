@@ -43,8 +43,24 @@ brought any performance improvement or not. Running several times also eliminate
 the effect of extremely bad luck, like for example when Android decides to update some app while
 test is running.
 
-TODO(filiph): Explain how to lock CPU speeds, and why it's needed
-    https://github.com/google/skia/blob/master/infra/bots/recipe_modules/flavor/android.py
+### Lock CPU and GPU speed for your performance test device
+
+Run the following command when your performance test device is attached via USB.
+
+```bash
+./tool/lock_android_scaling.sh
+```
+
+WARNING:
+
+* This only works for rooted devices.
+* This only works for Nexus 5. The specifics of scaling lock are different from device to device.
+  You can modify the script to your needs, following
+  [this template](https://github.com/google/skia/blob/master/infra/bots/recipe_modules/flavor/android.py)
+  and
+  [/sys/devices/system/cpu documentation](https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-system-cpu).
+
+### Where to store the profiling data
 
 You probably don't want to check the `*.tsv` output files into the repo. For that,
 run `git update-index --assume-unchanged test_driver/*.tsv` in the root dir. This is a one time

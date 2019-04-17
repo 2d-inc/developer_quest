@@ -21,15 +21,15 @@ Map<BugPriority, int> bugFrequency = {
 
 /// A bug that randomly shows up in the work queue.
 class Bug extends WorkItem {
-  static final Random _randomizer = Random();
+  static Random randomizer = Random();
   final BugPriority priority;
 
   Bug(this.priority, Map<Skill, double> difficulty)
       : super(priority.name + " Bug!!", difficulty);
 
   Bug.random(Set<Skill> availableSkills)
-      : this(bugChances[_randomizer.nextInt(bugChances.length)],
-            randomDifficulty(_randomizer, availableSkills));
+      : this(bugChances[randomizer.nextInt(bugChances.length)],
+            randomDifficulty(randomizer, availableSkills));
 
   @override
   void onCompleted() {
