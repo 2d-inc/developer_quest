@@ -96,8 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     onPressed: () async {
                       // Stop the hero cycling.
                       _swapHeroTimer?.cancel();
-                      await Navigator.of(context)
-                          .pushNamed(SphinxScreen.routeName);
+                      await navigateToSphinxMiniGame(context);
                       // Back to cycling.
                       chooseHero();
                     },
