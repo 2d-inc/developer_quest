@@ -6,6 +6,7 @@ class WideButton extends StatelessWidget {
   final Color background;
   @required
   final VoidCallback onPressed;
+
   /// Use the padding tweak to allow negative adjustments to padding.
   final EdgeInsets paddingTweak;
 

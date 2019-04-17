@@ -31,7 +31,7 @@ class _StackQuestionState extends State<StackQuestion>
     // Create the animation controller to drive the offset animation
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 600),
     );
 
     // Create an animation to move icons up and down using a Tween that is
