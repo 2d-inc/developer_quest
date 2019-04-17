@@ -3,15 +3,22 @@ import 'dart:io';
 
 import 'package:flutter_driver/flutter_driver.dart'
     show Timeline, TimelineSummary;
+import 'package:logging/logging.dart';
 import 'package:t_stats/t_stats.dart';
 
 Future<int> main(List<String> args) async {
+  // Set [loggingLevel] below to change verboseness of the tool.
+  Logger.root.level = loggingLevel;
+  Logger.root.onRecord.listen((LogRecord rec) {
+    print('[${rec.level.name}] ${rec.message}');
+  });
+
   if (args.length != 1) {
-    stderr.writeln('Usage: dart tool/parse_timeline.dart [FILE]');
+    stderr.writeln('Usage: dart test_driver/parse_timeline.dart [FILE]');
     return 2;
   }
 
-  print("Running on file: ${args.single}");
+  log.info("Running on file: ${args.single}");
 
   var file = File(args.single);
   var contents = await file.readAsString();
@@ -21,29 +28,38 @@ Future<int> main(List<String> args) async {
 
   var results = parse(timeline, summary);
 
-  print('RunExpiredTasks events: ${results.expiredTasksEvents}');
-  print('RunExpiredTasks duration: ${results.expiredTasksDuration}');
+  log.info('RunExpiredTasks events: ${results.expiredTasksEvents}');
+  log.info('RunExpiredTasks duration: ${results.expiredTasksDuration}');
 
-  print('Dart thread events: ${results.dartPhaseEvents}');
-  print('Dart thread duration: ${results.dartPhaseDuration}');
+  log.info('Dart thread events: ${results.dartPhaseEvents}');
+  log.info('Dart thread duration: ${results.dartPhaseDuration}');
 
   var lengthMicros = timeline.json['timeExtentMicros'] as int;
   var lengthSeconds = lengthMicros / Duration.microsecondsPerSecond;
   var frames = summary.countFrames();
   var fps = frames / lengthSeconds;
 
-  print('Length: ${lengthSeconds}s');
-  print('Frames: $frames');
-  print('Average FPS: $fps');
+  log.info('Length: ${lengthSeconds}s');
+  log.info('Frames: $frames');
+  log.info('Average FPS: $fps');
 
   var frameRequestStats = Statistic.from(
       results.frameRequestDurations.map((d) => d.inMicroseconds));
-  print('Frame Request durations: ${frameRequestStats.toString()}');
+  log.info('Frame Request durations: ${frameRequestStats.toString()}');
 
-  print('Dart percentage: ${results.dartPercentage.toStringAsPrecision(5)}');
+  log.info('Dart percentage: ${results.dartPercentage.toStringAsPrecision(5)}');
 
   return 0;
 }
+
+/// The level at which log messages are printed to the console.
+///
+/// If you want to see more messages being logged, set this accordingly
+/// (e.g. to [Level.ALL]).
+const Level loggingLevel = Level.INFO;
+
+/// A logger of parsing events.
+final Logger log = Logger('parse_timeline');
 
 AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
   var dartPhaseEvents = 0;
@@ -69,7 +85,9 @@ AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
 
       if (ev.phase == 'B') {
         if (prevs.containsKey(tid)) {
-          // print("there is already an event on this same thread");
+          log.fine(
+              'There is already an event that started on this same thread. '
+              'Ignoring the previous start. tid=$tid, ev=$ev');
         }
         prevs[tid] = ev.timestampMicros;
         continue;
@@ -77,8 +95,9 @@ AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
 
       if (ev.phase == 'E') {
         if (!prevs.containsKey(tid)) {
-          // print("ending tid $tid that has no beginning,"
-          //     "ts: ${ev.timestampMicros}");
+          log.fine(
+              'Encountered end to an event that has no beginning (at least '
+              'not in our part of the timeline). Ignoring. tid=$tid, ev=$ev');
           continue;
         }
         durationMicros += ev.timestampMicros - prevs[tid];
@@ -94,8 +113,8 @@ AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
 
       if (ev.phase == 'b') {
         if (prevFrameRequestId != null || prevFrameRequestStart != null) {
-          print("a frame request has already been started, "
-              "id = $prevFrameRequestId");
+          log.info('There is already a frame request that started. '
+              'Ignoring the previous start. id=$prevFrameRequestId, ev=$ev');
         }
         prevFrameRequestId = ev.json['id'] as String;
         prevFrameRequestStart = ev.timestampMicros;
@@ -104,12 +123,14 @@ AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
 
       if (ev.phase == 'e') {
         if (prevFrameRequestId == null || prevFrameRequestStart == null) {
-          print("ending a non-existent frame request");
+          log.fine('Encountered end to a frame request that has no beginning '
+              '(at least not in our part of the timeline). Ignoring. ev=$ev');
           continue;
         }
         var id = ev.json['id'] as String;
         if (id != prevFrameRequestId) {
-          print('non-matching frame-request end: $id vs $prevFrameRequestId');
+          log.warning('Frame-request id=$id does not match the one that '
+              'we are tracking id$prevFrameRequestId. Ignoring. ev=$ev');
           continue;
         }
         var frameRequestDuration =
