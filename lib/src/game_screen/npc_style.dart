@@ -26,7 +26,7 @@ class NpcStyle {
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
         description:
             "Helps provide structure and improve code health ​when with other "
-            "characters​. Probably has a ton of books and a head full of ideas. "
+            '''characters​. Probably has a ton of books and a head full of ideas. '''
             "A real wizard."),
     "tpm": NpcStyle(
         name: "TPM",
@@ -52,7 +52,7 @@ class NpcStyle {
         description:
             "A reasonable coder on her own, but excels at finding and fixing "
             "security flaws and discovering unique solutions to problems. She "
-            "may have sniffed your email password while you read this description."),
+            '''may have sniffed your email password while you read this description.'''),
   };
 
   NpcStyle({this.flare, this.accent, this.name, this.description = "N/A"});

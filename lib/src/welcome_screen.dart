@@ -28,7 +28,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       hero = NpcStyle.random();
     });
     _swapHeroTimer?.cancel();
-    _swapHeroTimer = Timer(Duration(seconds: 10), chooseHero);
+    _swapHeroTimer = Timer(const Duration(seconds: 10), chooseHero);
   }
 
   @override
@@ -96,8 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     onPressed: () async {
                       // Stop the hero cycling.
                       _swapHeroTimer?.cancel();
-                      await Navigator.of(context)
-                          .pushNamed(SphinxScreen.routeName);
+                      await navigateToSphinxMiniGame(context);
                       // Back to cycling.
                       chooseHero();
                     },

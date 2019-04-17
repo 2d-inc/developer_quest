@@ -1,2 +1,1 @@
-name	mean	lowerBound	upperBound	marginOfError	stdDeviation	stdError	min	max	n	90thPercentile	99thPercentile	worstFrame	missedFrames
-
+name	mean	lowerBound	upperBound	marginOfError	stdDeviation	stdError	min	max	n	description	90thPercentile	99thPercentile	worstFrame	missedFrames	length	frames	fps	frameRequestDurationMean	dartPercentage	dartPhaseEvents	dartPhaseDuration	expiredTasksEvents	expiredTasksDuration	timestamp

@@ -39,7 +39,7 @@ class TaskPool extends AspectContainer with ChildAspect {
   // wish when tasks are completed. Consider increasing this more if the player
   // completes an issue faster (by tapping on it).
   double _bugChance = 0.0;
-  static final Random _bugRandom = Random();
+  static Random bugRandom = Random();
   int _ticksToBugRoll = 0;
   static const int bugRollTicks = 5;
 
@@ -102,7 +102,7 @@ class TaskPool extends AspectContainer with ChildAspect {
     _ticksToBugRoll = (_ticksToBugRoll - 1 + bugRollTicks) % bugRollTicks;
 
     // No ticks left, roll the die.
-    if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
+    if (_ticksToBugRoll == 0 && bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
       addBug(Bug.random(get<World>().npcPool.availableSkills));
