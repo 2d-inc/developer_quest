@@ -1,124 +1,158 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+/// Determines whether the indicator should point left or right
+enum TextBubbleDirection { left, right }
+
+/// Place content inside a Text Bubble
 class TextBubble extends StatelessWidget {
   final Widget child;
-  final double bottomPadding;
+  final TextBubbleDirection direction;
+  final Radius radius;
+  final Size indicatorSize;
+  final double shadowOffset;
+  final EdgeInsets padding;
 
-  const TextBubble({Key key, this.child, this.bottomPadding = 50})
-      : super(key: key);
+  const TextBubble({
+    @required this.child,
+    Key key,
+    this.padding = const EdgeInsets.all(16),
+    this.direction = TextBubbleDirection.left,
+    this.radius = const Radius.circular(10),
+    this.indicatorSize = const Size(35, 20),
+    this.shadowOffset = 10,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final corner = Image.asset('assets/style_sphinx/chat_bubble_corner.png');
-
     return Stack(
       children: [
-        // Top and Bottom Borders
         Positioned.fill(
-          top: 0,
-          left: 40,
-          right: 40,
-          bottom: 33,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                top: BorderSide(
-                  color: Colors.black,
-                  width: 7.0,
-                ),
-                bottom: BorderSide(
-                  color: Colors.black,
-                  width: 7.0,
-                ),
-              ),
+          child: CustomPaint(
+            painter: _TextBubbleBackgroundPainter(
+              direction: direction,
+              radius: radius,
+              indicatorSize: indicatorSize,
+              shadowOffset: shadowOffset,
             ),
           ),
         ),
-
-        // Left and Right borders
-        Positioned.fill(
-          top: 40,
-          bottom: 73,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border(
-                left: BorderSide(
-                  color: Colors.black,
-                  width: 7.0,
-                ),
-                right: BorderSide(
-                  color: Colors.black,
-                  width: 7.0,
-                ),
-              ),
-            ),
-          ),
-        ),
-
-        // Corners
-        Positioned(
-          top: 0,
-          left: 0,
-          child: SizedBox(
-            width: 40,
-            height: 40,
-            child: corner,
-          ),
-        ),
-        Positioned(
-          top: 0,
-          right: 0,
-          child: SizedBox(
-            width: 40,
-            height: 40,
-            child: Transform.rotate(angle: math.pi / 2, child: corner),
-          ),
-        ),
-        Positioned(
-          bottom: 33,
-          right: 0,
-          child: SizedBox(
-            width: 40,
-            height: 40,
-            child: Transform.rotate(angle: math.pi, child: corner),
-          ),
-        ),
-        Positioned(
-          bottom: 33,
-          left: 0,
-          child: SizedBox(
-            width: 40,
-            height: 40,
-            child: Transform.rotate(angle: math.pi * 1.5, child: corner),
-          ),
-        ),
-        // Indicator
-        Positioned(
-          bottom: 0,
-          left: 100,
-          child: SizedBox(
-            width: 40,
-            height: 40,
-            child: Image.asset('assets/style_sphinx/chat_bubble_indicator.png'),
-          ),
-        ),
-
         // Text
         Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
-              child: child,
+              padding: EdgeInsets.only(
+                left: padding.left,
+                right: padding.right,
+                top: padding.top,
+                bottom: padding.bottom + indicatorSize.height + shadowOffset,
+              ),
+              child: DefaultTextStyle(
+                child: child,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'MontserratRegular',
+                  fontSize: 16,
+                ),
+              ),
             ),
-            SizedBox(height: bottomPadding),
           ],
         ),
       ],
     );
+  }
+}
+
+// Create a "Text Bubble" using a CustomPainter.
+class _TextBubbleBackgroundPainter extends CustomPainter {
+  final TextBubbleDirection direction;
+  final Radius radius;
+  final Size indicatorSize;
+  final double shadowOffset;
+
+  _TextBubbleBackgroundPainter({
+    @required this.direction,
+    @required this.radius,
+    @required this.indicatorSize,
+    @required this.shadowOffset,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final bubbleBottom = size.height - indicatorSize.height - shadowOffset;
+
+    // Start the path and create the first two rounded corners
+    final path = Path()
+      ..moveTo(
+        radius.x,
+        0,
+      )
+      ..lineTo(size.width - radius.x, 0)
+      ..arcToPoint(
+        Offset(size.width, radius.x),
+        radius: radius,
+      )
+      ..lineTo(size.width, bubbleBottom - radius.y)
+      ..arcToPoint(
+        Offset(size.width - radius.x, bubbleBottom),
+        radius: radius,
+      );
+
+    // After drawing the top and bottom-right corner, use the direction to
+    // determine which indicator to draw: Facing left or right.
+    if (direction == TextBubbleDirection.left) {
+      final startX = size.width - radius.x - size.width / 6;
+      final endX = startX - indicatorSize.width;
+
+      path
+        ..lineTo(startX, bubbleBottom)
+        ..lineTo(endX, bubbleBottom + indicatorSize.height)
+        ..lineTo(endX, bubbleBottom);
+    } else {
+      final startX = radius.x + indicatorSize.width + size.width / 6;
+      final endX = startX - indicatorSize.width;
+
+      path
+        ..lineTo(startX, bubbleBottom)
+        ..lineTo(startX, bubbleBottom + indicatorSize.height)
+        ..lineTo(endX, bubbleBottom);
+    }
+
+    // Complete the path by creating the last two rounded corners
+    path
+      ..lineTo(radius.x, bubbleBottom)
+      ..arcToPoint(
+        Offset(0, bubbleBottom - radius.y),
+        radius: radius,
+      )
+      ..lineTo(0, radius.y)
+      ..arcToPoint(
+        Offset(radius.x, 0),
+        radius: radius,
+      );
+
+    // Paint the shadow
+    canvas.save();
+    canvas.translate(0, shadowOffset);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = const Color.fromRGBO(85, 34, 34, 0.29)
+        ..style = PaintingStyle.fill,
+    );
+
+    // Then, paint the white background
+    canvas.restore();
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = Colors.white
+        ..style = PaintingStyle.fill,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_TextBubbleBackgroundPainter old) {
+    return direction != old.direction;
   }
 }

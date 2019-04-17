@@ -5,25 +5,25 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:dev_rpg/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:dev_rpg/main.dart';
-
 void main() {
   testWidgets('Start the game', (WidgetTester tester) async {
+    final startFinder = find.text('START');
+
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp());
 
     // Find the start text
-    expect(find.text('START'), findsOneWidget);
+    expect(startFinder, findsOneWidget);
 
     // Start the game.
     expect(find.byType(FlatButton), findsNWidgets(2));
-    await tester.tap(find.text('START'));
+    await tester.tap(startFinder);
     await tester.pumpAndSettle();
 
-    // We made it to the game screen.
     expect(find.text('Tasks'), findsOneWidget);
   });
 }

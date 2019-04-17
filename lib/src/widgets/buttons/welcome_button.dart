@@ -31,7 +31,9 @@ class _WelcomeButtonState extends State<WelcomeButton>
   @override
   void initState() {
     _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 3100));
+      vsync: this,
+      duration: const Duration(milliseconds: 3100),
+    );
     _colorTween = ColorTween(begin: widget.background, end: widget.background)
         .animate(_animationController);
     super.initState();

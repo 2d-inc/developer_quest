@@ -32,9 +32,9 @@ class BugPickerModal extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(bug.name, style: TextStyle(fontSize: 16)),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
+                    Text(bug.name, style: const TextStyle(fontSize: 16)),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
                       child: Text("SKILLS REQUIRED:",
                           style: TextStyle(fontSize: 11)),
                     ),
