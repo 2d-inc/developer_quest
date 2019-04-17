@@ -1,6 +1,8 @@
 # Load data from disk.
 durations <- read.csv("test_driver/durations.tsv", sep = "\t")
-durations <- durations[durations$description == "baseline" | durations$description == "statvalue-always-notifies" ,]
+
+# Uncomment and modify the following line to focus on just a few selected runs.
+# durations <- durations[durations$description == "baseline" | durations$description == "statvalue-always-notifies" ,]
 
 # Get just the IDs as a vector.
 ids <- aggregate(durations$id, by=list(durations$id), FUN=head)[1]$Group.1
