@@ -103,7 +103,7 @@ class _NpcDataTable extends StatelessWidget {
             selectable ? (selected) => onToggleSelect(npc, selected) : null,
         cells: [
           DataCell(
-            Text(npc.name,
+            Text(npc.id,
                 style: TextStyle(color: selectable ? null : Colors.grey)),
           ),
           DataCell(ProwessBadge(npc.prowess)),

@@ -1,638 +1,150 @@
-import 'dart:async';
-
-import 'package:dev_rpg/src/style_sphinx/feature_discovery/feature_discovery.dart';
+import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
+import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
+import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class SphinxScreen extends StatelessWidget {
-  static const String routeName = '/sphinx';
+class SphinxScreen extends StatefulWidget {
+  static const String miniGameRouteName = '/sphinx';
+  static const String fullGameRouteName = '/sphinx/complete';
+
+  const SphinxScreen({Key key, this.fullGame = false}) : super(key: key);
+
+  final bool fullGame;
 
   @override
+  _SphinxScreenState createState() => _SphinxScreenState();
+}
+
+class _SphinxScreenState extends State<SphinxScreen> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
+    return Stack(
+      children: <Widget>[
+        Positioned.fill(
+          child: Image.asset(
+            'assets/style_sphinx/start_background.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+        Positioned.fill(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 75),
             child: Image.asset(
               'assets/style_sphinx/pyramid.png',
               fit: BoxFit.cover,
             ),
           ),
-          Positioned.fill(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Image.asset('assets/style_sphinx/sphinx.png'),
-                    const SizedBox(height: 60),
-                    const JoystixText(
-                      'Welcome, friend. \n\nI am the Style Sphinx. \n\nIn order to proceed, style for me these layouts three!',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    FlatButton(
-                      color: Colors.red,
-                      child: const JoystixText('Begin'),
-                      onPressed: () {
-                        Navigator.push<void>(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (context) {
-                              return FeatureDiscovery(child: ColumnQuestion());
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+        ),
+        Positioned.fill(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  left: 24,
+                  right: 24,
+                  // Like a "SafeArea" Widget, but only applies the top padding
+                  top: MediaQuery.of(context).padding.top + 16,
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ColumnQuestion extends StatefulWidget {
-  @override
-  _ColumnQuestionState createState() => _ColumnQuestionState();
-}
-
-class _ColumnQuestionState extends State<ColumnQuestion>
-    with SingleTickerProviderStateMixin {
-  static const _feature1 = 'feature1';
-
-  Type _type;
-  AnimationController _controller;
-  bool _playFeatureDiscovery = true;
-
-  @override
-  void initState() {
-    _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    if (_playFeatureDiscovery) {
-      _playFeatureDiscovery = false;
-      scheduleMicrotask(() {
-        FeatureDiscovery.discoverFeatures(context, [_feature1]);
-      });
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final children = <Widget>[
-      const Icon(
-        Icons.map,
-        size: 48,
-      ),
-      const Icon(
-        Icons.email,
-        size: 48,
-      ),
-    ];
-
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 24.0,
-                right: 24.0,
-                bottom: 24.0,
-                top: 8.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    children: [
-                      DescribedFeatureOverlay(
-                        featureId: _feature1,
-                        color: Colors.red,
-                        title: const JoystixText(
-                          'Select the correct Widget!',
-                          style: TextStyle(fontSize: 18),
-                        ),
-                        description: const JoystixText(
-                            'To proceed, find the correct Widget to align the dark icons with the light icons.'),
-                        child: DropdownButton<Type>(
-                          hint: const MonoText('Select a widget'),
-                          items: const [
-                            DropdownMenuItem<Type>(
-                              child: MonoText('Column'),
-                              value: Column,
-                            ),
-                            DropdownMenuItem<Type>(
-                              child: MonoText('Row'),
-                              value: Row,
-                            ),
-                            DropdownMenuItem<Type>(
-                              child: MonoText('Stack'),
-                              value: Stack,
-                            ),
-                          ],
-                          value: _type,
-                          onChanged: (type) async {
-                            setState(() {
-                              _type = type;
-                            });
-
-                            if (type == Column) {
-                              final animation =
-                                  await showDialog<Animation<double>>(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('You did it!'),
-                                    content: const Text(
-                                      'A Column widget places items one on top of the next!',
-                                    ),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: const Text(
-                                          'Continue your journey!',
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(
-                                            context,
-                                            ModalRoute.of(context).animation,
-                                          );
-                                        },
-                                      )
-                                    ],
-                                  );
-                                },
-                              );
-
-                              animation.addListener(() {
-                                if (animation.isDismissed) {
-                                  Navigator.pushReplacement<void, void>(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (context) => RowQuestion(),
-                                    ),
-                                  );
-                                }
-                              });
-                            }
-                          },
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 350),
+                  child: Column(
+                    children: const [
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: TextBubble(
+                          child: Text(
+                            'I am the Style Sphinx.',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
-                      const MonoText('(')
-                    ],
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                  ),
-                  const MonoText('  children: <Widget>['),
-                  const MonoText('    Icon(Icons.map)'),
-                  const MonoText('    Icon(Icons.email)'),
-                  const MonoText('  ],'),
-                  const MonoText('),'),
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  child: Container(color: Colors.orange[300]),
-                ),
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildExpected(children),
-                  ),
-                ),
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildResult(children),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResult(List<Widget> children) {
-    switch (_type) {
-      case Stack:
-        return Stack(children: children);
-      case Column:
-        return Column(children: children);
-      case Row:
-        return Row(children: children);
-      default:
-        return StartPosition(children: children);
-    }
-  }
-
-  Widget _buildExpected(List<Widget> children) {
-    return Opacity(
-      opacity: 0.5,
-      child: Column(
-        children: children,
-      ),
-    );
-  }
-}
-
-class RowQuestion extends StatefulWidget {
-  @override
-  _RowQuestionState createState() => _RowQuestionState();
-}
-
-class _RowQuestionState extends State<RowQuestion>
-    with SingleTickerProviderStateMixin {
-  Type _type;
-
-  @override
-  Widget build(BuildContext context) {
-    final children = <Widget>[
-      const Icon(
-        Icons.map,
-        size: 48,
-      ),
-      const Icon(
-        Icons.email,
-        size: 48,
-      ),
-    ];
-
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 24.0,
-                right: 24.0,
-                bottom: 24.0,
-                top: 8.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    children: [
-                      DropdownButton<Type>(
-                        hint: const MonoText('Select a Widget'),
-                        items: const [
-                          DropdownMenuItem<Type>(
-                            child: MonoText('Column'),
-                            value: Column,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: TextBubble(
+                          direction: TextBubbleDirection.right,
+                          child: Text(
+                            '''In order to proceed,\nstyle for me,\nthese layouts three''',
                           ),
-                          DropdownMenuItem<Type>(
-                            child: MonoText('Row'),
-                            value: Row,
-                          ),
-                          DropdownMenuItem<Type>(
-                            child: MonoText('Stack'),
-                            value: Stack,
-                          ),
-                        ],
-                        value: _type,
-                        onChanged: (type) async {
-                          setState(() {
-                            _type = type;
-                          });
-
-                          if (type == Row) {
-                            final animation =
-                                await showDialog<Animation<double>>(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('You did it!'),
-                                  content: const Text(
-                                    'A Row widget places items next to one another.',
-                                  ),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child:
-                                          const Text('Continue your journey!'),
-                                      onPressed: () {
-                                        Navigator.pop(
-                                          context,
-                                          ModalRoute.of(context).animation,
-                                        );
-                                      },
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-
-                            animation.addListener(() {
-                              if (animation.isDismissed) {
-                                Navigator.pushReplacement<void, void>(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StackQuestion(),
-                                  ),
-                                );
-                              }
-                            });
-                          }
-                        },
+                        ),
                       ),
-                      const MonoText('(')
                     ],
-                    crossAxisAlignment: WrapCrossAlignment.center,
                   ),
-                  const MonoText('  children: <Widget>['),
-                  const MonoText('    Icon(Icons.map)'),
-                  const MonoText('    Icon(Icons.email)'),
-                  const MonoText('  ],'),
-                  const MonoText('),'),
-                ],
+                ),
               ),
-            ),
-          ),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  child: Container(color: Colors.orange[300]),
-                ),
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildExpected(children),
+              const Flexible(child: SphinxImage()),
+              Container(
+                height: 130,
+                color: const Color.fromRGBO(251, 168, 127, 1),
+                child: Center(
+                  child: SphinxButton(
+                    onPressed: () => _startGame(context),
+                    child: const Text('FACE THE SPHINX'),
                   ),
                 ),
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildResult(children),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildResult(List<Widget> children) {
-    switch (_type) {
-      case Stack:
-        return Stack(children: children);
-      case Column:
-        return Column(children: children);
-      case Row:
-        return Row(children: children);
-      default:
-        return StartPosition(children: children);
-    }
-  }
-
-  Widget _buildExpected(List<Widget> children) {
-    return Opacity(
-      opacity: 0.5,
-      child: Row(
-        children: children,
-      ),
-    );
-  }
-}
-
-class StackQuestion extends StatefulWidget {
-  @override
-  _StackQuestionState createState() => _StackQuestionState();
-}
-
-class _StackQuestionState extends State<StackQuestion>
-    with SingleTickerProviderStateMixin {
-  Type _type;
-
-  @override
-  Widget build(BuildContext context) {
-    final children = <Widget>[
-      const Icon(
-        Icons.map,
-        size: 48,
-      ),
-      const Icon(
-        Icons.email,
-        size: 48,
-      ),
-    ];
-
-    return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 24.0,
-                right: 24.0,
-                bottom: 24.0,
-                top: 8.0,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    children: [
-                      DropdownButton<Type>(
-                        hint: const MonoText('Select a Widget'),
-                        items: const [
-                          DropdownMenuItem<Type>(
-                            child: MonoText('Column'),
-                            value: Column,
-                          ),
-                          DropdownMenuItem<Type>(
-                            child: MonoText('Row'),
-                            value: Row,
-                          ),
-                          DropdownMenuItem<Type>(
-                            child: MonoText('Stack'),
-                            value: Stack,
-                          ),
-                        ],
-                        value: _type,
-                        onChanged: (type) async {
-                          setState(() {
-                            _type = type;
-                          });
-
-                          if (type == Stack) {
-                            await showDialog<Animation<double>>(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('You did it!'),
-                                  content: const Text(
-                                    'A Stack widget places Widgets one on top of the other. Rats! Now you\'ve defeated me!',
-                                  ),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: const Text('Escape the Sphinx'),
-                                      onPressed: () {
-                                        Navigator.popUntil(
-                                          context,
-                                          (route) => route.settings.name == '/',
-                                        );
-                                      },
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                      ),
-                      const MonoText('(')
-                    ],
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                  ),
-                  const MonoText('  children: <Widget>['),
-                  const MonoText('    Icon(Icons.map)'),
-                  const MonoText('    Icon(Icons.email)'),
-                  const MonoText('  ],'),
-                  const MonoText('),'),
-                ],
-              ),
-            ),
+            ],
           ),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                Positioned.fill(
-                  child: Container(color: Colors.orange[300]),
-                ),
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildExpected(children),
-                  ),
-                ),
-                Positioned.fill(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildResult(children),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  Widget _buildResult(List<Widget> children) {
-    switch (_type) {
-      case Stack:
-        return Stack(children: children);
-      case Row:
-        return Row(children: children);
-      case Column:
-        return Column(children: children);
-      default:
-        return StartPosition(children: children);
-    }
-  }
+  void _startGame(BuildContext context) {
+    // When the user presses the buttons, navigate to the first question by
+    // creating the original QuestionArguments.
+    //
+    // The QuestionArguments are configured up front and then passed from one
+    // question screen to the next in order to drive the game forward.
+    final arguments = QuestionArguments(
+      originalRoute: '${ModalRoute.of(context).settings.arguments}',
+      questionRoutes: widget.fullGame
+          ? [
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+              // Todo: Add real Qs here.
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+            ]
+          : [
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+            ],
+    );
 
-  Widget _buildExpected(List<Widget> children) {
-    return Opacity(
-      opacity: 0.5,
-      child: Stack(
-        children: children,
-      ),
+    Navigator.pushNamed<void>(
+      context,
+      arguments.routeName,
+      arguments: arguments,
     );
   }
 }
 
-class JoystixText extends StatelessWidget {
-  final String data;
-  final TextStyle style;
-  final TextAlign textAlign;
+// A convenience function that will navigate to the Style Sphinx minigame and
+// set the "originalRoute" -- the name of the route the game will navigate
+// back to after completing the challenge.
+Future<void> navigateToSphinxMiniGame(BuildContext context) =>
+    _navigateToSphinxScreen(context, SphinxScreen.miniGameRouteName);
 
-  const JoystixText(
-    this.data, {
-    Key key,
-    this.style = const TextStyle(),
-    this.textAlign,
-  }) : super(key: key);
+// A convenience function that will navigate to the complete Style Sphinx game
+// and set the "originalRoute" -- the name of the route the game will navigate
+// back to after completing the challenge.
+Future<void> navigateToSphinxFullGame(BuildContext context) =>
+    _navigateToSphinxScreen(context, SphinxScreen.fullGameRouteName);
 
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      data,
-      style: style.copyWith(fontFamily: 'Joystix'),
-      textAlign: textAlign,
-    );
-  }
-}
-
-class MonoText extends StatelessWidget {
-  final String data;
-  final TextStyle style;
-  final TextAlign textAlign;
-
-  const MonoText(
-    this.data, {
-    Key key,
-    this.style = const TextStyle(),
-    this.textAlign,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      data,
-      style: style.copyWith(fontFamily: 'RobotoMono'),
-      textAlign: textAlign,
-    );
-  }
-}
-
-class StartPosition extends StatelessWidget {
-  final List<Widget> children;
-
-  const StartPosition({
-    @required this.children,
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: children,
-      ),
-    );
-  }
+Future<void> _navigateToSphinxScreen(BuildContext context, String route) {
+  return Navigator.pushNamed(
+    context,
+    route,
+    arguments: ModalRoute.of(context).settings.name,
+  );
 }
