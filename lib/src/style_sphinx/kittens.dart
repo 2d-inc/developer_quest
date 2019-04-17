@@ -1,22 +1,20 @@
 import 'package:flutter/widgets.dart';
 
-enum KittyType { blue, brown, purple }
+enum KittyType { orange, yellow }
 
 class KittyBed extends StatelessWidget {
   final KittyType type;
 
-  const KittyBed({Key key, this.type}) : super(key: key);
+  const KittyBed({@required this.type, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case KittyType.blue:
-        return Image.asset('assets/style_sphinx/kitty_bed_blue.png');
-      case KittyType.brown:
-        return Image.asset('assets/style_sphinx/kitty_bed_brown.png');
-      case KittyType.purple:
+      case KittyType.orange:
+        return Image.asset('assets/style_sphinx/normalized/red_bed.png');
+      case KittyType.yellow:
       default:
-        return Image.asset('assets/style_sphinx/kitty_bed_purple.png');
+        return Image.asset('assets/style_sphinx/normalized/green_bed.png');
     }
   }
 }
@@ -24,18 +22,16 @@ class KittyBed extends StatelessWidget {
 class Kitty extends StatelessWidget {
   final KittyType type;
 
-  const Kitty({Key key, this.type}) : super(key: key);
+  const Kitty({@required this.type, Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     switch (type) {
-      case KittyType.blue:
-        return Image.asset('assets/style_sphinx/kitty_blue.png');
-      case KittyType.brown:
-        return Image.asset('assets/style_sphinx/kitty_brown.png');
-      case KittyType.purple:
+      case KittyType.orange:
+        return Image.asset('assets/style_sphinx/normalized/orange_cat.png');
+      case KittyType.yellow:
       default:
-        return Image.asset('assets/style_sphinx/kitty_purple.png');
+        return Image.asset('assets/style_sphinx/normalized/yellow_cat.png');
     }
   }
 }

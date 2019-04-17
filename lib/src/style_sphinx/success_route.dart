@@ -1,11 +1,24 @@
-import 'package:dev_rpg/src/style_sphinx/fonts.dart';
+import 'dart:math';
+
+import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
+import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class SuccessRoute extends PageRoute<Animation<double>> {
+  static const _titles = [
+    'You\'ve done it!',
+    'Hooray!',
+    'Congrats!',
+    'Nice one!'
+  ];
+  static const _victory = 'Winner Winner!';
+
   SuccessRoute({
-    @required this.child,
+    @required String message,
+    @required this.hasNextQuestion,
     RouteSettings settings,
     this.transitionDuration = const Duration(milliseconds: 1000),
     this.opaque = false,
@@ -13,12 +26,22 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     this.barrierColor,
     this.barrierLabel,
     this.maintainState = true,
-  })  : assert(barrierDismissible != null),
+  })  : message = !hasNextQuestion
+            ? '$message\n\nRats. You\'ve defeated me!!!'
+            : message,
+        title = hasNextQuestion
+            ? _titles[Random().nextInt(_titles.length)]
+            : _victory,
+        buttonText = hasNextQuestion ? 'Proceed' : 'Escape the Sphinx',
+        assert(barrierDismissible != null),
         assert(maintainState != null),
         assert(opaque != null),
         super(settings: settings);
 
-  final Widget child;
+  final String message;
+  final String title;
+  final String buttonText;
+  final bool hasNextQuestion;
 
   @override
   final Duration transitionDuration;
@@ -63,8 +86,12 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     final scaleAnimation =
         Tween<double>(begin: 0.3, end: 1).chain(curveTween).animate(animation);
 
+    void proceed() {
+      Navigator.pop(context, animation);
+    }
+
     return GestureDetector(
-      onTap: () => Navigator.pop(context, animation),
+      onTap: proceed,
       child: AnimatedBuilder(
         animation: animation,
         builder: (context, child) {
@@ -81,9 +108,28 @@ class SuccessRoute extends PageRoute<Animation<double>> {
           child: Material(
             color: Colors.transparent,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                child,
-                const SphinxImage(),
+                TextBubble(
+                  child: Column(
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        message,
+                      ),
+                      const SizedBox(height: 16),
+                      SphinxButton(
+                        child: Text(buttonText),
+                        onPressed: proceed,
+                      ),
+                    ],
+                  ),
+                ),
+                const Flexible(child: SphinxImage()),
               ],
             ),
           ),
@@ -104,10 +150,10 @@ class SuccessRoute extends PageRoute<Animation<double>> {
 }
 
 class ProceedButton extends StatelessWidget {
-  final String message;
+  final String text;
 
   const ProceedButton({
-    this.message = 'Proceed',
+    @required this.text,
     Key key,
   }) : super(key: key);
 
@@ -117,8 +163,8 @@ class ProceedButton extends StatelessWidget {
       child: FlatButton(
         onPressed: () {},
         color: Colors.black,
-        child: JoystixText(
-          message,
+        child: Text(
+          text,
           style: const TextStyle(
             color: Colors.white,
           ),
@@ -126,4 +172,55 @@ class ProceedButton extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> navigateToNextQuestion(
+  BuildContext context,
+  String message,
+) async {
+  // Extract the Arguments from the current Route. Use these to determine
+  // whether to navigate to the next question or original screen.
+  //
+  // If there are no arguments provided to the current route, default to an
+  // empty set to exit the game immediately after choosing the correct answer.
+  final args = ModalRoute.of(context).settings.arguments as QuestionArguments ??
+      QuestionArguments();
+
+  // Push the Success Route and wait for the user to hit the proceed button.
+  // When they do, the route will return the "Flying Away" animation.
+  final animation = await Navigator.push<Animation<double>>(
+    context,
+    SuccessRoute(
+      message: message,
+      hasNextQuestion: args.hasNextQuestion,
+    ),
+  );
+
+  // Create a listener function that is called every time the animation emits a
+  // change. When the animation is complete, it navigates to the next question
+  // if one is available or back to the original route if the .
+  void listener() {
+    if (animation.isDismissed) {
+      if (args.hasNextQuestion) {
+        final nextQuestion = args.nextQuestion();
+
+        Navigator.pushReplacementNamed(
+          context,
+          nextQuestion.routeName,
+          arguments: nextQuestion,
+        );
+      } else {
+        Navigator.popUntil(
+          context,
+          (route) => route.settings.name == args.originalRoute,
+        );
+      }
+
+      // Remove the listener when the animation completes
+      animation.removeListener(listener);
+    }
+  }
+
+  // Register the listener
+  animation.addListener(listener);
 }
