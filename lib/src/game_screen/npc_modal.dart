@@ -27,6 +27,7 @@ class NpcModal extends StatelessWidget {
         if (event.runtimeType == RawKeyDownEvent &&
             (event.logicalKey.keyId == KeyCode.backspace ||
                 event.logicalKey.keyId == KeyCode.escape)) {
+          _focusNode.unfocus();
           Navigator.pop(context, null);
         }
       },
