@@ -22,12 +22,7 @@ void main() {
     // Start the game.
     expect(find.byType(FlatButton), findsNWidgets(2));
     await tester.tap(startFinder);
-
-    // Need to pump twice instead of use pumpAndSettle, because pumpAndSettle
-    // will wait for all animations to complete. Because there are looping
-    // animations on the main screen, pumpAndSettle will never succeed.
-    await tester.pump();
-    await tester.pump();
+    await tester.pumpAndSettle();
 
     expect(find.text('Tasks'), findsOneWidget);
   });
