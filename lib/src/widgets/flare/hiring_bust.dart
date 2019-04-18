@@ -16,7 +16,7 @@ import 'package:flare_flutter/flare_render_box.dart';
 /// because presumably the user doesn't have the resources to hire them.
 /// [available] is for when the character can be hired, but has not been yet.
 /// [hired] is for when the character has been added to the team.
-enum HiringBustState { locked, available, hired }
+enum HiringBustState { locked, available, hired, working, success }
 
 /// Avatar displayed on the hiring page, has clipping and is desaturated.
 class HiringBust extends LeafRenderObjectWidget {
@@ -103,12 +103,31 @@ class HiringBustRenderObject extends FlareRenderBox {
       return;
     }
     _hiringState = value;
-    _actor?.desaturate = value != HiringBustState.hired;
+    _updateState();
     if (value == HiringBustState.available) {
       _particles = HiringParticles(color: particleColor);
     } else {
       _particles = null;
     }
+  }
+
+  void _updateState() {
+    if (_artboard != null) {
+      switch (_hiringState) {
+        case HiringBustState.working:
+          _idleAnimation = _artboard.getAnimation("working");
+          break;
+        case HiringBustState.success:
+          _idleAnimation = _artboard.getAnimation("success");
+          break;
+        default:
+          _idleAnimation = _artboard.getAnimation("idle");
+          break;
+      }
+    }
+
+    _actor?.desaturate = _hiringState == HiringBustState.locked ||
+        _hiringState == HiringBustState.available;
   }
 
   double get shadowWidth => min(size.width, size.height) * 0.85;
@@ -200,9 +219,9 @@ class HiringBustRenderObject extends FlareRenderBox {
       // apply the bust animation state.
       _bust = _artboard.getAnimation("bust");
       _bust?.apply(0.0, _artboard, 1.0);
-      _idleAnimation = _artboard.getAnimation("idle");
+
       _artboard.initializeGraphics();
-      _actor.desaturate = _hiringState != HiringBustState.hired;
+      _updateState();
 
       advance(0.0);
       markNeedsPaint();

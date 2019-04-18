@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:dev_rpg/src/game_screen/npc_style.dart';
 import 'package:dev_rpg/src/shared_state/game/npc.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
-import 'package:flare_flutter/flare_actor.dart';
+import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -21,9 +19,9 @@ class WorkTeam extends StatefulWidget {
 /// in the [WorkTeam] widget.
 class _WorkTeamMember {
   final NpcStyle style;
-  String animation;
+  HiringBustState state;
 
-  _WorkTeamMember(this.style, this.animation);
+  _WorkTeamMember(this.style, this.state);
 }
 
 class _WorkTeamState extends State<WorkTeam> {
@@ -44,7 +42,7 @@ class _WorkTeamState extends State<WorkTeam> {
     if (widget?.team == null) {
       if (widget.isComplete) {
         for (final _WorkTeamMember member in _workTeam) {
-          member.animation = "success";
+          member.state = HiringBustState.success;
         }
       }
       return;
@@ -59,37 +57,35 @@ class _WorkTeamState extends State<WorkTeam> {
       _workTeam.add(_WorkTeamMember(
           style,
           widget.isComplete
-              ? "success"
-              : npc.contributes(widget.skillsNeeded) ? "working" : "idle"));
+              ? HiringBustState.success
+              : npc.contributes(widget.skillsNeeded)
+                  ? HiringBustState.working
+                  : HiringBustState.hired));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    double widthFactor = 1.0 / max(2.0, _workTeam.length);
-    return Stack(
-      children: _workTeam.map((member) {
-        return Align(
-          alignment: Alignment(
-              -1.0 +
-                  (_workTeam.indexOf(member) /
-                      max(1, _workTeam.length - 1) *
-                      2.0),
-              1.0),
-          child: FractionallySizedBox(
-            alignment: Alignment.bottomCenter,
-            heightFactor: 1.0,
-            widthFactor: widthFactor,
-            child: FlareActor(
-              member.style.flare,
-              alignment: Alignment.bottomCenter,
-              fit: BoxFit.cover,
-              shouldClip: false,
-              animation: member.animation,
-            ),
-          ),
-        );
-      }).toList(),
-    );
+    return Wrap(
+        spacing: 10.0,
+        runSpacing: 10.0,
+        alignment: WrapAlignment.end,
+        crossAxisAlignment: WrapCrossAlignment.end,
+        children: _workTeam.map((member) {
+          return Container(
+              width: 71,
+              height: 71,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                color: const Color.fromRGBO(69, 69, 82, 1.0),
+              ),
+              child: HiringBust(
+                filename: member.style.flare,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
+                hiringState: member.state,
+                isPlaying: true,
+              ));
+        }).toList());
   }
 }
