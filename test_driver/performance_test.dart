@@ -45,14 +45,13 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
 
   var tpm = find.text('tpm');
   await driver.tap(tpm);
-
   await driver.tap(_teamPickOkButtonFinder);
 
-  var shipIt = find.text('LAUNCH');
+  var shipIt = find.text('LAUNCH!');
   // Need to run these next operations unsynchronized as the working/idle
   // animations for the characters are playing.
   await driver.runUnsynchronized(() => driver.waitFor(shipIt));
-  await driver.runUnsynchronized(() => driver.tap(shipIt));
+  await driver.runUnsynchronized(() => driver.tap(find.text(taskName)));
 }
 
 Future<Timeline> _run(FlutterDriver driver) async {
