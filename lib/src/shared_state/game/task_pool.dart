@@ -26,9 +26,9 @@ class TaskPool extends AspectContainer with ChildAspect {
   // The tasks that are archived (user got their rewad).
   final List<Task> archivedTasks = [];
 
-  // The bugs that are in the active work items.
-  // Consider storing these in their own list if performance becomes an issue.
-  Iterable<Bug> get bugs => workItems.whereType<Bug>();
+  /// The bugs that should be presented to the player so they can tackle
+  /// them next.
+  final List<Bug> availableBugs = [];
 
   // The tasks from the active work items.
   Iterable<Task> get tasks => workItems.whereType<Task>();
@@ -39,7 +39,7 @@ class TaskPool extends AspectContainer with ChildAspect {
   // wish when tasks are completed. Consider increasing this more if the player
   // completes an issue faster (by tapping on it).
   double _bugChance = 0.0;
-  static final Random _bugRandom = Random();
+  static Random bugRandom = Random();
   int _ticksToBugRoll = 0;
   static const int bugRollTicks = 5;
 
@@ -64,12 +64,21 @@ class TaskPool extends AspectContainer with ChildAspect {
   }
 
   void addWorkItem(WorkItem item) {
+    if (item is Bug) {
+      // Take the bug out of the available list as it's now being actively
+      // worked on.
+      assert(availableBugs.contains(item));
+      availableBugs.remove(item);
+    }
+
     addAspect(item);
     workItems.add(item);
-    if (item is Bug) {
-      // Dark days ahead...
-      get<World>().company.joy.number -= item.priority.drainOfJoy;
-    }
+    markDirty();
+  }
+
+  void addBug(Bug bug) {
+    get<World>().company.joy.number -= bug.priority.drainOfJoy;
+    availableBugs.add(bug);
     markDirty();
   }
 
@@ -93,10 +102,10 @@ class TaskPool extends AspectContainer with ChildAspect {
     _ticksToBugRoll = (_ticksToBugRoll - 1 + bugRollTicks) % bugRollTicks;
 
     // No ticks left, roll the die.
-    if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
+    if (_ticksToBugRoll == 0 && bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      addWorkItem(Bug.random(get<World>().npcPool.availableSkills));
+      addBug(Bug.random(get<World>().npcPool.availableSkills));
     }
   }
 

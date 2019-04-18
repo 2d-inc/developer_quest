@@ -46,21 +46,27 @@ class TaskListItem extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
-                  Text(workItem.name, style: TextStyle(fontSize: 14)),
+                  Text(
+                    workItem.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                  ),
                   workItem is Task && workItem.state == TaskState.completed
                       ? Container(
                           margin: const EdgeInsets.only(left: 5.0),
                           padding: const EdgeInsets.all(5.0),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.yellow,
-                            borderRadius: const BorderRadius.all(
+                            borderRadius: BorderRadius.all(
                               Radius.circular(5.0),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Ship it!!",
-                            style: TextStyle(
-                                fontSize: 10.0, color: Colors.black),
+                            style:
+                                TextStyle(fontSize: 10.0, color: Colors.black),
                           ),
                         )
                       : Container(),

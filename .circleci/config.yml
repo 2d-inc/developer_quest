@@ -1,7 +1,7 @@
 version: 2.1
 jobs:
   test:
-    
+
     docker:
       - image: circleci/android:api-28
 
@@ -20,6 +20,17 @@ jobs:
           command: |
             git clone https://github.com/flutter/flutter.git -b master
             ./flutter/bin/flutter doctor
+            ./flutter/bin/flutter packages get
+
+      - run:
+          name: Check formatting
+          command: |
+            ./flutter/bin/cache/dart-sdk/bin/dartfmt -n --set-exit-if-changed ./lib
+
+      - run:
+          name: Static Analysis
+          command: |
+            ./flutter/bin/cache/dart-sdk/bin/dartanalyzer --fatal-infos --fatal-warnings ./lib
 
       - run:
           name: Test App
@@ -30,7 +41,7 @@ jobs:
           name: Build App
           command: |
             ./flutter/bin/flutter build apk
-            
+
 workflows:
   version: 2
   build:

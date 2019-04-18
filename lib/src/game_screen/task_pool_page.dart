@@ -1,5 +1,8 @@
+import 'package:dev_rpg/src/game_screen/add_task_button.dart';
+import 'package:dev_rpg/src/game_screen/bug_picker_modal.dart';
 import 'package:dev_rpg/src/game_screen/project_picker_modal.dart';
 import 'package:dev_rpg/src/game_screen/task_list_item.dart';
+import 'package:dev_rpg/src/shared_state/game/bug.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
@@ -18,8 +21,8 @@ class TaskPoolPage extends StatelessWidget {
         Positioned.fill(
           child: Consumer<TaskPool>(
             builder: (context, taskPool) {
-              final workItems = taskPool.tasks.cast<WorkItem>()
-                  .followedBy(taskPool.bugs)
+              final workItems = taskPool.workItems
+                  .cast<WorkItem>()
                   .followedBy(taskPool.completedTasks)
                   .followedBy(taskPool.archivedTasks)
                   .toList(growable: false);
@@ -41,22 +44,55 @@ class TaskPoolPage extends StatelessWidget {
           ),
         ),
         Positioned.fill(
+          left: 20.0,
           right: 20.0,
           top: 50.0,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              FloatingActionButton(
-                elevation: 0.0,
-                child: const Icon(Icons.add),
-                onPressed: () async {
-                  var project = await showModalBottomSheet<TaskBlueprint>(
-                    context: context,
-                    builder: (context) => ProjectPickerModal(),
+              Consumer<TaskPool>(
+                builder: (context, taskPool) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: AddTaskButton(
+                          "Tasks",
+                          key: const Key('add_task'),
+                          count: taskPool.availableTasks.length,
+                          icon: Icons.add,
+                          color: const Color(0xff5472ee),
+                          onPressed: () async {
+                            var project =
+                                await showModalBottomSheet<TaskBlueprint>(
+                              context: context,
+                              builder: (context) => ProjectPickerModal(),
+                            );
+                            if (project == null) return;
+                            Provider.of<TaskPool>(context, listen: false)
+                                .startTask(project);
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 20.0),
+                      Expanded(
+                        child: AddTaskButton(
+                          "Bugs",
+                          count: taskPool.availableBugs.length,
+                          icon: Icons.bug_report,
+                          color: const Color(0xffeb2875),
+                          onPressed: () async {
+                            var bug = await showModalBottomSheet<Bug>(
+                              context: context,
+                              builder: (context) => BugPickerModal(),
+                            );
+                            if (bug == null) return;
+                            Provider.of<TaskPool>(context, listen: false)
+                                .addWorkItem(bug);
+                          },
+                        ),
+                      ),
+                    ],
                   );
-                  if (project == null) return;
-                  Provider.of<TaskPool>(context, listen: false)
-                      .startTask(project);
                 },
               ),
             ],
