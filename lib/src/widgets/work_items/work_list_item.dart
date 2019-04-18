@@ -21,12 +21,26 @@ class WorkListItem extends StatelessWidget {
   final WorkItem workItem;
   final HandleTapCallback handleTap;
 
-  const WorkListItem(
-      {this.workItem,
-      this.isExpanded = true,
-      this.heading,
-      this.progressColor,
-      this.handleTap});
+  const WorkListItem({
+    this.workItem,
+    this.isExpanded = true,
+    this.heading,
+    this.progressColor,
+    this.handleTap,
+  });
+
+  BoxDecoration get workListItemDecoration => BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              offset: const Offset(0.0, 10.0),
+              blurRadius: 10.0,
+              spreadRadius: 0.0),
+        ],
+        borderRadius: const BorderRadius.all(Radius.circular(9.0)),
+        // **Step 1 in emshack/efortuna live-coding: Change from black to white.
+        color: Colors.white,
+      );
 
   Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
     if (handleTap != null && handleTap()) {
@@ -50,65 +64,79 @@ class WorkListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       child: Container(
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  offset: const Offset(0.0, 10.0),
-                  blurRadius: 10.0,
-                  spreadRadius: 0.0),
-            ],
-            borderRadius: const BorderRadius.all(Radius.circular(9.0)),
-            color: Colors.white),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Stack(
-              children: <Widget>[
-                Material(
-                  type: MaterialType.transparency,
-                  borderRadius: const BorderRadius.all(Radius.circular(9.0)),
-                  clipBehavior: Clip.antiAlias,
-                  child: InkWell(
-                    onTap: () => _handleTap(context, workItem),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          heading,
-                          const SizedBox(height: 12),
-                          Text(
-                            workItem.name,
-                            style: isExpanded
-                                ? contentStyle
-                                : contentStyle.apply(color: disabledColor),
-                          ),
-                          !isExpanded
-                              ? Container()
-                              : Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                      const SizedBox(height: 11),
-                                      WorkListProgress(
-                                          progressColor: progressColor,
-                                          workItem: workItem),
-                                      WorkTeam(
-                                          team: workItem.assignedTeam,
-                                          skillsNeeded: workItem.skillsNeeded,
-                                          isComplete: workItem.isComplete)
-                                    ])
-                        ],
-                      ),
-                    ),
+        decoration: workListItemDecoration,
+        child: Material(
+          type: MaterialType.transparency,
+          borderRadius: const BorderRadius.all(Radius.circular(9.0)),
+          clipBehavior: Clip.antiAlias,
+          // **Step 5 in emshack/efortuna live-coding: Add InkWell and onTap.
+          // Also talk about _handleTap above, but have it pre-written.
+          child: InkWell(
+            onTap: () => _handleTap(context, workItem),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              // **Step 3 in emshack/efortuna live-coding: Add this Column,
+              // plus the heading and SizedBox children.
+              child: Column(
+                // **Step 4 in emshack/efortuna live-coding: Add
+                // crossAxisAlignment.
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heading,
+                  const SizedBox(height: 12),
+                  Text(
+                    workItem.name,
+                    // **Step 2 in emshack/efortuna live-coding: Add style.
+                    style: isExpanded
+                        ? contentStyle
+                        : contentStyle.apply(color: disabledColor),
                   ),
-                ),
-              ],
-            )
-          ],
+                  // **Step 6 in emshack/efortuna live-coding: Add this child
+                  // for a final wow moment.
+                  TeamProgressIndicator(
+                    workItem: workItem,
+                    isExpanded: isExpanded,
+                    progressColor: progressColor,
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
+  }
+}
+
+class TeamProgressIndicator extends StatelessWidget {
+  const TeamProgressIndicator({
+    this.workItem,
+    this.isExpanded,
+    this.progressColor,
+  });
+
+  final WorkItem workItem;
+  final bool isExpanded;
+  final Color progressColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return !isExpanded
+        ? Container()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(height: 11),
+              WorkListProgress(
+                progressColor: progressColor,
+                workItem: workItem,
+              ),
+              WorkTeam(
+                team: workItem.assignedTeam,
+                skillsNeeded: workItem.skillsNeeded,
+                isComplete: workItem.isComplete,
+              )
+            ],
+          );
   }
 }
