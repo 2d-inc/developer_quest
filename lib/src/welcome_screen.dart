@@ -71,12 +71,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 height: 2,
                 color: Colors.white.withOpacity(0.19),
               ),
-			  const SizedBox(height: 12),
+              const SizedBox(height: 12),
               const Text(
                 "Build your team, slay bugs,\ndon't get fired.",
                 style: TextStyle(fontFamily: "RobotoRegular", fontSize: 20.0),
               ),
-			  const SizedBox(height: 25),
+              const SizedBox(height: 25),
               Image.asset('assets/images/2dimensions.png'),
               Padding(
                 padding: const EdgeInsets.only(top: 29.0, bottom: 15),
