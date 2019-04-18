@@ -112,42 +112,39 @@ class NpcModal extends StatelessWidget {
                         ),
                         Column(
                           children: npc.prowess.keys
-                              .map(
-                                (Skill skill) => Padding(
-                                      padding: const EdgeInsets.only(top: 32.0),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            children: [
-                                              Row(children: [
-                                                const Icon(Icons.chevron_right,
-                                                    color: skillTextColor),
-                                                const SizedBox(width: 4),
-                                                Text(
-                                                  skillDisplayName[skill],
-                                                  style: contentStyle.apply(
-                                                      color: skillTextColor),
-                                                )
-                                              ]),
-                                              Expanded(child: Container()),
-                                              Text(
-                                                npc.prowess[skill].toString(),
-                                                style: contentLargeStyle,
-                                              )
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 5.0),
-                                            child: ProwessProgress(
-                                                color: skillColor[skill],
-                                                progress:
-                                                    npc.prowess[skill] / 100),
+                              .map((Skill skill) => Padding(
+                                    padding: const EdgeInsets.only(top: 32.0),
+                                    child: Column(children: <Widget>[
+                                      Row(
+                                        children: [
+                                          Row(children: [
+                                            const Icon(Icons.chevron_right,
+                                                color: skillTextColor),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              skillDisplayName[skill],
+                                              style: contentStyle.apply(
+                                                  color: skillTextColor),
+                                            )
+                                          ]),
+                                          Expanded(child: Container()),
+                                          Text(
+                                            npc.prowess[skill].toString(),
+                                            style: contentLargeStyle,
                                           )
                                         ],
                                       ),
-                                    ),
-                              )
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 5.0),
+                                        child: ProwessProgress(
+                                            color: skillColor[skill],
+                                            borderRadius:
+                                                BorderRadius.circular(3.5),
+                                            progress: npc.prowess[skill] / 100),
+                                      )
+                                    ]),
+                                  ))
                               .toList(),
                         ),
                         const SizedBox(height: 40),

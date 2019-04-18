@@ -39,18 +39,19 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.waitFor(task);
   await driver.tap(find.text(taskName));
 
-  var refactorer = find.text('The Refactorer');
+  var refactorer = find.text('refactorer');
   await driver.waitFor(refactorer);
   await driver.tap(refactorer);
 
-  var tpm = find.text('TPM');
+  var tpm = find.text('tpm');
   await driver.tap(tpm);
-
   await driver.tap(_teamPickOkButtonFinder);
 
-  var shipIt = find.text('Ship it!!');
-  await driver.waitFor(shipIt);
-  await driver.tap(shipIt);
+  var shipIt = find.text('LAUNCH!');
+  // Need to run these next operations unsynchronized as the working/idle
+  // animations for the characters are playing.
+  await driver.runUnsynchronized(() => driver.waitFor(shipIt));
+  await driver.runUnsynchronized(() => driver.tap(find.text(taskName)));
 }
 
 Future<Timeline> _run(FlutterDriver driver) async {
@@ -59,7 +60,9 @@ Future<Timeline> _run(FlutterDriver driver) async {
     throw StateError('FlutterDriver health: $health');
   }
 
-  await driver.tap(_startGameFinder);
+  // Need to run this unsynchronized as the idle (looping) animation for
+  // the home screen is playing.
+  await driver.runUnsynchronized(() => driver.tap(_startGameFinder));
   await driver.waitForAbsent(_startGameFinder);
   await driver.tap(find.text("Tasks"));
 

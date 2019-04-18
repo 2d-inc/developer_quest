@@ -52,7 +52,7 @@ class _WelcomeButtonState extends State<WelcomeButton>
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _animationController?.dispose();
     super.dispose();
   }
 
