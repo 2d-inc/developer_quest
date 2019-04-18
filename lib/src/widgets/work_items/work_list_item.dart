@@ -135,7 +135,7 @@ class TeamProgressIndicator extends StatelessWidget {
                 team: workItem.assignedTeam,
                 skillsNeeded: workItem.skillsNeeded,
                 isComplete: workItem.isComplete,
-              )
+              ),
             ],
           );
   }
