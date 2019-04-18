@@ -21,12 +21,14 @@ class BugListItem extends StatelessWidget {
       heading: !bug.isComplete
           ? Row(
               children: [
-                    const Icon(Icons.bug_report, color: accent),
-                    Expanded(child: Container()),
-                  ] +
+                const Icon(Icons.bug_report, color: accent),
+                Expanded(child: Container()),
+              ]..addAll(
                   bug.skillsNeeded
                       .map((Skill skill) => SkillDot(skill))
-                      .toList())
+                      .toList(),
+                ),
+            )
           : const Icon(Icons.bug_report, color: disabledColor),
     );
   }

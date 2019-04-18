@@ -32,21 +32,22 @@ class TaskListItem extends StatelessWidget {
       heading: task.state != TaskState.rewarded
           ? Row(
               children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      child: const FlareActor("assets/flare/Coin.flr"),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      task.blueprint.coinReward.toString(),
-                      style: contentSmallStyle,
-                    ),
-                    Expanded(child: Container()),
-                  ] +
+                Container(
+                  width: 20,
+                  height: 20,
+                  child: const FlareActor("assets/flare/Coin.flr"),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  task.blueprint.coinReward.toString(),
+                  style: contentSmallStyle,
+                ),
+                Expanded(child: Container()),
+              ]..addAll(
                   task.skillsNeeded
                       .map((Skill skill) => SkillDot(skill))
                       .toList(),
+                ),
             )
           : const Icon(Icons.check_circle, color: disabledColor),
     );

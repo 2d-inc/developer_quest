@@ -22,9 +22,7 @@ class _WorkListProgressState extends State<WorkListProgress> {
   Timer _hideBoostTimer;
   final BoostController _boostController = BoostController();
   void _hideBoost() {
-    setState(() {
-      _showBoost = false;
-    });
+    setState(() => _showBoost = false);
   }
 
   @override
@@ -36,9 +34,7 @@ class _WorkListProgressState extends State<WorkListProgress> {
   void _boostProgress(WorkItem item) {
     _hideBoostTimer?.cancel();
     _hideBoostTimer = Timer(const Duration(milliseconds: 400), _hideBoost);
-    setState(() {
-      _showBoost = true;
-    });
+    setState(() => _showBoost = true);
     if (item.addBoost()) {
       _boostController.showIndicator();
     }
@@ -105,15 +101,11 @@ class TapButton extends StatefulWidget {
 class _TapButtonState extends State<TapButton> {
   bool _isPressed = false;
   void _onTapDown(TapDownDetails details) {
-    setState(() {
-      _isPressed = true;
-    });
+    setState(() => _isPressed = true);
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() {
-      _isPressed = false;
-    });
+    setState(() => _isPressed = false);
   }
 
   void _onTap() {
@@ -123,9 +115,7 @@ class _TapButtonState extends State<TapButton> {
   }
 
   void _onTapCancel() {
-    setState(() {
-      _isPressed = false;
-    });
+    setState(() => _isPressed = false);
   }
 
   @override

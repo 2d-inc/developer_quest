@@ -32,9 +32,10 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                   context: context,
                   builder: (context) => ProjectPickerModal(),
                 );
-                if (project == null) return;
-                Provider.of<TaskPool>(context, listen: false)
-                    .startTask(project);
+                if (project != null) {
+                  Provider.of<TaskPool>(context, listen: false)
+                      .startTask(project);
+                }
               },
             ),
           ),
@@ -50,8 +51,10 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                   context: context,
                   builder: (context) => BugPickerModal(),
                 );
-                if (bug == null) return;
-                Provider.of<TaskPool>(context, listen: false).addWorkItem(bug);
+                if (bug != null) {
+                  Provider.of<TaskPool>(context, listen: false)
+                      .addWorkItem(bug);
+                }
               },
             ),
           ),
