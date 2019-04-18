@@ -29,7 +29,7 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(notifier: User()),
           ChangeNotifierProvider(notifier: widget.world),
-          ChangeNotifierProvider(notifier: widget.world.npcPool),
+          ChangeNotifierProvider(notifier: widget.world.characterPool),
           ChangeNotifierProvider(notifier: widget.world.taskPool),
           ChangeNotifierProvider(notifier: widget.world.company),
         ],

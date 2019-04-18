@@ -1,6 +1,6 @@
-import 'package:dev_rpg/src/game_screen/npc_style.dart';
+import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
-import 'package:dev_rpg/src/shared_state/game/npc.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
@@ -12,14 +12,14 @@ import 'package:provider/provider.dart';
 import "package:flare_flutter/flare_actor.dart";
 import 'package:flare_flutter/flare_controls.dart';
 
-/// Displays the stats of an [Npc] and offers the option to upgrade them.
-class NpcModal extends StatelessWidget {
+/// Displays the stats of an [Character] and offers the option to upgrade them.
+class CharacterModal extends StatelessWidget {
   final FlareControls _controls = FlareControls();
   final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    var npc = Provider.of<Npc>(context);
-    var npcStyle = NpcStyle.from(npc);
+    var character = Provider.of<Character>(context);
+    var characterStyle = CharacterStyle.from(character);
     FocusScope.of(context).requestFocus(_focusNode);
     return RawKeyboardListener(
       focusNode: _focusNode,
@@ -57,7 +57,7 @@ class NpcModal extends StatelessWidget {
                         ),
                       ),
                       Positioned.fill(
-                        child: FlareActor(npcStyle.flare,
+                        child: FlareActor(characterStyle.flare,
                             alignment: Alignment.topCenter,
                             shouldClip: false,
                             fit: BoxFit.contain,
@@ -96,23 +96,23 @@ class NpcModal extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Level ${npc.level}",
+                          "Level ${character.level}",
                           style:
                               contentStyle.apply(color: secondaryContentColor),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 7.0, bottom: 6.0),
                           child: Text(
-                            npcStyle.name,
+                            characterStyle.name,
                             style: contentLargeStyle,
                           ),
                         ),
                         Text(
-                          npcStyle.description,
+                          characterStyle.description,
                           style: contentSmallStyle,
                         ),
                         Column(
-                          children: npc.prowess.keys
+                          children: character.prowess.keys
                               .map((Skill skill) => Padding(
                                     padding: const EdgeInsets.only(top: 32.0),
                                     child: Column(children: <Widget>[
@@ -130,7 +130,7 @@ class NpcModal extends StatelessWidget {
                                           ]),
                                           Expanded(child: Container()),
                                           Text(
-                                            npc.prowess[skill].toString(),
+                                            character.prowess[skill].toString(),
                                             style: contentLargeStyle,
                                           )
                                         ],
@@ -142,7 +142,8 @@ class NpcModal extends StatelessWidget {
                                             color: skillColor[skill],
                                             borderRadius:
                                                 BorderRadius.circular(3.5),
-                                            progress: npc.prowess[skill] / 100),
+                                            progress:
+                                                character.prowess[skill] / 100),
                                       )
                                     ]),
                                   ))
@@ -151,20 +152,20 @@ class NpcModal extends StatelessWidget {
                         const SizedBox(height: 40),
                         WideButton(
                           onPressed: () {
-                            if (npc.canUpgrade && npc.upgrade()) {
+                            if (character.canUpgrade && character.upgrade()) {
                               _controls.play("success");
                             }
                           },
                           paddingTweak: const EdgeInsets.only(right: -7.0),
-                          background: npc.canUpgrade
+                          background: character.canUpgrade
                               ? const Color.fromRGBO(84, 114, 239, 1.0)
                               : contentColor.withOpacity(0.1),
                           child: Row(
                             children: [
                               Text(
-                                npc.isHired ? "UPGRADE" : "HIRE",
+                                character.isHired ? "UPGRADE" : "HIRE",
                                 style: buttonTextStyle.apply(
-                                  color: npc.canUpgrade
+                                  color: character.canUpgrade
                                       ? Colors.white
                                       : contentColor.withOpacity(0.25),
                                 ),
@@ -174,10 +175,10 @@ class NpcModal extends StatelessWidget {
                                   color: Color.fromRGBO(249, 209, 81, 1.0)),
                               const SizedBox(width: 4),
                               Text(
-                                npc.upgradeCost.toString(),
+                                character.upgradeCost.toString(),
                                 style: buttonTextStyle.apply(
                                   fontSizeDelta: -2,
-                                  color: npc.canUpgrade
+                                  color: character.canUpgrade
                                       ? const Color.fromRGBO(241, 241, 241, 1.0)
                                       : contentColor.withOpacity(0.25),
                                 ),

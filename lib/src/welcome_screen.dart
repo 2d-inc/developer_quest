@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dev_rpg/src/game_screen/npc_style.dart';
+import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
@@ -15,7 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  NpcStyle hero;
+  CharacterStyle hero;
   Timer _swapHeroTimer;
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   void chooseHero() {
     setState(() {
-      hero = NpcStyle.random();
+      hero = CharacterStyle.random();
     });
     _swapHeroTimer?.cancel();
     _swapHeroTimer = Timer(const Duration(seconds: 10), chooseHero);

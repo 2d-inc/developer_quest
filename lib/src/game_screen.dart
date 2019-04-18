@@ -1,8 +1,8 @@
-import 'package:dev_rpg/src/game_screen/npc_pool_page.dart';
+import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/stats_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
-import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/stat_separator.dart';
@@ -65,19 +65,20 @@ class GameScreenState extends State<GameScreen> {
             }),
         items: [
           BottomNavigationBarItem(
-            icon: Consumer<NpcPool>(
-                builder: (context, npcPool) => npcPool.isUpgradeAvailable
-                    ? Stack(children: const [
-                        Icon(Icons.person),
-                        Positioned(
-                          // draw a red marble
-                          top: 0.0,
-                          right: 0.0,
-                          child: Icon(Icons.error,
-                              size: 14.0, color: Colors.redAccent),
-                        )
-                      ])
-                    : const Icon(Icons.person)),
+            icon: Consumer<CharacterPool>(
+                builder: (context, characterPool) =>
+                    characterPool.isUpgradeAvailable
+                        ? Stack(children: const [
+                            Icon(Icons.person),
+                            Positioned(
+                              // draw a red marble
+                              top: 0.0,
+                              right: 0.0,
+                              child: Icon(Icons.error,
+                                  size: 14.0, color: Colors.redAccent),
+                            )
+                          ])
+                        : const Icon(Icons.person)),
             title: const Text('Team'),
           ),
           const BottomNavigationBarItem(
@@ -93,7 +94,7 @@ class GameScreenState extends State<GameScreen> {
       body: PageView(
         controller: _controller,
         children: [
-          NpcPoolPage(),
+          CharacterPoolPage(),
           TaskPoolPage(),
           StatsPage(),
         ],

@@ -1,33 +1,33 @@
-import 'package:dev_rpg/src/game_screen/npc_modal.dart';
-import 'package:dev_rpg/src/game_screen/npc_style.dart';
-import 'package:dev_rpg/src/shared_state/game/npc.dart';
-import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/game_screen/character_modal.dart';
+import 'package:dev_rpg/src/game_screen/character_style.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
+import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Displays a list of [Npc]s that are available to the player.
-class NpcPoolPage extends StatelessWidget {
+/// Displays a list of [Character]s that are available to the player.
+class CharacterPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var npcPool = Provider.of<NpcPool>(context);
+    var characterPool = Provider.of<CharacterPool>(context);
     return Stack(
       children: [
         GridView.builder(
           padding:
               const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 128.0),
-          itemCount: npcPool.children.length,
+          itemCount: characterPool.children.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 0.0,
               crossAxisSpacing: 15.0,
               childAspectRatio: 0.65),
-          itemBuilder: (context, index) => ChangeNotifierProvider<Npc>(
-                notifier: npcPool.children[index],
-                key: ValueKey(npcPool.children[index]),
-                child: NpcListItem(),
+          itemBuilder: (context, index) => ChangeNotifierProvider<Character>(
+                notifier: characterPool.children[index],
+                key: ValueKey(characterPool.children[index]),
+                child: CharacterListItem(),
               ),
         ),
         Positioned.fill(
@@ -56,15 +56,15 @@ class NpcPoolPage extends StatelessWidget {
   }
 }
 
-/// Displays the current state of an individual [Npc]
-/// Tapping on the [Npc] opens up a modal window which
+/// Displays the current state of an individual [Character]
+/// Tapping on the [Character] opens up a modal window which
 /// offers more details about stats and options to upgrade.
-class NpcListItem extends StatefulWidget {
+class CharacterListItem extends StatefulWidget {
   @override
-  _NpcListItemState createState() => _NpcListItemState();
+  _CharacterListItemState createState() => _CharacterListItemState();
 }
 
-class _NpcListItemState extends State<NpcListItem> {
+class _CharacterListItemState extends State<CharacterListItem> {
   // True if the *mouse* is hovering over this widget.
   bool _isOver;
 
@@ -79,12 +79,14 @@ class _NpcListItemState extends State<NpcListItem> {
 
   @override
   Widget build(BuildContext context) {
-    var npc = Provider.of<Npc>(context);
-    var npcStyle = NpcStyle.from(npc);
+    var character = Provider.of<Character>(context);
+    var characterStyle = CharacterStyle.from(character);
 
-    HiringBustState bustState = npc.isHired
+    HiringBustState bustState = character.isHired
         ? HiringBustState.hired
-        : npc.canUpgrade ? HiringBustState.available : HiringBustState.locked;
+        : character.canUpgrade
+            ? HiringBustState.available
+            : HiringBustState.locked;
 
     return Listener(
       onPointerEnter: _startPlaying,
@@ -114,9 +116,9 @@ class _NpcListItemState extends State<NpcListItem> {
                 onTap: () => showDialog<void>(
                     context: context,
                     builder: (BuildContext context) {
-                      return ChangeNotifierProvider<Npc>(
-                        notifier: npc,
-                        child: NpcModal(),
+                      return ChangeNotifierProvider<Character>(
+                        notifier: character,
+                        child: CharacterModal(),
                       );
                     }),
                 child: Column(
@@ -125,7 +127,7 @@ class _NpcListItemState extends State<NpcListItem> {
                     Expanded(
                         child: HiringBust(
                       particleColor: attentionColor,
-                      filename: npcStyle.flare,
+                      filename: characterStyle.flare,
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
                       hiringState: bustState,
@@ -133,19 +135,22 @@ class _NpcListItemState extends State<NpcListItem> {
                     )),
                     const SizedBox(height: 20.0),
                     Opacity(
-                      opacity: npc.isHired || npc.canUpgrade ? 1.0 : 0.25,
+                      opacity: character.isHired || character.canUpgrade
+                          ? 1.0
+                          : 0.25,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          npc.isHired
+                          character.isHired
                               ? Container()
                               : Icon(
                                   bustState == HiringBustState.available
                                       ? Icons.add_circle
                                       : Icons.lock,
-                                  color: !npc.isHired && npc.canUpgrade
-                                      ? attentionColor
-                                      : Colors.white),
+                                  color:
+                                      !character.isHired && character.canUpgrade
+                                          ? attentionColor
+                                          : Colors.white),
                           const SizedBox(width: 4.0),
                           Text(
                             bustState == HiringBustState.hired

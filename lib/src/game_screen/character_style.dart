@@ -1,18 +1,18 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:dev_rpg/src/shared_state/game/npc.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
 
-/// UI style properties for [Npc]s. [Npc] to [NpcStyle] mapping is done via
-/// [Npc.id] values.
-class NpcStyle {
+/// UI style properties for [Character]s. [Character] to [CharacterStyle]
+/// mapping is done via [Character.id] values.
+class CharacterStyle {
   final String flare;
   final Color accent;
   final String name;
   final String description;
 
-  static final Map<String, NpcStyle> _all = {
-    "refactorer": NpcStyle(
+  static final Map<String, CharacterStyle> _all = {
+    "refactorer": CharacterStyle(
         name: "The Refactorer",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
@@ -20,7 +20,7 @@ class NpcStyle {
             "Digital Druid-type. She is so at-one with the code that 1s and 0s "
             "are falling from her hair. Her skin is partially a mesh wireframe "
             "as she becomes ever-closer to the code."),
-    "architect": NpcStyle(
+    "architect": CharacterStyle(
         name: "The Architect",
         flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
@@ -28,24 +28,24 @@ class NpcStyle {
             "Helps provide structure and improve code health ​when with other "
             '''characters​. Probably has a ton of books and a head full of ideas. '''
             "A real wizard."),
-    "tpm": NpcStyle(
+    "tpm": CharacterStyle(
         name: "TPM",
         flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description: "The good ol' bard. Promotes group harmony and increases "
             "everyone else's abilities if sent on a task with others."),
-    "avant_garde_designer": NpcStyle(
+    "avant_garde_designer": CharacterStyle(
         name: "Avant Garde Designer",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
         description:
             "Super stylish, always wears chic glasses. Improves team execution "
             "by inspiring them with great designs for the app."),
-    "leo": NpcStyle(
+    "leo": CharacterStyle(
         name: "Leonardo",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0)),
-    "hacker": NpcStyle(
+    "hacker": CharacterStyle(
         name: "The Hacker",
         flare: "assets/flare/TheHacker.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
@@ -55,13 +55,14 @@ class NpcStyle {
             '''may have sniffed your email password while you read this description.'''),
   };
 
-  NpcStyle({this.flare, this.accent, this.name, this.description = "N/A"});
+  CharacterStyle(
+      {this.flare, this.accent, this.name, this.description = "N/A"});
 
-  static NpcStyle from(Npc npc) {
-    return _all[npc.id];
+  static CharacterStyle from(Character character) {
+    return _all[character.id];
   }
 
-  static NpcStyle random() {
+  static CharacterStyle random() {
     Random rand = Random();
     return _all.values.elementAt(rand.nextInt(_all.values.length));
   }

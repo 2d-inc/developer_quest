@@ -1,13 +1,13 @@
 import 'package:dev_rpg/src/game_screen/prowess_badge.dart';
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
-import 'package:dev_rpg/src/shared_state/game/npc.dart';
-import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
+import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Present a list of [Npc]s for the player to choose from.
+/// Present a list of [Character]s for the player to choose from.
 class TeamPickerModal extends StatefulWidget {
   final WorkItem workItem;
 
@@ -20,10 +20,10 @@ class TeamPickerModal extends StatefulWidget {
 }
 
 class TeamPickerModalState extends State<TeamPickerModal> {
-  final Set<Npc> _selected;
+  final Set<Character> _selected;
 
-  TeamPickerModalState(Iterable<Npc> initialTeam)
-      : _selected = Set<Npc>.from(initialTeam ?? <Npc>[]);
+  TeamPickerModalState(Iterable<Character> initialTeam)
+      : _selected = Set<Character>.from(initialTeam ?? <Character>[]);
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +39,12 @@ class TeamPickerModalState extends State<TeamPickerModal> {
           ),
           const SizedBox(height: 16),
           Expanded(
-            child: Consumer<NpcPool>(
-              builder: (context, npcPool) {
-                return _NpcDataTable(
-                    pool: npcPool,
+            child: Consumer<CharacterPool>(
+              builder: (context, characterPool) {
+                return _CharacterDataTable(
+                    pool: characterPool,
                     selected: _selected,
-                    onToggleSelect: _toggleNpcSelected);
+                    onToggleSelect: _toggleCharacterSelected);
               },
             ),
           ),
@@ -66,25 +66,25 @@ class TeamPickerModalState extends State<TeamPickerModal> {
     );
   }
 
-  void _toggleNpcSelected(Npc npc, bool selected) {
+  void _toggleCharacterSelected(Character character, bool selected) {
     setState(() {
       if (selected) {
-        _selected.add(npc);
+        _selected.add(character);
       } else {
-        _selected.remove(npc);
+        _selected.remove(character);
       }
     });
   }
 }
 
-class _NpcDataTable extends StatelessWidget {
-  final Set<Npc> selected;
+class _CharacterDataTable extends StatelessWidget {
+  final Set<Character> selected;
 
-  final NpcPool pool;
+  final CharacterPool pool;
 
-  final void Function(Npc npc, bool selected) onToggleSelect;
+  final void Function(Character character, bool selected) onToggleSelect;
 
-  const _NpcDataTable({
+  const _CharacterDataTable({
     @required this.selected,
     Key key,
     this.onToggleSelect,
@@ -93,20 +93,21 @@ class _NpcDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var npcs = pool.children.where((npc) => npc.isHired);
+    var characters = pool.children.where((c) => c.isHired);
 
-    var rows = npcs.map((npc) {
-      var selectable = !npc.isBusy || selected.contains(npc);
+    var rows = characters.map((character) {
+      var selectable = !character.isBusy || selected.contains(character);
       return DataRow(
-        selected: selected.contains(npc),
-        onSelectChanged:
-            selectable ? (selected) => onToggleSelect(npc, selected) : null,
+        selected: selected.contains(character),
+        onSelectChanged: selectable
+            ? (selected) => onToggleSelect(character, selected)
+            : null,
         cells: [
           DataCell(
-            Text(npc.id,
+            Text(character.id,
                 style: TextStyle(color: selectable ? null : Colors.grey)),
           ),
-          DataCell(ProwessBadge(npc.prowess)),
+          DataCell(ProwessBadge(character.prowess)),
         ],
       );
     });

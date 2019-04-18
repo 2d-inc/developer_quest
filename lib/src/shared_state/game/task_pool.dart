@@ -105,7 +105,7 @@ class TaskPool extends AspectContainer with ChildAspect {
     if (_ticksToBugRoll == 0 && bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      addBug(Bug.random(get<World>().npcPool.availableSkills));
+      addBug(Bug.random(get<World>().characterPool.availableSkills));
     }
   }
 

@@ -8,7 +8,7 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 ///
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
-class Npc extends Aspect with ChildAspect {
+class Character extends Aspect with ChildAspect {
   final String id;
 
   final Map<Skill, int> prowess;
@@ -22,7 +22,7 @@ class Npc extends Aspect with ChildAspect {
 
   bool _isBusy = false;
 
-  Npc(this.id, this.prowess, [this._isHired = false]);
+  Character(this.id, this.prowess, [this._isHired = false]);
 
   bool get isBusy => _isBusy;
 

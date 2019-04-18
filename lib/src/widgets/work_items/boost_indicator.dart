@@ -5,7 +5,7 @@ import "package:flutter/material.dart";
 import 'package:flutter/rendering.dart';
 import "package:flutter/scheduler.dart";
 
-/// A widget that displays animated visual indicators for npc speed boost.
+/// A widget that displays animated visual indicators for character speed boost.
 class BoostIndicator extends LeafRenderObjectWidget {
   final BoostController controller;
 

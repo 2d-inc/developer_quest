@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/shared_state/game/company.dart';
-import 'package:dev_rpg/src/shared_state/game/npc_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
@@ -18,7 +18,7 @@ class World extends AspectContainer {
 
   Timer _timer;
 
-  final NpcPool npcPool;
+  final CharacterPool characterPool;
 
   final TaskPool taskPool;
 
@@ -27,10 +27,10 @@ class World extends AspectContainer {
   bool _isRunning = false;
 
   World()
-      : npcPool = NpcPool(),
+      : characterPool = CharacterPool(),
         taskPool = TaskPool(),
         company = Company() {
-    addAspect(npcPool);
+    addAspect(characterPool);
     addAspect(taskPool);
     addAspect(company);
   }

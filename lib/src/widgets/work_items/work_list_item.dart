@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/game_screen/team_picker_modal.dart';
-import 'package:dev_rpg/src/shared_state/game/npc.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/work_team.dart';
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 typedef HandleTapCallback = bool Function();
 
 /// Shared containing widget for [WorkItem] (bug/task) styling. Handles assignment of [WorkItem]
-/// to a set of [Npc]s and shows progress as work is done.
+/// to a set of [Character]s and shows progress as work is done.
 class WorkListItem extends StatelessWidget {
   final bool isExpanded;
   final Widget heading;
@@ -32,14 +32,14 @@ class WorkListItem extends StatelessWidget {
     if (handleTap != null && handleTap()) {
       return;
     }
-    var npcs = await showDialog<Set<Npc>>(
+    var characters = await showDialog<Set<Character>>(
       context: context,
       builder: (context) => TeamPickerModal(workItem),
     );
-    _onAssigned(workItem, npcs);
+    _onAssigned(workItem, characters);
   }
 
-  void _onAssigned(WorkItem workItem, Set<Npc> value) {
+  void _onAssigned(WorkItem workItem, Set<Character> value) {
     if (value == null || value.isEmpty) return;
     if (workItem.isComplete) return;
     workItem.assignTeam(value.toList());
