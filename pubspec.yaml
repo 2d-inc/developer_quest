@@ -62,9 +62,12 @@ flutter:
     - assets/flare/
 
   fonts:
-      - family: GothamXNarrow
+      - family: RobotoCondensedBold
         fonts:
-          - asset: assets/fonts/Gotham XNarrow Medium.otf
+          - asset: assets/fonts/RobotoCondensed-Bold.ttf
+      - family: RobotoRegular
+        fonts:
+          - asset: assets/fonts/Roboto-Regular.ttf
       - family: MontserratMedium
         fonts:
           - asset: assets/fonts/Montserrat-Medium.otf

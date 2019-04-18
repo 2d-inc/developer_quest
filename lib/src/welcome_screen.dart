@@ -46,8 +46,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 83.0,
               bottom: 56.0,
-              left: 35.0,
-              right: 35.0),
+              left: 33.0,
+              right: 33.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -60,22 +60,26 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
               const Text(
-                "FLUTTER FANTASY",
+                "FLUTTER\nDEVELOPER QUEST",
                 style: TextStyle(
-                    fontFamily: "GothamXNarrow",
-                    fontSize: 22.0,
-                    letterSpacing: 7.5),
+                    fontFamily: "RobotoCondensedBold",
+                    fontSize: 30.0,
+                    letterSpacing: 5),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 11, bottom: 15),
-                child: Container(
-                  height: 2,
-                  color: Colors.white.withOpacity(0.19),
-                ),
+              const SizedBox(height: 12),
+              Container(
+                height: 2,
+                color: Colors.white.withOpacity(0.19),
               ),
+			  const SizedBox(height: 12),
+              const Text(
+                "Build your team, slay bugs,\ndon't get fired.",
+                style: TextStyle(fontFamily: "RobotoRegular", fontSize: 20.0),
+              ),
+			  const SizedBox(height: 25),
               Image.asset('assets/images/2dimensions.png'),
               Padding(
-                padding: const EdgeInsets.only(top: 56.0, bottom: 15),
+                padding: const EdgeInsets.only(top: 29.0, bottom: 15),
                 child: WelcomeButton(
                     key: const Key('start_game'),
                     onPressed: () async {
