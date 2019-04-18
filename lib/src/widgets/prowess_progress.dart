@@ -6,11 +6,13 @@ class ProwessProgress extends StatefulWidget {
       {@required this.progress,
       Key key,
       this.color,
+      this.background = const Color.fromRGBO(0, 0, 0, 0.06),
       this.height = 7,
       this.borderRadius})
       : super(key: key);
 
   final double progress;
+  final Color background;
   final Color color;
   final double height;
   final BorderRadius borderRadius;
@@ -60,8 +62,7 @@ class _ProwessProgressState extends State<ProwessProgress>
           child: Container(
             height: widget.height,
             decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.06),
-                borderRadius: widget.borderRadius),
+                color: widget.background, borderRadius: widget.borderRadius),
           ),
         ),
         AnimatedBuilder(
