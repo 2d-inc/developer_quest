@@ -1,4 +1,5 @@
 import 'package:dev_rpg/src/game_screen.dart';
+import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+	outputTest();
   // Don't prune the Flare cache, keep loaded Flare files warm and ready
   // to be re-displayed.
   FlareCache.doesPrune = false;
@@ -38,6 +40,7 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData(
             brightness: Brightness.dark,
             primarySwatch: Colors.orange,
+			canvasColor: Colors.transparent
           ),
           routes: {
             "/": (context) => WelcomeScreen(),

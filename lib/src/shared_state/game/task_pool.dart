@@ -9,6 +9,16 @@ import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 
+/// A grouping of tasks based on top down dependencies.
+class Milestone {
+  final String label;
+  final List<TaskNode> tasks = [];
+
+  Milestone(this.label, List<TaskNode> taskNodes) {
+    tasks.addAll(taskNodes);
+  }
+}
+
 /// A list of [Task]s. It represents the problems that need to be solved
 /// before the game (mission) is successfully finished.
 ///
@@ -33,7 +43,26 @@ class TaskPool extends AspectContainer with ChildAspect {
   // The tasks from the active work items.
   Iterable<Task> get tasks => workItems.whereType<Task>();
 
-  TaskPool();
+  final Milestone alpha;
+  final Milestone beta;
+  final Milestone v1;
+  TaskPool()
+      : alpha = Milestone("Alpha", [prototypeTaskNode]),
+        beta = Milestone("Beta", alphaTaskNode.children),
+        v1 = Milestone("Version 1.0", betaTaskNode.children)
+	{
+		// Patch up milestones by adding root task to previous list.
+		// N.B. in Guido's designs this is the "LAUNCH" task which
+		// triggers a minigame.
+		// TODO: Convert this final task in each milestone into the launch button/minigame.
+		alphaTaskNode.children.clear();
+		alpha.tasks.add(alphaTaskNode);
+
+		betaTaskNode.children.clear();
+		beta.tasks.add(betaTaskNode);
+
+		v1.tasks.add(launchTaskNode);
+	}
 
   // The chance that a bug will show up on the next update. Mutate this as you
   // wish when tasks are completed. Consider increasing this more if the player

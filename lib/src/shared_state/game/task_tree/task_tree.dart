@@ -85,3 +85,60 @@ const Set<TaskBlueprint> taskTree = {
   _internationalization,
   _accessibility,
 };
+
+// Store which tasks have been processed as we go to avoid finding
+// multiple dependencies which would cause a stack overflow.
+Set<TaskBlueprint> _processedTaskTree = {};
+
+// Build the top down top level categories.
+class TaskNode {
+  final TaskBlueprint blueprint;
+  final List<TaskNode> children = [];
+  TaskNode(this.blueprint) {
+    _processedTaskTree.add(blueprint);
+    // Find tasks that are direct dependents of this task.
+    for (final otherBlueprint in taskTree) {
+      if (_processedTaskTree.contains(otherBlueprint) ||
+          otherBlueprint == blueprint ||
+          !otherBlueprint.requirements.isSatisfiedIn([blueprint])) {
+        continue;
+      }
+      children.add(TaskNode(otherBlueprint));
+    }
+  }
+
+  void _output([int depth = 0]) {
+    String line = "-";
+    for (int i = 0; i < depth; i++) {
+      line += "-";
+    }
+    print("$line ${blueprint.name}");
+    for (final child in children) {
+      child._output(depth + 1);
+    }
+  }
+}
+
+TaskNode prototypeTaskNode = TaskNode(_prototype);
+TaskNode alphaTaskNode = TaskNode(_alpha);
+TaskNode betaTaskNode = TaskNode(_beta);
+TaskNode launchTaskNode = TaskNode(_launch);
+
+//TaskNode r = TaskNode(_launch);
+void outputTest() {
+  print("");
+  prototypeTaskNode._output();
+  print("Launch Prototype Minigame");
+
+  print("");
+  alphaTaskNode._output();
+  print("Launch Alpha Minigame");
+
+  print("");
+  betaTaskNode._output();
+  print("Launch Beta Minigame");
+
+  print("");
+  launchTaskNode._output();
+  print("Launch 1.0 Minigame");
+}
