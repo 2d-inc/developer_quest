@@ -36,9 +36,9 @@ class CharacterModal extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 280.0),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-              CharacterImage(_controls),
-              CharacterStats(_controls)
-            ]),
+                CharacterImage(_controls),
+                CharacterStats(_controls)
+              ]),
           ),
         ),
       ),
@@ -48,12 +48,12 @@ class CharacterModal extends StatelessWidget {
 
 class CharacterImage extends StatelessWidget {
   const CharacterImage(this._controls);
+
   final FlareControls _controls;
 
   @override
   Widget build(BuildContext context) {
-    var character = Provider.of<Character>(context);
-    var characterStyle = CharacterStyle.from(character);
+    var characterStyle = CharacterStyle.from(Provider.of<Character>(context));
     return SizedBox(
       height: 200,
       child: Stack(
@@ -100,48 +100,53 @@ class CharacterImage extends StatelessWidget {
 
 class CharacterStats extends StatelessWidget {
   const CharacterStats(this._controls);
+
   final FlareControls _controls;
 
   @override
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     var characterStyle = CharacterStyle.from(character);
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(10.0),
-          bottomRight: Radius.circular(10.0),
+    return Material(
+      type: MaterialType.transparency,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(10.0),
+            bottomRight: Radius.circular(10.0),
+          ),
         ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Level ${character.level}",
-              style: contentStyle.apply(color: secondaryContentColor),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 7.0, bottom: 6.0),
-              child: Text(
-                characterStyle.name,
-                style: contentLargeStyle,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Level ${character.level}",
+                style:
+                    contentStyle.apply(color: secondaryContentColor),
               ),
-            ),
-            Text(
-              characterStyle.description,
-              style: contentSmallStyle,
-            ),
-            Column(
-              children: character.prowess.keys
-                  .map((Skill skill) => SkillDisplay(skill))
-                  .toList(),
-            ),
-            const SizedBox(height: 40),
-            UpgradeHireButton(_controls),
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: 7.0, bottom: 6.0),
+                child: Text(
+                  characterStyle.name,
+                  style: contentLargeStyle,
+                ),
+              ),
+              Text(
+                characterStyle.description,
+                style: contentSmallStyle,
+              ),
+              Column(
+                children: character.prowess.keys
+                    .map((Skill skill) => new SkillDisplay(skill))
+                    .toList(),
+              ),
+              const SizedBox(height: 40),
+              UpgradeHireButton(_controls),
+            ],
+          ),
         ),
       ),
     );
@@ -150,6 +155,7 @@ class CharacterStats extends StatelessWidget {
 
 class UpgradeHireButton extends StatelessWidget {
   const UpgradeHireButton(this._controls);
+
   final FlareControls _controls;
 
   @override
@@ -176,7 +182,8 @@ class UpgradeHireButton extends StatelessWidget {
             ),
           ),
           Expanded(child: Container()),
-          const Icon(Icons.stars, color: Color.fromRGBO(249, 209, 81, 1.0)),
+          const Icon(Icons.stars,
+              color: Color.fromRGBO(249, 209, 81, 1.0)),
           const SizedBox(width: 4),
           Text(
             character.upgradeCost.toString(),
@@ -207,11 +214,13 @@ class SkillDisplay extends StatelessWidget {
         Row(
           children: [
             Row(children: [
-              const Icon(Icons.chevron_right, color: skillTextColor),
+              const Icon(Icons.chevron_right,
+                  color: skillTextColor),
               const SizedBox(width: 4),
               Text(
                 skillDisplayName[skill],
-                style: contentStyle.apply(color: skillTextColor),
+                style: contentStyle.apply(
+                    color: skillTextColor),
               )
             ]),
             Expanded(child: Container()),
@@ -222,11 +231,14 @@ class SkillDisplay extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 5.0),
+          padding:
+          const EdgeInsets.only(top: 5.0),
           child: ProwessProgress(
               color: skillColor[skill],
-              borderRadius: BorderRadius.circular(3.5),
-              progress: character.prowess[skill] / 100),
+              borderRadius:
+              BorderRadius.circular(3.5),
+              progress:
+              character.prowess[skill] / 100),
         )
       ]),
     );
