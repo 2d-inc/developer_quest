@@ -6,7 +6,7 @@ abstract class TreeData {
 /// Flattened representation of the tree, making it possible
 /// to render the tree from virtualized (one dimensional) array.
 class FlattenedTreeData {
-  /// Reference back to the hierarchical node represented by this 
+  /// Reference back to the hierarchical node represented by this
   /// flat structure.
   final TreeData data;
 

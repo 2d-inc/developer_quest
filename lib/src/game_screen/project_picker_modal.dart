@@ -34,7 +34,7 @@ class _PrunedTaskNode implements TreeData {
     }
   }
 
-  /// Remove branches that are completely dead (parent, self, and children 
+  /// Remove branches that are completely dead (parent, self, and children
   /// are not available)
   bool pruneDeadBranches([_PrunedTaskNode parent]) {
     children.removeWhere((child) => child.pruneDeadBranches(this));
