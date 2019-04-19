@@ -96,7 +96,8 @@ class TaskNode implements TreeData {
   final TaskBlueprint blueprint;
   @override
   final List<TaskNode> children = [];
-  TaskNode(this.blueprint) {
+
+  TaskNode(this.blueprint, [bool isTop = false]) {
     _processedTaskTree.add(blueprint);
     // Find tasks that are direct dependents of this task.
     for (final otherBlueprint in taskTree) {
@@ -107,7 +108,34 @@ class TaskNode implements TreeData {
       }
       children.add(TaskNode(otherBlueprint));
     }
+
+    // Patch remaining items that are satisfied by this full set.
+    // We have to do this because some items (like _advancedMotionDesign)
+    // are only satisfied when multiple non-direct descendent items in the tree
+    // are satisfied.
+    if (isTop) {
+      final allPrereqs = allPrerequisites;
+      for (final otherBlueprint in taskTree) {
+        // Make sure to exclude our top nodes.
+        switch (otherBlueprint) {
+          case _prototype:
+          case _alpha:
+          case _beta:
+          case _launch:
+            continue;
+        }
+        if (_processedTaskTree.contains(otherBlueprint) ||
+            otherBlueprint == blueprint ||
+            !otherBlueprint.requirements.isSatisfiedIn(allPrereqs)) {
+          continue;
+        }
+        children.add(TaskNode(otherBlueprint));
+      }
+    }
   }
+
+  List<Prerequisite> get allPrerequisites => [blueprint]
+    ..addAll(children.expand((child) => child.allPrerequisites).toList());
 
   void _output([int depth = 0]) {
     String line = "-";
@@ -121,10 +149,10 @@ class TaskNode implements TreeData {
   }
 }
 
-TaskNode prototypeTaskNode = TaskNode(_prototype);
-TaskNode alphaTaskNode = TaskNode(_alpha);
-TaskNode betaTaskNode = TaskNode(_beta);
-TaskNode launchTaskNode = TaskNode(_launch);
+TaskNode prototypeTaskNode = TaskNode(_prototype, true);
+TaskNode alphaTaskNode = TaskNode(_alpha, true);
+TaskNode betaTaskNode = TaskNode(_beta, true);
+TaskNode launchTaskNode = TaskNode(_launch, true);
 
 //TaskNode r = TaskNode(_launch);
 void outputTest() {
