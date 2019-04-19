@@ -1,5 +1,3 @@
-import 'package:dev_rpg/src/game_screen/skill_badge.dart';
-import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
@@ -36,35 +34,13 @@ class _PrunedTaskNode implements TreeData {
     }
   }
 
+  /// Remove branches that are completely dead (parent, self, and children 
+  /// are not available)
   bool pruneDeadBranches([_PrunedTaskNode parent]) {
     children.removeWhere((child) => child.pruneDeadBranches(this));
     return children.isEmpty &&
         display != TaskDisplayState.available &&
         (parent == null || parent.display != TaskDisplayState.available);
-  }
-
-  /// Remove nodes that have parents that are un-available.
-  bool pruneNodesWithUnavailableParents([_PrunedTaskNode parent]) {
-    if (display != TaskDisplayState.available &&
-        parent != null &&
-        parent.display != TaskDisplayState.available) {
-      return true;
-    } else {
-      bool prune = false;
-      for (final child in children) {
-        if (child.pruneNodesWithUnavailableParents(this)) {
-          prune = true;
-          break;
-        }
-      }
-      if (prune) {
-        children.clear();
-        // Prune ourselves if we have no children and
-        // our state is not available.
-        return display != TaskDisplayState.available;
-      }
-      return false;
-    }
   }
 }
 
@@ -89,6 +65,7 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
     prePruned.add(prunedTaskNode);
   }
 
+  // If you want to see the full tree, simply skip this conditional
   if (parent == null) {
     // top level, do the actual pruning.
     List<_PrunedTaskNode> pruned = [];
@@ -104,11 +81,8 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
     }
 
     return healthy;
-    //return pruned;
   }
   return prePruned;
-  // Find nodes with available children.
-  //return prePruned.where((node) => !node.shouldPrune(parent)).toList();
 }
 
 /// Build the list of slivers to display in each milestone section.
@@ -143,45 +117,7 @@ class ProjectPickerModal extends StatelessWidget {
     final beta =
         _buildTaskPickerSlivers(taskPool.beta.tasks, _tasks, completed);
     final v1 = _buildTaskPickerSlivers(taskPool.v1.tasks, _tasks, completed);
-// print("AVAILABLE $_tasks ${_tasks.length}");
-// for(final task in _tasks)
-// {
-// 	print("${task.name}");
-// }
-    //print("FLAT ${flatTree.length} $completed");
-    // List<Widget> tree = [];
-    // if (_tasks.isNotEmpty) {
-    //   tree.add(TaskPickerTask(
-    //       blueprint: _tasks[0],
-    //       lines: [true],
-    //       hasNextSibling: true,
-    //       hasNextChild: true));
-    //   tree.add(TaskPickerTask(
-    //       blueprint: _tasks[0],
-    //       lines: [true, true],
-    //       hasNextSibling: true,
-    //       hasNextChild: false));
-    //   tree.add(TaskPickerTask(
-    //       blueprint: _tasks[0],
-    //       lines: [true, true],
-    //       hasNextSibling: true,
-    //       hasNextChild: true));
-    //   tree.add(TaskPickerTask(
-    //       blueprint: _tasks[0],
-    //       lines: [true, true, true],
-    //       hasNextSibling: false,
-    //       hasNextChild: false));
-    //   tree.add(TaskPickerTask(
-    //       blueprint: _tasks[0],
-    //       lines: [true, true],
-    //       hasNextSibling: false,
-    //       hasNextChild: false));
-    //   tree.add(TaskPickerTask(
-    //       blueprint: _tasks[0],
-    //       lines: [true],
-    //       hasNextSibling: false,
-    //       hasNextChild: false));
-    // }
+
     var slivers = <Widget>[
       SliverPadding(
         padding: const EdgeInsets.only(top: 15.0),
