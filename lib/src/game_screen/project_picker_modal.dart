@@ -23,6 +23,7 @@ class ProjectPickerModal extends StatelessWidget {
     List<Widget> flatTree = flat
         .map((flatTreeItem) => TaskPickerTask(
             blueprint: (flatTreeItem.data as TaskNode).blueprint,
+			display: TaskDisplayState.locked,
             lines: flatTreeItem.lines,
             hasNextSibling: flatTreeItem.hasNextSibling,
             hasNextChild: flatTreeItem.hasNextChild))

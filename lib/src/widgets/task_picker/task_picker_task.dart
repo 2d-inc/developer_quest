@@ -3,24 +3,33 @@ import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 import 'package:flutter/material.dart';
 
+enum TaskDisplayState { complete, available, locked }
+
 class TaskPickerTask extends StatelessWidget {
   final TaskBlueprint blueprint;
   final List<bool> lines;
   final bool hasNextSibling;
   final bool hasNextChild;
+  final TaskDisplayState display;
+
   const TaskPickerTask(
       {this.blueprint,
       this.hasNextSibling = false,
       this.hasNextChild = false,
-      this.lines});
+      this.lines,
+      this.display});
 
   static const double height = 95;
   static const double dashWidth = 10;
   static const double halfLineHeight = 39;
   static const double bottomPadding = 15;
+  static const double leftPadding = 26;
+  static const double lineSpacing = 20;
+  static const double lineThickness = 2;
 
   @override
   Widget build(BuildContext context) {
+    // Build up lines first.
     List<Widget> lineWidgets = [];
     for (int i = 0; i < lines.length; i++) {
       if (!lines[i]) {
@@ -31,7 +40,8 @@ class TaskPickerTask extends StatelessWidget {
       double lineHeight =
           i > 0 && isLast && !hasNextSibling ? halfLineHeight : height;
       lineWidgets.add(Positioned.fromRect(
-        rect: Rect.fromLTWH(26.0 + i * 20, 0.0, 2, lineHeight),
+        rect: Rect.fromLTWH(
+            leftPadding + i * lineSpacing, 0.0, lineThickness, lineHeight),
         child: SizedOverflowBox(
           size: const Size.fromHeight(0),
           child: Container(color: treeLineColor),
@@ -40,8 +50,8 @@ class TaskPickerTask extends StatelessWidget {
 
       if (isLast && hasNextChild) {
         lineWidgets.add(Positioned.fromRect(
-          rect: Rect.fromLTWH(
-              26.0 + (i + 1) * 20, height - bottomPadding, 2, lineHeight),
+          rect: Rect.fromLTWH(leftPadding + (i + 1) * lineSpacing,
+              height - bottomPadding, lineThickness, lineHeight),
           child: SizedOverflowBox(
             size: const Size.fromHeight(0),
             child: Container(color: treeLineColor),
@@ -49,13 +59,13 @@ class TaskPickerTask extends StatelessWidget {
         ));
       }
     }
-    double left = 26.0 + (lines.length - 1) * 20;
+    double left = leftPadding + (lines.length - 1) * lineSpacing;
     return SizedBox(
       height: height,
       child: Stack(
-        children: <Widget>[
+        children: [
           Positioned.fromRect(
-            rect: Rect.fromLTWH(left, halfLineHeight, dashWidth, 2),
+            rect: Rect.fromLTWH(left, halfLineHeight, dashWidth, lineThickness),
             child: SizedOverflowBox(
               size: const Size.fromHeight(0),
               child: Container(color: treeLineColor),
@@ -65,19 +75,26 @@ class TaskPickerTask extends StatelessWidget {
             padding: EdgeInsets.only(
                 left: left + dashWidth, bottom: bottomPadding, right: 16),
             child: Container(
-              decoration: const BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.03),
-                      offset: Offset(0.0, 10.0),
-                      blurRadius: 10,
-                      spreadRadius: 0),
-                ],
-                borderRadius: BorderRadius.all(Radius.circular(9)),
-                color: Colors.white,
-              ),
-			  child: TaskHeader(blueprint)
-            ),
+                padding: const EdgeInsets.all(15),
+                decoration: const BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.03),
+                        offset: Offset(0.0, 10.0),
+                        blurRadius: 10,
+                        spreadRadius: 0),
+                  ],
+                  borderRadius: BorderRadius.all(Radius.circular(9)),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TaskHeader(blueprint),
+                    const SizedBox(height: 10),
+                    Text(blueprint.name, style: contentStyle)
+                  ],
+                )),
           )
         ]..addAll(lineWidgets),
       ),
