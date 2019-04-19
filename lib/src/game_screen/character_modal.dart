@@ -14,6 +14,7 @@ import 'package:flare_flutter/flare_controls.dart';
 
 /// Displays the stats of an [Character] and offers the option to upgrade them.
 class CharacterModal extends StatelessWidget {
+  final FlareControls _controls = FlareControls();
   final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,10 @@ class CharacterModal extends StatelessWidget {
               left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 280.0),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [CharacterImage(), CharacterStats()]),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              CharacterImage(_controls),
+              CharacterStats(_controls)
+            ]),
           ),
         ),
       ),
@@ -45,7 +47,8 @@ class CharacterModal extends StatelessWidget {
 }
 
 class CharacterImage extends StatelessWidget {
-  final FlareControls _controls = FlareControls();
+  const CharacterImage(this._controls);
+  final FlareControls _controls;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +99,9 @@ class CharacterImage extends StatelessWidget {
 }
 
 class CharacterStats extends StatelessWidget {
+  const CharacterStats(this._controls);
+  final FlareControls _controls;
+
   @override
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
@@ -134,7 +140,7 @@ class CharacterStats extends StatelessWidget {
                   .toList(),
             ),
             const SizedBox(height: 40),
-            UpgradeHireButton(),
+            UpgradeHireButton(_controls),
           ],
         ),
       ),
@@ -143,7 +149,8 @@ class CharacterStats extends StatelessWidget {
 }
 
 class UpgradeHireButton extends StatelessWidget {
-  final FlareControls _controls = FlareControls();
+  const UpgradeHireButton(this._controls);
+  final FlareControls _controls;
 
   @override
   Widget build(BuildContext context) {
