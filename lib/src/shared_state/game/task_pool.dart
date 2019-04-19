@@ -49,20 +49,19 @@ class TaskPool extends AspectContainer with ChildAspect {
   TaskPool()
       : alpha = Milestone("Alpha", [prototypeTaskNode]),
         beta = Milestone("Beta", alphaTaskNode.children),
-        v1 = Milestone("Version 1.0", betaTaskNode.children)
-	{
-		// Patch up milestones by adding root task to previous list.
-		// N.B. in Guido's designs this is the "LAUNCH" task which
-		// triggers a minigame.
-		// TODO: Convert this final task in each milestone into the launch button/minigame.
-		alphaTaskNode.children.clear();
-		alpha.tasks.add(alphaTaskNode);
+        v1 = Milestone("Version 1.0", betaTaskNode.children) {
+    // Patch up milestones by adding root task to previous list.
+    // N.B. in Guido's designs this is the "LAUNCH" task which
+    // triggers a minigame.
+    // TODO: Convert this final task in each milestone into the launch button/minigame.
+    alphaTaskNode.children.clear();
+    alpha.tasks.add(alphaTaskNode);
 
-		betaTaskNode.children.clear();
-		beta.tasks.add(betaTaskNode);
+    betaTaskNode.children.clear();
+    beta.tasks.add(betaTaskNode);
 
-		v1.tasks.add(launchTaskNode);
-	}
+    v1.tasks.add(launchTaskNode);
+  }
 
   // The chance that a bug will show up on the next update. Mutate this as you
   // wish when tasks are completed. Consider increasing this more if the player

@@ -2,6 +2,8 @@ import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
+import 'package:dev_rpg/src/shared_state/game/task_tree/tree_hierarchy.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/task_picker/task_picker_header.dart';
 import 'package:dev_rpg/src/widgets/task_picker/task_picker_task.dart';
@@ -15,16 +17,50 @@ class ProjectPickerModal extends StatelessWidget {
     var taskPool = Provider.of<TaskPool>(context);
     var _tasks = taskPool.availableTasks.toList(growable: false)
       ..sort((a, b) => -a.priority.compareTo(b.priority));
+    List<FlattenedTreeData> flat = [];
 
-    List<Widget> tree = [];
-    if (_tasks.isNotEmpty) {
-      tree.add(TaskPickerTask(
-          blueprint: _tasks[0], indent: 0, hasNextSibling: true));
-      tree.add(TaskPickerTask(
-          blueprint: _tasks[0], indent: 0, hasNextSibling: true));
-      tree.add(TaskPickerTask(
-          blueprint: _tasks[0], indent: 0, hasNextSibling: false));
-    }
+    flattenTree(taskPool.beta.tasks, flat);
+    List<Widget> flatTree = flat
+        .map((flatTreeItem) => TaskPickerTask(
+            blueprint: (flatTreeItem.data as TaskNode).blueprint,
+            lines: flatTreeItem.lines,
+            hasNextSibling: flatTreeItem.hasNextSibling,
+            hasNextChild: flatTreeItem.hasNextChild))
+        .toList();
+    print("FLAT ${flatTree.length}");
+    // List<Widget> tree = [];
+    // if (_tasks.isNotEmpty) {
+    //   tree.add(TaskPickerTask(
+    //       blueprint: _tasks[0],
+    //       lines: [true],
+    //       hasNextSibling: true,
+    //       hasNextChild: true));
+    //   tree.add(TaskPickerTask(
+    //       blueprint: _tasks[0],
+    //       lines: [true, true],
+    //       hasNextSibling: true,
+    //       hasNextChild: false));
+    //   tree.add(TaskPickerTask(
+    //       blueprint: _tasks[0],
+    //       lines: [true, true],
+    //       hasNextSibling: true,
+    //       hasNextChild: true));
+    //   tree.add(TaskPickerTask(
+    //       blueprint: _tasks[0],
+    //       lines: [true, true, true],
+    //       hasNextSibling: false,
+    //       hasNextChild: false));
+    //   tree.add(TaskPickerTask(
+    //       blueprint: _tasks[0],
+    //       lines: [true, true],
+    //       hasNextSibling: false,
+    //       hasNextChild: false));
+    //   tree.add(TaskPickerTask(
+    //       blueprint: _tasks[0],
+    //       lines: [true],
+    //       hasNextSibling: false,
+    //       hasNextChild: false));
+    // }
     var slivers = <Widget>[
       SliverPadding(
         padding: const EdgeInsets.only(top: 15.0),
@@ -35,8 +71,8 @@ class ProjectPickerModal extends StatelessWidget {
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
-          return tree[index];
-        }, childCount: tree.length),
+          return flatTree[index];
+        }, childCount: flatTree.length),
       ),
       SliverPersistentHeader(
         pinned: false,

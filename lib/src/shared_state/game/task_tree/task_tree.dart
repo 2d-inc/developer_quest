@@ -3,6 +3,7 @@ library task_tree;
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_prerequisite.dart';
+import 'package:dev_rpg/src/shared_state/game/task_tree/tree_hierarchy.dart';
 
 part 'animations.dart';
 part 'backend_infrastructure.dart';
@@ -91,8 +92,9 @@ const Set<TaskBlueprint> taskTree = {
 Set<TaskBlueprint> _processedTaskTree = {};
 
 // Build the top down top level categories.
-class TaskNode {
+class TaskNode implements TreeData {
   final TaskBlueprint blueprint;
+  @override
   final List<TaskNode> children = [];
   TaskNode(this.blueprint) {
     _processedTaskTree.add(blueprint);
