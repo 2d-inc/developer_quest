@@ -95,32 +95,14 @@ class _CharacterListItemState extends State<CharacterListItem> {
         padding: const EdgeInsets.only(top: 40.0),
         child: Stack(
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color.fromRGBO(69, 69, 82, 1.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
-                    blurRadius: 10.0,
-                  ),
-                ],
-              ),
-            ),
+            CharacterBox(),
             Material(
               type: MaterialType.transparency,
               child: InkWell(
                 customBorder: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                onTap: () => showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ChangeNotifierProvider<Character>(
-                        notifier: character,
-                        child: CharacterModal(),
-                      );
-                    }),
+                onTap: () => _showModal(context),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -134,38 +116,7 @@ class _CharacterListItemState extends State<CharacterListItem> {
                       isPlaying: _isOver,
                     )),
                     const SizedBox(height: 20.0),
-                    Opacity(
-                      opacity: character.isHired || character.canUpgrade
-                          ? 1.0
-                          : 0.25,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          character.isHired
-                              ? Container()
-                              : Icon(
-                                  bustState == HiringBustState.available
-                                      ? Icons.add_circle
-                                      : Icons.lock,
-                                  color:
-                                      !character.isHired && character.canUpgrade
-                                          ? attentionColor
-                                          : Colors.white),
-                          const SizedBox(width: 4.0),
-                          Text(
-                            bustState == HiringBustState.hired
-                                ? 'Hired'
-                                : bustState == HiringBustState.available
-                                    ? 'Hire!'
-                                    : 'Locked',
-                            style: contentStyle.apply(
-                                color: bustState == HiringBustState.available
-                                    ? attentionColor
-                                    : Colors.white),
-                          )
-                        ],
-                      ),
-                    ),
+                    HiringInformation(bustState),
                     const SizedBox(height: 20.0),
                   ],
                 ),
@@ -173,6 +124,74 @@ class _CharacterListItemState extends State<CharacterListItem> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showModal(BuildContext context) {
+    var character = Provider.of<Character>(context);
+    showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return ChangeNotifierProvider<Character>(
+            notifier: character,
+            child: CharacterModal(),
+          );
+        });
+  }
+}
+
+class HiringInformation extends StatelessWidget {
+  const HiringInformation(this.bustState);
+
+  final HiringBustState bustState;
+
+  @override
+  Widget build(BuildContext context) {
+    var character = Provider.of<Character>(context);
+    return Opacity(
+      opacity: character.isHired || character.canUpgrade ? 1.0 : 0.25,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          character.isHired
+              ? Container()
+              : Icon(
+                  bustState == HiringBustState.available
+                      ? Icons.add_circle
+                      : Icons.lock,
+                  color: !character.isHired && character.canUpgrade
+                      ? attentionColor
+                      : Colors.white),
+          const SizedBox(width: 4.0),
+          Text(
+            bustState == HiringBustState.hired
+                ? 'Hired'
+                : bustState == HiringBustState.available ? 'Hire!' : 'Locked',
+            style: contentStyle.apply(
+                color: bustState == HiringBustState.available
+                    ? attentionColor
+                    : Colors.white),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class CharacterBox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: const Color.fromRGBO(69, 69, 82, 1.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10.0,
+          ),
+        ],
       ),
     );
   }
