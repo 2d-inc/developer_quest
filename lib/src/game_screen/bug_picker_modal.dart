@@ -51,7 +51,7 @@ class BugPickerModal extends StatelessWidget {
                   ),
                 ),
               ),
-            );P
+            );
           },
         ),
       ),

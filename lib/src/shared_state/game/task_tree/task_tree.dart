@@ -132,43 +132,16 @@ class TaskNode implements TreeData {
         children.add(TaskNode(otherBlueprint));
       }
     }
+
+    children.sort((TaskNode a, TaskNode b) =>
+        a.blueprint.priority.compareTo(b.blueprint.priority));
   }
 
   List<Prerequisite> get allPrerequisites => [blueprint]
     ..addAll(children.expand((child) => child.allPrerequisites).toList());
-
-  void _output([int depth = 0]) {
-    String line = "-";
-    for (int i = 0; i < depth; i++) {
-      line += "-";
-    }
-    print("$line ${blueprint.name}");
-    for (final child in children) {
-      child._output(depth + 1);
-    }
-  }
 }
 
 TaskNode prototypeTaskNode = TaskNode(_prototype, true);
 TaskNode alphaTaskNode = TaskNode(_alpha, true);
 TaskNode betaTaskNode = TaskNode(_beta, true);
 TaskNode launchTaskNode = TaskNode(_launch, true);
-
-//TaskNode r = TaskNode(_launch);
-void outputTest() {
-  print("");
-  prototypeTaskNode._output();
-  print("Launch Prototype Minigame");
-
-  print("");
-  alphaTaskNode._output();
-  print("Launch Alpha Minigame");
-
-  print("");
-  betaTaskNode._output();
-  print("Launch Beta Minigame");
-
-  print("");
-  launchTaskNode._output();
-  print("Launch 1.0 Minigame");
-}
