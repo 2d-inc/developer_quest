@@ -36,9 +36,9 @@ class CharacterModal extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 280.0),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-                CharacterImage(_controls),
-                CharacterStats(_controls)
-              ]),
+              CharacterImage(_controls),
+              CharacterStats(_controls)
+            ]),
           ),
         ),
       ),
@@ -124,8 +124,7 @@ class CharacterStats extends StatelessWidget {
             children: [
               Text(
                 "Level ${character.level}",
-                style:
-                    contentStyle.apply(color: secondaryContentColor),
+                style: contentStyle.apply(color: secondaryContentColor),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 7.0, bottom: 6.0),
@@ -140,7 +139,7 @@ class CharacterStats extends StatelessWidget {
               ),
               Column(
                 children: character.prowess.keys
-                    .map((Skill skill) => new SkillDisplay(skill))
+                    .map((Skill skill) => SkillDisplay(skill))
                     .toList(),
               ),
               const SizedBox(height: 40),
@@ -182,8 +181,7 @@ class UpgradeHireButton extends StatelessWidget {
             ),
           ),
           Expanded(child: Container()),
-          const Icon(Icons.stars,
-              color: Color.fromRGBO(249, 209, 81, 1.0)),
+          const Icon(Icons.stars, color: Color.fromRGBO(249, 209, 81, 1.0)),
           const SizedBox(width: 4),
           Text(
             character.upgradeCost.toString(),
@@ -214,13 +212,11 @@ class SkillDisplay extends StatelessWidget {
         Row(
           children: [
             Row(children: [
-              const Icon(Icons.chevron_right,
-                  color: skillTextColor),
+              const Icon(Icons.chevron_right, color: skillTextColor),
               const SizedBox(width: 4),
               Text(
                 skillDisplayName[skill],
-                style: contentStyle.apply(
-                    color: skillTextColor),
+                style: contentStyle.apply(color: skillTextColor),
               )
             ]),
             Expanded(child: Container()),
@@ -231,14 +227,11 @@ class SkillDisplay extends StatelessWidget {
           ],
         ),
         Padding(
-          padding:
-          const EdgeInsets.only(top: 5.0),
+          padding: const EdgeInsets.only(top: 5.0),
           child: ProwessProgress(
               color: skillColor[skill],
-              borderRadius:
-              BorderRadius.circular(3.5),
-              progress:
-              character.prowess[skill] / 100),
+              borderRadius: BorderRadius.circular(3.5),
+              progress: character.prowess[skill] / 100),
         )
       ]),
     );
