@@ -9,6 +9,7 @@ const Color attentionColor = Color.fromRGBO(0, 152, 255, 1.0);
 const Color disabledColor = Color.fromRGBO(116, 116, 126, 1.0);
 const Color disabledTaskColor = Color.fromRGBO(38, 38, 47, 0.25);
 const Color treeLineColor = Color.fromRGBO(215, 215, 215, 1.0);
+const Color bugColor = Color.fromRGBO(236, 41, 117, 1.0);
 
 const TextStyle contentSmallStyle = TextStyle(
   fontFamily: "MontserratRegular",
