@@ -3,8 +3,11 @@ import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 import 'package:flutter/material.dart';
 
+// The display state for a widget in the task picker tree
 enum TaskDisplayState { complete, available, locked }
 
+/// Task list item in the task picker. This widget is responsible for also 
+/// drawing the set of lines in its row to build up a connected tree.
 class TaskPickerTask extends StatelessWidget {
   final TaskBlueprint blueprint;
   final List<bool> lines;
