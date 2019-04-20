@@ -89,7 +89,9 @@ const Set<TaskBlueprint> taskTree = {
 
 // Store which tasks have been processed as we go to avoid finding
 // multiple dependencies which would cause a stack overflow.
-Set<TaskBlueprint> _processedTaskTree = {};
+// Automatically exclude top level nodes from being found as dependencies
+// to other nodes.
+Set<TaskBlueprint> _processedTaskTree = {_prototype, _alpha, _beta, _launch};
 
 // Build the top down top level categories.
 class TaskNode implements TreeData {
@@ -116,14 +118,6 @@ class TaskNode implements TreeData {
     if (isTop) {
       final allPrereqs = allPrerequisites;
       for (final otherBlueprint in taskTree) {
-        // Make sure to exclude our top nodes.
-        switch (otherBlueprint) {
-          case _prototype:
-          case _alpha:
-          case _beta:
-          case _launch:
-            continue;
-        }
         if (_processedTaskTree.contains(otherBlueprint) ||
             otherBlueprint == blueprint ||
             !otherBlueprint.requirements.isSatisfiedIn(allPrereqs)) {
