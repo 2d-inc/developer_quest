@@ -85,19 +85,24 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   return prePruned;
 }
 
+/// Make a [TaskPickerTask], the widget that gets displayed in the task
+/// selector, from the [FlattenedTreeData].
+TaskPickerTask _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
+  final node = flatTreeItem.data as _PrunedTaskNode;
+  return TaskPickerTask(
+      blueprint: node.blueprint,
+      display: node.display,
+      lines: flatTreeItem.lines,
+      hasNextSibling: flatTreeItem.hasNextSibling,
+      hasNextChild: flatTreeItem.hasNextChild);
+}
+
 /// Build the list of slivers to display in each milestone section.
 List<TaskPickerTask> _buildTaskPickerSlivers(List<TaskNode> fullTree,
     List<TaskBlueprint> available, List<TaskBlueprint> completed) {
   return flattenTree(_pruneTasks(fullTree, available, completed))
-      .map((flatTreeItem) {
-    final node = flatTreeItem.data as _PrunedTaskNode;
-    return TaskPickerTask(
-        blueprint: node.blueprint,
-        display: node.display,
-        lines: flatTreeItem.lines,
-        hasNextSibling: flatTreeItem.hasNextSibling,
-        hasNextChild: flatTreeItem.hasNextChild);
-  }).toList();
+      .map(_makeTaskPickerTask)
+      .toList();
 }
 
 /// Displays a list of the currently available [TaskBlueprint]s.
