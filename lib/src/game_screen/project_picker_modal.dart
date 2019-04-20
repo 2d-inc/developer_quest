@@ -52,8 +52,8 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   // First build up the full tree with correct display state.
   List<_PrunedTaskNode> prePruned = [];
   for (final node in fullTree) {
-    final blue = node.blueprint;
-    final prunedTaskNode = _PrunedTaskNode(
+    var blue = node.blueprint;
+    var prunedTaskNode = _PrunedTaskNode(
         blueprint: blue,
         display: available.contains(blue)
             ? TaskDisplayState.available
@@ -88,7 +88,7 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
 /// Make a [TaskPickerTask], the widget that gets displayed in the task
 /// selector, from the [FlattenedTreeData].
 TaskPickerTask _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
-  final node = flatTreeItem.data as _PrunedTaskNode;
+  var node = flatTreeItem.data as _PrunedTaskNode;
   return TaskPickerTask(
       blueprint: node.blueprint,
       display: node.display,
@@ -109,19 +109,19 @@ List<TaskPickerTask> _buildTaskPickerSlivers(List<TaskNode> fullTree,
 class ProjectPickerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final taskPool = Provider.of<TaskPool>(context);
-    final _tasks = taskPool.availableTasks.toList(growable: false)
+    var taskPool = Provider.of<TaskPool>(context);
+    var _tasks = taskPool.availableTasks.toList(growable: false)
       ..sort((a, b) => -a.priority.compareTo(b.priority));
-    final completed = (taskPool.completedTasks + taskPool.archivedTasks)
+    var completed = (taskPool.completedTasks + taskPool.archivedTasks)
         .map((task) => task.blueprint)
         .toList();
 
     // Prune, flatten, and build up the linear array task list.
-    final alpha =
+    var alpha =
         _buildTaskPickerSlivers(taskPool.alpha.tasks, _tasks, completed);
-    final beta =
+    var beta =
         _buildTaskPickerSlivers(taskPool.beta.tasks, _tasks, completed);
-    final v1 = _buildTaskPickerSlivers(taskPool.v1.tasks, _tasks, completed);
+    var v1 = _buildTaskPickerSlivers(taskPool.v1.tasks, _tasks, completed);
 
     var slivers = <Widget>[
       SliverPadding(
