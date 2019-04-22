@@ -16,12 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: any
-  provider:
-    git:
-      url: https://github.com/rrousselGit/provider.git
-      # Pin the package to a specific commit in the v2.0 branch.
-      # TODO: use pub once 2.0 lands there
-      ref: ac6813432f1700b24cf7e4e8ff3f173e105c7d66
+  provider: ^2.0.0-dev
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

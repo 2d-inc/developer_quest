@@ -25,7 +25,7 @@ class TaskPoolPage extends StatelessWidget {
       slivers.add(SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
           WorkItem item = workItems[index];
-          return ChangeNotifierProvider<WorkItem>(
+          return ChangeNotifierProvider<WorkItem>.value(
             notifier: item,
             key: ValueKey(item),
             child: item is Bug ? BugListItem() : TaskListItem(),
