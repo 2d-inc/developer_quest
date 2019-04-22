@@ -36,9 +36,9 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
-            brightness: Brightness.dark,
-            primarySwatch: Colors.orange,
-          ),
+              brightness: Brightness.dark,
+              primarySwatch: Colors.orange,
+              canvasColor: Colors.transparent),
           routes: {
             "/": (context) => WelcomeScreen(),
             "/gameloop": (context) => GameScreen(),
