@@ -14,12 +14,15 @@ class StartScreenHero extends LeafRenderObjectWidget {
   final Alignment alignment;
   final String filename;
   final Color gradient;
+  final double horizontalPadding;
 
-  const StartScreenHero(
-      {this.fit = BoxFit.contain,
-      this.alignment = Alignment.center,
-      this.filename,
-      this.gradient});
+  const StartScreenHero({
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+    this.filename,
+    this.gradient,
+    this.horizontalPadding,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -28,7 +31,8 @@ class StartScreenHero extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
-      ..gradient = gradient;
+      ..gradient = gradient
+      ..horizontalPadding = horizontalPadding;
   }
 
   @override
@@ -39,7 +43,8 @@ class StartScreenHero extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
-      ..gradient = gradient;
+      ..gradient = gradient
+      ..horizontalPadding = horizontalPadding;
   }
 
   @override
@@ -57,6 +62,7 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
   String _filename;
   Color gradient;
   double _crossFade = 0.0;
+  double horizontalPadding;
 
   @override
   bool get isPlaying => true;
@@ -90,6 +96,12 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
     if (_character == null) {
       return;
     }
+
+    Mat2D inverseView = Mat2D();
+    double paddingArtboardSpace = horizontalPadding;
+    if (Mat2D.invert(inverseView, viewTransform)) {
+      paddingArtboardSpace = inverseView[0] * horizontalPadding;
+    }
     _character.draw(canvas);
 
     // Get into artboard space to draw the gradient.
@@ -107,16 +119,17 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
     ];
 
     Offset start = Offset(
-        -1 * _character.origin[0] * _character.width,
+        -1 * _character.origin[0] * _character.width - paddingArtboardSpace,
         -1 * _character.origin[1] * _character.height +
             _character.height / 2.0);
     Offset end = Offset(start.dx, start.dy + height);
     Paint paint = Paint()
       ..shader = ui.Gradient.linear(start, end, colors, stops)
       ..style = PaintingStyle.fill;
-    //canvas.drawRect(offset & size, paint);
 
-    canvas.drawRect(start & Size(_character.width, height), paint);
+    canvas.drawRect(
+        start & Size(_character.width + paddingArtboardSpace * 2, height),
+        paint);
 
     if (_crossFade > 0.0) {
       Paint darken = Paint()
@@ -124,10 +137,12 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
         ..color = gradient.withOpacity(_crossFade.clamp(0.0, 1.0).toDouble());
       canvas.drawRect(
           Offset(
-                  -1 * _character.origin[0] * _character.width,
+                  -1 * _character.origin[0] * _character.width -
+                      paddingArtboardSpace,
                   -1 * _character.origin[1] * _character.height -
                       _character.height) &
-              Size(_character.width, _character.height * 3.0),
+              Size(_character.width + paddingArtboardSpace * 2,
+                  _character.height * 3.0),
           darken);
     }
   }

@@ -37,6 +37,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _swapHeroTimer?.cancel();
   }
 
+  static const double _horizontalPadding = 33.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,18 +48,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 83.0,
               bottom: 56.0,
-              left: 33.0,
-              right: 33.0),
+              left: _horizontalPadding,
+              right: _horizontalPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: StartScreenHero(
-                  filename: hero.flare,
-                  alignment: Alignment.bottomCenter,
-                  fit: BoxFit.cover,
-                  gradient: contentColor,
-                ),
+                    filename: hero.flare,
+                    alignment: Alignment.bottomCenter,
+                    fit: BoxFit.cover,
+                    gradient: contentColor,
+                    horizontalPadding: _horizontalPadding),
               ),
               const Text(
                 "FLUTTER\nDEVELOPER QUEST",
