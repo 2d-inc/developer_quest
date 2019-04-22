@@ -235,7 +235,7 @@ class SkillDisplay extends StatelessWidget {
           child: ProwessProgress(
               color: skillColor[skill],
               borderRadius: BorderRadius.circular(3.5),
-              progress: character.prowessProgress(skill)),
+              progress: character.getProwessProgress(skill)),
         )
       ]),
     );

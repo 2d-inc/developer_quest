@@ -232,7 +232,7 @@ class TeamPickerItem extends StatelessWidget {
                                       color: skillColor[skill],
                                       borderRadius: BorderRadius.circular(3.5),
                                       progress:
-                                          character.prowessProgress(skill),
+                                          character.getProwessProgress(skill),
                                     ),
                                   )
                                 ],
