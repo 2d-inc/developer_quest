@@ -20,7 +20,8 @@ class CharacterPoolPage extends StatelessWidget {
               const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 128.0),
           itemCount: characterPool.children.length,
           gridDelegate: _gridStructure,
-          itemBuilder: (context, index) => ChangeNotifierProvider<Character>(
+          itemBuilder: (context, index) =>
+              ChangeNotifierProvider<Character>.value(
                 notifier: characterPool.children[index],
                 key: ValueKey(characterPool.children[index]),
                 child: CharacterListItem(),
@@ -155,7 +156,7 @@ class CharacterDisplay extends StatelessWidget {
     showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return ChangeNotifierProvider<Character>(
+          return ChangeNotifierProvider<Character>.value(
             notifier: character,
             child: CharacterModal(),
           );
