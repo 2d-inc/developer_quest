@@ -2,11 +2,14 @@ import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:flutter/material.dart';
 
 const Color contentColor = Color.fromRGBO(38, 38, 47, 1.0);
+const Color modalBackgroundColor = Color.fromRGBO(241, 241, 241, 1.0);
 const Color secondaryContentColor = Color.fromRGBO(111, 111, 118, 1.0);
 const Color skillTextColor = Color.fromRGBO(5, 59, 73, 1.0);
 const Color attentionColor = Color.fromRGBO(0, 152, 255, 1.0);
 const Color disabledColor = Color.fromRGBO(116, 116, 126, 1.0);
 const Color disabledTaskColor = Color.fromRGBO(38, 38, 47, 0.25);
+const Color treeLineColor = Color.fromRGBO(215, 215, 215, 1.0);
+const Color bugColor = Color.fromRGBO(236, 41, 117, 1.0);
 
 const TextStyle contentSmallStyle = TextStyle(
   fontFamily: "MontserratRegular",
