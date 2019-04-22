@@ -43,18 +43,20 @@ class CharacterPoolPage extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomCenter,
         heightFactor: 1.0,
-        child: Container(
-          height: 128,
-          decoration: BoxDecoration(
-            // Box decoration takes a gradient
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(59, 59, 73, 0.0),
-                Color.fromRGBO(59, 59, 73, 1.0)
-              ],
-              stops: [0.0, 1.0],
+        child: IgnorePointer(
+          child: Container(
+            height: 128,
+            decoration: BoxDecoration(
+              // Box decoration takes a gradient
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(59, 59, 73, 0.0),
+                  Color.fromRGBO(59, 59, 73, 1.0)
+                ],
+                stops: [0.0, 1.0],
+              ),
             ),
           ),
         ),
