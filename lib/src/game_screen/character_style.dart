@@ -16,19 +16,15 @@ class CharacterStyle {
         name: "The Jack-of-All-Trades",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
-        description: "Got a problem? Jack can help! He's a little bit good at "
-            "everything, which is why he was able to found this company. He "
-            "carries a snorkel everywhere he goes, just 'cause he's prepared "
-            "for everything."),
+        description: "Got a problem? Jack can help! Carries a snorkel "
+            "everywhere he goes since he's always prepared."),
     "sourcerer": CharacterStyle(
         name: "The Sourcerer",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description:
             "Accomplished problem-solver and coder who is able to find the "
-            "answer to any and all problems by Googling for them. She is also "
-            "particularly adept at traversing codebases, because often the "
-            "answer is already there, if you know where to find it."),
+            "answer to any and all problems by traversing codebases."),
     "refactorer": CharacterStyle(
         name: "The Refactorer",
         flare: "assets/flare/TheRefactorer.flr",
