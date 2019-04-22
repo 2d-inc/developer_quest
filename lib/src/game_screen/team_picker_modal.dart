@@ -1,7 +1,6 @@
 import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
-import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
@@ -89,7 +88,8 @@ class TeamPickerModalState extends State<TeamPickerModal> {
               padding: horizontalPadding.add(EdgeInsets.only(
                   bottom: MediaQuery.of(context).padding.bottom)),
               child: WideButton(
-                  onPressed: () {},
+                  buttonKey: const Key('team_pick_ok'),
+                  onPressed: () => Navigator.pop(context, _selected),
                   paddingTweak: const EdgeInsets.only(right: -7.0),
                   background: _selected.isNotEmpty
                       ? const Color.fromRGBO(84, 114, 239, 1.0)
@@ -107,47 +107,6 @@ class TeamPickerModalState extends State<TeamPickerModal> {
     );
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Dialog(
-//       child: Column(
-//         children: [
-//           Text('Pick team for "${widget.workItem.name}"'),
-//           Wrap(
-//             alignment: WrapAlignment.end,
-//             children: widget.workItem.skillsNeeded
-//                 .map((Skill skill) => SkillBadge(skill))
-//                 .toList(),
-//           ),
-//           const SizedBox(height: 16),
-//           Expanded(
-//             child: Consumer<CharacterPool>(
-//               builder: (context, characterPool) {
-//                 return _CharacterDataTable(
-//                     pool: characterPool,
-//                     selected: _selected,
-//                     onToggleSelect: _toggleCharacterSelected);
-//               },
-//             ),
-//           ),
-//           Container(
-//             child: ButtonBar(
-//               children: [
-//                 FlatButton(
-//                     key: const Key('team_pick_ok'),
-//                     onPressed: () => Navigator.pop(context, _selected),
-//                     child: const Text('OK')),
-//                 FlatButton(
-//                     onPressed: () => Navigator.pop(context),
-//                     child: const Text('Cancel')),
-//               ],
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-
   void _toggleCharacterSelected(Character character, bool selected) {
     setState(() {
       if (selected) {
@@ -159,51 +118,9 @@ class TeamPickerModalState extends State<TeamPickerModal> {
   }
 }
 
-// class _CharacterDataTable extends StatelessWidget {
-//   final Set<Character> selected;
-
-//   final CharacterPool pool;
-
-//   final void Function(Character character, bool selected) onToggleSelect;
-
-//   const _CharacterDataTable({
-//     @required this.selected,
-//     Key key,
-//     this.onToggleSelect,
-//     this.pool,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     var characters = pool.children.where((c) => c.isHired);
-
-//     var rows = characters.map((character) {
-//       var selectable = !character.isBusy || selected.contains(character);
-//       return DataRow(
-//         selected: selected.contains(character),
-//         onSelectChanged: selectable
-//             ? (selected) => onToggleSelect(character, selected)
-//             : null,
-//         cells: [
-//           DataCell(
-//             Text(character.id,
-//                 style: TextStyle(color: selectable ? null : Colors.grey)),
-//           ),
-//           DataCell(ProwessBadge(character.prowess)),
-//         ],
-//       );
-//     });
-
-//     return DataTable(
-//       columns: const [
-//         DataColumn(label: Text('Name')),
-//         DataColumn(label: Text('Skills')),
-//       ],
-//       rows: rows.toList(growable: false),
-//     );
-//   }
-// }
-
+/// Detail card for the available character in the team assignment list.
+/// This presents the user with the stats of the character and the ability
+/// to select the character by tapping on this whole widget.
 class TeamPickerItem extends StatelessWidget {
   final Character character;
   final bool isSelected;
@@ -233,9 +150,11 @@ class TeamPickerItem extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.17),
+                    color: isSelected
+                        ? const Color.fromRGBO(26, 50, 155, 0.3)
+                        : Colors.black.withOpacity(0.17),
                     offset: const Offset(0.0, 10.0),
-                    blurRadius: 10.0),
+                    blurRadius: isSelected ? 30.0 : 10.0),
               ],
               borderRadius: const BorderRadius.all(Radius.circular(20.0)),
               color: isSelected
@@ -316,14 +235,7 @@ class TeamPickerItem extends StatelessWidget {
                         transform: Matrix4.translationValues(0, 20, 0),
                         child: Align(
                           alignment: Alignment.bottomCenter,
-                          child: Container(
-                              width: 16,
-                              height: 15,
-                              child: FlareActor("assets/flare/SelectArrow.flr",
-                                  alignment: Alignment.topCenter,
-                                  shouldClip: false,
-                                  fit: BoxFit.contain,
-                                  animation: isSelected ? "on" : "off")),
+                          child: _SelectArrow(isSelected),
                         ),
                       ),
                     ],
@@ -334,6 +246,54 @@ class TeamPickerItem extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// An animated arrow that shows up below the character to indicate whether
+/// they've been assigned to the team or not.
+class _SelectArrow extends StatefulWidget {
+  final bool isSelected;
+
+  const _SelectArrow(this.isSelected);
+
+  @override
+  _SelectArrowState createState() => _SelectArrowState();
+}
+
+class _SelectArrowState extends State<_SelectArrow> {
+  String _animation;
+  bool _snapToEnd;
+  @override
+  void initState() {
+    _animation = "off";
+    _snapToEnd = true;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(_SelectArrow oldWidget) {
+    String animation = widget.isSelected ? "on" : "off";
+    if (animation != _animation) {
+      setState(() {
+        _animation = animation;
+        _snapToEnd = false;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 16,
+      height: 15,
+      child: FlareActor("assets/flare/SelectArrow.flr",
+          alignment: Alignment.topCenter,
+          shouldClip: false,
+          snapToEnd: _snapToEnd,
+          fit: BoxFit.contain,
+          animation: _animation),
     );
   }
 }

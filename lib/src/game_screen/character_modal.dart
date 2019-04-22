@@ -3,6 +3,7 @@ import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
+import 'package:dev_rpg/src/widgets/flare/skill_icon.dart';
 import 'package:dev_rpg/src/widgets/keyboard.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:dev_rpg/src/widgets/skill_badge.dart';
@@ -212,8 +213,11 @@ class SkillDisplay extends StatelessWidget {
         Row(
           children: [
             Row(children: [
-              const Icon(Icons.chevron_right, color: skillTextColor),
-              const SizedBox(width: 4),
+              SkillIcon(
+                skill,
+                color: const Color.fromRGBO(69, 69, 82, 1.0),
+              ),
+              const SizedBox(width: 10),
               Text(
                 skillDisplayName[skill],
                 style: contentStyle.apply(color: skillTextColor),

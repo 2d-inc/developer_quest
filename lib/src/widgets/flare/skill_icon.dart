@@ -8,15 +8,19 @@ class SkillIcon extends StatelessWidget {
   final double height;
   final Skill skill;
   final double opacity;
+  final Color color;
   const SkillIcon(this.skill,
-      {this.width = 19, this.height = 16, this.opacity = 1.0});
+      {this.width = 19,
+      this.height = 16,
+      this.opacity = 1.0,
+      this.color = Colors.white});
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
       height: height,
       child: FlareActor(skillFlareIcon[skill],
-          color: Colors.white.withOpacity(opacity),
+          color: color.withOpacity(opacity),
           alignment: Alignment.topCenter,
           shouldClip: false,
           fit: BoxFit.contain,
