@@ -41,3 +41,12 @@ Map<Skill, Color> skillColor = {
   Skill.ux: const Color.fromRGBO(184, 56, 72, 1.0),
   Skill.coordination: Colors.lightGreen
 };
+
+
+Map<Skill, String> skillFlareIcon = {
+  Skill.coding: "assets/flare/CodeIcon.flr",
+  Skill.engineering: "assets/flare/EngineeringIcon.flr",
+  Skill.ux: "assets/flare/UxIcon.flr",
+  Skill.coordination: "assets/flare/CoordinationIcon.flr"
+};
+

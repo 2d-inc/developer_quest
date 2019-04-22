@@ -8,13 +8,15 @@ class ProwessProgress extends StatefulWidget {
       this.color,
       this.background = const Color.fromRGBO(0, 0, 0, 0.06),
       this.height = 7,
-      this.borderRadius})
+      this.borderRadius,
+      this.innerPadding = const EdgeInsets.all(0.0)})
       : super(key: key);
 
   final double progress;
   final Color background;
   final Color color;
   final double height;
+  final EdgeInsets innerPadding;
   final BorderRadius borderRadius;
 
   @override
@@ -55,28 +57,34 @@ class _ProwessProgressState extends State<ProwessProgress>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: double.infinity),
-          child: Container(
-            height: widget.height,
-            decoration: BoxDecoration(
-                color: widget.background, borderRadius: widget.borderRadius),
+    return Container(
+      height: widget.height,
+      child: Stack(
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: double.infinity),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: widget.background, borderRadius: widget.borderRadius),
+            ),
           ),
-        ),
-        AnimatedBuilder(
-          animation: _animationController,
-          builder: (context, child) => FractionallySizedBox(
-                widthFactor: _progressTween.value,
-                child: Container(
-                  height: widget.height,
-                  decoration: BoxDecoration(
-                      color: widget.color, borderRadius: widget.borderRadius),
+          AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) => FractionallySizedBox(
+                  widthFactor: _progressTween.value,
+                  child: Padding(
+                    padding: widget.innerPadding,
+                    child: Container(
+                      height: widget.height,
+                      decoration: BoxDecoration(
+                          color: widget.color,
+                          borderRadius: widget.borderRadius),
+                    ),
+                  ),
                 ),
-              ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }
