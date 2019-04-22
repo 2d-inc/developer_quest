@@ -48,7 +48,7 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
     List<TaskBlueprint> available, List<TaskBlueprint> completed,
     [_PrunedTaskNode parent]) {
   // First build up the full tree with correct display state.
-  List<_PrunedTaskNode> prePruned = [];
+  var prePruned = <_PrunedTaskNode>[];
   for (final node in fullTree) {
     var blue = node.blueprint;
     var prunedTaskNode = _PrunedTaskNode(
@@ -66,12 +66,12 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   // If you want to see the full tree, simply skip this conditional
   if (parent == null) {
     // top level, do the actual pruning.
-    List<_PrunedTaskNode> pruned = [];
+    var pruned =  <_PrunedTaskNode>[];
     for (final node in prePruned) {
       node.findTopLevelAvailable(pruned);
     }
     //remove levels that do not have available parents
-    List<_PrunedTaskNode> healthy = [];
+    var healthy =  <_PrunedTaskNode>[];
     for (final node in pruned) {
       if (!node.pruneDeadBranches()) {
         healthy.add(node);
