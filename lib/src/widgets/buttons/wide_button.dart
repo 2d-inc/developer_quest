@@ -11,12 +11,13 @@ class WideButton extends StatelessWidget {
   /// Use the padding tweak to allow negative adjustments to padding.
   final EdgeInsets paddingTweak;
 
-  const WideButton(
-      {this.child,
-      this.onPressed,
-      this.background,
-      this.paddingTweak = const EdgeInsets.all(0.0),
-      this.buttonKey});
+  const WideButton({
+    this.child,
+    this.onPressed,
+    this.background,
+    this.paddingTweak = const EdgeInsets.all(0.0),
+    this.buttonKey,
+  });
 
   @override
   Widget build(BuildContext context) {

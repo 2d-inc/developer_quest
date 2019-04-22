@@ -8,31 +8,32 @@ enum TaskDisplay { complete, available, locked }
 
 /// Task list item in the task picker. This widget is responsible for also
 /// drawing the set of lines in its row to build up a connected tree.
-class TaskPickerTask extends StatelessWidget {
+class TaskPickerItem extends StatelessWidget {
   final TaskBlueprint blueprint;
   final List<bool> lines;
   final bool hasNextSibling;
   final bool hasNextChild;
   final TaskDisplay display;
 
-  const TaskPickerTask(
-      {this.blueprint,
-      this.hasNextSibling = false,
-      this.hasNextChild = false,
-      this.lines,
-      this.display});
+  const TaskPickerItem({
+    this.blueprint,
+    this.hasNextSibling = false,
+    this.hasNextChild = false,
+    this.lines,
+    this.display,
+  });
 
-  static const double height = 95;
-  static const double dashWidth = 10;
-  static const double halfLineHeight = 39;
-  static const double bottomPadding = 15;
-  static const double leftPadding = 26;
-  static const double lineSpacing = 20;
-  static const double lineThickness = 2;
+  static const double _height = 95;
+  static const double _dashWidth = 10;
+  static const double _halfLineHeight = 39;
+  static const double _bottomPadding = 15;
+  static const double _leftPadding = 26;
+  static const double _lineSpacing = 20;
+  static const double _lineThickness = 2;
 
   @override
   Widget build(BuildContext context) {
-    // Build up lines first.
+    // Build up the vertical lines that show the connections in the tree.
     List<Widget> lineWidgets = [];
     for (int i = 0; i < lines.length; i++) {
       if (!lines[i]) {
@@ -41,10 +42,10 @@ class TaskPickerTask extends StatelessWidget {
 
       bool isLast = i == lines.length - 1;
       double lineHeight =
-          i > 0 && isLast && !hasNextSibling ? halfLineHeight : height;
+          i > 0 && isLast && !hasNextSibling ? _halfLineHeight : _height;
       lineWidgets.add(Positioned.fromRect(
         rect: Rect.fromLTWH(
-            leftPadding + i * lineSpacing, 0.0, lineThickness, lineHeight),
+            _leftPadding + i * _lineSpacing, 0.0, _lineThickness, lineHeight),
         child: SizedOverflowBox(
           size: const Size.fromHeight(0),
           child: Container(color: treeLineColor),
@@ -53,8 +54,8 @@ class TaskPickerTask extends StatelessWidget {
 
       if (isLast && hasNextChild) {
         lineWidgets.add(Positioned.fromRect(
-          rect: Rect.fromLTWH(leftPadding + (i + 1) * lineSpacing,
-              height - bottomPadding, lineThickness, lineHeight),
+          rect: Rect.fromLTWH(_leftPadding + (i + 1) * _lineSpacing,
+              _height - _bottomPadding, _lineThickness, lineHeight),
           child: SizedOverflowBox(
             size: const Size.fromHeight(0),
             child: Container(color: treeLineColor),
@@ -62,13 +63,14 @@ class TaskPickerTask extends StatelessWidget {
         ));
       }
     }
-    double left = leftPadding + (lines.length - 1) * lineSpacing;
+    double left = _leftPadding + (lines.length - 1) * _lineSpacing;
     return SizedBox(
-      height: height,
+      height: _height,
       child: Stack(
         children: [
           Positioned.fromRect(
-            rect: Rect.fromLTWH(left, halfLineHeight, dashWidth, lineThickness),
+            rect: Rect.fromLTWH(
+                left, _halfLineHeight, _dashWidth, _lineThickness),
             child: SizedOverflowBox(
               size: const Size.fromHeight(0),
               child: Container(color: treeLineColor),
@@ -76,7 +78,7 @@ class TaskPickerTask extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(
-                left: left + dashWidth, bottom: bottomPadding, right: 16),
+                left: left + _dashWidth, bottom: _bottomPadding, right: 16),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 minWidth: double.infinity,

@@ -66,12 +66,12 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   // If you want to see the full tree, simply skip this conditional
   if (parent == null) {
     // top level, do the actual pruning.
-    var pruned =  <_PrunedTaskNode>[];
+    var pruned = <_PrunedTaskNode>[];
     for (final node in prePruned) {
       node.findTopLevelAvailable(pruned);
     }
     //remove levels that do not have available parents
-    var healthy =  <_PrunedTaskNode>[];
+    var healthy = <_PrunedTaskNode>[];
     for (final node in pruned) {
       if (!node.pruneDeadBranches()) {
         healthy.add(node);
@@ -83,11 +83,11 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   return prePruned;
 }
 
-/// Make a [TaskPickerTask], the widget that gets displayed in the task
+/// Make a [TaskPickerItem], the widget that gets displayed in the task
 /// selector, from the [FlattenedTreeData].
-TaskPickerTask _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
+TaskPickerItem _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
   var node = flatTreeItem.data as _PrunedTaskNode;
-  return TaskPickerTask(
+  return TaskPickerItem(
       blueprint: node.blueprint,
       display: node.display,
       lines: flatTreeItem.lines,
@@ -96,7 +96,7 @@ TaskPickerTask _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
 }
 
 /// Build the list of slivers to display in each milestone section.
-List<TaskPickerTask> _buildTaskPickerSlivers(List<TaskNode> fullTree,
+List<TaskPickerItem> _buildTaskPickerSlivers(List<TaskNode> fullTree,
     List<TaskBlueprint> available, List<TaskBlueprint> completed) {
   return flattenTree(_pruneTasks(fullTree, available, completed))
       .map(_makeTaskPickerTask)
