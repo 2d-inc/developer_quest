@@ -46,9 +46,9 @@ class CharacterPoolPage extends StatelessWidget {
         child: IgnorePointer(
           child: Container(
             height: 128,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               // Box decoration takes a gradient
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [

@@ -119,8 +119,7 @@ class ProjectPickerModal extends StatelessWidget {
     // Prune, flatten, and build up the linear array task list.
     var alpha =
         _buildTaskPickerSlivers(taskPool.alpha.tasks, _tasks, completed);
-    var beta =
-        _buildTaskPickerSlivers(taskPool.beta.tasks, _tasks, completed);
+    var beta = _buildTaskPickerSlivers(taskPool.beta.tasks, _tasks, completed);
     var v1 = _buildTaskPickerSlivers(taskPool.v1.tasks, _tasks, completed);
 
     var slivers = <Widget>[

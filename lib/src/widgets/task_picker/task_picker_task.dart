@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 // The display state for a widget in the task picker tree
 enum TaskDisplayState { complete, available, locked }
 
-/// Task list item in the task picker. This widget is responsible for also 
+/// Task list item in the task picker. This widget is responsible for also
 /// drawing the set of lines in its row to build up a connected tree.
 class TaskPickerTask extends StatelessWidget {
   final TaskBlueprint blueprint;
