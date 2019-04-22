@@ -1,11 +1,8 @@
-import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
-import 'package:dev_rpg/src/widgets/work_items/skill_dot.dart';
 import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 import 'package:dev_rpg/src/widgets/work_items/work_list_item.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

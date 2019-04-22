@@ -60,9 +60,9 @@ class CharacterImage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(241, 241, 241, 1.0),
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(241, 241, 241, 1.0),
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                 ),
@@ -110,9 +110,9 @@ class CharacterStats extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(10.0),
             bottomRight: Radius.circular(10.0),
           ),
