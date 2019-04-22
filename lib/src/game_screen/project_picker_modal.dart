@@ -21,9 +21,8 @@ class _PrunedTaskNode implements TreeData {
   /// Find the deepest level of the tree that has an available item in it.
   /// Add it to the available list.
   void findTopLevelAvailable(List<_PrunedTaskNode> available) {
-    var hasAvailableChild = children
-            .indexWhere((child) => child.display == TaskDisplay.available) !=
-        -1;
+    var hasAvailableChild =
+        children.any((child) => child.display == TaskDisplay.available);
     if (hasAvailableChild || display == TaskDisplay.available) {
       available.add(this);
     } else {
