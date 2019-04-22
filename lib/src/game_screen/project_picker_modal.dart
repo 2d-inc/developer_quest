@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class _PrunedTaskNode implements TreeData {
   @override
   List<_PrunedTaskNode> children;
-  final TaskDisplayState display;
+  final TaskDisplay display;
   final TaskBlueprint blueprint;
 
   _PrunedTaskNode({this.blueprint, this.display});
@@ -21,11 +21,10 @@ class _PrunedTaskNode implements TreeData {
   /// Find the deepest level of the tree that has an available item in it.
   /// Add it to the available list.
   void findTopLevelAvailable(List<_PrunedTaskNode> available) {
-    bool hasVisible = display == TaskDisplayState.available ||
-        children.indexWhere(
-                (child) => child.display == TaskDisplayState.available) !=
-            -1;
-    if (hasVisible) {
+    var hasAvailableChild = children
+            .indexWhere((child) => child.display == TaskDisplay.available) !=
+        -1;
+    if (hasAvailableChild || display == TaskDisplay.available) {
       available.add(this);
     } else {
       for (final child in children) {
@@ -39,8 +38,8 @@ class _PrunedTaskNode implements TreeData {
   bool pruneDeadBranches([_PrunedTaskNode parent]) {
     children.removeWhere((child) => child.pruneDeadBranches(this));
     return children.isEmpty &&
-        display != TaskDisplayState.available &&
-        (parent == null || parent.display != TaskDisplayState.available);
+        display != TaskDisplay.available &&
+        (parent == null || parent.display != TaskDisplay.available);
   }
 }
 
@@ -56,10 +55,10 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
     var prunedTaskNode = _PrunedTaskNode(
         blueprint: blue,
         display: available.contains(blue)
-            ? TaskDisplayState.available
+            ? TaskDisplay.available
             : completed.contains(blue)
-                ? TaskDisplayState.complete
-                : TaskDisplayState.locked);
+                ? TaskDisplay.complete
+                : TaskDisplay.locked);
     prunedTaskNode.children =
         _pruneTasks(node.children, available, completed, prunedTaskNode);
     prePruned.add(prunedTaskNode);

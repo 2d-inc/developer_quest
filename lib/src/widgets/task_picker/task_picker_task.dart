@@ -4,7 +4,7 @@ import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 import 'package:flutter/material.dart';
 
 // The display state for a widget in the task picker tree
-enum TaskDisplayState { complete, available, locked }
+enum TaskDisplay { complete, available, locked }
 
 /// Task list item in the task picker. This widget is responsible for also
 /// drawing the set of lines in its row to build up a connected tree.
@@ -13,7 +13,7 @@ class TaskPickerTask extends StatelessWidget {
   final List<bool> lines;
   final bool hasNextSibling;
   final bool hasNextChild;
-  final TaskDisplayState display;
+  final TaskDisplay display;
 
   const TaskPickerTask(
       {this.blueprint,
@@ -82,7 +82,7 @@ class TaskPickerTask extends StatelessWidget {
                 minWidth: double.infinity,
               ),
               child: InkWell(
-                onTap: display != TaskDisplayState.available
+                onTap: display != TaskDisplay.available
                     ? null
                     : () => Navigator.pop(context, blueprint),
                 child: Container(
@@ -96,13 +96,13 @@ class TaskPickerTask extends StatelessWidget {
                           spreadRadius: 0),
                     ],
                     borderRadius: const BorderRadius.all(Radius.circular(9)),
-                    color: display == TaskDisplayState.available
+                    color: display == TaskDisplay.available
                         ? Colors.white
                         : Colors.white.withOpacity(0.5),
                   ),
-                  child: display == TaskDisplayState.available
+                  child: display == TaskDisplay.available
                       ? _TaskDisplayAvailable(blueprint)
-                      : display == TaskDisplayState.locked
+                      : display == TaskDisplay.locked
                           ? _TaskDisplayLocked(
                               blueprint,
                             )
