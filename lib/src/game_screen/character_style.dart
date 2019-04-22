@@ -12,47 +12,87 @@ class CharacterStyle {
   final String description;
 
   static final Map<String, CharacterStyle> _all = {
+    "jack": CharacterStyle(
+        name: "The Jack-of-All-Trades",
+        flare: "assets/flare/TheRefactorer.flr",
+        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        description: "Got a problem? Jack can help! He's a little bit good at "
+            "everything, which is why he was able to found this company. He "
+            "carries a snorkel everywhere he goes, just 'cause he's prepared "
+            "for everything."),
+    "sourcerer": CharacterStyle(
+        name: "The Sourcerer",
+        flare: "assets/flare/TheRefactorer.flr",
+        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        description:
+            "Accomplished problem-solver and coder who is able to find the "
+            "answer to any and all problems by Googling for them. She is also "
+            "particularly adept at traversing codebases, because often the "
+            "answer is already there, if you know where to find it."),
     "refactorer": CharacterStyle(
         name: "The Refactorer",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description:
-            "Digital Druid-type. She is so at-one with the code that 1s and 0s "
-            "are falling from her hair. Her skin is partially a mesh wireframe "
-            "as she becomes ever-closer to the code."),
+            "A Digital Druid. She has a sixth sense when it comes to code "
+            "health. Need to restructure your code? Is your code made up of a "
+            "bunch of copy-paste snippets? Send in The Refactorer to clean up "
+            "your codebase and make it shine!"),
     "architect": CharacterStyle(
         name: "The Architect",
         flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
         description:
-            "Helps provide structure and improve code health ​when with other "
-            '''characters​. Probably has a ton of books and a head full of ideas. '''
-            "A real wizard."),
-    "tpm": CharacterStyle(
-        name: "TPM",
+            "Helps provide structure in large codebases, which can improve "
+            "code health. Has a ton of books and a head full of ideas."),
+    "pm": CharacterStyle(
+        name: "Program Manager",
         flare: "assets/flare/TheArchitect.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
-        description: "The good ol' bard. Promotes group harmony and increases "
-            "everyone else's abilities if sent on a task with others."),
+        description:
+            "Promotes communication and group harmony. He has the superpower "
+            "of increasing everyone else's abilities if assigned to a task "
+            "with others."),
     "avant_garde_designer": CharacterStyle(
         name: "Avant Garde Designer",
         flare: "assets/flare/TheRefactorer.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
         description:
-            "Super stylish, always wears chic glasses. Improves team execution "
-            "by inspiring them with great designs for the app."),
-    "leo": CharacterStyle(
-        name: "Leonardo",
+            "Improves team execution by inspiring them with great designs for "
+            "the app. Her designs win over more customers and spark joy when "
+            "users interact with the app."),
+    "cowboy": CharacterStyle(
+        name: "The Cowboy Coder",
         flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0)),
+        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        description:
+            "An extremely prolific coder who doesn't like structure. He can "
+            "write a whole lot of code very quickly... hopefully everyone else "
+            "can read it. Yeehaw!"),
+    "tester": CharacterStyle(
+        name: "The Test Engineer",
+        flare: "assets/flare/TheRefactorer.flr",
+        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        description:
+            "An excellent developer in their own right, the Test Engineer "
+            "creates invaluable frameworks for continuous integration testing "
+            "and fixes bugs at lightning speed."),
+    "uxr": CharacterStyle(
+        name: "User Experience Researcher",
+        flare: "assets/flare/TheRefactorer.flr",
+        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        description:
+            "They design enlightening experiments to better understand user "
+            "needs, resulting in a delightful user experience."),
     "hacker": CharacterStyle(
         name: "The Hacker",
         flare: "assets/flare/TheHacker.flr",
         accent: const Color.fromRGBO(236, 41, 117, 1.0),
         description:
-            "A reasonable coder on her own, but excels at finding and fixing "
-            "security flaws and discovering unique solutions to problems. She "
-            '''may have sniffed your email password while you read this description.'''),
+            "A strong coder on her own, but excels at finding and fixing "
+            "security flaws and also discovering unique solutions to problems. "
+            "She may have sniffed your email password while you read this "
+            "description."),
   };
 
   CharacterStyle(
