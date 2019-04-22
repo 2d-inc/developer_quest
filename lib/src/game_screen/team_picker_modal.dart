@@ -174,7 +174,7 @@ class TeamPickerItem extends StatelessWidget {
                   ),
                 ),
 
-                // Add a tiny bit of padding between data and bust shadow
+                // Add a tiny bit of padding between data and bust shadow.
                 const SizedBox(height: 1),
 
                 // Box containing the prowess data.
