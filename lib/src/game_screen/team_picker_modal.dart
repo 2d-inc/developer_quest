@@ -214,20 +214,24 @@ class TeamPickerItem extends StatelessWidget {
                             child: Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
-                              child: Row(children: [
-                                SkillIcon(skill,
-                                    width: 11, height: 10, opacity: 0.7),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: ProwessProgress(
-                                    innerPadding: const EdgeInsets.all(1.0),
-                                    background: Colors.black.withOpacity(0.28),
-                                    color: skillColor[skill],
-                                    borderRadius: BorderRadius.circular(3.5),
-                                    progress: character.prowessProgress(skill),
-                                  ),
-                                )
-                              ]),
+                              child: Row(
+                                children: [
+                                  SkillIcon(skill,
+                                      width: 11, height: 10, opacity: 0.7),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: ProwessProgress(
+                                      innerPadding: const EdgeInsets.all(1.0),
+                                      background:
+                                          Colors.black.withOpacity(0.28),
+                                      color: skillColor[skill],
+                                      borderRadius: BorderRadius.circular(3.5),
+                                      progress:
+                                          character.prowessProgress(skill),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         }).toList(),
