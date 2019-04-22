@@ -87,8 +87,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
   Widget build(BuildContext context) {
     const dropdownTextStyle = TextStyle(
       color: Colors.white,
-      fontSize: 16,
-      fontFamily: 'MontserratRegular',
+      height: 1,
     );
 
     return QuestionScaffold(
@@ -109,6 +108,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
           color: Color.fromRGBO(85, 34, 34, 1),
           fontFamily: 'MontserratMedium',
           fontSize: 16,
+          height: 1.4,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
