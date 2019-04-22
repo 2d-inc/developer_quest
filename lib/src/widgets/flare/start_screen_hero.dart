@@ -16,12 +16,13 @@ class StartScreenHero extends LeafRenderObjectWidget {
   final Color gradient;
   final double horizontalPadding;
 
-  const StartScreenHero(
-      {this.fit = BoxFit.contain,
-      this.alignment = Alignment.center,
-      this.filename,
-      this.gradient,
-      this.horizontalPadding});
+  const StartScreenHero({
+    this.fit = BoxFit.contain,
+    this.alignment = Alignment.center,
+    this.filename,
+    this.gradient,
+    this.horizontalPadding,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
