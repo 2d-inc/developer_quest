@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 /// A pruned representation of the TaskNode. We use this to build up a tree of
 /// tasks that makes sense given the current state of availability.
 class _PrunedTaskNode implements TreeData {
-  final TaskDisplayState display;
-  final TaskBlueprint blueprint;
   @override
   List<_PrunedTaskNode> children;
+  final TaskDisplayState display;
+  final TaskBlueprint blueprint;
 
   _PrunedTaskNode({this.blueprint, this.display});
 
