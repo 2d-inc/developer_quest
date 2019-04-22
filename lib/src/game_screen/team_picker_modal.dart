@@ -141,6 +141,7 @@ class TeamPickerItem extends StatelessWidget {
       duration: animationDuration,
       curve: Curves.easeInOut,
       child: InkWell(
+        key: Key(character.id),
         onTap: () => toggleSelection(character, !isSelected),
         child: Padding(
           padding: const EdgeInsets.only(right: 10.0),
