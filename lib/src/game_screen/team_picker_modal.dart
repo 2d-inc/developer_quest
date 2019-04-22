@@ -134,6 +134,11 @@ class TeamPickerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var characterStyle = CharacterStyle.from(character);
 
+    assert(
+        character.prowess.keys.length <= 3,
+        'UI is prepared for max 3 skills, yet '
+        'character has ${character.prowess}');
+
     return AnimatedPadding(
       padding: isSelected
           ? const EdgeInsets.only(top: 27, bottom: 50)
@@ -205,7 +210,7 @@ class TeamPickerItem extends StatelessWidget {
                       ),
 
                       // Now we can map the actual data (N.B. this design
-                      // assumes we have less than 3 skills per character).
+                      // requires less than 3 skills per character).
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: character.prowess.keys.map((skill) {
