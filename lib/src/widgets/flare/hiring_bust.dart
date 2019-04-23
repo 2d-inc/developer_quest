@@ -177,8 +177,11 @@ class HiringBustRenderObject extends FlareRenderBox {
             offset.dy + size.height / 2.0 - clipDiameter / 2.0) &
         Size(clipDiameter, clipDiameter));
 
-    clip.addRect(const Offset(0.0, 0.0) &
-        Size(ui.window.physicalSize.width, offset.dy + size.height / 1.25));
+	// There's something about using a large clipping area that seems to 
+	// negatively affect performance. Keeping this here as reference for the
+	// intended look of the app.
+    // clip.addRect(const Offset(0.0, 0.0) &
+    //     Size(ui.window.physicalSize.width, offset.dy + size.height / 1.25));
     canvas.clipPath(clip);
   }
 
