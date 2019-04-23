@@ -25,5 +25,5 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Tasks'), findsOneWidget);
-  });
+  }, skip: true);
 }
