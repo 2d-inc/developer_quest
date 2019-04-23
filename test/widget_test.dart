@@ -10,20 +10,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Start the game', (WidgetTester tester) async {
-    final startFinder = find.text('START');
+  testWidgets(
+    'Start the game',
+    (WidgetTester tester) async {
+      final startFinder = find.text('START');
 
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+      // Build our app and trigger a frame.
+      await tester.pumpWidget(MyApp());
 
-    // Find the start text
-    expect(startFinder, findsOneWidget);
+      // Find the start text
+      expect(startFinder, findsOneWidget);
 
-    // Start the game.
-    expect(find.byType(FlatButton), findsNWidgets(2));
-    await tester.tap(startFinder);
-    await tester.pumpAndSettle();
+      // Start the game.
+      expect(find.byType(FlatButton), findsNWidgets(2));
+      await tester.tap(startFinder);
+      await tester.pumpAndSettle();
 
-    expect(find.text('Tasks'), findsOneWidget);
-  }, skip: true);
+      expect(find.text('Tasks'), findsOneWidget);
+    },
+    // This currently fails with a hanging Future. Not because of code
+    // in this app. Skipping until this is resolved. TODO.
+    skip: true,
+  );
 }
