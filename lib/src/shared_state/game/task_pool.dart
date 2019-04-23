@@ -9,7 +9,9 @@ import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 
-/// A grouping of tasks based on top down dependencies.
+/// A grouping of tasks necessary to complete to achieve a goal,
+/// named by [label]. The tasks can have sub-tasks and are stored
+/// recursively in [TaskNode].
 class Milestone {
   final String label;
   final List<TaskNode> tasks = [];
