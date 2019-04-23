@@ -43,8 +43,8 @@ class CharacterStyle {
             "code health. Has a ton of books and a head full of ideas."),
     "pm": CharacterStyle(
         name: "Program Manager",
-        flare: "assets/flare/TheArchitect.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/ProgramManager.flr",
+        accent: const Color.fromRGBO(84, 209, 88, 1.0),
         description:
             "Promotes communication and group harmony. He has the superpower "
             "of increasing everyone else's abilities if assigned to a task "
@@ -67,7 +67,7 @@ class CharacterStyle {
             "can read it. Yeehaw!"),
     "tester": CharacterStyle(
         name: "The Test Engineer",
-        flare: "assets/flare/TheRefactorer.flr",
+        flare: "assets/flare/Tester.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description:
             "An excellent developer in their own right, the Test Engineer "
@@ -75,8 +75,8 @@ class CharacterStyle {
             "and fixes bugs at lightning speed."),
     "uxr": CharacterStyle(
         name: "User Experience Researcher",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/UXResearcher.flr",
+        accent: const Color.fromRGBO(222, 165, 88, 1.0),
         description:
             "They design enlightening experiments to better understand user "
             "needs, resulting in a delightful user experience."),
@@ -96,10 +96,6 @@ class CharacterStyle {
 
   static CharacterStyle from(Character character) {
     return _all[character.id];
-  }
-
-  static CharacterStyle fromId(String id) {
-    return _all[id];
   }
 
   static CharacterStyle random() {

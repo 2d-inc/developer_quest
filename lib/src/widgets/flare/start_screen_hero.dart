@@ -164,8 +164,8 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
       if (actor == null) {
         return;
       }
-	  bool sameActor = actor == _lastLoadedActor;
-	  _lastLoadedActor = actor;
+      bool sameActor = actor == _lastLoadedActor;
+      _lastLoadedActor = actor;
       if (_character != null && !sameActor) {
         _crossFade = double.minPositive;
         _nextCharacter = actor.artboard.makeInstance() as FlutterActorArtboard;
