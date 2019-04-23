@@ -51,8 +51,8 @@ class CharacterStyle {
             "with others."),
     "avant_garde_designer": CharacterStyle(
         name: "Avant Garde Designer",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(236, 41, 117, 1.0),
+        flare: "assets/flare/Designer.flr",
+        accent: const Color.fromRGBO(236, 148, 0, 1.0),
         description:
             "Improves team execution by inspiring them with great designs for "
             "the app. Her designs win over more customers and spark joy when "
@@ -96,6 +96,10 @@ class CharacterStyle {
 
   static CharacterStyle from(Character character) {
     return _all[character.id];
+  }
+
+  static CharacterStyle fromId(String id) {
+    return _all[id];
   }
 
   static CharacterStyle random() {
