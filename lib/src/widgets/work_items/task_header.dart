@@ -26,9 +26,8 @@ class TaskHeader extends StatelessWidget {
           style: contentSmallStyle,
         ),
         Expanded(child: Container()),
-      ]..addAll(
-          blueprint.skillsNeeded.map((Skill skill) => SkillDot(skill)).toList(),
-        ),
+        for (Skill skill in blueprint.skillsNeeded) SkillDot(skill)
+      ],
     );
   }
 }

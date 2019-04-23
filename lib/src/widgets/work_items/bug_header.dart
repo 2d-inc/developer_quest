@@ -14,9 +14,8 @@ class BugHeader extends StatelessWidget {
       children: [
         const Icon(Icons.bug_report, color: bugColor),
         Expanded(child: Container()),
-      ]..addAll(
-          bug.skillsNeeded.map((Skill skill) => SkillDot(skill)).toList(),
-        ),
+        for (Skill skill in bug.skillsNeeded) SkillDot(skill)
+      ]
     );
   }
 }
