@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
@@ -54,8 +56,7 @@ class CharacterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var characterStyle = CharacterStyle.from(Provider.of<Character>(context));
-    return SizedBox(
-      height: 200,
+    return Expanded(
       child: Stack(
         children: [
           Positioned.fill(
@@ -71,9 +72,9 @@ class CharacterImage extends StatelessWidget {
           ),
           Positioned.fill(
             child: FlareActor(characterStyle.flare,
-                alignment: Alignment.topCenter,
+                alignment: Alignment.bottomCenter,
                 shouldClip: false,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 animation: "idle",
                 controller: _controls),
           ),
