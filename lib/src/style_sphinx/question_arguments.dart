@@ -8,7 +8,7 @@ class QuestionArguments {
     this.currentIndex = 0,
   });
 
-  bool get hasNextQuestion => currentIndex + 1 != questionRoutes.length;
+  bool get hasNextQuestion => currentIndex + 1 < questionRoutes.length;
 
   String get routeName => questionRoutes[currentIndex];
 
@@ -20,4 +20,19 @@ class QuestionArguments {
       currentIndex: currentIndex + 1,
     );
   }
+
+  @override
+  String toString() =>
+      '''QuestionArguments{questionRoutes: $questionRoutes, currentIndex: $currentIndex}''';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is QuestionArguments &&
+          runtimeType == other.runtimeType &&
+          questionRoutes == other.questionRoutes &&
+          currentIndex == other.currentIndex;
+
+  @override
+  int get hashCode => questionRoutes.hashCode ^ currentIndex.hashCode;
 }
