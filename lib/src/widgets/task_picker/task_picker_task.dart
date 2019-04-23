@@ -110,8 +110,9 @@ class TaskPickerTask extends StatelessWidget {
                 ),
               ),
             ),
-          )
-        ]..addAll(lineWidgets),
+          ),
+          ...lineWidgets
+        ],
       ),
     );
   }

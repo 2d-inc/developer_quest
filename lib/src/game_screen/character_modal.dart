@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
