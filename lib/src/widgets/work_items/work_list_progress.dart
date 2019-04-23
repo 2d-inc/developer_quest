@@ -81,7 +81,7 @@ class _WorkListProgressState extends State<WorkListProgress> {
                   progress: workItem.percentComplete)
             ],
           ),
-        )
+        ),
       ],
     );
   }

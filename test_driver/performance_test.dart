@@ -39,13 +39,15 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.waitFor(task);
   await driver.tap(find.text(taskName));
 
-  var refactorer = find.text('refactorer');
-  await driver.waitFor(refactorer);
-  await driver.tap(refactorer);
+  var refactorer = find.byValueKey('refactorer');
+  await driver.runUnsynchronized(() => driver.waitFor(refactorer));
+  await driver.runUnsynchronized(() => driver.tap(refactorer));
 
-  var tpm = find.text('tpm');
-  await driver.tap(tpm);
-  await driver.tap(_teamPickOkButtonFinder);
+  var tpm = find.byValueKey('tpm');
+  await driver.runUnsynchronized(() => driver.waitFor(tpm));
+  await driver.runUnsynchronized(() => driver.tap(tpm));
+
+  await driver.runUnsynchronized(() => driver.tap(_teamPickOkButtonFinder));
 
   var shipIt = find.text('LAUNCH!');
   // Need to run these next operations unsynchronized as the working/idle
