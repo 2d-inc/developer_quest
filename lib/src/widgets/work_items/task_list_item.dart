@@ -1,10 +1,8 @@
-import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
-import 'package:dev_rpg/src/widgets/work_items/skill_dot.dart';
+import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 import 'package:dev_rpg/src/widgets/work_items/work_list_item.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,25 +28,7 @@ class TaskListItem extends StatelessWidget {
       handleTap: () => _handleTap(task),
       progressColor: const Color.fromRGBO(0, 152, 255, 1.0),
       heading: task.state != TaskState.rewarded
-          ? Row(
-              children: [
-                Container(
-                  width: 20,
-                  height: 20,
-                  child: const FlareActor("assets/flare/Coin.flr"),
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  task.blueprint.coinReward.toString(),
-                  style: contentSmallStyle,
-                ),
-                Expanded(child: Container()),
-              ]..addAll(
-                  task.skillsNeeded
-                      .map((Skill skill) => SkillDot(skill))
-                      .toList(),
-                ),
-            )
+          ? TaskHeader(task.blueprint)
           : const Icon(Icons.check_circle, color: disabledColor),
     );
   }

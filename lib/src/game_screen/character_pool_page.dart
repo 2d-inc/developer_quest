@@ -20,7 +20,8 @@ class CharacterPoolPage extends StatelessWidget {
               const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 128.0),
           itemCount: characterPool.children.length,
           gridDelegate: _gridStructure,
-          itemBuilder: (context, index) => ChangeNotifierProvider<Character>(
+          itemBuilder: (context, index) =>
+              ChangeNotifierProvider<Character>.value(
                 notifier: characterPool.children[index],
                 key: ValueKey(characterPool.children[index]),
                 child: CharacterListItem(),
@@ -43,18 +44,20 @@ class CharacterPoolPage extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomCenter,
         heightFactor: 1.0,
-        child: Container(
-          height: 128,
-          decoration: BoxDecoration(
-            // Box decoration takes a gradient
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(59, 59, 73, 0.0),
-                Color.fromRGBO(59, 59, 73, 1.0)
-              ],
-              stops: [0.0, 1.0],
+        child: IgnorePointer(
+          child: Container(
+            height: 128,
+            decoration: const BoxDecoration(
+              // Box decoration takes a gradient
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(59, 59, 73, 0.0),
+                  Color.fromRGBO(59, 59, 73, 1.0)
+                ],
+                stops: [0.0, 1.0],
+              ),
             ),
           ),
         ),
@@ -153,7 +156,7 @@ class CharacterDisplay extends StatelessWidget {
     showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return ChangeNotifierProvider<Character>(
+          return ChangeNotifierProvider<Character>.value(
             notifier: character,
             child: CharacterModal(),
           );

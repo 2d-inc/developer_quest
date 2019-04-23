@@ -1,11 +1,12 @@
 import 'package:dev_rpg/src/game_screen/character_style.dart';
-import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/wide_button.dart';
+import 'package:dev_rpg/src/widgets/flare/skill_icon.dart';
 import 'package:dev_rpg/src/widgets/keyboard.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
+import 'package:dev_rpg/src/widgets/skill_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -54,15 +55,14 @@ class CharacterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var characterStyle = CharacterStyle.from(Provider.of<Character>(context));
-    return SizedBox(
-      height: 200,
+    return Expanded(
       child: Stack(
         children: [
           Positioned.fill(
             child: Container(
-              decoration: BoxDecoration(
-                color: const Color.fromRGBO(241, 241, 241, 1.0),
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                color: Color.fromRGBO(241, 241, 241, 1.0),
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                 ),
@@ -71,9 +71,9 @@ class CharacterImage extends StatelessWidget {
           ),
           Positioned.fill(
             child: FlareActor(characterStyle.flare,
-                alignment: Alignment.topCenter,
+                alignment: Alignment.bottomCenter,
                 shouldClip: false,
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
                 animation: "idle",
                 controller: _controls),
           ),
@@ -110,9 +110,9 @@ class CharacterStats extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(10.0),
             bottomRight: Radius.circular(10.0),
           ),
@@ -212,8 +212,11 @@ class SkillDisplay extends StatelessWidget {
         Row(
           children: [
             Row(children: [
-              const Icon(Icons.chevron_right, color: skillTextColor),
-              const SizedBox(width: 4),
+              SkillIcon(
+                skill,
+                color: const Color.fromRGBO(69, 69, 82, 1.0),
+              ),
+              const SizedBox(width: 10),
               Text(
                 skillDisplayName[skill],
                 style: contentStyle.apply(color: skillTextColor),
@@ -231,7 +234,7 @@ class SkillDisplay extends StatelessWidget {
           child: ProwessProgress(
               color: skillColor[skill],
               borderRadius: BorderRadius.circular(3.5),
-              progress: character.prowess[skill] / 100),
+              progress: character.getProwessProgress(skill)),
         )
       ]),
     );
