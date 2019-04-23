@@ -14,14 +14,14 @@ class CharacterStyle {
   static final Map<String, CharacterStyle> _all = {
     "jack": CharacterStyle(
         name: "The Jack-of-All-Trades",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/TheJack.flr",
+        accent: const Color.fromRGBO(29, 202, 34, 1.0),
         description: "Got a problem? Jack can help! Carries a snorkel "
             "everywhere he goes since he's always prepared."),
     "sourcerer": CharacterStyle(
         name: "The Sourcerer",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/Sourcerer.flr",
+        accent: const Color.fromRGBO(82, 183, 216, 1.0),
         description:
             "Accomplished problem-solver and coder who is able to find the "
             "answer to any and all problems by traversing codebases."),
