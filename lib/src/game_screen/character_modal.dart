@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/game_screen/skill_badge.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
@@ -36,7 +38,7 @@ class CharacterModal extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 280.0),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
-              CharacterImage(_controls),
+              Expanded(child: CharacterImage(_controls)),
               CharacterStats(_controls)
             ]),
           ),
@@ -54,46 +56,43 @@ class CharacterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var characterStyle = CharacterStyle.from(Provider.of<Character>(context));
-    return SizedBox(
-      height: 200,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(241, 241, 241, 1.0),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Color.fromRGBO(241, 241, 241, 1.0),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
               ),
             ),
           ),
-          Positioned.fill(
-            child: FlareActor(characterStyle.flare,
-                alignment: Alignment.topCenter,
-                shouldClip: false,
-                fit: BoxFit.contain,
-                animation: "idle",
-                controller: _controls),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: ButtonTheme(
-              minWidth: 0.0,
-              child: FlatButton(
-                padding: const EdgeInsets.all(0.0),
-                shape: null,
-                onPressed: () => Navigator.pop(context, null),
-                child: const Icon(
-                  Icons.cancel,
-                  color: Color.fromRGBO(69, 69, 82, 1.0),
-                ),
+        ),
+        Positioned.fill(
+          child: FlareActor(characterStyle.flare,
+              alignment: Alignment.bottomCenter,
+              shouldClip: false,
+              fit: BoxFit.cover,
+              animation: "idle",
+              controller: _controls),
+        ),
+        Align(
+          alignment: Alignment.topRight,
+          child: ButtonTheme(
+            minWidth: 0.0,
+            child: FlatButton(
+              padding: const EdgeInsets.all(0.0),
+              shape: null,
+              onPressed: () => Navigator.pop(context, null),
+              child: const Icon(
+                Icons.cancel,
+                color: Color.fromRGBO(69, 69, 82, 1.0),
               ),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }
