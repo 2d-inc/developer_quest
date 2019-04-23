@@ -4,9 +4,9 @@ enum KittyType { orange, yellow }
 
 class KittyBed extends StatelessWidget {
   static const ImageProvider redProvider =
-      AssetImage('assets/style_sphinx/normalized/red_bed.png');
+      AssetImage('assets/style_sphinx/red_bed.png');
   static const ImageProvider greenProvider =
-      AssetImage('assets/style_sphinx/normalized/green_bed.png');
+      AssetImage('assets/style_sphinx/green_bed.png');
 
   final KittyType type;
 
@@ -26,9 +26,9 @@ class KittyBed extends StatelessWidget {
 
 class Kitty extends StatelessWidget {
   static const ImageProvider orangeProvider =
-      AssetImage('assets/style_sphinx/normalized/orange_cat.png');
+      AssetImage('assets/style_sphinx/orange_cat.png');
   static const ImageProvider yellowProvider =
-      AssetImage('assets/style_sphinx/normalized/yellow_cat.png');
+      AssetImage('assets/style_sphinx/yellow_cat.png');
 
   final KittyType type;
 

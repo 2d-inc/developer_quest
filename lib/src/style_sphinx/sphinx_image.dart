@@ -14,7 +14,7 @@ class SphinxImage extends StatelessWidget {
 
 class SphinxWithoutGlassesImage extends StatelessWidget {
   static const ImageProvider provider =
-      AssetImage('assets/style_sphinx/Sphinx_no_glasses@3x.png');
+      AssetImage('assets/style_sphinx/sphinx_no_glasses.png');
 
   const SphinxWithoutGlassesImage();
 
@@ -26,7 +26,7 @@ class SphinxWithoutGlassesImage extends StatelessWidget {
 
 class SphinxGlassesImage extends StatelessWidget {
   static const ImageProvider provider =
-      AssetImage('assets/style_sphinx/normalized/sunglasses.png');
+      AssetImage('assets/style_sphinx/sunglasses.png');
 
   const SphinxGlassesImage();
 
