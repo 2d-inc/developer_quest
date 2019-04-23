@@ -3,6 +3,11 @@ import 'package:flutter/widgets.dart';
 enum KittyType { orange, yellow }
 
 class KittyBed extends StatelessWidget {
+  static const ImageProvider redProvider =
+      AssetImage('assets/style_sphinx/normalized/red_bed.png');
+  static const ImageProvider greenProvider =
+      AssetImage('assets/style_sphinx/normalized/green_bed.png');
+
   final KittyType type;
 
   const KittyBed({@required this.type, Key key}) : super(key: key);
@@ -11,15 +16,20 @@ class KittyBed extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (type) {
       case KittyType.orange:
-        return Image.asset('assets/style_sphinx/normalized/red_bed.png');
+        return Image(image: redProvider);
       case KittyType.yellow:
       default:
-        return Image.asset('assets/style_sphinx/normalized/green_bed.png');
+        return Image(image: greenProvider);
     }
   }
 }
 
 class Kitty extends StatelessWidget {
+  static const ImageProvider orangeProvider =
+      AssetImage('assets/style_sphinx/normalized/orange_cat.png');
+  static const ImageProvider yellowProvider =
+      AssetImage('assets/style_sphinx/normalized/yellow_cat.png');
+
   final KittyType type;
 
   const Kitty({@required this.type, Key key}) : super(key: key);
@@ -28,10 +38,10 @@ class Kitty extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (type) {
       case KittyType.orange:
-        return Image.asset('assets/style_sphinx/normalized/orange_cat.png');
+        return Image(image: orangeProvider);
       case KittyType.yellow:
       default:
-        return Image.asset('assets/style_sphinx/normalized/yellow_cat.png');
+        return Image(image: yellowProvider);
     }
   }
 }

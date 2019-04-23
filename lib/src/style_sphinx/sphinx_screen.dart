@@ -9,6 +9,10 @@ import 'package:flutter/widgets.dart';
 class SphinxScreen extends StatefulWidget {
   static const String miniGameRouteName = '/sphinx';
   static const String fullGameRouteName = '/sphinx/complete';
+  static const ImageProvider background =
+      AssetImage('assets/style_sphinx/start_background.png');
+  static const ImageProvider pyramid =
+      AssetImage('assets/style_sphinx/pyramid.png');
 
   const SphinxScreen({Key key, this.fullGame = false}) : super(key: key);
 
@@ -24,16 +28,16 @@ class _SphinxScreenState extends State<SphinxScreen> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Image.asset(
-            'assets/style_sphinx/start_background.png',
+          child: Image(
+            image: SphinxScreen.background,
             fit: BoxFit.cover,
           ),
         ),
         Positioned.fill(
           child: Padding(
             padding: const EdgeInsets.only(top: 75),
-            child: Image.asset(
-              'assets/style_sphinx/pyramid.png',
+            child: Image(
+              image: SphinxScreen.pyramid,
               fit: BoxFit.fitHeight,
             ),
           ),
