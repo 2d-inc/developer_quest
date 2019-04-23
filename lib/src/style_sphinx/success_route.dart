@@ -20,7 +20,7 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     @required String message,
     @required this.hasNextQuestion,
     RouteSettings settings,
-    this.transitionDuration = const Duration(milliseconds: 1000),
+    this.transitionDuration = const Duration(milliseconds: 2000),
     this.opaque = false,
     this.barrierDismissible = false,
     this.barrierColor,
@@ -71,7 +71,7 @@ class SuccessRoute extends PageRoute<Animation<double>> {
       CurveTween(
         curve: Interval(
           0,
-          1,
+          0.5,
         ),
       ),
     );
@@ -85,6 +85,23 @@ class SuccessRoute extends PageRoute<Animation<double>> {
 
     final scaleAnimation =
         Tween<double>(begin: 0.3, end: 1).chain(curveTween).animate(animation);
+
+    final glassesAnimation = Tween<Offset>(
+      begin: const Offset(0, -20),
+      end: const Offset(
+        0,
+        0,
+      ),
+    )
+        .chain(
+          CurveTween(
+            curve: Interval(
+              0.5,
+              1,
+            ),
+          ),
+        )
+        .animate(animation);
 
     void proceed() {
       Navigator.pop(context, animation);
@@ -129,7 +146,20 @@ class SuccessRoute extends PageRoute<Animation<double>> {
                     ],
                   ),
                 ),
-                const Flexible(child: SphinxImage()),
+                Flexible(
+                  child: Stack(
+                    children: [
+                      const Positioned.fill(child: SphinxWithoutGlassesImage()),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: SlideTransition(
+                          position: glassesAnimation,
+                          child: const SphinxGlassesImage(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -212,7 +242,7 @@ Future<void> navigateToNextQuestion(
       } else {
         Navigator.popUntil(
           context,
-          (route) => route.settings.name == args.originalRoute,
+          (route) => !route.settings.name.contains('sphinx'),
         );
       }
 

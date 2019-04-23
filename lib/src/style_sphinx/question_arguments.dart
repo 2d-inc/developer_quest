@@ -1,11 +1,9 @@
 /// Arguments that drive the game from one screen to the next.
 class QuestionArguments {
-  final String originalRoute;
   final List<String> questionRoutes;
   final int currentIndex;
 
   QuestionArguments({
-    this.originalRoute = '/',
     this.questionRoutes = const [],
     this.currentIndex = 0,
   });
@@ -18,7 +16,6 @@ class QuestionArguments {
     if (!hasNextQuestion) throw StateError('No next question available');
 
     return QuestionArguments(
-      originalRoute: originalRoute,
       questionRoutes: questionRoutes,
       currentIndex: currentIndex + 1,
     );
