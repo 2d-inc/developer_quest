@@ -14,14 +14,14 @@ class CharacterStyle {
   static final Map<String, CharacterStyle> _all = {
     "jack": CharacterStyle(
         name: "The Jack-of-All-Trades",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/TheJack.flr",
+        accent: const Color.fromRGBO(29, 202, 34, 1.0),
         description: "Got a problem? Jack can help! Carries a snorkel "
             "everywhere he goes since he's always prepared."),
     "sourcerer": CharacterStyle(
         name: "The Sourcerer",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/Sourcerer.flr",
+        accent: const Color.fromRGBO(82, 183, 216, 1.0),
         description:
             "Accomplished problem-solver and coder who is able to find the "
             "answer to any and all problems by traversing codebases."),
@@ -43,16 +43,16 @@ class CharacterStyle {
             "code health. Has a ton of books and a head full of ideas."),
     "pm": CharacterStyle(
         name: "Program Manager",
-        flare: "assets/flare/TheArchitect.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/ProgramManager.flr",
+        accent: const Color.fromRGBO(84, 209, 88, 1.0),
         description:
             "Promotes communication and group harmony. He has the superpower "
             "of increasing everyone else's abilities if assigned to a task "
             "with others."),
     "avant_garde_designer": CharacterStyle(
         name: "Avant Garde Designer",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(236, 41, 117, 1.0),
+        flare: "assets/flare/Designer.flr",
+        accent: const Color.fromRGBO(236, 148, 0, 1.0),
         description:
             "Improves team execution by inspiring them with great designs for "
             "the app. Her designs win over more customers and spark joy when "
@@ -67,7 +67,7 @@ class CharacterStyle {
             "can read it. Yeehaw!"),
     "tester": CharacterStyle(
         name: "The Test Engineer",
-        flare: "assets/flare/TheRefactorer.flr",
+        flare: "assets/flare/Tester.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description:
             "An excellent developer in their own right, the Test Engineer "
@@ -75,8 +75,8 @@ class CharacterStyle {
             "and fixes bugs at lightning speed."),
     "uxr": CharacterStyle(
         name: "User Experience Researcher",
-        flare: "assets/flare/TheRefactorer.flr",
-        accent: const Color.fromRGBO(75, 58, 185, 1.0),
+        flare: "assets/flare/UXResearcher.flr",
+        accent: const Color.fromRGBO(222, 165, 88, 1.0),
         description:
             "They design enlightening experiments to better understand user "
             "needs, resulting in a delightful user experience."),

@@ -55,6 +55,7 @@ class StartScreenHero extends LeafRenderObjectWidget {
 }
 
 class StartScreenHeroRenderObject extends FlareRenderBox {
+  FlutterActor _lastLoadedActor;
   FlutterActorArtboard _character;
   FlutterActorArtboard _nextCharacter;
   ActorAnimation _idle;
@@ -163,7 +164,9 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
       if (actor == null) {
         return;
       }
-      if (_character != null) {
+      bool sameActor = actor == _lastLoadedActor;
+      _lastLoadedActor = actor;
+      if (_character != null && !sameActor) {
         _crossFade = double.minPositive;
         _nextCharacter = actor.artboard.makeInstance() as FlutterActorArtboard;
         return;
