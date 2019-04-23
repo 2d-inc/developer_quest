@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
@@ -72,9 +72,11 @@ class World extends AspectContainer {
     company.award(task.blueprint.userReward, task.blueprint.coinReward);
   }
 
-  void shutdown() {
+  @override
+  void dispose() {
     if (_timer.isActive) {
       _timer.cancel();
     }
+    super.dispose();
   }
 }

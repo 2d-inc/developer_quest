@@ -17,21 +17,22 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  final World world = World();
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  final World world = World();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(builder: (_) => User()),
-          ChangeNotifierProvider.value(notifier: widget.world),
-          ChangeNotifierProvider.value(notifier: widget.world.characterPool),
-          ChangeNotifierProvider.value(notifier: widget.world.taskPool),
-          ChangeNotifierProvider.value(notifier: widget.world.company),
+          ChangeNotifierProvider.value(notifier: world),
+          ChangeNotifierProvider.value(notifier: world.characterPool),
+          ChangeNotifierProvider.value(notifier: world.taskPool),
+          ChangeNotifierProvider.value(notifier: world.company),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    widget.world.shutdown();
+    world.dispose();
     super.dispose();
   }
 }
