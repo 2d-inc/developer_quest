@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return SphinxGameStateProvider(
       state: state,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Style Sphinx',
         theme: ThemeData(
           primarySwatch: Colors.orange,
           fontFamily: 'MontserratMedium',

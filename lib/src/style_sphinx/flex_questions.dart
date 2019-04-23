@@ -6,7 +6,7 @@ import 'package:flutter_web/material.dart';
 import 'package:flutter_web/widgets.dart';
 
 class ColumnQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/column';
+  static const String routeName = '/sphinx/vertical_positioning';
 
   const ColumnQuestion({Key key}) : super(key: key);
 
@@ -23,7 +23,7 @@ class ColumnQuestion extends StatelessWidget {
 }
 
 class RowQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/row';
+  static const String routeName = '/sphinx/horizontal_positioning';
 
   const RowQuestion({Key key}) : super(key: key);
 
@@ -40,7 +40,7 @@ class RowQuestion extends StatelessWidget {
 }
 
 class StackQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/stack';
+  static const String routeName = '/sphinx/layer_widgets';
 
   const StackQuestion({Key key}) : super(key: key);
 
@@ -87,7 +87,8 @@ class _FlexQuestionState extends State<_FlexQuestion> {
   Widget build(BuildContext context) {
     const dropdownTextStyle = TextStyle(
       color: Colors.white,
-      height: 1,
+      fontSize: 16,
+      fontFamily: 'MontserratRegular',
     );
 
     return QuestionScaffold(
@@ -121,7 +122,7 @@ class _FlexQuestionState extends State<_FlexQuestion> {
             ),
             const SizedBox(height: 16),
             Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.start,
               children: [
                 Container(
                   margin: const EdgeInsets.only(right: 10),

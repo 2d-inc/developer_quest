@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dev_rpg/src/style_sphinx/provider.dart';
+import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
@@ -20,7 +20,7 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     @required String message,
     @required this.hasNextQuestion,
     RouteSettings settings,
-    this.transitionDuration = const Duration(milliseconds: 1000),
+    this.transitionDuration = const Duration(milliseconds: 2500),
     this.opaque = false,
     this.barrierDismissible = false,
     this.barrierColor,
@@ -67,71 +67,147 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    final curveTween = CurveTween(curve: Curves.easeIn).chain(
+    // Setup the Scale and Offset animations. This requires different
+    // animations for the forward and reverse operations to give the appropriate
+    // animation depending on whether the sphinx is animating on or off the
+    // screen.
+    final forwardCurveTween = CurveTween(curve: Curves.easeIn).chain(
       CurveTween(
         curve: Interval(
           0,
-          1,
+          0.4,
         ),
       ),
     );
-    final offsetAnimation = Tween<Offset>(
+    final forwardOffsetAnimation = Tween<Offset>(
       begin: const Offset(500, -500),
       end: const Offset(
         0,
         24,
       ),
-    ).chain(curveTween).animate(animation);
+    ).chain(forwardCurveTween).animate(animation);
 
-    final scaleAnimation =
-        Tween<double>(begin: 0.3, end: 1).chain(curveTween).animate(animation);
+    final forwardScaleAnimation = Tween<double>(begin: 0.3, end: 1)
+        .chain(forwardCurveTween)
+        .animate(animation);
+
+    // Play the offset and scale animations immediately when the sphinx is
+    // dismissed
+    final reverseCurveTween = CurveTween(curve: Curves.easeIn).chain(
+      CurveTween(
+        curve: Interval(
+          0.6,
+          1,
+        ),
+      ),
+    );
+    final reverseOffsetAnimation = Tween<Offset>(
+      begin: const Offset(500, -500),
+      end: const Offset(
+        0,
+        24,
+      ),
+    ).chain(reverseCurveTween).animate(animation);
+
+    final reverseScaleAnimation = Tween<double>(begin: 0.3, end: 1)
+        .chain(forwardCurveTween)
+        .animate(animation);
+
+    // Setup the animations for the glasses
+    final glassesOpacityAnimation = Tween<double>(begin: 0, end: 1)
+        .chain(
+          CurveTween(
+            curve: Interval(
+              0.4,
+              0.6,
+            ),
+          ),
+        )
+        .animate(animation);
+
+    final glassesOffsetAnimation = Tween<Offset>(
+      begin: const Offset(0, -50),
+      end: const Offset(0, 0),
+    )
+        .chain(
+          CurveTween(
+            curve: Interval(
+              0.6,
+              1,
+            ),
+          ),
+        )
+        .animate(animation);
 
     void proceed() {
       Navigator.pop(context, animation);
     }
 
-    return GestureDetector(
-      onTap: proceed,
-      child: AnimatedBuilder(
-        animation: animation,
-        builder: (context, child) {
-          return Transform.translate(
-            offset: offsetAnimation.value,
-            child: Transform.scale(
-              child: child,
-              scale: scaleAnimation.value,
-            ),
-          );
-        },
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Material(
-            color: Colors.transparent,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextBubble(
-                  child: Column(
-                    children: [
-                      Text(
-                        title,
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        message,
-                      ),
-                      const SizedBox(height: 16),
-                      SphinxButton(
-                        child: Text(buttonText),
-                        onPressed: proceed,
-                      ),
-                    ],
-                  ),
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return Transform.translate(
+          offset: animation.status == AnimationStatus.forward
+              ? forwardOffsetAnimation.value
+              : reverseOffsetAnimation.value,
+          child: Transform.scale(
+            child: child,
+            scale: animation.status == AnimationStatus.forward
+                ? forwardScaleAnimation.value
+                : reverseScaleAnimation.value,
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Material(
+          color: Colors.transparent,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextBubble(
+                child: Column(
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      message,
+                    ),
+                    const SizedBox(height: 16),
+                    SphinxButton(
+                      child: Text(buttonText),
+                      onPressed: proceed,
+                    ),
+                  ],
                 ),
-                const Flexible(child: SphinxImage()),
-              ],
-            ),
+              ),
+              Flexible(
+                child: Stack(
+                  children: [
+                    const Positioned.fill(child: SphinxWithoutGlassesImage()),
+                    AnimatedBuilder(
+                      animation: glassesOpacityAnimation,
+                      builder: (context, _) {
+                        return Opacity(
+                          opacity: animation.status == AnimationStatus.forward
+                              ? glassesOpacityAnimation.value
+                              : 1,
+                          child: Transform.translate(
+                            offset: animation.status == AnimationStatus.forward
+                                ? glassesOffsetAnimation.value
+                                : const Offset(0, 0),
+                            child: const SphinxGlassesImage(),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -183,7 +259,8 @@ Future<void> navigateToNextQuestion(
   //
   // If there are no arguments provided to the current route, default to an
   // empty set to exit the game immediately after choosing the correct answer.
-  final state = SphinxGameStateProvider.of(context);
+  final args = ModalRoute.of(context).settings.arguments as QuestionArguments ??
+      QuestionArguments();
 
   // Push the Success Route and wait for the user to hit the proceed button.
   // When they do, the route will return the "Flying Away" animation.
@@ -191,7 +268,7 @@ Future<void> navigateToNextQuestion(
     context,
     SuccessRoute(
       message: message,
-      hasNextQuestion: state.hasNextQuestion,
+      hasNextQuestion: args.hasNextQuestion,
     ),
   );
 
@@ -199,17 +276,16 @@ Future<void> navigateToNextQuestion(
   // change. When the animation is complete, it navigates to the next question
   // if one is available or back to the original route if the .
   void listener() {
-    if (animation.isDismissed) {
-      if (state.hasNextQuestion) {
-        state.nextQuestion();
+    if (animation.status == AnimationStatus.reverse && animation.value < 0.4) {
+      if (args.hasNextQuestion) {
+        final nextQuestion = args.nextQuestion();
 
         Navigator.pushReplacementNamed(
           context,
-          state.routeName,
+          nextQuestion.routeName,
+          arguments: nextQuestion,
         );
       } else {
-        state.reset();
-
         Navigator.popUntil(
           context,
           (route) => !route.settings.name.contains('sphinx'),

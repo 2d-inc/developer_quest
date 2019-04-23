@@ -1,5 +1,5 @@
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
-import 'package:dev_rpg/src/style_sphinx/provider.dart';
+import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
@@ -9,6 +9,9 @@ import 'package:flutter_web/widgets.dart';
 class SphinxScreen extends StatefulWidget {
   static const String miniGameRouteName = '/sphinx';
   static const String fullGameRouteName = '/sphinx/complete';
+  static const ImageProvider background =
+      AssetImage('style_sphinx/start_background.png');
+  static const ImageProvider pyramid = AssetImage('style_sphinx/pyramid.png');
 
   const SphinxScreen({Key key, this.fullGame = false}) : super(key: key);
 
@@ -24,17 +27,18 @@ class _SphinxScreenState extends State<SphinxScreen> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Image.asset(
-            'style_sphinx/start_background.png',
+          child: Image(
+            image: SphinxScreen.background,
             fit: BoxFit.cover,
           ),
         ),
         Positioned.fill(
-          top: 75,
-          child: Image.asset(
-            'style_sphinx/pyramid.png',
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 75),
+            child: Image(
+              image: SphinxScreen.pyramid,
+              fit: BoxFit.fitHeight,
+            ),
           ),
         ),
         Positioned.fill(
@@ -98,49 +102,31 @@ class _SphinxScreenState extends State<SphinxScreen> {
     //
     // The QuestionArguments are configured up front and then passed from one
     // question screen to the next in order to drive the game forward.
-    final state = SphinxGameStateProvider.of(context);
-
-    state.questionRoutes = widget.fullGame
-        ? [
-            ColumnQuestion.routeName,
-            RowQuestion.routeName,
-            StackQuestion.routeName,
-            // Todo: Add real Qs here.
-            ColumnQuestion.routeName,
-            RowQuestion.routeName,
-            StackQuestion.routeName,
-            ColumnQuestion.routeName,
-            RowQuestion.routeName,
-            StackQuestion.routeName,
-          ]
-        : [
-            ColumnQuestion.routeName,
-            RowQuestion.routeName,
-            StackQuestion.routeName,
-          ];
+    final arguments = QuestionArguments(
+      questionRoutes: widget.fullGame
+          ? [
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+              // Todo: Add real Qs here.
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+            ]
+          : [
+              ColumnQuestion.routeName,
+              RowQuestion.routeName,
+              StackQuestion.routeName,
+            ],
+    );
 
     Navigator.pushNamed<void>(
       context,
-      state.routeName,
+      arguments.routeName,
+      arguments: arguments,
     );
   }
-}
-
-// A convenience function that will navigate to the Style Sphinx minigame and
-// set the "originalRoute" -- the name of the route the game will navigate
-// back to after completing the challenge.
-Future<void> navigateToSphinxMiniGame(BuildContext context) =>
-    _navigateToSphinxScreen(context, SphinxScreen.miniGameRouteName);
-
-// A convenience function that will navigate to the complete Style Sphinx game
-// and set the "originalRoute" -- the name of the route the game will navigate
-// back to after completing the challenge.
-Future<void> navigateToSphinxFullGame(BuildContext context) =>
-    _navigateToSphinxScreen(context, SphinxScreen.fullGameRouteName);
-
-Future<void> _navigateToSphinxScreen(BuildContext context, String route) {
-  return Navigator.pushNamed(
-    context,
-    route,
-  );
 }
