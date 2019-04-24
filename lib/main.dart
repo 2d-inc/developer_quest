@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
+import 'package:dev_rpg/src/style_sphinx/kittens.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:dev_rpg/src/welcome_screen.dart';
 import 'package:flare_flutter/flare_cache.dart';
@@ -51,6 +55,26 @@ class _MyAppState extends State<MyApp> {
             StackQuestion.routeName: (context) => const StackQuestion(),
           },
         ));
+  }
+
+  @override
+  void initState() {
+    // Schedule a microtask that warms up the image cache with all of the style
+    // sphinx images. This will run after the build method is executed, but
+    // before the style sphinx is displayed.
+    scheduleMicrotask(() {
+      precacheImage(SphinxScreen.pyramid, context);
+      precacheImage(SphinxScreen.background, context);
+      precacheImage(SphinxImage.provider, context);
+      precacheImage(SphinxWithoutGlassesImage.provider, context);
+      precacheImage(SphinxGlassesImage.provider, context);
+      precacheImage(KittyBed.redProvider, context);
+      precacheImage(KittyBed.greenProvider, context);
+      precacheImage(Kitty.orangeProvider, context);
+      precacheImage(Kitty.yellowProvider, context);
+    });
+
+    super.initState();
   }
 
   @override

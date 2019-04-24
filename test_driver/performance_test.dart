@@ -70,8 +70,8 @@ Future<Timeline> _run(FlutterDriver driver) async {
   await driver.startTracing();
 
   await _completeTask(driver, 'Prototype');
+  await _completeTask(driver, 'Basic UI');
   await _completeTask(driver, 'Basic Backend');
-  await _completeTask(driver, 'Programmer Art UI');
   await _completeTask(driver, 'Alpha release');
 
   return driver.stopTracingAndDownloadTimeline();
