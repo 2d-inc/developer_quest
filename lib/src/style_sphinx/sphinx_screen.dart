@@ -1,3 +1,4 @@
+import 'package:dev_rpg/src/style_sphinx/axis_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
@@ -98,24 +99,39 @@ class _SphinxScreenState extends State<SphinxScreen> {
   }
 
   void _startGame(BuildContext context) {
+    print(MediaQuery.of(context).size.width);
     // When the user presses the buttons, navigate to the first question by
     // creating the original QuestionArguments.
     //
     // The QuestionArguments are configured up front and then passed from one
     // question screen to the next in order to drive the game forward.
     final arguments = QuestionArguments(
-      questionRoutes: widget.fullGame
+      questionRoutes: widget.fullGame && MediaQuery.of(context).size.width > 600
           ? [
               ColumnQuestion.routeName,
               RowQuestion.routeName,
               StackQuestion.routeName,
-              // Todo: Add real Qs here.
-              ColumnQuestion.routeName,
-              RowQuestion.routeName,
-              StackQuestion.routeName,
-              ColumnQuestion.routeName,
-              RowQuestion.routeName,
-              StackQuestion.routeName,
+
+              // First two mainAxisQuestions should help the user gain a mental
+              // model of how the mainAxis works.
+              MainAxisStartQuestion.routeName,
+              MainAxisEndQuestion.routeName,
+
+              // Shuffle the remaining main axis questions so they do not appear
+              // in a predictable order
+              ...[
+                MainAxisCenterQuestion.routeName,
+                MainAxisSpaceAroundQuestion.routeName,
+                MainAxisSpaceBetweenQuestion.routeName,
+                MainAxisSpaceEvenlyQuestion.routeName,
+              ]..shuffle(),
+
+              // Do not shuffle the row main axis questions in hopes of
+              // providing a clear difference between the main axis of a
+              // row and column.
+              RowMainAxisStartQuestion.routeName,
+              RowMainAxisEndQuestion.routeName,
+              RowMainAxisSpaceBetween.routeName,
             ]
           : [
               ColumnQuestion.routeName,

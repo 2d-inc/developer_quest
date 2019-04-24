@@ -104,7 +104,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       _swapHeroTimer?.cancel();
                       await Navigator.pushNamed(
                         context,
-                        SphinxScreen.miniGameRouteName,
+                        SphinxScreen.fullGameRouteName,
                       );
                       // Back to cycling.
                       chooseHero();
