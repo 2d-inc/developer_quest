@@ -26,7 +26,7 @@ void warmupFlare() {
   ];
   warmup.forEach(
     (filename) => cachedActor(rootBundle, filename).then((_) {
-		// Intentionally empty, Flare file is now in cache.
-	}),
+          // Intentionally empty, Flare file is now in cache.
+        }),
   );
 }
