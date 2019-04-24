@@ -1,5 +1,4 @@
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
-import 'package:dev_rpg/src/game_screen/stats_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
@@ -85,10 +84,6 @@ class GameScreenState extends State<GameScreen> {
             icon: Icon(Icons.work),
             title: Text('Tasks'),
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
-            title: Text('Stats'),
-          ),
         ],
       ),
       body: PageView(
@@ -96,7 +91,6 @@ class GameScreenState extends State<GameScreen> {
         children: [
           CharacterPoolPage(),
           TaskPoolPage(),
-          StatsPage(),
         ],
       ),
     );
