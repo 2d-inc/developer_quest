@@ -34,6 +34,13 @@ class GameScreenState extends State<GameScreen> {
     });
   }
 
+  void _showPageIndex(int index) {
+    setState(() {
+      _index = index;
+    });
+    _controller.jumpToPage(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,91 +66,26 @@ class GameScreenState extends State<GameScreen> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: contentColor,
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        currentIndex: _index,
-        onTap: (index) => setState(() {
-              _index = index;
-              _controller.jumpToPage(index);
-            }),
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: Colors.white,
-            icon: Consumer<CharacterPool>(
-              builder: (context, characterPool) => Stack(
-                    overflow: Overflow.visible,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: SizedBox(
-                          width: 25,
-                          height: 29,
-                          child: FlareActor("assets/flare/TeamIcon.flr",
-                              alignment: Alignment.bottomCenter,
-                              shouldClip: false,
-                              fit: BoxFit.contain,
-                              animation: _index == 0 ? "active" : "inactive"),
-                        ),
-                      ),
-                      Positioned(
-                        top: -20.0,
-                        right: -15.0,
-                        child: characterPool.isUpgradeAvailable
-                            ? const SizedBox(
-                                width: 31,
-                                height: 31,
-                                child: FlareActor(
-                                    "assets/flare/NotificationIcon.flr",
-                                    alignment: Alignment.bottomCenter,
-                                    shouldClip: false,
-                                    fit: BoxFit.contain,
-                                    animation: "appear"),
-                              )
-                            : Container(),
-                      )
-                    ],
-                  ),
-            ),
-            title: Padding(
-              padding: const EdgeInsets.only(top: 5.0),
-              child: Text(
-                'Team',
-                style: buttonTextStyle.apply(
-                  fontSizeDelta: -2,
-                  color: _index == 0
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.35),
+      bottomNavigationBar: Row(
+        children: [
+          Consumer<CharacterPool>(
+            builder: (context, characterPool) => _BottomNavigationButton(
+                  "assets/flare/TeamIcon.flr",
+                  label: "Team",
+                  tap: () => _showPageIndex(0),
+                  isSelected: _index == 0,
+                  hasNotification: characterPool.isUpgradeAvailable,
+                  iconSize: const Size(25, 29),
+                  padding: const EdgeInsets.only(top: 10),
                 ),
-              ),
-            ),
           ),
-          BottomNavigationBarItem(
-            icon: Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: SizedBox(
-                width: 24,
-                height: 25,
-                child: FlareActor("assets/flare/TasksIcon.flr",
-                    alignment: Alignment.bottomCenter,
-                    shouldClip: false,
-                    fit: BoxFit.contain,
-                    animation: _index == 1 ? "active" : "inactive"),
-              ),
-            ),
-            title: Padding(
-              padding: const EdgeInsets.only(top: 5.0),
-              child: Text(
-                'Tasks',
-                style: buttonTextStyle.apply(
-                  fontSizeDelta: -2,
-                  color: _index == 1
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.35),
-                ),
-              ),
-            ),
+          _BottomNavigationButton(
+            "assets/flare/TasksIcon.flr",
+            label: "Tasks",
+            tap: () => _showPageIndex(1),
+            isSelected: _index == 1,
+            iconSize: const Size(24, 25),
+            padding: const EdgeInsets.only(top: 15),
           ),
         ],
       ),
@@ -154,6 +96,110 @@ class GameScreenState extends State<GameScreen> {
           TaskPoolPage(),
           StatsPage(),
         ],
+      ),
+    );
+  }
+}
+
+/// A custom bottom navigation button with the ability to paint a
+/// custom background color, play a selection animation, and show
+/// a notification icon.
+class _BottomNavigationButton extends StatefulWidget {
+  final bool hasNotification;
+  final String flare;
+  final Size iconSize;
+  final bool isSelected;
+  final EdgeInsets padding;
+  final VoidCallback tap;
+  final String label;
+
+  const _BottomNavigationButton(this.flare,
+      {this.isSelected = false,
+      this.hasNotification = false,
+      this.padding = const EdgeInsets.only(top: 15),
+      this.iconSize = const Size(25, 29),
+      this.tap,
+      this.label});
+
+  @override
+  __BottomNavigationButtonState createState() =>
+      __BottomNavigationButtonState();
+}
+
+class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
+  bool _isFirstShow = true;
+  @override
+  void didUpdateWidget(_BottomNavigationButton oldWidget) {
+    setState(() {
+      _isFirstShow = false;
+    });
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Material(
+        type: MaterialType.canvas,
+        color: widget.isSelected
+            ? const Color.fromRGBO(48, 48, 59, 1.0)
+            : contentColor,
+        child: InkWell(
+          onTap: widget.tap,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                overflow: Overflow.visible,
+                children: [
+                  Padding(
+                    padding: widget.padding,
+                    child: SizedBox(
+                      width: widget.iconSize.width,
+                      height: widget.iconSize.height,
+                      child: FlareActor(widget.flare,
+                          alignment: Alignment.center,
+                          shouldClip: false,
+                          fit: BoxFit.contain,
+                          snapToEnd: _isFirstShow,
+                          animation: widget.isSelected ? "active" : "inactive"),
+                    ),
+                  ),
+                  Positioned(
+                    top: -20.0,
+                    right: -15.0,
+                    child: widget.hasNotification
+                        ? const SizedBox(
+                            width: 31,
+                            height: 31,
+                            child: FlareActor(
+                                "assets/flare/NotificationIcon.flr",
+                                alignment: Alignment.center,
+                                shouldClip: false,
+                                fit: BoxFit.contain,
+                                animation: "appear"),
+                          )
+                        : Container(),
+                  )
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 5.0,
+                    bottom: MediaQuery.of(context).padding.bottom + 10),
+                child: Text(
+                  widget.label,
+                  style: buttonTextStyle.apply(
+                    fontSizeDelta: -2,
+                    color: widget.isSelected
+                        ? Colors.white
+                        : Colors.white.withOpacity(0.35),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
