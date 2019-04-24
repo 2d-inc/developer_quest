@@ -28,24 +28,22 @@ final _startGameFinder = find.byValueKey('start_game');
 final _teamPickOkButtonFinder = find.byValueKey('team_pick_ok');
 
 Future _completeTask(FlutterDriver driver, String taskName) async {
-  await driver.waitFor(_addTaskButtonFinder);
   await driver.tap(_addTaskButtonFinder);
 
   var taskBlueprint = find.text(taskName);
-  await driver.waitFor(taskBlueprint);
   await driver.tap(taskBlueprint);
 
   var task = find.byType('TaskListItem');
   await driver.waitFor(task);
   await driver.tap(find.text(taskName));
 
-  var refactorer = find.text('refactorer');
-  await driver.waitFor(refactorer);
-  await driver.tap(refactorer);
+  var jack = find.byValueKey('jack');
+  await driver.runUnsynchronized(() => driver.tap(jack));
 
-  var tpm = find.text('tpm');
-  await driver.tap(tpm);
-  await driver.tap(_teamPickOkButtonFinder);
+  var sourcerer = find.byValueKey('sourcerer');
+  await driver.runUnsynchronized(() => driver.tap(sourcerer));
+
+  await driver.runUnsynchronized(() => driver.tap(_teamPickOkButtonFinder));
 
   var shipIt = find.text('LAUNCH!');
   // Need to run these next operations unsynchronized as the working/idle
@@ -72,8 +70,8 @@ Future<Timeline> _run(FlutterDriver driver) async {
   await driver.startTracing();
 
   await _completeTask(driver, 'Prototype');
+  await _completeTask(driver, 'Basic UI');
   await _completeTask(driver, 'Basic Backend');
-  await _completeTask(driver, 'Programmer Art UI');
   await _completeTask(driver, 'Alpha release');
 
   return driver.stopTracingAndDownloadTimeline();

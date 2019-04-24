@@ -9,6 +9,10 @@ import 'package:flutter/widgets.dart';
 class SphinxScreen extends StatefulWidget {
   static const String miniGameRouteName = '/sphinx';
   static const String fullGameRouteName = '/sphinx/complete';
+  static const ImageProvider background =
+      AssetImage('assets/style_sphinx/start_background.png');
+  static const ImageProvider pyramid =
+      AssetImage('assets/style_sphinx/pyramid.png');
 
   const SphinxScreen({Key key, this.fullGame = false}) : super(key: key);
 
@@ -24,17 +28,17 @@ class _SphinxScreenState extends State<SphinxScreen> {
     return Stack(
       children: <Widget>[
         Positioned.fill(
-          child: Image.asset(
-            'assets/style_sphinx/start_background.png',
+          child: Image(
+            image: SphinxScreen.background,
             fit: BoxFit.cover,
           ),
         ),
         Positioned.fill(
           child: Padding(
             padding: const EdgeInsets.only(top: 75),
-            child: Image.asset(
-              'assets/style_sphinx/pyramid.png',
-              fit: BoxFit.cover,
+            child: Image(
+              image: SphinxScreen.pyramid,
+              fit: BoxFit.fitHeight,
             ),
           ),
         ),
@@ -100,7 +104,6 @@ class _SphinxScreenState extends State<SphinxScreen> {
     // The QuestionArguments are configured up front and then passed from one
     // question screen to the next in order to drive the game forward.
     final arguments = QuestionArguments(
-      originalRoute: '${ModalRoute.of(context).settings.arguments}',
       questionRoutes: widget.fullGame
           ? [
               ColumnQuestion.routeName,
@@ -127,24 +130,4 @@ class _SphinxScreenState extends State<SphinxScreen> {
       arguments: arguments,
     );
   }
-}
-
-// A convenience function that will navigate to the Style Sphinx minigame and
-// set the "originalRoute" -- the name of the route the game will navigate
-// back to after completing the challenge.
-Future<void> navigateToSphinxMiniGame(BuildContext context) =>
-    _navigateToSphinxScreen(context, SphinxScreen.miniGameRouteName);
-
-// A convenience function that will navigate to the complete Style Sphinx game
-// and set the "originalRoute" -- the name of the route the game will navigate
-// back to after completing the challenge.
-Future<void> navigateToSphinxFullGame(BuildContext context) =>
-    _navigateToSphinxScreen(context, SphinxScreen.fullGameRouteName);
-
-Future<void> _navigateToSphinxScreen(BuildContext context, String route) {
-  return Navigator.pushNamed(
-    context,
-    route,
-    arguments: ModalRoute.of(context).settings.name,
-  );
 }
