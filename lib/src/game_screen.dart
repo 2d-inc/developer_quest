@@ -3,10 +3,12 @@ import 'package:dev_rpg/src/game_screen/stats_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/stat_separator.dart';
 import 'package:dev_rpg/src/widgets/app_bar/users_badge.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -58,6 +60,9 @@ class GameScreenState extends State<GameScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+		  backgroundColor: contentColor,
+		  //unselectedItemColor: contentColor,
+		  //selectedItemColor: const Color.fromRGBO(48, 48, 59, 1.0),
         currentIndex: _index,
         onTap: (index) => setState(() {
               _index = index;
@@ -85,8 +90,12 @@ class GameScreenState extends State<GameScreen> {
             icon: Icon(Icons.work),
             title: Text('Tasks'),
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.timeline),
+          BottomNavigationBarItem(
+            icon: FlareActor("assets/flare/TasksIcon.flr",
+                alignment: Alignment.bottomCenter,
+                shouldClip: false,
+                fit: BoxFit.contain,
+                animation: _index == 2 ? "active" : "inactive"),
             title: Text('Stats'),
           ),
         ],
