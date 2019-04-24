@@ -59,7 +59,7 @@ class CharacterStyle {
             "users interact with the app."),
     "cowboy": CharacterStyle(
         name: "The Cowboy Coder",
-        flare: "assets/flare/TheRefactorer.flr",
+        flare: "assets/flare/CowboyCoder.flr",
         accent: const Color.fromRGBO(75, 58, 185, 1.0),
         description:
             "An extremely prolific coder who doesn't like structure. He can "

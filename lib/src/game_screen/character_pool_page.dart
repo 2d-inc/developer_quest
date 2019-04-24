@@ -133,8 +133,8 @@ class CharacterDisplay extends StatelessWidget {
               child: HiringBust(
                 particleColor: attentionColor,
                 filename: characterStyle.flare,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
                 hiringState: bustState,
                 isPlaying: _isAnimating,
               ),
