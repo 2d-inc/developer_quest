@@ -60,9 +60,9 @@ class GameScreenState extends State<GameScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-		  backgroundColor: contentColor,
-		  //unselectedItemColor: contentColor,
-		  //selectedItemColor: const Color.fromRGBO(48, 48, 59, 1.0),
+        backgroundColor: contentColor,
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
         currentIndex: _index,
         onTap: (index) => setState(() {
               _index = index;
@@ -70,33 +70,80 @@ class GameScreenState extends State<GameScreen> {
             }),
         items: [
           BottomNavigationBarItem(
+            backgroundColor: Colors.white,
             icon: Consumer<CharacterPool>(
-                builder: (context, characterPool) =>
-                    characterPool.isUpgradeAvailable
-                        ? Stack(children: const [
-                            Icon(Icons.person),
-                            Positioned(
-                              // draw a red marble
-                              top: 0.0,
-                              right: 0.0,
-                              child: Icon(Icons.error,
-                                  size: 14.0, color: Colors.redAccent),
-                            )
-                          ])
-                        : const Icon(Icons.person)),
-            title: const Text('Team'),
-          ),
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.work),
-            title: Text('Tasks'),
+              builder: (context, characterPool) => Stack(
+                    overflow: Overflow.visible,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: SizedBox(
+                          width: 25,
+                          height: 29,
+                          child: FlareActor("assets/flare/TeamIcon.flr",
+                              alignment: Alignment.bottomCenter,
+                              shouldClip: false,
+                              fit: BoxFit.contain,
+                              animation: _index == 0 ? "active" : "inactive"),
+                        ),
+                      ),
+                      Positioned(
+                        top: -20.0,
+                        right: -15.0,
+                        child: characterPool.isUpgradeAvailable
+                            ? const SizedBox(
+                                width: 31,
+                                height: 31,
+                                child: FlareActor(
+                                    "assets/flare/NotificationIcon.flr",
+                                    alignment: Alignment.bottomCenter,
+                                    shouldClip: false,
+                                    fit: BoxFit.contain,
+                                    animation: "appear"),
+                              )
+                            : Container(),
+                      )
+                    ],
+                  ),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Text(
+                'Team',
+                style: buttonTextStyle.apply(
+                  fontSizeDelta: -2,
+                  color: _index == 0
+                      ? Colors.white
+                      : Colors.white.withOpacity(0.35),
+                ),
+              ),
+            ),
           ),
           BottomNavigationBarItem(
-            icon: FlareActor("assets/flare/TasksIcon.flr",
-                alignment: Alignment.bottomCenter,
-                shouldClip: false,
-                fit: BoxFit.contain,
-                animation: _index == 2 ? "active" : "inactive"),
-            title: Text('Stats'),
+            icon: Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: SizedBox(
+                width: 24,
+                height: 25,
+                child: FlareActor("assets/flare/TasksIcon.flr",
+                    alignment: Alignment.bottomCenter,
+                    shouldClip: false,
+                    fit: BoxFit.contain,
+                    animation: _index == 1 ? "active" : "inactive"),
+              ),
+            ),
+            title: Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Text(
+                'Tasks',
+                style: buttonTextStyle.apply(
+                  fontSizeDelta: -2,
+                  color: _index == 1
+                      ? Colors.white
+                      : Colors.white.withOpacity(0.35),
+                ),
+              ),
+            ),
           ),
         ],
       ),
