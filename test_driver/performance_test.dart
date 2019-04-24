@@ -28,24 +28,20 @@ final _startGameFinder = find.byValueKey('start_game');
 final _teamPickOkButtonFinder = find.byValueKey('team_pick_ok');
 
 Future _completeTask(FlutterDriver driver, String taskName) async {
-  await driver.waitFor(_addTaskButtonFinder);
   await driver.tap(_addTaskButtonFinder);
 
   var taskBlueprint = find.text(taskName);
-  await driver.waitFor(taskBlueprint);
   await driver.tap(taskBlueprint);
 
   var task = find.byType('TaskListItem');
   await driver.waitFor(task);
   await driver.tap(find.text(taskName));
 
-  var refactorer = find.byValueKey('refactorer');
-  await driver.runUnsynchronized(() => driver.waitFor(refactorer));
-  await driver.runUnsynchronized(() => driver.tap(refactorer));
+  var jack = find.byValueKey('jack');
+  await driver.runUnsynchronized(() => driver.tap(jack));
 
-  var tpm = find.byValueKey('tpm');
-  await driver.runUnsynchronized(() => driver.waitFor(tpm));
-  await driver.runUnsynchronized(() => driver.tap(tpm));
+  var sourcerer = find.byValueKey('sourcerer');
+  await driver.runUnsynchronized(() => driver.tap(sourcerer));
 
   await driver.runUnsynchronized(() => driver.tap(_teamPickOkButtonFinder));
 
