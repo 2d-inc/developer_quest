@@ -9,7 +9,7 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
 class Character extends Aspect with ChildAspect {
-  static const int maxSkillProwess = 10;
+  static const int maxSkillProwess = 5;
 
   final String id;
 
