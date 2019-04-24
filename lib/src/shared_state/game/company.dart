@@ -11,7 +11,7 @@ class Company extends Aspect {
 
   final StatValue<double> users = StatValue<double>(0);
 
-  final StatValue<int> coin = StatValue<int>(100);
+  final StatValue<int> coin = StatValue<int>(540);
 
   void award(int newUsers, int coinReward) {
     users.number += newUsers;

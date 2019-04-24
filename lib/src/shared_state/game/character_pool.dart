@@ -8,10 +8,11 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 class CharacterPool extends AspectContainer<Character> with ChildAspect {
   CharacterPool() {
     addAspects([
-      Character(
-          "jack", {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1}, true),
+      Character("jack", {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1},
+          customHiringCost: 220, costMultiplier: 2),
       Character("sourcerer",
-          {Skill.coding: 1, Skill.coordination: 1, Skill.engineering: 1}, true),
+          {Skill.coding: 1, Skill.coordination: 1, Skill.engineering: 1},
+          customHiringCost: 220, costMultiplier: 2),
       Character("refactorer", {Skill.coding: 1, Skill.engineering: 3}),
       Character("architect", {Skill.coding: 1, Skill.engineering: 4}),
       Character("hacker", {Skill.coding: 3, Skill.engineering: 1}),
