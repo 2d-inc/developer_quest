@@ -11,7 +11,8 @@ version: 1.0.0+1
 
 environment:
   # For Google I/O we are being very specific about pinning to specific branch revision.
-  # This is flutter commit hash b593f5167bce84fb3cad5c258477bf3abc1b14eb.
+  # This is flutter commit hash b593f5167bce84fb3cad5c258477bf3abc1b14eb, tagged
+  # as Flutter version 1.5.4.
   #sdk: ">=2.3.0-dev.0.1 <3.0.0"
   sdk: "2.3.0-dev.0.1.flutter-cf4444b803"
 
