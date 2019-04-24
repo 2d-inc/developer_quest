@@ -38,7 +38,8 @@ class WorkListItem extends StatelessWidget {
               spreadRadius: 0.0),
         ],
         borderRadius: const BorderRadius.all(Radius.circular(9.0)),
-        color: Colors.black,
+        // **Step 1 in emshack/efortuna live-coding: Change from black to white.
+        color: Colors.white,
       );
 
   Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
@@ -68,10 +69,37 @@ class WorkListItem extends StatelessWidget {
           type: MaterialType.transparency,
           borderRadius: const BorderRadius.all(Radius.circular(9.0)),
           clipBehavior: Clip.antiAlias,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Text(
-              workItem.name,
+          // **Step 5 in emshack/efortuna live-coding: Add InkWell and onTap.
+          // Also talk about _handleTap above, but have it pre-written.
+          child: InkWell(
+            onTap: () => _handleTap(context, workItem),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              // **Step 3 in emshack/efortuna live-coding: Add this Column,
+              // plus the heading and SizedBox children.
+              child: Column(
+                // **Step 4 in emshack/efortuna live-coding: Add
+                // crossAxisAlignment.
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  heading,
+                  const SizedBox(height: 12),
+                  Text(
+                    workItem.name,
+                    // **Step 2 in emshack/efortuna live-coding: Add style.
+                    style: isExpanded
+                        ? contentStyle
+                        : contentStyle.apply(color: disabledColor),
+                  ),
+                  // **Step 6 in emshack/efortuna live-coding: Add this child
+                  // for a final wow moment.
+                  TeamProgressIndicator(
+                    workItem: workItem,
+                    isExpanded: isExpanded,
+                    progressColor: progressColor,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
