@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ColumnQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/column';
+  static const String routeName = '/sphinx/vertical_positioning';
 
   const ColumnQuestion({Key key}) : super(key: key);
 
@@ -24,7 +24,7 @@ class ColumnQuestion extends StatelessWidget {
 }
 
 class RowQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/row';
+  static const String routeName = '/sphinx/horizontal_positioning';
 
   const RowQuestion({Key key}) : super(key: key);
 
@@ -41,7 +41,7 @@ class RowQuestion extends StatelessWidget {
 }
 
 class StackQuestion extends StatelessWidget {
-  static const String routeName = '/sphinx/stack';
+  static const String routeName = '/sphinx/layer_widgets';
 
   const StackQuestion({Key key}) : super(key: key);
 
