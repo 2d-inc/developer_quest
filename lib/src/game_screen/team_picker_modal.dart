@@ -43,12 +43,12 @@ class TeamPickerModalState extends State<TeamPickerModal> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             Padding(
               padding: horizontalPadding,
               child: Text(widget.workItem.name, style: contentLargeStyle),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 15),
             Padding(
               padding: horizontalPadding,
               child: Text("SKILLS REQUIRED:",
@@ -152,7 +152,7 @@ class TeamPickerItem extends StatelessWidget {
           padding: const EdgeInsets.only(right: 10.0),
           child: AnimatedContainer(
             duration: animationDuration,
-            width: 103,
+            width: 130,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
@@ -162,7 +162,7 @@ class TeamPickerItem extends StatelessWidget {
                     offset: const Offset(0.0, 10.0),
                     blurRadius: isSelected ? 30.0 : 10.0),
               ],
-              borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
               color: isSelected
                   ? const Color.fromRGBO(84, 114, 239, 1.0)
                   : const Color.fromRGBO(69, 69, 82, 1.0),
@@ -201,8 +201,8 @@ class TeamPickerItem extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.15),
                               borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(20.0),
-                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(10.0),
+                                bottomRight: Radius.circular(10.0),
                               ),
                             ),
                           )
