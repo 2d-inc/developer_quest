@@ -27,12 +27,11 @@ const _programmerArtUI = TaskBlueprint(
   mutuallyExclusive: ["Basic UI"],
 );
 
-const _alpha = TaskBlueprint(
-  "Alpha release",
-  {Skill.coordination: 100, Skill.coding: 100},
-  requirements: AllOf([
-    AnyOf([_programmerArtUI, _basicUI]),
-    _basicBackend,
-  ]),
-  priority: 100,
-);
+const _alpha =
+    TaskBlueprint("Alpha release", {Skill.coordination: 100, Skill.coding: 100},
+        requirements: AllOf([
+          AnyOf([_programmerArtUI, _basicUI]),
+          _basicBackend,
+        ]),
+        priority: 100,
+        miniGame: MiniGame.chomp);
