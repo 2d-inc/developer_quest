@@ -9,6 +9,8 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
 class Character extends Aspect with ChildAspect {
+  static const int maxSkillProwess = 10;
+
   final String id;
 
   final Map<Skill, int> prowess;
@@ -31,6 +33,9 @@ class Character extends Aspect with ChildAspect {
     markDirty();
   }
 
+  double getProwessProgress(Skill skill) =>
+      (prowess[skill] ?? 0.0) / maxSkillProwess;
+
   bool contributes(List<Skill> skills) {
     for (final Skill skill in skills) {
       if (prowess.containsKey(skill)) {
@@ -49,6 +54,13 @@ class Character extends Aspect with ChildAspect {
 
   bool get canUpgrade {
     Company company = get<World>().company;
+    // Make sure there's some skill that's below max (meaning we can bump
+    // it up).
+    if (prowess.values.firstWhere((value) => value < maxSkillProwess,
+            orElse: () => maxSkillProwess) ==
+        maxSkillProwess) {
+      return false;
+    }
     return company.coin.number >= upgradeCost;
   }
 

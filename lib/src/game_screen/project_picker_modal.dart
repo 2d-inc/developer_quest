@@ -4,28 +4,26 @@ import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/task_tree/tree_hierarchy.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/task_picker/task_picker_header.dart';
-import 'package:dev_rpg/src/widgets/task_picker/task_picker_task.dart';
+import 'package:dev_rpg/src/widgets/task_picker/task_picker_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// A pruned representation of the TaskNode. We use this to build up a tree of
 /// tasks that makes sense given the current state of availability.
 class _PrunedTaskNode implements TreeData {
-  final TaskDisplayState display;
-  final TaskBlueprint blueprint;
   @override
   List<_PrunedTaskNode> children;
+  final TaskDisplay display;
+  final TaskBlueprint blueprint;
 
   _PrunedTaskNode({this.blueprint, this.display});
 
   /// Find the deepest level of the tree that has an available item in it.
   /// Add it to the available list.
   void findTopLevelAvailable(List<_PrunedTaskNode> available) {
-    bool hasVisible = display == TaskDisplayState.available ||
-        children.indexWhere(
-                (child) => child.display == TaskDisplayState.available) !=
-            -1;
-    if (hasVisible) {
+    var hasAvailableChild =
+        children.any((child) => child.display == TaskDisplay.available);
+    if (hasAvailableChild || display == TaskDisplay.available) {
       available.add(this);
     } else {
       for (final child in children) {
@@ -39,8 +37,8 @@ class _PrunedTaskNode implements TreeData {
   bool pruneDeadBranches([_PrunedTaskNode parent]) {
     children.removeWhere((child) => child.pruneDeadBranches(this));
     return children.isEmpty &&
-        display != TaskDisplayState.available &&
-        (parent == null || parent.display != TaskDisplayState.available);
+        display != TaskDisplay.available &&
+        (parent == null || parent.display != TaskDisplay.available);
   }
 }
 
@@ -50,16 +48,16 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
     List<TaskBlueprint> available, List<TaskBlueprint> completed,
     [_PrunedTaskNode parent]) {
   // First build up the full tree with correct display state.
-  List<_PrunedTaskNode> prePruned = [];
+  var prePruned = <_PrunedTaskNode>[];
   for (final node in fullTree) {
     var blue = node.blueprint;
     var prunedTaskNode = _PrunedTaskNode(
         blueprint: blue,
         display: available.contains(blue)
-            ? TaskDisplayState.available
+            ? TaskDisplay.available
             : completed.contains(blue)
-                ? TaskDisplayState.complete
-                : TaskDisplayState.locked);
+                ? TaskDisplay.complete
+                : TaskDisplay.locked);
     prunedTaskNode.children =
         _pruneTasks(node.children, available, completed, prunedTaskNode);
     prePruned.add(prunedTaskNode);
@@ -68,12 +66,12 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   // If you want to see the full tree, simply skip this conditional
   if (parent == null) {
     // top level, do the actual pruning.
-    List<_PrunedTaskNode> pruned = [];
+    var pruned = <_PrunedTaskNode>[];
     for (final node in prePruned) {
       node.findTopLevelAvailable(pruned);
     }
     //remove levels that do not have available parents
-    List<_PrunedTaskNode> healthy = [];
+    var healthy = <_PrunedTaskNode>[];
     for (final node in pruned) {
       if (!node.pruneDeadBranches()) {
         healthy.add(node);
@@ -85,11 +83,11 @@ List<_PrunedTaskNode> _pruneTasks(List<TaskNode> fullTree,
   return prePruned;
 }
 
-/// Make a [TaskPickerTask], the widget that gets displayed in the task
+/// Make a [TaskPickerItem], the widget that gets displayed in the task
 /// selector, from the [FlattenedTreeData].
-TaskPickerTask _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
+TaskPickerItem _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
   var node = flatTreeItem.data as _PrunedTaskNode;
-  return TaskPickerTask(
+  return TaskPickerItem(
       blueprint: node.blueprint,
       display: node.display,
       lines: flatTreeItem.lines,
@@ -98,7 +96,7 @@ TaskPickerTask _makeTaskPickerTask(FlattenedTreeData flatTreeItem) {
 }
 
 /// Build the list of slivers to display in each milestone section.
-List<TaskPickerTask> _buildTaskPickerSlivers(List<TaskNode> fullTree,
+List<TaskPickerItem> _buildTaskPickerSlivers(List<TaskNode> fullTree,
     List<TaskBlueprint> available, List<TaskBlueprint> completed) {
   return flattenTree(_pruneTasks(fullTree, available, completed))
       .map(_makeTaskPickerTask)
