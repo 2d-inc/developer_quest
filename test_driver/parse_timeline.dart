@@ -79,7 +79,7 @@ AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
       dartPhaseDuration += ev.duration;
     }
 
-    if (ev.name == 'MessageLoop::RunExpiredTasks') {
+    if (ev.name == 'MessageLoop::FlushTasks') {
       var tid = ev.threadId;
       assert(tid != null);
 

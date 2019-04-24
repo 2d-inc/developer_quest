@@ -27,6 +27,7 @@ final _startGameFinder = find.byValueKey('start_game');
 
 final _teamPickOkButtonFinder = find.byValueKey('team_pick_ok');
 
+/// This is run with [FlutterDriver.runUnsynchronized].
 Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.tap(_addTaskButtonFinder);
 
@@ -38,18 +39,18 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.tap(find.text(taskName));
 
   var jack = find.byValueKey('jack');
-  await driver.runUnsynchronized(() => driver.tap(jack));
+  await driver.tap(jack);
 
   var sourcerer = find.byValueKey('sourcerer');
-  await driver.runUnsynchronized(() => driver.tap(sourcerer));
+  await driver.tap(sourcerer);
 
-  await driver.runUnsynchronized(() => driver.tap(_teamPickOkButtonFinder));
+  await driver.tap(_teamPickOkButtonFinder);
 
   var shipIt = find.text('LAUNCH!');
   // Need to run these next operations unsynchronized as the working/idle
   // animations for the characters are playing.
-  await driver.runUnsynchronized(() => driver.waitFor(shipIt));
-  await driver.runUnsynchronized(() => driver.tap(find.text(taskName)));
+  await driver.waitFor(shipIt);
+  await driver.tap(find.text(taskName));
 }
 
 Future<Timeline> _run(FlutterDriver driver) async {
@@ -60,19 +61,22 @@ Future<Timeline> _run(FlutterDriver driver) async {
 
   // Need to run this unsynchronized as the idle (looping) animation for
   // the home screen is playing.
-  await driver.runUnsynchronized(() => driver.tap(_startGameFinder));
-  await driver.waitForAbsent(_startGameFinder);
-  await driver.tap(find.text("Tasks"));
+  await driver.runUnsynchronized(() async {
+    await driver.tap(_startGameFinder);
+    await driver.tap(find.text("Tasks"));
+  });
 
   // Give the UI time to settle down before starting the trace.
   await Future<void>.delayed(const Duration(seconds: 1));
 
   await driver.startTracing();
 
-  await _completeTask(driver, 'Prototype');
-  await _completeTask(driver, 'Basic Backend');
-  await _completeTask(driver, 'Programmer Art UI');
-  await _completeTask(driver, 'Alpha release');
+  await driver.runUnsynchronized(() async {
+    await _completeTask(driver, 'Prototype');
+    await _completeTask(driver, 'Basic UI');
+    await _completeTask(driver, 'Basic Backend');
+    await _completeTask(driver, 'Alpha release');
+  });
 
   return driver.stopTracingAndDownloadTimeline();
 }
