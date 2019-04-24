@@ -19,28 +19,15 @@ class CharacterModal extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    FocusScope.of(context).requestFocus(_focusNode);
-    return RawKeyboardListener(
-      focusNode: _focusNode,
-      onKey: (RawKeyEvent event) {
-        if (event.runtimeType == RawKeyDownEvent &&
-            (event.logicalKey.keyId == KeyCode.backspace ||
-                event.logicalKey.keyId == KeyCode.escape)) {
-          _focusNode.unfocus();
-          Navigator.pop(context, null);
-        }
-      },
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: 280.0),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              CharacterImage(_controls),
-              CharacterStats(_controls)
-            ]),
-          ),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+            left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minWidth: 280.0),
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [CharacterImage(_controls), CharacterStats(_controls)]),
         ),
       ),
     );

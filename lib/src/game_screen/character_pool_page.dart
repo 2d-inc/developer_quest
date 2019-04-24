@@ -69,44 +69,26 @@ class CharacterPoolPage extends StatelessWidget {
 /// Displays the current state of an individual [Character]
 /// Tapping on the [Character] opens up a modal window which
 /// offers more details about stats and options to upgrade.
-class CharacterListItem extends StatefulWidget {
-  @override
-  _CharacterListItemState createState() => _CharacterListItemState();
-}
-
-class _CharacterListItemState extends State<CharacterListItem> {
-  // True if the *mouse* is hovering over this widget.
-  bool _isOver;
-
-  @override
-  void initState() {
-    super.initState();
-    _isOver = false;
-  }
-
-  void _startPlaying(PointerEnterEvent _) => setState(() => _isOver = true);
-  void _stopPlaying(PointerExitEvent _) => setState(() => _isOver = false);
+class CharacterListItem extends StatelessWidget {
+  void _startPlaying(PointerEnterEvent _) => null;
+  void _stopPlaying(PointerExitEvent _) => null;
 
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerEnter: _startPlaying,
-      onPointerExit: _stopPlaying,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 40.0),
-        child: Stack(
-          children: <Widget>[
-            const CharacterBox(),
-            CharacterDisplay(isAnimating: _isOver),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: Stack(
+        children: <Widget>[
+          const CharacterBox(),
+          CharacterDisplay(),
+        ],
       ),
     );
   }
 }
 
 class CharacterDisplay extends StatelessWidget {
-  const CharacterDisplay({
+  CharacterDisplay({
     bool isAnimating,
   }) : _isAnimating = isAnimating;
 
@@ -133,8 +115,8 @@ class CharacterDisplay extends StatelessWidget {
               child: HiringBust(
                 particleColor: attentionColor,
                 filename: characterStyle.flare,
-                fit: BoxFit.contain,
-                alignment: Alignment.bottomCenter,
+                fit: BoxFit.cover,
+                alignment: Alignment.center,
                 hiringState: bustState,
                 isPlaying: _isAnimating,
               ),
