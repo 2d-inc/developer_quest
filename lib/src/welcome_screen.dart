@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
-import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
@@ -61,9 +60,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 child: StartScreenHero(
                     filename: hero.flare,
                     alignment: Alignment.bottomCenter,
-                    fit: BoxFit.cover,
-                    gradient: contentColor,
-                    horizontalPadding: _horizontalPadding),
+                    fit: BoxFit.contain,
+                    gradient: contentColor),
               ),
               const Text(
                 'FLUTTER\nDEVELOPER QUEST',
