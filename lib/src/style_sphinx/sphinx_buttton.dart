@@ -15,10 +15,8 @@ class SphinxButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(10);
-
     return Material(
       shape: RoundedRectangleBorder(borderRadius: radius),
-      color: _pyramidColor,
       child: InkWell(
         borderRadius: radius,
         splashColor: _pyramidColor,
@@ -26,15 +24,17 @@ class SphinxButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
           child: DefaultTextStyle(
             child: child,
-            style: const TextStyle(
-                fontFamily: 'MontserratRegular',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(85, 34, 34, 1)),
+            style: _buttonTextStyle,
           ),
         ),
         onTap: onPressed,
       ),
     );
   }
+
+  TextStyle get _buttonTextStyle => const TextStyle(
+      fontFamily: 'MontserratRegular',
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Color.fromRGBO(85, 34, 34, 1));
 }
