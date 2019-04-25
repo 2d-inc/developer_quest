@@ -4,6 +4,7 @@ import 'package:dev_rpg/src/about_screen.dart';
 import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
+import 'package:dev_rpg/src/style_sphinx/axis_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/kittens.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
@@ -55,6 +56,24 @@ class _MyAppState extends State<MyApp> {
             ColumnQuestion.routeName: (context) => const ColumnQuestion(),
             RowQuestion.routeName: (context) => const RowQuestion(),
             StackQuestion.routeName: (context) => const StackQuestion(),
+            MainAxisCenterQuestion.routeName: (context) =>
+                const MainAxisCenterQuestion(),
+            MainAxisSpaceAroundQuestion.routeName: (context) =>
+                const MainAxisSpaceAroundQuestion(),
+            MainAxisSpaceBetweenQuestion.routeName: (context) =>
+                const MainAxisSpaceBetweenQuestion(),
+            MainAxisStartQuestion.routeName: (context) =>
+                const MainAxisStartQuestion(),
+            MainAxisEndQuestion.routeName: (context) =>
+                const MainAxisEndQuestion(),
+            MainAxisSpaceEvenlyQuestion.routeName: (context) =>
+                const MainAxisSpaceEvenlyQuestion(),
+            RowMainAxisEndQuestion.routeName: (context) =>
+                const RowMainAxisEndQuestion(),
+            RowMainAxisStartQuestion.routeName: (context) =>
+                const RowMainAxisStartQuestion(),
+            RowMainAxisSpaceBetween.routeName: (context) =>
+                const RowMainAxisSpaceBetween(),
           },
         ));
   }
