@@ -92,7 +92,7 @@ class HiringBustRenderObject extends FlareRenderBox {
   ActorAnimation _idleAnimation;
   double _idleTime = 0.0;
   Color particleColor;
-  bool playIdleAnimation;
+  bool playIdleAnimation = false;
 
   ActorAnimation _bust;
 
@@ -127,6 +127,8 @@ class HiringBustRenderObject extends FlareRenderBox {
 
     _actor?.desaturate = _hiringState == HiringBustState.locked ||
         _hiringState == HiringBustState.available;
+    advance(0.0);
+    markNeedsPaint();
   }
 
   double get shadowWidth => min(size.width, size.height) * 0.85;
