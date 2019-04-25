@@ -29,28 +29,6 @@ class TaskListItem extends StatelessWidget {
 
   Color get progressColor => const Color.fromRGBO(0, 152, 255, 1.0);
 
-  bool _shipTask(Task task) {
-    if (task.state == TaskState.completed) {
-      task.shipFeature();
-      return true;
-    }
-    return false;
-  }
-
-  void _onAssigned(Task task, Set<Character> value) {
-    if (value == null || value.isEmpty) return;
-    if (task.isComplete) return;
-    task.assignTeam(value.toList());
-  }
-
-  Future<Set<Character>> _pickCharacters(
-      BuildContext context, Task task) async {
-    return showModalBottomSheet<Set<Character>>(
-      context: context,
-      builder: (context) => TeamPickerModal(task),
-    );
-  }
-
   Future<void> _handleTap(BuildContext context, Task task) async {
     if (_shipTask(task)) {
       return;
@@ -92,4 +70,25 @@ class TaskListItem extends StatelessWidget {
       ),
     );
   }
+}
+
+bool _shipTask(Task task) {
+  if (task.state == TaskState.completed) {
+    task.shipFeature();
+    return true;
+  }
+  return false;
+}
+
+void _onAssigned(Task task, Set<Character> value) {
+  if (value == null || value.isEmpty) return;
+  if (task.isComplete) return;
+  task.assignTeam(value.toList());
+}
+
+Future<Set<Character>> _pickCharacters(BuildContext context, Task task) async {
+  return showModalBottomSheet<Set<Character>>(
+    context: context,
+    builder: (context) => TeamPickerModal(task),
+  );
 }
