@@ -1,6 +1,6 @@
 part of task_tree;
 
-const _beta = TaskBlueprint("Beta", {Skill.coordination: 100},
+const _beta = TaskBlueprint('Beta', {Skill.coordination: 100},
     requirements: AllOf([
       _alpha,
       // Mascot & icon.

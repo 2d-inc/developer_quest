@@ -21,7 +21,7 @@ class Company extends Aspect {
   /// Since it's inevitable to lose some, we consider losing 5%
   /// exceptional.
   int get starRating =>
-      ((users.number / maxUsers / 0.95).clamp(0.0, 1.0) * 4).round();
+      ((users.number / maxUsers / 0.95).clamp(0, 1) * 4).round();
 
   void award(int newUsers, int coinReward) {
     users.number += newUsers;
@@ -43,10 +43,10 @@ class Company extends Aspect {
 
     // Generous denorm.
     if (joy.number.abs() < 0.01) {
-      joy.number = 0.0;
+      joy.number = 0;
     }
 
-    users.number = max(0.0, users.number + joy.number);
+    users.number = max(0, users.number + joy.number);
     maxUsers = max(maxUsers, users.number);
   }
 

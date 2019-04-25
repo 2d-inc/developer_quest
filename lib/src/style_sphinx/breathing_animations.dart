@@ -86,7 +86,7 @@ class Faded extends StatelessWidget {
 
   const Faded({
     @required this.child,
-    this.begin = 1.0,
+    this.begin = 1,
     this.end = 0.8,
     Key key,
   }) : super(key: key);

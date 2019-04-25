@@ -55,7 +55,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
             const SizedBox(height: 15),
             Padding(
               padding: horizontalPadding,
-              child: Text("SKILLS REQUIRED:",
+              child: Text('SKILLS REQUIRED:',
                   style: buttonTextStyle.apply(
                       fontSizeDelta: -4, color: secondaryContentColor)),
             ),
@@ -98,11 +98,11 @@ class TeamPickerModalState extends State<TeamPickerModal> {
               child: WideButton(
                   buttonKey: const Key('team_pick_ok'),
                   onPressed: () => Navigator.pop(context, _selected),
-                  paddingTweak: const EdgeInsets.only(right: -7.0),
+                  paddingTweak: const EdgeInsets.only(right: -7),
                   background: isButtonDisabled
                       ? contentColor.withOpacity(0.1)
-                      : const Color.fromRGBO(84, 114, 239, 1.0),
-                  child: Text(isUnassigning ? "UNASSIGN TEAM" : "ASSIGN TEAM",
+                      : const Color.fromRGBO(84, 114, 239, 1),
+                  child: Text(isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
                       style: buttonTextStyle.apply(
                         color: isButtonDisabled
                             ? contentColor.withOpacity(0.25)
@@ -151,8 +151,8 @@ class TeamPickerItem extends StatelessWidget {
     var backgroundColor = isDisabled
         ? disabledColor
         : isSelected
-            ? const Color.fromRGBO(84, 114, 239, 1.0)
-            : const Color.fromRGBO(69, 69, 82, 1.0);
+            ? const Color.fromRGBO(84, 114, 239, 1)
+            : const Color.fromRGBO(69, 69, 82, 1);
     return AnimatedPadding(
       padding: isSelected
           ? const EdgeInsets.only(top: 27, bottom: 50)
@@ -164,7 +164,7 @@ class TeamPickerItem extends StatelessWidget {
         onTap: () =>
             isDisabled ? null : toggleSelection(character, !isSelected),
         child: Padding(
-          padding: const EdgeInsets.only(right: 10.0),
+          padding: const EdgeInsets.only(right: 10),
           child: AnimatedContainer(
             duration: animationDuration,
             width: 130,
@@ -174,10 +174,10 @@ class TeamPickerItem extends StatelessWidget {
                     color: isSelected && !isDisabled
                         ? const Color.fromRGBO(26, 50, 155, 0.3)
                         : Colors.black.withOpacity(0.17),
-                    offset: const Offset(0.0, 10.0),
-                    blurRadius: isSelected ? 30.0 : 10.0),
+                    offset: const Offset(0, 10),
+                    blurRadius: isSelected ? 30 : 10),
               ],
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: backgroundColor,
             ),
             child: Column(
@@ -216,8 +216,8 @@ class TeamPickerItem extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.15),
                               borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(10.0),
-                                bottomRight: Radius.circular(10.0),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
                               ),
                             ),
                           )
@@ -241,7 +241,7 @@ class TeamPickerItem extends StatelessWidget {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: ProwessProgress(
-                                      innerPadding: const EdgeInsets.all(1.0),
+                                      innerPadding: const EdgeInsets.all(1),
                                       background:
                                           Colors.black.withOpacity(0.28),
                                       color: skillColor[skill],
@@ -291,14 +291,14 @@ class _SelectArrowState extends State<_SelectArrow> {
   bool _snapToEnd;
   @override
   void initState() {
-    _animation = "off";
+    _animation = 'off';
     _snapToEnd = true;
     super.initState();
   }
 
   @override
   void didUpdateWidget(_SelectArrow oldWidget) {
-    String animation = widget.isSelected ? "on" : "off";
+    String animation = widget.isSelected ? 'on' : 'off';
     if (animation != _animation) {
       setState(() {
         _animation = animation;
@@ -313,7 +313,7 @@ class _SelectArrowState extends State<_SelectArrow> {
     return Container(
       width: 16,
       height: 15,
-      child: FlareActor("assets/flare/SelectArrow.flr",
+      child: FlareActor('assets/flare/SelectArrow.flr',
           alignment: Alignment.topCenter,
           shouldClip: false,
           snapToEnd: _snapToEnd,

@@ -11,19 +11,19 @@ class CharacterPool extends AspectContainer<Character> with ChildAspect {
   }
 
   void initializeCharacters() => setAspects([
-        Character("jack", {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1},
+        Character('jack', {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1},
             customHiringCost: 220, costMultiplier: 2),
-        Character("sourcerer",
+        Character('sourcerer',
             {Skill.coding: 1, Skill.coordination: 1, Skill.engineering: 1},
             customHiringCost: 220, costMultiplier: 2),
-        Character("refactorer", {Skill.coding: 1, Skill.engineering: 3}),
-        Character("architect", {Skill.coding: 1, Skill.engineering: 4}),
-        Character("hacker", {Skill.coding: 3, Skill.engineering: 1}),
-        Character("cowboy", {Skill.coding: 4, Skill.engineering: 1}),
-        Character("pm", {Skill.coordination: 3, Skill.ux: 1}),
-        Character("uxr", {Skill.coordination: 1, Skill.ux: 3}),
-        Character("avant_garde_designer", {Skill.ux: 4}),
-        Character("tester", {Skill.coding: 2, Skill.coordination: 1}),
+        Character('refactorer', {Skill.coding: 1, Skill.engineering: 3}),
+        Character('architect', {Skill.coding: 1, Skill.engineering: 4}),
+        Character('hacker', {Skill.coding: 3, Skill.engineering: 1}),
+        Character('cowboy', {Skill.coding: 4, Skill.engineering: 1}),
+        Character('pm', {Skill.coordination: 3, Skill.ux: 1}),
+        Character('uxr', {Skill.coordination: 1, Skill.ux: 3}),
+        Character('avant_garde_designer', {Skill.ux: 4}),
+        Character('tester', {Skill.coding: 2, Skill.coordination: 1}),
       ]);
 
   /// Get all the characters that have been hired and are part of the

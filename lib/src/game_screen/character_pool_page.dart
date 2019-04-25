@@ -16,8 +16,7 @@ class CharacterPoolPage extends StatelessWidget {
     return Stack(
       children: [
         GridView.builder(
-          padding:
-              const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 128.0),
+          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 128),
           itemCount: characterPool.children.length,
           gridDelegate: _gridStructure,
           itemBuilder: (context, index) =>
@@ -35,15 +34,15 @@ class CharacterPoolPage extends StatelessWidget {
   SliverGridDelegate get _gridStructure =>
       const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          mainAxisSpacing: 0.0,
-          crossAxisSpacing: 15.0,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 15,
           childAspectRatio: 0.65);
 
   Widget get _fadeOverlay {
     return Positioned.fill(
       child: Align(
         alignment: Alignment.bottomCenter,
-        heightFactor: 1.0,
+        heightFactor: 1,
         child: IgnorePointer(
           child: Container(
             height: 128,
@@ -53,10 +52,10 @@ class CharacterPoolPage extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color.fromRGBO(59, 59, 73, 0.0),
-                  Color.fromRGBO(59, 59, 73, 1.0)
+                  Color.fromRGBO(59, 59, 73, 0),
+                  Color.fromRGBO(59, 59, 73, 1)
                 ],
-                stops: [0.0, 1.0],
+                stops: [0, 1],
               ),
             ),
           ),
@@ -93,7 +92,7 @@ class _CharacterListItemState extends State<CharacterListItem> {
       onPointerEnter: _startPlaying,
       onPointerExit: _stopPlaying,
       child: Padding(
-        padding: const EdgeInsets.only(top: 40.0),
+        padding: const EdgeInsets.only(top: 40),
         child: Stack(
           children: <Widget>[
             const CharacterBox(),
@@ -139,9 +138,9 @@ class CharacterDisplay extends StatelessWidget {
                 isPlaying: _isAnimating,
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 20),
             HiringInformation(bustState),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -149,7 +148,7 @@ class CharacterDisplay extends StatelessWidget {
   }
 
   RoundedRectangleBorder get _inkWellBorder =>
-      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0));
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(10));
 
   void _showModal(BuildContext context) {
     var character = Provider.of<Character>(context);
@@ -173,7 +172,7 @@ class HiringInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     return Opacity(
-      opacity: character.isHired || character.canUpgrade ? 1.0 : 0.25,
+      opacity: character.isHired || character.canUpgrade ? 1 : 0.25,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -186,7 +185,7 @@ class HiringInformation extends StatelessWidget {
                   color: !character.isHired && character.canUpgrade
                       ? attentionColor
                       : Colors.white),
-          const SizedBox(width: 4.0),
+          const SizedBox(width: 4),
           Text(
             bustState == HiringBustState.hired
                 ? 'Hired'
@@ -208,12 +207,12 @@ class CharacterBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: const Color.fromRGBO(69, 69, 82, 1.0),
+        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromRGBO(69, 69, 82, 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
-            blurRadius: 10.0,
+            blurRadius: 10,
           ),
         ],
       ),

@@ -10,7 +10,7 @@ class TasksSectionHeader extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(15),
       child: Text(
         title,
         style: buttonTextStyle.apply(
@@ -20,10 +20,10 @@ class TasksSectionHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 45.0;
+  double get maxExtent => 45;
 
   @override
-  double get minExtent => 45.0;
+  double get minExtent => 45;
 
   @override
   bool shouldRebuild(TasksSectionHeader oldDelegate) {
