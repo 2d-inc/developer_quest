@@ -73,7 +73,7 @@ class CharacterImage extends StatelessWidget {
             child: FlareActor(characterStyle.flare,
                 alignment: Alignment.bottomCenter,
                 shouldClip: false,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
                 animation: "idle",
                 controller: _controls),
           ),

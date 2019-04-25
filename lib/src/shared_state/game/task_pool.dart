@@ -55,7 +55,6 @@ class TaskPool extends AspectContainer with ChildAspect {
     // Patch up milestones by adding root task to previous list.
     // N.B. in Guido's designs this is the "LAUNCH" task which
     // triggers a minigame.
-    // TODO: Convert this final task in each milestone into the launch button/minigame.
     alphaTaskNode.children.clear();
     alpha.tasks.add(alphaTaskNode);
 
@@ -166,5 +165,14 @@ class TaskPool extends AspectContainer with ChildAspect {
       if (task.name == name) return false;
     }
     return true;
+  }
+
+  void reset() {
+    _ticksToBugRoll = 0;
+    _bugChance = 0;
+    workItems.clear();
+    completedTasks.clear();
+    archivedTasks.clear();
+    availableBugs.clear();
   }
 }

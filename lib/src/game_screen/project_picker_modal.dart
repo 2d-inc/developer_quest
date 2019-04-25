@@ -144,7 +144,7 @@ class ProjectPickerModal extends StatelessWidget {
       ),
       SliverPersistentHeader(
         pinned: false,
-        delegate: const TaskPickerHeader("Version 1.0", showLine: false),
+        delegate: TaskPickerHeader("Version 1.0", showLine: v1.isNotEmpty),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {

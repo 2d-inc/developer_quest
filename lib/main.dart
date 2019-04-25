@@ -75,7 +75,6 @@ class _MyAppState extends State<MyApp> {
       precacheImage(Kitty.orangeProvider, context);
       precacheImage(Kitty.yellowProvider, context);
     });
-
     super.initState();
   }
 

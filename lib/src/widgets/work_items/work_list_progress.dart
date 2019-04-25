@@ -51,7 +51,6 @@ class _WorkListProgressState extends State<WorkListProgress> {
           onPressed: () => _boostProgress(workItem),
           isDisabled: workItem.isComplete,
         ),
-        const SizedBox(width: 10),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -125,49 +124,53 @@ class _TapButtonState extends State<TapButton> {
       onTapUp: widget.isDisabled ? null : _onTapUp,
       onTap: widget.isDisabled ? null : _onTap,
       onTapCancel: _onTapCancel,
+      behavior: HitTestBehavior.opaque,
       child: SizedOverflowBox(
-        size: const Size.square(42),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Center(
-              child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
-                  width: _isPressed ? 78.0 : 0.0,
-                  height: _isPressed ? 78.0 : 0.0,
+        size: const Size.square(52),
+        child: Transform(
+          transform: Matrix4.translationValues(-5, 0, 0),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Center(
+                child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 100),
+                    width: _isPressed ? 78.0 : 0.0,
+                    height: _isPressed ? 78.0 : 0.0,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: widget.color.withOpacity(0.32))),
+              ),
+              Center(
+                child: Container(
+                  width: 42.0,
+                  height: 42.0,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: widget.color.withOpacity(0.32))),
-            ),
-            Center(
-              child: Container(
-                width: 42.0,
-                height: 42.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: widget.isDisabled
-                      ? disabledTaskColor.withOpacity(0.1)
-                      : widget.color,
-                  boxShadow: widget.isDisabled
-                      ? null
-                      : [
-                          BoxShadow(
-                              color: widget.color.withOpacity(0.25),
-                              offset: const Offset(0.0, 10.0),
-                              blurRadius: 10.0,
-                              spreadRadius: 0.0),
-                        ],
+                    shape: BoxShape.circle,
+                    color: widget.isDisabled
+                        ? disabledTaskColor.withOpacity(0.1)
+                        : widget.color,
+                    boxShadow: widget.isDisabled
+                        ? null
+                        : [
+                            BoxShadow(
+                                color: widget.color.withOpacity(0.25),
+                                offset: const Offset(0.0, 10.0),
+                                blurRadius: 10.0,
+                                spreadRadius: 0.0),
+                          ],
+                  ),
                 ),
               ),
-            ),
-            Center(
-                child: Text("TAP",
-                    style: buttonTextStyle.apply(
-                        fontSizeDelta: -4,
-                        color: widget.isDisabled
-                            ? disabledTaskColor
-                            : Colors.white))),
-          ],
+              Center(
+                  child: Text("TAP",
+                      style: buttonTextStyle.apply(
+                          fontSizeDelta: -4,
+                          color: widget.isDisabled
+                              ? disabledTaskColor
+                              : Colors.white))),
+            ],
+          ),
         ),
       ),
     );
