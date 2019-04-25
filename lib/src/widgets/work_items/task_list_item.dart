@@ -14,9 +14,7 @@ import '../game_over.dart';
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
-	
   bool _handleTap(Task task, BuildContext context) {
-
     if (task.state == TaskState.completed) {
       task.shipFeature();
       switch (task.blueprint.miniGame) {
@@ -33,7 +31,7 @@ class TaskListItem extends StatelessWidget {
             Navigator.of(context)
                 .pushNamed(SphinxScreen.miniGameRouteName)
                 .then((_) {
-					print("ESCAPED IT?");
+              print("ESCAPED IT?");
               // Escaped the Sphinx.
               showDialog<void>(
                   barrierDismissible: false,

@@ -18,7 +18,7 @@ class Company extends Aspect {
 
   /// Star rating out of 5. Based on users lost, which is a consequence of
   /// bugs not resolved in a timely manner.
-  /// Since it's inevitable to lose some, we consider losing 5% 
+  /// Since it's inevitable to lose some, we consider losing 5%
   /// exceptional.
   int get starRating =>
       ((users.number / maxUsers / 0.95).clamp(0.0, 1.0) * 4).round();

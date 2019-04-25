@@ -46,7 +46,7 @@ class WorkListItem extends StatelessWidget {
     if ((handleTap != null && handleTap()) || workItem.isComplete) {
       return;
     }
-	
+
     var characters = await showModalBottomSheet<Set<Character>>(
       context: context,
       builder: (context) => TeamPickerModal(workItem),
