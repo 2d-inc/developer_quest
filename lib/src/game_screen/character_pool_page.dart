@@ -89,7 +89,7 @@ class CharacterListItem extends StatelessWidget {
 
 class CharacterDisplay extends StatelessWidget {
   CharacterDisplay({
-    bool isAnimating,
+    bool isAnimating = false,
   }) : _isAnimating = isAnimating;
 
   final bool _isAnimating;
