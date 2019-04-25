@@ -43,60 +43,75 @@ class GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(59, 59, 73, 1.0),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        titleSpacing: 0.0,
-        title: Consumer<Company>(
-          builder: (context, company) {
-            // Using RepaintBoundary here because this part of the UI changes
-            // frequently.
-            return RepaintBoundary(
-              child: Row(
-                children: [
-                  Expanded(child: UsersBadge(company.users)),
-                  StatSeparator(),
-                  Expanded(child: JoyBadge(company.joy)),
-                  StatSeparator(),
-                  Expanded(child: CoinBadge(company.coin)),
-                ],
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return Scaffold(
+          backgroundColor: const Color.fromRGBO(59, 59, 73, 1.0),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            titleSpacing: 0.0,
+            title: Consumer<Company>(
+              builder: (context, company) {
+                // Using RepaintBoundary here because this part of the UI
+                // changes frequently.
+                return RepaintBoundary(
+                  child: orientation == Orientation.portrait
+                      ? Row(
+                          children: [
+                            Expanded(child: UsersBadge(company.users)),
+                            StatSeparator(),
+                            Expanded(child: JoyBadge(company.joy)),
+                            StatSeparator(),
+                            Expanded(child: CoinBadge(company.coin)),
+                          ],
+                        )
+                      : Row(
+                          children: [
+                            Container(
+                                width: 125, child: UsersBadge(company.users)),
+                            StatSeparator(),
+                            Container(width: 125, child: JoyBadge(company.joy)),
+                            StatSeparator(),
+                            Expanded(child: CoinBadge(company.coin)),
+                          ],
+                        ),
+                );
+              },
+            ),
+          ),
+          bottomNavigationBar: Row(
+            children: [
+              Consumer<CharacterPool>(
+                builder: (context, characterPool) => _BottomNavigationButton(
+                      "assets/flare/TeamIcon.flr",
+                      label: "Team",
+                      tap: () => _showPageIndex(0),
+                      isSelected: _index == 0,
+                      hasNotification: characterPool.isUpgradeAvailable,
+                      iconSize: const Size(25, 29),
+                      padding: const EdgeInsets.only(top: 10),
+                    ),
               ),
-            );
-          },
-        ),
-      ),
-      bottomNavigationBar: Row(
-        children: [
-          Consumer<CharacterPool>(
-            builder: (context, characterPool) => _BottomNavigationButton(
-                  "assets/flare/TeamIcon.flr",
-                  label: "Team",
-                  tap: () => _showPageIndex(0),
-                  isSelected: _index == 0,
-                  hasNotification: characterPool.isUpgradeAvailable,
-                  iconSize: const Size(25, 29),
-                  padding: const EdgeInsets.only(top: 10),
-                ),
+              _BottomNavigationButton(
+                "assets/flare/TasksIcon.flr",
+                label: "Tasks",
+                tap: () => _showPageIndex(1),
+                isSelected: _index == 1,
+                iconSize: const Size(24, 25),
+                padding: const EdgeInsets.only(top: 15),
+              ),
+            ],
           ),
-          _BottomNavigationButton(
-            "assets/flare/TasksIcon.flr",
-            label: "Tasks",
-            tap: () => _showPageIndex(1),
-            isSelected: _index == 1,
-            iconSize: const Size(24, 25),
-            padding: const EdgeInsets.only(top: 15),
+          body: PageView(
+            controller: _controller,
+            children: [
+              CharacterPoolPage(),
+              TaskPoolPage(),
+              StatsPage(),
+            ],
           ),
-        ],
-      ),
-      body: PageView(
-        controller: _controller,
-        children: [
-          CharacterPoolPage(),
-          TaskPoolPage(),
-          StatsPage(),
-        ],
-      ),
+        );
+      },
     );
   }
 }
