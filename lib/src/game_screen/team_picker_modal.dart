@@ -70,8 +70,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
             Expanded(
               child: Consumer<CharacterPool>(
                 builder: (context, characterPool) {
-                  var characters =
-                      characterPool.children.where((c) => c.isHired).toList();
+                  var characters = characterPool.fullTeam;
                   return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       padding: horizontalPadding,
