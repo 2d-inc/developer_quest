@@ -38,7 +38,7 @@ class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromRGBO(241, 241, 241, 1.0),
+      color: const Color.fromRGBO(241, 241, 241, 1),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
           var slivers = <Widget>[
@@ -47,10 +47,10 @@ class TaskPoolPage extends StatelessWidget {
               delegate: TasksButtonHeader(taskPool: taskPool),
             ),
           ];
-          _buildSection(slivers, "IN PROGRESS", taskPool.workItems);
+          _buildSection(slivers, 'IN PROGRESS', taskPool.workItems);
           _buildSection(
               slivers,
-              "COMPLETED",
+              'COMPLETED',
               taskPool.completedTasks
                   .followedBy(taskPool.archivedTasks)
                   .toList(growable: false));

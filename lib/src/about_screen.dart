@@ -2,7 +2,7 @@ import 'package:dev_rpg/src/style.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatelessWidget {
-  static const double _horizontalPadding = 33.0;
+  static const double _horizontalPadding = 33;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,9 @@ class AboutScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.topLeft,
                 child: ButtonTheme(
-                  minWidth: 0.0,
+                  minWidth: 0,
                   child: FlatButton(
-                    padding: const EdgeInsets.all(0.0),
+                    padding: const EdgeInsets.all(0),
                     shape: null,
                     onPressed: () => Navigator.pop(context, null),
                     child: const Icon(
@@ -39,12 +39,12 @@ class AboutScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 41.0),
+                      const SizedBox(height: 41),
                       const Text(
-                        "FLUTTER\nDEVELOPER QUEST",
+                        'FLUTTER\nDEVELOPER QUEST',
                         style: TextStyle(
-                            fontFamily: "RobotoCondensedBold",
-                            fontSize: 30.0,
+                            fontFamily: 'RobotoCondensedBold',
+                            fontSize: 30,
                             letterSpacing: 5),
                       ),
                       const SizedBox(height: 12),
@@ -54,49 +54,50 @@ class AboutScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 27),
                       Text(
-                        "V 1.0",
+                        'V 1.0',
                         style: buttonTextStyle.apply(
                             fontSizeDelta: -4,
                             color: Colors.white.withOpacity(0.5)),
                       ),
                       const SizedBox(height: 23),
                       const Text(
-                        "Flutter Developer Quest is built with Flutter by 2Dimensions.",
+                        'Flutter Developer Quest is built '
+						'with Flutter by 2Dimensions.',
                         style: TextStyle(
-                            fontFamily: "RobotoRegular", fontSize: 20.0),
+                            fontFamily: 'RobotoRegular', fontSize: 20),
                       ),
                       const SizedBox(height: 23),
                       const Text(
-                        "The graphics and animations were created using Flare.",
+                        'The graphics and animations were created using Flare.',
                         style: TextStyle(
-                            fontFamily: "RobotoRegular", fontSize: 20.0),
+                            fontFamily: 'RobotoRegular', fontSize: 20),
                       ),
                       Expanded(child: Container()),
                       const Text(
-                        "DESIGNED BY",
+                        'DESIGNED BY',
                         style: TextStyle(
-                            fontFamily: "MontserratMedium", fontSize: 12.0),
+                            fontFamily: 'MontserratMedium', fontSize: 12),
                       ),
                       const SizedBox(height: 11),
                       Image.asset('assets/images/2dimensions.png'),
                       const SizedBox(height: 32),
                       const Text(
-                        "BUILT WITH",
+                        'BUILT WITH',
                         style: TextStyle(
-                            fontFamily: "MontserratMedium", fontSize: 12.0),
+                            fontFamily: 'MontserratMedium', fontSize: 12),
                       ),
                       const SizedBox(height: 11),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset("assets/images/flutter_logo.png",
-                              height: 45.0, width: 37.0),
+                          Image.asset('assets/images/flutter_logo.png',
+                              height: 45, width: 37),
                           Container(
-                            margin: const EdgeInsets.only(left: 5.0),
+                            margin: const EdgeInsets.only(left: 5),
                             child: Text(
-                              "Flutter",
+                              'Flutter',
                               style: TextStyle(
-                                  fontSize: 26.0,
+                                  fontSize: 26,
                                   color: Colors.white.withOpacity(0.85)),
                             ),
                           )

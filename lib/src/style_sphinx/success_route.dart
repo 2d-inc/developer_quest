@@ -159,7 +159,7 @@ class SuccessRoute extends PageRoute<Animation<double>> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: Material(
           color: Colors.transparent,
           child: Column(

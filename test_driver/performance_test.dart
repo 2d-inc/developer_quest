@@ -63,7 +63,7 @@ Future<Timeline> _run(FlutterDriver driver) async {
   // the home screen is playing.
   await driver.runUnsynchronized(() async {
     await driver.tap(_startGameFinder);
-    await driver.tap(find.text("Tasks"));
+    await driver.tap(find.text('Tasks'));
   });
 
   // Give the UI time to settle down before starting the trace.
@@ -130,9 +130,9 @@ Future<void> _save(Timeline timeline) async {
     stats.write(description);
     // Add additional useful stats from the TimelineSummary.
     stats.write('\t');
-    stats.write(summary.computePercentileFrameBuildTimeMillis(90.0));
+    stats.write(summary.computePercentileFrameBuildTimeMillis(90));
     stats.write('\t');
-    stats.write(summary.computePercentileFrameBuildTimeMillis(99.0));
+    stats.write(summary.computePercentileFrameBuildTimeMillis(99));
     stats.write('\t');
     stats.write(summary.computeWorstFrameBuildTimeMillis());
     stats.write('\t');

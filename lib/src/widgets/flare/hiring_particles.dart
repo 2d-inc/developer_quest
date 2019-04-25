@@ -27,9 +27,9 @@ class HiringParticles {
   final Color color;
   final List<HiringParticle> _particles = [];
   static const int particleCount = 20;
-  static const double particleSize = 10.0;
+  static const double particleSize = 10;
   final Random _random = Random();
-  double elapsedSinceEmission = 0.0;
+  double elapsedSinceEmission = 0;
 
   HiringParticles({this.color});
   void advance(double elapsedSeconds, Size size) {
@@ -38,7 +38,7 @@ class HiringParticles {
         _particles.add(HiringParticle()
           ..offset = Offset(_random.nextDouble() * size.width,
               _random.nextDouble() * size.height)
-          ..opacity = 0.0
+          ..opacity = 0
           ..phase = _random.nextDouble()
           ..scale = _random.nextDouble());
       }
@@ -49,13 +49,13 @@ class HiringParticles {
       particle.phase += elapsedSeconds;
       particle.offset = Offset(particle.offset.dx,
           particle.offset.dy - size.height * elapsedSeconds * 0.5);
-      if (particle.offset.dy < size.height / 2.0) {
+      if (particle.offset.dy < size.height / 2) {
         particle.opacity -= elapsedSeconds;
       } else {
         particle.opacity += elapsedSeconds;
       }
-      particle.scale -= min(1.0, elapsedSeconds / 5.0);
-      if (particle.opacity < 0.0 || particle.scale < 0.0) {
+      particle.scale -= min(1, elapsedSeconds / 5);
+      if (particle.opacity < 0 || particle.scale < 0) {
         deadParticles.add(particle);
       }
     }
@@ -63,10 +63,10 @@ class HiringParticles {
     elapsedSinceEmission += elapsedSeconds;
     // no more than two per advance
     if (elapsedSinceEmission > 0.1 && _particles.length < particleCount) {
-      elapsedSinceEmission = 0.0;
+      elapsedSinceEmission = 0;
       _particles.add(HiringParticle()
         ..offset = Offset(_random.nextDouble() * size.width, size.height)
-        ..opacity = 0.0
+        ..opacity = 0
         ..phase = _random.nextDouble()
         ..scale = 0.5 + 0.5 * _random.nextDouble());
     }
@@ -75,20 +75,20 @@ class HiringParticles {
   }
 
   void paint(Canvas canvas, Offset offset) {
-    double fullRadius = particleSize / 2.0;
+    double fullRadius = particleSize / 2;
 
     for (final HiringParticle particle in _particles) {
       Offset po = offset + particle.offset;
       double radius = fullRadius * particle.scale;
-      double size = radius * 2.0;
-      double ox = sin(particle.phase * 2.0) * particleSize * particle.scale;
+      double size = radius * 2;
+      double ox = sin(particle.phase * 2) * particleSize * particle.scale;
       canvas.drawOval(
           Rect.fromLTWH(
               ox + po.dx - radius, po.dy + fullRadius - radius, size, size),
           Paint()
             ..style = PaintingStyle.fill
             ..color =
-                color.withOpacity(particle.opacity.clamp(0.0, 1.0).toDouble()));
+                color.withOpacity(particle.opacity.clamp(0, 1).toDouble()));
     }
   }
 }

@@ -18,7 +18,7 @@ class TaskHeader extends StatelessWidget {
         Container(
           width: 20,
           height: 20,
-          child: const FlareActor("assets/flare/Coin.flr"),
+          child: const FlareActor('assets/flare/Coin.flr'),
         ),
         const SizedBox(width: 4),
         Text(

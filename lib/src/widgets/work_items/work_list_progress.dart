@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
-import 'package:dev_rpg/src/widgets/work_items/boost_indicator.dart';
 import 'package:flutter/material.dart';
 
 /// Progress bar with tap button to boost progress for work items.
@@ -20,7 +19,6 @@ class WorkListProgress extends StatefulWidget {
 class _WorkListProgressState extends State<WorkListProgress> {
   bool _showBoost = false;
   Timer _hideBoostTimer;
-  final BoostController _boostController = BoostController();
   void _hideBoost() {
     setState(() => _showBoost = false);
   }
@@ -34,9 +32,9 @@ class _WorkListProgressState extends State<WorkListProgress> {
   void _boostProgress(WorkItem item) {
     _hideBoostTimer?.cancel();
     _hideBoostTimer = Timer(const Duration(milliseconds: 400), _hideBoost);
-    setState(() => _showBoost = true);
+
     if (item.addBoost()) {
-      _boostController.showIndicator();
+      setState(() => _showBoost = true);
     }
   }
 
@@ -59,14 +57,14 @@ class _WorkListProgressState extends State<WorkListProgress> {
                 alignment: Alignment.bottomRight,
                 size: const Size.fromHeight(0),
                 child: AnimatedOpacity(
-                  opacity: _showBoost || workItem.isComplete ? 1.0 : 0.0,
+                  opacity: _showBoost || workItem.isComplete ? 1 : 0,
                   duration: const Duration(milliseconds: 200),
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: workItem.isComplete
-                        ? Text("LAUNCH!",
+                        ? Text('LAUNCH!',
                             style: buttonTextStyle.apply(color: attentionColor))
-                        : Text("+10",
+                        : Text('+10',
                             style: buttonTextStyle.apply(
                                 color: widget.progressColor, fontSizeDelta: 8)),
                   ),
@@ -74,9 +72,9 @@ class _WorkListProgressState extends State<WorkListProgress> {
               ),
               ProwessProgress(
                   height: 8,
-                  borderRadius: BorderRadius.circular(4.0),
+                  borderRadius: BorderRadius.circular(4),
                   color: widget.progressColor,
-                  background: const Color.fromRGBO(69, 69, 82, 1.0),
+                  background: const Color.fromRGBO(69, 69, 82, 1),
                   progress: workItem.percentComplete)
             ],
           ),
@@ -135,16 +133,16 @@ class _TapButtonState extends State<TapButton> {
               Center(
                 child: AnimatedContainer(
                     duration: const Duration(milliseconds: 100),
-                    width: _isPressed ? 78.0 : 0.0,
-                    height: _isPressed ? 78.0 : 0.0,
+                    width: _isPressed ? 78 : 0,
+                    height: _isPressed ? 78 : 0,
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: widget.color.withOpacity(0.32))),
               ),
               Center(
                 child: Container(
-                  width: 42.0,
-                  height: 42.0,
+                  width: 42,
+                  height: 42,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: widget.isDisabled
@@ -155,15 +153,15 @@ class _TapButtonState extends State<TapButton> {
                         : [
                             BoxShadow(
                                 color: widget.color.withOpacity(0.25),
-                                offset: const Offset(0.0, 10.0),
-                                blurRadius: 10.0,
-                                spreadRadius: 0.0),
+                                offset: const Offset(0, 10),
+                                blurRadius: 10,
+                                spreadRadius: 0),
                           ],
                   ),
                 ),
               ),
               Center(
-                  child: Text("TAP",
+                  child: Text('TAP',
                       style: buttonTextStyle.apply(
                           fontSizeDelta: -4,
                           color: widget.isDisabled

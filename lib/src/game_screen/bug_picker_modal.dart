@@ -19,7 +19,7 @@ class BugPickerModal extends StatelessWidget {
       child: Container(
         color: modalBackgroundColor,
         child: ListView.builder(
-          padding: const EdgeInsets.only(top: 30.0, left: 15.0, right: 15.0),
+          padding: const EdgeInsets.only(top: 30, left: 15, right: 15),
           itemCount: bugs.length,
           itemBuilder: (context, index) {
             Bug bug = bugs[index];
@@ -34,7 +34,7 @@ class BugPickerModal extends StatelessWidget {
                     boxShadow: [
                       BoxShadow(
                           color: Color.fromRGBO(0, 0, 0, 0.03),
-                          offset: Offset(0.0, 10.0),
+                          offset: Offset(0, 10),
                           blurRadius: 10,
                           spreadRadius: 0),
                     ],
