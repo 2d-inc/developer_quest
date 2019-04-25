@@ -10,24 +10,17 @@ description: Become a tech lead, slay bugs, and don't get fired.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  # For Google I/O we are being very specific about pinning to specific branch revision.
+  # This is flutter commit hash b593f5167bce84fb3cad5c258477bf3abc1b14eb, tagged
+  # as Flutter version 1.5.4.
+  #sdk: ">=2.3.0-dev.0.1 <3.0.0"
+  sdk: "2.3.0-dev.0.1.flutter-cf4444b803"
 
 dependencies:
-  flutter:
-    sdk: flutter
-  intl: any
   flutter_web: any
   flutter_web_ui: any
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  # flare_flutter:
-  #   path: ../Flare-Flutter/flare_flutter
-
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   # Enables the `pub run build_runner` command
   build_runner: any
   # Includes the JavaScript compilers

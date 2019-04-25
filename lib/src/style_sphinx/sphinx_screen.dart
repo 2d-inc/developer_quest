@@ -45,39 +45,7 @@ class _SphinxScreenState extends State<SphinxScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                  // Like a "SafeArea" Widget, but only applies the top padding
-                  top: MediaQuery.of(context).padding.top + 16,
-                ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 350),
-                  child: Column(
-                    children: const [
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: TextBubble(
-                          child: Text(
-                            'I am the Style Sphinx.',
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: TextBubble(
-                          direction: TextBubbleDirection.right,
-                          child: Text(
-                            '''In order to proceed,\nstyle for me,\nthese layouts three''',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const ChatBubbles(),
               const Flexible(child: SphinxImage()),
               Container(
                 height: 130,
@@ -127,6 +95,49 @@ class _SphinxScreenState extends State<SphinxScreen> {
       context,
       arguments.routeName,
       arguments: arguments,
+    );
+  }
+}
+
+class ChatBubbles extends StatelessWidget {
+  const ChatBubbles({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 24,
+        right: 24,
+        // Like a "SafeArea" Widget, but only applies the top padding
+        top: MediaQuery.of(context).padding.top + 16,
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 350),
+        child: Column(
+          children: const [
+            Align(
+              alignment: Alignment.topRight,
+              child: TextBubble(
+                child: Text(
+                  'I am the Style Sphinx.',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.topLeft,
+              child: TextBubble(
+                direction: TextBubbleDirection.right,
+                child: Text(
+                  '''In order to proceed,\nstyle for me,\nthese layouts three''',
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
