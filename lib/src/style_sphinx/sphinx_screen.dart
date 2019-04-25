@@ -1,3 +1,4 @@
+import 'package:dev_rpg/src/style_sphinx/axis_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
@@ -25,6 +26,8 @@ class SphinxScreen extends StatefulWidget {
 class _SphinxScreenState extends State<SphinxScreen> {
   @override
   Widget build(BuildContext context) {
+    final fullGame = widget.fullGame && MediaQuery.of(context).size.width > 600;
+
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -56,8 +59,8 @@ class _SphinxScreenState extends State<SphinxScreen> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 350),
                   child: Column(
-                    children: const [
-                      Align(
+                    children: [
+                      const Align(
                         alignment: Alignment.topRight,
                         child: TextBubble(
                           child: Text(
@@ -71,7 +74,7 @@ class _SphinxScreenState extends State<SphinxScreen> {
                         child: TextBubble(
                           direction: TextBubbleDirection.right,
                           child: Text(
-                            '''In order to proceed,\nstyle for me,\nthese layouts three''',
+                            '''In order to proceed,\nstyle for me,\nthese layouts ${fullGame ? 'with glee' : 'three'}''',
                           ),
                         ),
                       ),
@@ -85,7 +88,7 @@ class _SphinxScreenState extends State<SphinxScreen> {
                 color: const Color.fromRGBO(251, 168, 127, 1),
                 child: Center(
                   child: SphinxButton(
-                    onPressed: () => _startGame(context),
+                    onPressed: () => _startGame(fullGame),
                     child: const Text('FACE THE SPHINX'),
                   ),
                 ),
@@ -97,25 +100,39 @@ class _SphinxScreenState extends State<SphinxScreen> {
     );
   }
 
-  void _startGame(BuildContext context) {
+  void _startGame(bool fullGame) {
     // When the user presses the buttons, navigate to the first question by
     // creating the original QuestionArguments.
     //
     // The QuestionArguments are configured up front and then passed from one
     // question screen to the next in order to drive the game forward.
     final arguments = QuestionArguments(
-      questionRoutes: widget.fullGame
+      questionRoutes: fullGame
           ? [
               ColumnQuestion.routeName,
               RowQuestion.routeName,
               StackQuestion.routeName,
-              // Todo: Add real Qs here.
-              ColumnQuestion.routeName,
-              RowQuestion.routeName,
-              StackQuestion.routeName,
-              ColumnQuestion.routeName,
-              RowQuestion.routeName,
-              StackQuestion.routeName,
+
+              // First two mainAxisQuestions should help the user gain a mental
+              // model of how the mainAxis works.
+              MainAxisStartQuestion.routeName,
+              MainAxisEndQuestion.routeName,
+
+              // Shuffle the remaining main axis questions so they do not appear
+              // in a predictable order
+              ...[
+                MainAxisCenterQuestion.routeName,
+                MainAxisSpaceAroundQuestion.routeName,
+                MainAxisSpaceBetweenQuestion.routeName,
+                MainAxisSpaceEvenlyQuestion.routeName,
+              ]..shuffle(),
+
+              // Do not shuffle the row main axis questions in hopes of
+              // providing a clear difference between the main axis of a
+              // row and column.
+              RowMainAxisStartQuestion.routeName,
+              RowMainAxisEndQuestion.routeName,
+              RowMainAxisSpaceBetween.routeName,
             ]
           : [
               ColumnQuestion.routeName,

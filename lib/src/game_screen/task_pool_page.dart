@@ -34,7 +34,7 @@ class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromRGBO(241, 241, 241, 1.0),
+      color: const Color.fromRGBO(241, 241, 241, 1),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
           List<Widget> children = <Widget>[
@@ -53,7 +53,6 @@ class TaskPoolPage extends StatelessWidget {
                 .followedBy(taskPool.archivedTasks)
                 .toList(growable: false),
           );
-
           return ListView(children: children);
         },
       ),

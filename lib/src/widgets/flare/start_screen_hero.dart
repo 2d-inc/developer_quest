@@ -59,10 +59,10 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
   FlutterActorArtboard _character;
   FlutterActorArtboard _nextCharacter;
   ActorAnimation _idle;
-  double _animationTime = 0.0;
+  double _animationTime = 0;
   String _filename;
   Color gradient;
-  double _crossFade = 0.0;
+  double _crossFade = 0;
   double horizontalPadding;
 
   @override
@@ -72,17 +72,17 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
   bool advance(double elapsedSeconds) {
     if (_idle != null) {
       _animationTime += elapsedSeconds;
-      _idle.apply(_animationTime % _idle.duration, _character, 1.0);
+      _idle.apply(_animationTime % _idle.duration, _character, 1);
       _character.advance(elapsedSeconds);
     }
-    if (_crossFade > 0.0 || _nextCharacter != null) {
+    if (_crossFade > 0 || _nextCharacter != null) {
       _crossFade += _nextCharacter == null ? -elapsedSeconds : elapsedSeconds;
-      if (_crossFade >= 1.0 && _nextCharacter != null) {
+      if (_crossFade >= 1 && _nextCharacter != null) {
         _character = _nextCharacter;
-        _idle = _character.getAnimation("idle");
+        _idle = _character.getAnimation('idle');
         _character.initializeGraphics();
         _nextCharacter = null;
-        advance(0.0);
+        advance(0);
       }
     }
     return true;
@@ -106,23 +106,22 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
     _character.draw(canvas);
 
     // Get into artboard space to draw the gradient.
-    double height = _character.height * 2.0;
-    double offsetTop = _character.height / 2.0;
+    double height = _character.height * 2;
+    double offsetTop = _character.height / 2;
     List<Color> colors = <Color>[
       gradient.withOpacity(0),
-      gradient.withOpacity(1.0),
-      gradient.withOpacity(1.0),
+      gradient.withOpacity(1),
+      gradient.withOpacity(1),
     ];
     List<double> stops = <double>[
-      0.0,
+      0,
       (_character.height - offsetTop) / height,
-      1.0
+      1
     ];
 
     Offset start = Offset(
         -1 * _character.origin[0] * _character.width - paddingArtboardSpace,
-        -1 * _character.origin[1] * _character.height +
-            _character.height / 2.0);
+        -1 * _character.origin[1] * _character.height + _character.height / 2);
     Offset end = Offset(start.dx, start.dy + height);
     Paint paint = Paint()
       ..shader = ui.Gradient.linear(start, end, colors, stops)
@@ -132,10 +131,10 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
         start & Size(_character.width + paddingArtboardSpace * 2, height),
         paint);
 
-    if (_crossFade > 0.0) {
+    if (_crossFade > 0) {
       Paint darken = Paint()
         ..style = PaintingStyle.fill
-        ..color = gradient.withOpacity(_crossFade.clamp(0.0, 1.0).toDouble());
+        ..color = gradient.withOpacity(_crossFade.clamp(0, 1).toDouble());
       canvas.drawRect(
           Offset(
                   -1 * _character.origin[0] * _character.width -
@@ -143,7 +142,7 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
                   -1 * _character.origin[1] * _character.height -
                       _character.height) &
               Size(_character.width + paddingArtboardSpace * 2,
-                  _character.height * 3.0),
+                  _character.height * 3),
           darken);
     }
   }
@@ -172,9 +171,9 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
         return;
       }
       _character = actor.artboard.makeInstance() as FlutterActorArtboard;
-      _idle = _character.getAnimation("idle");
+      _idle = _character.getAnimation('idle');
       _character.initializeGraphics();
-      advance(0.0);
+      advance(0);
       markNeedsPaint();
     });
   }

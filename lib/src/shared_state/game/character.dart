@@ -9,7 +9,7 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 /// The definition of the task is in [blueprint]. This class holds the runtime
 /// state (like [percentComplete]).
 class Character extends Aspect with ChildAspect {
-  static const int maxSkillProwess = 10;
+  static const int maxSkillProwess = 5;
 
   final String id;
 
@@ -19,12 +19,15 @@ class Character extends Aspect with ChildAspect {
   int _level = 1;
   int get level => _level;
 
-  bool _isHired;
-  bool get isHired => _isHired;
+  bool isHired = false;
+
+  final int customHiringCost;
+  final int costMultiplier;
 
   bool _isBusy = false;
 
-  Character(this.id, this.prowess, [this._isHired = false]);
+  Character(this.id, this.prowess,
+      {this.customHiringCost, this.costMultiplier = 1, this.isHired= false});
 
   bool get isBusy => _isBusy;
 
@@ -34,7 +37,7 @@ class Character extends Aspect with ChildAspect {
   }
 
   double getProwessProgress(Skill skill) =>
-      (prowess[skill] ?? 0.0) / maxSkillProwess;
+      (prowess[skill] ?? 0) / maxSkillProwess;
 
   bool contributes(List<Skill> skills) {
     for (final Skill skill in skills) {
@@ -48,9 +51,11 @@ class Character extends Aspect with ChildAspect {
   @override
   String toString() => id;
 
-  int get upgradeCost =>
-      prowess.values.fold(0, (int previous, int value) => previous + value) *
-      (_isHired ? 110 : 220);
+  int get upgradeCost => !isHired && customHiringCost != null
+      ? customHiringCost
+      : prowess.values.fold(0, (int previous, int value) => previous + value) *
+          (isHired ? 110 : 220) *
+          costMultiplier;
 
   bool get canUpgrade {
     Company company = get<World>().company;
@@ -65,18 +70,18 @@ class Character extends Aspect with ChildAspect {
   }
 
   bool hire() {
-    assert(!_isHired);
+    assert(!isHired);
     Company company = get<World>().company;
     if (!company.spend(upgradeCost)) {
       return false;
     }
-    _isHired = true;
+    isHired = true;
     markDirty();
     return true;
   }
 
   bool upgrade() {
-    if (!_isHired) {
+    if (!isHired) {
       return hire();
     }
     Company company = get<World>().company;
