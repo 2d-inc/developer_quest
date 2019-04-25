@@ -36,8 +36,7 @@ class TaskListItem extends StatelessWidget {
             showDialog<void>(
                 context: context,
                 builder: (BuildContext context) {
-                  return ChangeNotifierProvider<World>.value(
-                      notifier: world, child: GameOver());
+                  return GameOver(world);
                 });
             // });
             break;

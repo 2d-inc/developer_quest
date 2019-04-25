@@ -1,28 +1,64 @@
 import 'package:dev_rpg/src/shared_state/game/world.dart';
+import 'package:flare_dart/math/mat2d.dart';
+import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../style.dart';
 import 'buttons/wide_button.dart';
 
-class GameOver extends StatelessWidget {
-  void _backToMainMenu(BuildContext context) {
-    var world = Provider.of<World>(context);
-    world.reset();
+/// A super simple Flare Controller that mixes the star value
+/// animation on top of our Build animation
+class _MixStarValueController extends FlareController {
+  final int stars;
+  _MixStarValueController(this.stars);
+  @override
+  bool advance(FlutterActorArtboard artboard, double elapsed) {
+    return false;
+  }
+
+  @override
+  void initialize(FlutterActorArtboard artboard) {
+    ActorAnimation starsAnimation = artboard.getAnimation(stars.toString());
+    if (starsAnimation != null) {
+      starsAnimation.apply(0.0, artboard, 1.0);
+    }
+  }
+
+  @override
+  void setViewTransform(Mat2D viewTransform) {}
+}
+
+class GameOver extends StatefulWidget {
+  final World world;
+  const GameOver(this.world);
+  @override
+  _GameOverState createState() => _GameOverState();
+}
+
+class _GameOverState extends State<GameOver> {
+  _MixStarValueController _starController;
+  @override
+  void initState() {
+    _starController = _MixStarValueController(4);
+    super.initState();
+  }
+
+  void _backToMainMenu() {
+    widget.world.reset();
     Navigator.popUntil(context, (route) {
       return route.settings.name == "/";
     });
   }
 
   void _playAgain(BuildContext context) {
-    _backToMainMenu(context);
+    _backToMainMenu();
     Navigator.of(context).pushNamed<void>('/gameloop');
   }
 
   @override
   Widget build(BuildContext context) {
-    var world = Provider.of<World>(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -56,8 +92,19 @@ class GameOver extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text("\"Spectacular!!!\"", style: contentLargeStyle),
+                SizedBox(
+                  width: 248,
+                  height: 46,
+                  child: FlareActor(
+                    "assets/flare/Stars.flr",
+                    shouldClip: false,
+                    animation: "Build",
+                    controller: _starController,
+                  ),
+                ),
                 const SizedBox(height: 23),
+                Text("\"Spectacular!!!\"", style: contentLargeStyle),
+                const SizedBox(height: 19),
                 Text(
                     "Your purple app with dinosaur mascot shipped to 6.1 millions users and was rated 4/5 stars by ItsAllWidgets Magazine!",
                     style: contentStyle),
@@ -68,7 +115,7 @@ class GameOver extends StatelessWidget {
                     children: [
                       Expanded(
                         child: WideButton(
-                          onPressed: () => _backToMainMenu(context),
+                          onPressed: _backToMainMenu,
                           paddingTweak: const EdgeInsets.only(right: -7.0),
                           background: const Color.fromRGBO(84, 114, 239, 1.0),
                           shadowColor: const Color.fromRGBO(84, 114, 244, 0.25),
