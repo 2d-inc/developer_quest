@@ -140,7 +140,7 @@ class _GameOverState extends State<GameOver> {
                         const TextSpan(
                             text: " and was rated ", style: contentStyle),
                         TextSpan(
-                            text: "$stars/5 stars",
+                            text: "${stars+1}/5 stars",
                             style: contentStyle.apply(
                                 fontFamily: "MontserratBold")),
                         const TextSpan(
