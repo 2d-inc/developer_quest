@@ -16,7 +16,7 @@ void main() {
       final startFinder = find.text('START');
 
       // Build our app and trigger a frame.
-      await tester.pumpWidget(MyApp());
+      await tester.pumpWidget(DeveloperQuest());
 
       // Find the start text
       expect(startFinder, findsOneWidget);

@@ -11,15 +11,15 @@ void main() {
   // to be re-displayed.
   FlareCache.doesPrune = false;
 
-  runApp(MyApp());
+  runApp(DeveloperQuest());
 }
 
-class MyApp extends StatefulWidget {
+class DeveloperQuest extends StatefulWidget {
   @override
-  _MyAppState createState() => _MyAppState();
+  _DeveloperQuestState createState() => _DeveloperQuestState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _DeveloperQuestState extends State<DeveloperQuest> {
   final World world = World();
 
   @override

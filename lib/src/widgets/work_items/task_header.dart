@@ -9,8 +9,8 @@ import 'package:dev_rpg/src/shared_state/game/task.dart';
 /// A header for [Task] indicating the rewarded coin and skills
 /// necessary to work on the task.
 class TaskHeader extends StatelessWidget {
-  final TaskBlueprint blueprint;
-  const TaskHeader(this.blueprint);
+  final TaskBlueprint taskData;
+  const TaskHeader(this.taskData);
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -22,7 +22,7 @@ class TaskHeader extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Text(
-          blueprint.coinReward.toString(),
+          taskData.coinReward.toString(),
           style: contentSmallStyle,
         ),
         Expanded(child: Container()),

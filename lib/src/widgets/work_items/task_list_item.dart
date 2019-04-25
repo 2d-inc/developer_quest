@@ -59,17 +59,20 @@ class TaskListItem extends StatelessWidget {
     _onAssigned(task, characters);
   }
 
+  List<Widget> _getSpacedHeading(Task task) {
+    Widget heading = task.state != TaskState.rewarded
+        ? TaskHeader(task.blueprint)
+        : const Icon(Icons.check_circle, color: disabledColor);
+    return [
+      heading,
+      const SizedBox(height: 12.0),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     Task task = Provider.of<WorkItem>(context) as Task;
     bool isExpanded = task.isBeingWorkedOn || task.state == TaskState.completed;
-    Widget heading = task.state != TaskState.rewarded
-        ? TaskHeader(task.blueprint)
-        : const Icon(Icons.check_circle, color: disabledColor);
-    List<Widget> spacedHeading = [
-      heading,
-      const SizedBox(height: 12.0),
-    ];
 
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
