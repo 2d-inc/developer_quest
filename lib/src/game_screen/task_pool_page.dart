@@ -16,22 +16,18 @@ class TaskPoolPage extends StatelessWidget {
   /// Builds a section of the task list with [title] and a list of [workItems].
   /// This returns slivers to be used in a [SliverList].
   void _buildSection(
-      List<Widget> slivers, String title, List<WorkItem> workItems) {
+      List<Widget> children, String title, List<WorkItem> workItems) {
     if (workItems.isNotEmpty) {
-      slivers.add(SliverPersistentHeader(
-        pinned: false,
-        delegate: TasksSectionHeader(title),
-      ));
-      slivers.add(SliverList(
-        delegate: SliverChildBuilderDelegate((context, index) {
-          WorkItem item = workItems[index];
-          return ChangeNotifierProvider<WorkItem>.value(
-            notifier: item,
-            key: ValueKey(item),
-            child: item is Bug ? BugListItem() : TaskListItem(),
-          );
-        }, childCount: workItems.length),
-      ));
+      children.add(TasksSectionHeader(title));
+      children.addAll(
+        workItems.map(
+          (WorkItem item) => ChangeNotifierProvider<WorkItem>.value(
+                notifier: item,
+                key: ValueKey(item),
+                child: item is Bug ? BugListItem() : TaskListItem(),
+              ),
+        ),
+      );
     }
   }
 
@@ -41,21 +37,24 @@ class TaskPoolPage extends StatelessWidget {
       color: const Color.fromRGBO(241, 241, 241, 1.0),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
-          var slivers = <Widget>[
-            SliverPersistentHeader(
-              pinned: false,
-              delegate: TasksButtonHeader(taskPool: taskPool),
-            ),
+          List<Widget> children = <Widget>[
+            TasksButtonHeader(taskPool: taskPool),
+            const SizedBox(height: 12.0),
           ];
-          _buildSection(slivers, "IN PROGRESS", taskPool.workItems);
           _buildSection(
-              slivers,
-              "COMPLETED",
-              taskPool.completedTasks
-                  .followedBy(taskPool.archivedTasks)
-                  .toList(growable: false));
+            children,
+            "IN PROGRESS",
+            taskPool.workItems,
+          );
+          _buildSection(
+            children,
+            "COMPLETED",
+            taskPool.completedTasks
+                .followedBy(taskPool.archivedTasks)
+                .toList(growable: false),
+          );
 
-          return CustomScrollView(slivers: slivers);
+          return ListView(children: children);
         },
       ),
     );

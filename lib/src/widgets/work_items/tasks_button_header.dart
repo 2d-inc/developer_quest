@@ -9,13 +9,12 @@ import 'package:provider/provider.dart';
 
 /// This is a header providing two buttons, one for selecting tasks and another
 /// for selecting active bugs to add to the working list.
-class TasksButtonHeader extends SliverPersistentHeaderDelegate {
+class TasksButtonHeader extends StatelessWidget {
   final TaskPool taskPool;
   const TasksButtonHeader({this.taskPool});
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
       child: Row(
@@ -61,16 +60,5 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
         ],
       ),
     );
-  }
-
-  @override
-  double get maxExtent => 55.0;
-
-  @override
-  double get minExtent => 55.0;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
   }
 }

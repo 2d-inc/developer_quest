@@ -2,13 +2,12 @@ import 'package:dev_rpg/src/style.dart';
 import 'package:flutter/material.dart';
 
 /// This is a simple text header for the tasks list.
-class TasksSectionHeader extends SliverPersistentHeaderDelegate {
+class TasksSectionHeader extends StatelessWidget {
   final String title;
   const TasksSectionHeader(this.title);
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Text(
@@ -17,16 +16,5 @@ class TasksSectionHeader extends SliverPersistentHeaderDelegate {
             fontSizeDelta: -4, color: secondaryContentColor),
       ),
     );
-  }
-
-  @override
-  double get maxExtent => 45.0;
-
-  @override
-  double get minExtent => 45.0;
-
-  @override
-  bool shouldRebuild(TasksSectionHeader oldDelegate) {
-    return title != oldDelegate.title;
   }
 }
