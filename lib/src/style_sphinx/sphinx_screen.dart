@@ -100,9 +100,7 @@ class _SphinxScreenState extends State<SphinxScreen> {
 }
 
 class ChatBubbles extends StatelessWidget {
-  const ChatBubbles({
-    Key key,
-  }) : super(key: key);
+  const ChatBubbles();
 
   @override
   Widget build(BuildContext context) {
