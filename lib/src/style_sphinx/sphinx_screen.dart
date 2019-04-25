@@ -26,6 +26,8 @@ class SphinxScreen extends StatefulWidget {
 class _SphinxScreenState extends State<SphinxScreen> {
   @override
   Widget build(BuildContext context) {
+    final fullGame = widget.fullGame && MediaQuery.of(context).size.width > 600;
+
     return Stack(
       children: <Widget>[
         Positioned.fill(
@@ -57,8 +59,8 @@ class _SphinxScreenState extends State<SphinxScreen> {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 350),
                   child: Column(
-                    children: const [
-                      Align(
+                    children: [
+                      const Align(
                         alignment: Alignment.topRight,
                         child: TextBubble(
                           child: Text(
@@ -72,7 +74,7 @@ class _SphinxScreenState extends State<SphinxScreen> {
                         child: TextBubble(
                           direction: TextBubbleDirection.right,
                           child: Text(
-                            '''In order to proceed,\nstyle for me,\nthese layouts three''',
+                            '''In order to proceed,\nstyle for me,\nthese layouts ${fullGame ? 'with glee' : 'three'}''',
                           ),
                         ),
                       ),
@@ -86,7 +88,7 @@ class _SphinxScreenState extends State<SphinxScreen> {
                 color: const Color.fromRGBO(251, 168, 127, 1),
                 child: Center(
                   child: SphinxButton(
-                    onPressed: () => _startGame(context),
+                    onPressed: () => _startGame(fullGame),
                     child: const Text('FACE THE SPHINX'),
                   ),
                 ),
@@ -98,15 +100,14 @@ class _SphinxScreenState extends State<SphinxScreen> {
     );
   }
 
-  void _startGame(BuildContext context) {
-    print(MediaQuery.of(context).size.width);
+  void _startGame(bool fullGame) {
     // When the user presses the buttons, navigate to the first question by
     // creating the original QuestionArguments.
     //
     // The QuestionArguments are configured up front and then passed from one
     // question screen to the next in order to drive the game forward.
     final arguments = QuestionArguments(
-      questionRoutes: widget.fullGame && MediaQuery.of(context).size.width > 600
+      questionRoutes: fullGame
           ? [
               ColumnQuestion.routeName,
               RowQuestion.routeName,
