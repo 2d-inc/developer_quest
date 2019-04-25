@@ -81,8 +81,8 @@ class _WorkTeamState extends State<WorkTeam> {
               ),
               child: HiringBust(
                 filename: member.style.flare,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
                 hiringState: member.state,
                 isPlaying: true,
               ));

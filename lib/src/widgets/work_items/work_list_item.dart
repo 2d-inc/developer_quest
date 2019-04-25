@@ -54,7 +54,7 @@ class WorkListItem extends StatelessWidget {
   }
 
   void _onAssigned(WorkItem workItem, Set<Character> value) {
-    if (value == null || value.isEmpty) return;
+    if (value == null) return;
     if (workItem.isComplete) return;
     workItem.assignTeam(value.toList());
   }
