@@ -11,14 +11,14 @@ class SkillDot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 10.0),
+      padding: const EdgeInsets.only(left: 10),
       child: Container(
-        width: 10.0,
-        height: 10.0,
+        width: 10,
+        height: 10,
         decoration: BoxDecoration(
           color: skillColor[skill],
           borderRadius: const BorderRadius.all(
-            Radius.circular(5.0),
+            Radius.circular(5),
           ),
         ),
       ),

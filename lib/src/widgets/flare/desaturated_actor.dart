@@ -32,10 +32,10 @@ class DesaturatedActorImage extends FlutterActorImage {
       return;
     }
     // Light blue tinge.
-    ui.Color tint = const ui.Color.fromRGBO(222, 222, 255, 1.0);
-    double rf = tint.red / 255.0;
-    double gf = tint.green / 255.0;
-    double bf = tint.blue / 255.0;
+    ui.Color tint = const ui.Color.fromRGBO(222, 222, 255, 1);
+    double rf = tint.red / 255;
+    double gf = tint.green / 255;
+    double bf = tint.blue / 255;
 
     Matrix3 greyMatrix = Matrix3.fromList([
       0.21,
@@ -51,13 +51,13 @@ class DesaturatedActorImage extends FlutterActorImage {
 
     Matrix3 tintMatrix = Matrix3.fromList([
       rf,
-      0.0,
-      0.0,
-      0.0,
+      0,
+      0,
+      0,
       gf,
-      0.0,
-      0.0,
-      0.0,
+      0,
+      0,
+      0,
       bf,
     ]);
 
@@ -66,23 +66,23 @@ class DesaturatedActorImage extends FlutterActorImage {
       greyMatrix[0],
       greyMatrix[1],
       greyMatrix[2],
-      0.0,
-      0.0,
+      0,
+      0,
       greyMatrix[3],
       greyMatrix[4],
       greyMatrix[5],
-      0.0,
-      0.0,
+      0,
+      0,
       greyMatrix[6],
       greyMatrix[7],
       greyMatrix[8],
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      1.0,
-      0.0
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
     ]);
   }
 }

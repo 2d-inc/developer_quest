@@ -9,7 +9,7 @@ class ProwessProgress extends StatefulWidget {
       this.background = const Color.fromRGBO(0, 0, 0, 0.06),
       this.height = 7,
       this.borderRadius,
-      this.innerPadding = const EdgeInsets.all(0.0)})
+      this.innerPadding = const EdgeInsets.all(0)})
       : super(key: key);
 
   final double progress;

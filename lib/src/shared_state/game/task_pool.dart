@@ -49,13 +49,12 @@ class TaskPool extends AspectContainer with ChildAspect {
   final Milestone beta;
   final Milestone v1;
   TaskPool()
-      : alpha = Milestone("Alpha", [prototypeTaskNode]),
-        beta = Milestone("Beta", alphaTaskNode.children),
-        v1 = Milestone("Version 1.0", betaTaskNode.children) {
+      : alpha = Milestone('Alpha', [prototypeTaskNode]),
+        beta = Milestone('Beta', alphaTaskNode.children),
+        v1 = Milestone('Version 1.0', betaTaskNode.children) {
     // Patch up milestones by adding root task to previous list.
-    // N.B. in Guido's designs this is the "LAUNCH" task which
+    // N.B. in Guido's designs this is the 'LAUNCH' task which
     // triggers a minigame.
-    // TODO: Convert this final task in each milestone into the launch button/minigame.
     alphaTaskNode.children.clear();
     alpha.tasks.add(alphaTaskNode);
 
@@ -68,7 +67,7 @@ class TaskPool extends AspectContainer with ChildAspect {
   // The chance that a bug will show up on the next update. Mutate this as you
   // wish when tasks are completed. Consider increasing this more if the player
   // completes an issue faster (by tapping on it).
-  double _bugChance = 0.0;
+  double _bugChance = 0;
   static Random bugRandom = Random();
   int _ticksToBugRoll = 0;
   static const int bugRollTicks = 5;
@@ -166,5 +165,14 @@ class TaskPool extends AspectContainer with ChildAspect {
       if (task.name == name) return false;
     }
     return true;
+  }
+
+  void reset() {
+    _ticksToBugRoll = 0;
+    _bugChance = 0;
+    workItems.clear();
+    completedTasks.clear();
+    archivedTasks.clear();
+    availableBugs.clear();
   }
 }
