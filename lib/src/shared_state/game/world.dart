@@ -59,7 +59,7 @@ class World extends AspectContainer {
 
   /// TODO: Feature joy should probably depend on the feature
   ///       (might be another stat for the feature/task).
-  static const double featureJoy = 5.0;
+  static const double featureJoy = 5;
 
   void shipFeature(Task task) {
     // Todo: modify these values by how quickly the user completed the task

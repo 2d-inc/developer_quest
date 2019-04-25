@@ -45,8 +45,8 @@ class _MyAppState extends State<MyApp> {
               primarySwatch: Colors.orange,
               canvasColor: Colors.transparent),
           routes: {
-            "/": (context) => WelcomeScreen(),
-            "/gameloop": (context) => GameScreen(),
+            '/': (context) => WelcomeScreen(),
+            '/gameloop': (context) => GameScreen(),
             SphinxScreen.miniGameRouteName: (context) => const SphinxScreen(),
             SphinxScreen.fullGameRouteName: (context) =>
                 const SphinxScreen(fullGame: true),

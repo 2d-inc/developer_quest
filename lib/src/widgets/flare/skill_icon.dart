@@ -12,7 +12,7 @@ class SkillIcon extends StatelessWidget {
   const SkillIcon(this.skill,
       {this.width = 19,
       this.height = 16,
-      this.opacity = 1.0,
+      this.opacity = 1,
       this.color = Colors.white});
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class SkillIcon extends StatelessWidget {
           alignment: Alignment.topCenter,
           shouldClip: false,
           fit: BoxFit.contain,
-          animation: "idle"),
+          animation: 'idle'),
     );
   }
 }

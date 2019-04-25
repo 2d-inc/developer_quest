@@ -5,7 +5,7 @@ import 'package:dev_rpg/src/widgets/app_bar/stat_badge.dart';
 /// game session.
 class CoinBadge extends StatBadge<int> {
   CoinBadge(StatValue<int> listenable)
-      : super("Capital", listenable, flare: "assets/flare/Coin.flr");
+      : super('Capital', listenable, flare: 'assets/flare/Coin.flr');
 
   /// Play the indicator animation after this value changes by at least 5 coins.
   @override

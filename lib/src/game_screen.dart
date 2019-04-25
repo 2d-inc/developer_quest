@@ -1,5 +1,4 @@
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
-import 'package:dev_rpg/src/game_screen/stats_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
@@ -44,10 +43,10 @@ class GameScreenState extends State<GameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(59, 59, 73, 1.0),
+      backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        titleSpacing: 0.0,
+        titleSpacing: 0,
         title: Consumer<Company>(
           builder: (context, company) {
             // Using RepaintBoundary here because this part of the UI changes
@@ -70,8 +69,8 @@ class GameScreenState extends State<GameScreen> {
         children: [
           Consumer<CharacterPool>(
             builder: (context, characterPool) => _BottomNavigationButton(
-                  "assets/flare/TeamIcon.flr",
-                  label: "Team",
+                  'assets/flare/TeamIcon.flr',
+                  label: 'Team',
                   tap: () => _showPageIndex(0),
                   isSelected: _index == 0,
                   hasNotification: characterPool.isUpgradeAvailable,
@@ -80,8 +79,8 @@ class GameScreenState extends State<GameScreen> {
                 ),
           ),
           _BottomNavigationButton(
-            "assets/flare/TasksIcon.flr",
-            label: "Tasks",
+            'assets/flare/TasksIcon.flr',
+            label: 'Tasks',
             tap: () => _showPageIndex(1),
             isSelected: _index == 1,
             iconSize: const Size(24, 25),
@@ -93,8 +92,7 @@ class GameScreenState extends State<GameScreen> {
         controller: _controller,
         children: [
           CharacterPoolPage(),
-          TaskPoolPage(),
-          StatsPage(),
+          TaskPoolPage()
         ],
       ),
     );
@@ -132,7 +130,7 @@ class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
   /// If that's the case, we simply pop to the last frame of the animation
   /// instead of playing it through.
   /// This prevents all of the bottom navigation buttons from playing an
-  /// "intro" animation when the screen is first displayed.
+  /// 'intro' animation when the screen is first displayed.
   bool _isFirstShow = true;
 
   @override
@@ -149,7 +147,7 @@ class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
       child: Material(
         type: MaterialType.canvas,
         color: widget.isSelected
-            ? const Color.fromRGBO(48, 48, 59, 1.0)
+            ? const Color.fromRGBO(48, 48, 59, 1)
             : contentColor,
         child: InkWell(
           onTap: widget.tap,
@@ -169,22 +167,22 @@ class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
                           shouldClip: false,
                           fit: BoxFit.contain,
                           snapToEnd: _isFirstShow,
-                          animation: widget.isSelected ? "active" : "inactive"),
+                          animation: widget.isSelected ? 'active' : 'inactive'),
                     ),
                   ),
                   Positioned(
-                    top: -20.0,
-                    right: -15.0,
+                    top: -20,
+                    right: -15,
                     child: widget.hasNotification
                         ? const SizedBox(
                             width: 31,
                             height: 31,
                             child: FlareActor(
-                                "assets/flare/NotificationIcon.flr",
+                                'assets/flare/NotificationIcon.flr',
                                 alignment: Alignment.center,
                                 shouldClip: false,
                                 fit: BoxFit.contain,
-                                animation: "appear"),
+                                animation: 'appear'),
                           )
                         : Container(),
                   )
@@ -192,7 +190,7 @@ class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: 5.0,
+                    top: 5,
                     bottom: MediaQuery.of(context).padding.bottom + 10),
                 child: Text(
                   widget.label,

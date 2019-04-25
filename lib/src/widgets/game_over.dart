@@ -9,11 +9,11 @@ import '../style.dart';
 import 'buttons/wide_button.dart';
 
 var _starGreeting = [
-  "You tried.",
-  "Solid effort!",
-  "Delightful!",
-  "Spectacular!!",
-  "PERFECTION!!!"
+  'You tried.',
+  'Solid effort!',
+  'Delightful!',
+  'Spectacular!!',
+  'PERFECTION!!!'
 ];
 
 /// A super simple Flare Controller that mixes the star value
@@ -29,9 +29,7 @@ class _MixStarValueController extends FlareController {
   @override
   void initialize(FlutterActorArtboard artboard) {
     ActorAnimation starsAnimation = artboard.getAnimation(stars.toString());
-    if (starsAnimation != null) {
-      starsAnimation.apply(0.0, artboard, 1.0);
-    }
+      starsAnimation?.apply(0, artboard, 1);
   }
 
   @override
@@ -57,7 +55,7 @@ class _GameOverState extends State<GameOver> {
   void _backToMainMenu() {
     widget.world.reset();
     Navigator.popUntil(context, (route) {
-      return route.settings.name == "/";
+      return route.settings.name == '/';
     });
   }
 
@@ -69,13 +67,13 @@ class _GameOverState extends State<GameOver> {
   @override
   Widget build(BuildContext context) {
     var stars = widget.world.company.starRating;
-    assert(stars > 0 && stars <= 4, "Stars must be between 0 and 5.");
+    assert(stars > 0 && stars <= 4, 'Stars must be between 0 and 5.');
 
     var successMessage = _starGreeting[stars];
 
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15),
         child: Material(
           child: Container(
             padding: const EdgeInsets.all(15),
@@ -84,10 +82,10 @@ class _GameOverState extends State<GameOver> {
               boxShadow: [
                 BoxShadow(
                     color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0.0, 100.0),
-                    blurRadius: 100.0),
+                    offset: const Offset(0, 100),
+                    blurRadius: 100),
               ],
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: Colors.white,
             ),
             child: Column(
@@ -101,10 +99,10 @@ class _GameOverState extends State<GameOver> {
                     height: 104,
                     child: Transform(
                       transform: Matrix4.translationValues(0, -28, 0),
-                      child: FlareActor("assets/flare/Joy.flr",
+                      child: FlareActor('assets/flare/Joy.flr',
                           animation: stars < 2
-                              ? "sad"
-                              : stars < 3 ? "neutral" : "happy"),
+                              ? 'sad'
+                              : stars < 3 ? 'neutral' : 'happy'),
                     ),
                   ),
                 ),
@@ -112,9 +110,9 @@ class _GameOverState extends State<GameOver> {
                   width: 248,
                   height: 46,
                   child: FlareActor(
-                    "assets/flare/Stars.flr",
+                    'assets/flare/Stars.flr',
                     shouldClip: false,
-                    animation: "Build",
+                    animation: 'Build',
                     controller: _starController,
                   ),
                 ),
@@ -122,38 +120,35 @@ class _GameOverState extends State<GameOver> {
                 Text(successMessage, style: contentLargeStyle),
                 const SizedBox(height: 19),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       children: [
-                        const TextSpan(text: "Your ", style: contentStyle),
+                        const TextSpan(text: 'Your ', style: contentStyle),
                         primaryCharacteristic,
-                        const TextSpan(text: " app with ", style: contentStyle),
+                        const TextSpan(text: ' app with ', style: contentStyle),
                         secondaryCharacteristic,
                         const TextSpan(
-                            text: " shipped to ", style: contentStyle),
+                            text: ' shipped to ', style: contentStyle),
                         TextSpan(
-                            text: "${widget.world.company.users.value} users",
+                            text: '${widget.world.company.users.value} users',
                             style: contentStyle.apply(
-                                fontFamily: "MontserratBold")),
+                                fontFamily: 'MontserratBold')),
                         const TextSpan(
-                            text: " and was rated ", style: contentStyle),
+                            text: ' and was rated ', style: contentStyle),
                         TextSpan(
-                            text: "${stars+1}/5 stars",
+                            text: '${stars+1}/5 stars',
                             style: contentStyle.apply(
-                                fontFamily: "MontserratBold")),
+                                fontFamily: 'MontserratBold')),
                         const TextSpan(
-                            text: " by ItsAllWidgets Magazine!",
+                            text: ' by ItsAllWidgets Magazine!',
                             style: contentStyle),
                       ],
                     ),
                   ),
                 ),
-                // const Text(
-                //     "Your purple app with dinosaur mascot shipped to 6.1 millions users and was rated 4/5 stars by ItsAllWidgets Magazine!",
-                //     style: contentStyle),
-                const SizedBox(height: 26.0),
+                const SizedBox(height: 26),
                 SizedBox(
                   height: 50,
                   child: Row(
@@ -161,11 +156,11 @@ class _GameOverState extends State<GameOver> {
                       Expanded(
                         child: WideButton(
                           onPressed: _backToMainMenu,
-                          paddingTweak: const EdgeInsets.only(right: -7.0),
-                          background: const Color.fromRGBO(84, 114, 239, 1.0),
+                          paddingTweak: const EdgeInsets.only(right: -7),
+                          background: const Color.fromRGBO(84, 114, 239, 1),
                           shadowColor: const Color.fromRGBO(84, 114, 244, 0.25),
                           child: Text(
-                            "MAIN MENU",
+                            'MAIN MENU',
                             style: buttonTextStyle.apply(color: Colors.white),
                           ),
                         ),
@@ -174,11 +169,11 @@ class _GameOverState extends State<GameOver> {
                       Expanded(
                         child: WideButton(
                           onPressed: () => _playAgain(context),
-                          paddingTweak: const EdgeInsets.only(right: -7.0),
-                          background: const Color.fromRGBO(236, 41, 117, 1.0),
+                          paddingTweak: const EdgeInsets.only(right: -7),
+                          background: const Color.fromRGBO(236, 41, 117, 1),
                           shadowColor: const Color.fromRGBO(244, 84, 84, 0.25),
                           child: Text(
-                            "PLAY AGAIN",
+                            'PLAY AGAIN',
                             style: buttonTextStyle.apply(color: Colors.white),
                           ),
                         ),
@@ -197,13 +192,13 @@ class _GameOverState extends State<GameOver> {
   TextSpan get primaryCharacteristic {
     for (final task in widget.world.taskPool.archivedTasks) {
       switch (task.name) {
-        case "Green Theme":
+        case 'Green Theme':
           return TextSpan(
               text: 'green 🎨', style: contentStyle.apply(color: Colors.green));
-        case "Red Theme":
+        case 'Red Theme':
           return TextSpan(
               text: 'red 🎨', style: contentStyle.apply(color: Colors.red));
-        case "Blue Theme":
+        case 'Blue Theme':
           return TextSpan(
               text: 'blue 🎨', style: contentStyle.apply(color: Colors.blue));
       }
@@ -214,18 +209,18 @@ class _GameOverState extends State<GameOver> {
   TextSpan get secondaryCharacteristic {
     for (final task in widget.world.taskPool.archivedTasks) {
       switch (task.name) {
-        case "Dinosaur Mascot & Icon":
+        case 'Dinosaur Mascot & Icon':
           return const TextSpan(
               text: 'dinosaur 🦖 mascot', style: contentStyle);
-        case "Bird Mascot & Icon":
+        case 'Bird Mascot & Icon':
           return const TextSpan(text: 'bird 🐦 mascot', style: contentStyle);
-        case "Cat Mascot & Icon":
+        case 'Cat Mascot & Icon':
           return const TextSpan(text: 'cat 🐈 mascot', style: contentStyle);
-        case "Retro Design":
+        case 'Retro Design':
           return const TextSpan(text: 'retro 🕹️ design', style: contentStyle);
-        case "Sci-Fi Design":
+        case 'Sci-Fi Design':
           return const TextSpan(text: 'sci-fi 👽 design', style: contentStyle);
-        case "Mainstream Design":
+        case 'Mainstream Design':
           return const TextSpan(
               text: 'mainstream 💻 design', style: contentStyle);
       }

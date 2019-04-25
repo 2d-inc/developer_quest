@@ -57,7 +57,7 @@ class TaskListItem extends StatelessWidget {
       workItem: task,
       isExpanded: isExpanded,
       handleTap: () => _handleTap(task, context),
-      progressColor: const Color.fromRGBO(0, 152, 255, 1.0),
+      progressColor: const Color.fromRGBO(0, 152, 255, 1),
       heading: task.state != TaskState.rewarded
           ? TaskHeader(task.blueprint)
           : const Icon(Icons.check_circle, color: disabledColor),
