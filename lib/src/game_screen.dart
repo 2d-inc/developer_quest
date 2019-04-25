@@ -90,10 +90,7 @@ class GameScreenState extends State<GameScreen> {
       ),
       body: PageView(
         controller: _controller,
-        children: [
-          CharacterPoolPage(),
-          TaskPoolPage()
-        ],
+        children: [CharacterPoolPage(), TaskPoolPage()],
       ),
     );
   }
@@ -190,8 +187,7 @@ class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    top: 5,
-                    bottom: MediaQuery.of(context).padding.bottom + 10),
+                    top: 5, bottom: MediaQuery.of(context).padding.bottom + 10),
                 child: Text(
                   widget.label,
                   style: buttonTextStyle.apply(

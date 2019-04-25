@@ -16,8 +16,7 @@ class CharacterPoolPage extends StatelessWidget {
     return Stack(
       children: [
         GridView.builder(
-          padding:
-              const EdgeInsets.only(left: 15, right: 15, bottom: 128),
+          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 128),
           itemCount: characterPool.children.length,
           gridDelegate: _gridStructure,
           itemBuilder: (context, index) =>

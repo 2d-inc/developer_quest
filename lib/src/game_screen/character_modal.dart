@@ -32,8 +32,8 @@ class CharacterModal extends StatelessWidget {
       },
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(
-              left: 20, right: 20, top: 10, bottom: 10),
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minWidth: 280),
             child: Column(mainAxisSize: MainAxisSize.min, children: [

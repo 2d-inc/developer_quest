@@ -29,7 +29,7 @@ class _MixStarValueController extends FlareController {
   @override
   void initialize(FlutterActorArtboard artboard) {
     ActorAnimation starsAnimation = artboard.getAnimation(stars.toString());
-      starsAnimation?.apply(0, artboard, 1);
+    starsAnimation?.apply(0, artboard, 1);
   }
 
   @override
@@ -138,7 +138,7 @@ class _GameOverState extends State<GameOver> {
                         const TextSpan(
                             text: ' and was rated ', style: contentStyle),
                         TextSpan(
-                            text: '${stars+1}/5 stars',
+                            text: '${stars + 1}/5 stars',
                             style: contentStyle.apply(
                                 fontFamily: 'MontserratBold')),
                         const TextSpan(

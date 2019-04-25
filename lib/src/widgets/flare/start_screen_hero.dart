@@ -121,8 +121,7 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
 
     Offset start = Offset(
         -1 * _character.origin[0] * _character.width - paddingArtboardSpace,
-        -1 * _character.origin[1] * _character.height +
-            _character.height / 2);
+        -1 * _character.origin[1] * _character.height + _character.height / 2);
     Offset end = Offset(start.dx, start.dy + height);
     Paint paint = Paint()
       ..shader = ui.Gradient.linear(start, end, colors, stops)
