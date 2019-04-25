@@ -17,6 +17,8 @@ class World extends AspectContainer {
   static Duration tickDuration = const Duration(milliseconds: 200);
 
   Timer _timer;
+  double _joyAccumulation = 0;
+  Timer _joyResetTimer;
 
   final CharacterPool characterPool;
 
@@ -39,6 +41,7 @@ class World extends AspectContainer {
   bool get isRunning => _isRunning;
 
   void pause() {
+    _joyResetTimer?.cancel();
     _timer.cancel();
     _isRunning = false;
     markDirty();
@@ -56,7 +59,7 @@ class World extends AspectContainer {
 
   /// TODO: Feature joy should probably depend on the feature
   ///       (might be another stat for the feature/task).
-  static const double featureJoy = 5.0;
+  static const double featureJoy = 5;
 
   void shipFeature(Task task) {
     // Todo: modify these values by how quickly the user completed the task
@@ -65,15 +68,29 @@ class World extends AspectContainer {
     // Give some joy for the new feature, at least for a while.
     company.joy.number += featureJoy;
 
-    Timer(newFeatureJoyDuration, () {
-      company.joy.number -= featureJoy;
+    _joyAccumulation += featureJoy;
+    _joyResetTimer?.cancel();
+    _joyResetTimer = Timer(newFeatureJoyDuration, () {
+      company.joy.number -= _joyAccumulation;
+      _joyResetTimer = null;
+      _joyAccumulation = 0;
     });
 
     company.award(task.blueprint.userReward, task.blueprint.coinReward);
   }
 
+  void reset() {
+    _joyResetTimer?.cancel();
+    _joyAccumulation = 0;
+    company.reset();
+    characterPool.reset();
+    taskPool.reset();
+    start();
+  }
+
   @override
   void dispose() {
+    _joyResetTimer?.cancel();
     if (_timer.isActive) {
       _timer.cancel();
     }

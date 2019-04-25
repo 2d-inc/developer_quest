@@ -45,7 +45,7 @@ class TaskPickerItem extends StatelessWidget {
           i > 0 && isLast && !hasNextSibling ? _halfLineHeight : _height;
       lineWidgets.add(Positioned.fromRect(
         rect: Rect.fromLTWH(
-            _leftPadding + i * _lineSpacing, 0.0, _lineThickness, lineHeight),
+            _leftPadding + i * _lineSpacing, 0, _lineThickness, lineHeight),
         child: SizedOverflowBox(
           size: const Size.fromHeight(0),
           child: Container(color: treeLineColor),
@@ -93,7 +93,7 @@ class TaskPickerItem extends StatelessWidget {
                     boxShadow: const [
                       BoxShadow(
                           color: Color.fromRGBO(0, 0, 0, 0.03),
-                          offset: Offset(0.0, 10.0),
+                          offset: Offset(0, 10),
                           blurRadius: 10,
                           spreadRadius: 0),
                     ],

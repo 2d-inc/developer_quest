@@ -17,12 +17,12 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Padding(
-      padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
+      padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
       child: Row(
         children: [
           Expanded(
             child: AddTaskButton(
-              "Tasks",
+              'Tasks',
               key: const Key('add_task'),
               count: taskPool.availableTasks.length,
               icon: Icons.add,
@@ -39,10 +39,10 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
               },
             ),
           ),
-          const SizedBox(width: 10.0),
+          const SizedBox(width: 10),
           Expanded(
             child: AddTaskButton(
-              "Bugs",
+              'Bugs',
               count: taskPool.availableBugs.length,
               icon: Icons.bug_report,
               color: const Color(0xffeb2875),
@@ -64,10 +64,10 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 55.0;
+  double get maxExtent => 55;
 
   @override
-  double get minExtent => 55.0;
+  double get minExtent => 55;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

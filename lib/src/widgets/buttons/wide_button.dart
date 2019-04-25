@@ -5,6 +5,7 @@ class WideButton extends StatelessWidget {
   final Key buttonKey;
   final Widget child;
   final Color background;
+  final Color shadowColor;
   @required
   final VoidCallback onPressed;
 
@@ -15,14 +16,25 @@ class WideButton extends StatelessWidget {
     this.child,
     this.onPressed,
     this.background,
-    this.paddingTweak = const EdgeInsets.all(0.0),
+    this.paddingTweak = const EdgeInsets.all(0),
     this.buttonKey,
+    this.shadowColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
+    return Container(
       constraints: const BoxConstraints(minWidth: double.infinity),
+      decoration: shadowColor != null
+          ? BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: shadowColor,
+                    offset: const Offset(0, 10),
+                    blurRadius: 10),
+              ],
+            )
+          : null,
       child: FlatButton(
           key: buttonKey,
           padding: EdgeInsets.only(
@@ -31,7 +43,7 @@ class WideButton extends StatelessWidget {
               top: 11 + paddingTweak.top,
               bottom: 11 + paddingTweak.bottom),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(9.0),
+            borderRadius: BorderRadius.circular(9),
           ),
           onPressed: onPressed,
           color: background,
