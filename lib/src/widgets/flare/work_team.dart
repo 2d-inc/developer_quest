@@ -1,5 +1,5 @@
-import 'package:dev_rpg/src/game_screen/npc_style.dart';
-import 'package:dev_rpg/src/shared_state/game/npc.dart';
+import 'package:dev_rpg/src/game_screen/character_style.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 
 /// Widget that shows the team that is actively working on a work item.
 class WorkTeam extends StatefulWidget {
-  final List<Npc> team;
+  final List<Character> team;
   final List<Skill> skillsNeeded;
   final bool isComplete;
   const WorkTeam({this.skillsNeeded, this.team, this.isComplete});
@@ -15,10 +15,10 @@ class WorkTeam extends StatefulWidget {
   _WorkTeamState createState() => _WorkTeamState();
 }
 
-/// A helper to store the animation state to display for the Npc
+/// A helper to store the animation state to display for the Character
 /// in the [WorkTeam] widget.
 class _WorkTeamMember {
-  final NpcStyle style;
+  final CharacterStyle style;
   HiringBustState state;
 
   _WorkTeamMember(this.style, this.state);
@@ -28,17 +28,17 @@ class _WorkTeamState extends State<WorkTeam> {
   final List<_WorkTeamMember> _workTeam = [];
   @override
   void didUpdateWidget(WorkTeam oldWidget) {
-    setState(updateNpcStyles);
+    setState(updateCharacterStyles);
     super.didUpdateWidget(oldWidget);
   }
 
   @override
   void initState() {
-    updateNpcStyles();
+    updateCharacterStyles();
     super.initState();
   }
 
-  void updateNpcStyles() {
+  void updateCharacterStyles() {
     if (widget?.team == null) {
       if (widget.isComplete) {
         for (final _WorkTeamMember member in _workTeam) {
@@ -48,8 +48,8 @@ class _WorkTeamState extends State<WorkTeam> {
       return;
     }
     _workTeam.clear();
-    for (final Npc npc in widget.team) {
-      NpcStyle style = NpcStyle.from(npc);
+    for (final Character character in widget.team) {
+      CharacterStyle style = CharacterStyle.from(character);
       if (style == null) {
         continue;
       }
@@ -58,7 +58,7 @@ class _WorkTeamState extends State<WorkTeam> {
           style,
           widget.isComplete
               ? HiringBustState.success
-              : npc.contributes(widget.skillsNeeded)
+              : character.contributes(widget.skillsNeeded)
                   ? HiringBustState.working
                   : HiringBustState.hired));
     }
@@ -81,8 +81,8 @@ class _WorkTeamState extends State<WorkTeam> {
               ),
               child: HiringBust(
                 filename: member.style.flare,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
                 hiringState: member.state,
                 isPlaying: true,
               ));

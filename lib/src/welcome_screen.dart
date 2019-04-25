@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dev_rpg/src/game_screen/npc_style.dart';
+import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
@@ -15,7 +15,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  NpcStyle hero;
+  CharacterStyle hero;
   Timer _swapHeroTimer;
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   void chooseHero() {
     setState(() {
-      hero = NpcStyle.random();
+      hero = CharacterStyle.random();
     });
     _swapHeroTimer?.cancel();
     _swapHeroTimer = Timer(const Duration(seconds: 10), chooseHero);
@@ -37,6 +37,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _swapHeroTimer?.cancel();
   }
 
+  static const double _horizontalPadding = 33.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,18 +48,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top + 83.0,
               bottom: 56.0,
-              left: 33.0,
-              right: 33.0),
+              left: _horizontalPadding,
+              right: _horizontalPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: StartScreenHero(
-                  filename: hero.flare,
-                  alignment: Alignment.bottomCenter,
-                  fit: BoxFit.cover,
-                  gradient: contentColor,
-                ),
+                    filename: hero.flare,
+                    alignment: Alignment.bottomCenter,
+                    fit: BoxFit.cover,
+                    gradient: contentColor,
+                    horizontalPadding: _horizontalPadding),
               ),
               const Text(
                 "FLUTTER\nDEVELOPER QUEST",
@@ -100,13 +102,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     onPressed: () async {
                       // Stop the hero cycling.
                       _swapHeroTimer?.cancel();
-                      await navigateToSphinxMiniGame(context);
+                      await Navigator.of(context).pushNamed('/about');
                       // Back to cycling.
                       chooseHero();
                     },
                     background: Colors.white.withOpacity(0.15),
                     icon: Icons.settings,
-                    label: "Settings"),
+                    label: "About"),
               )
             ],
           ),

@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui' as ui;
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_particles.dart';
@@ -93,7 +92,7 @@ class HiringBustRenderObject extends FlareRenderBox {
   ActorAnimation _idleAnimation;
   double _idleTime = 0.0;
   Color particleColor;
-  bool playIdleAnimation;
+  bool playIdleAnimation = false;
 
   ActorAnimation _bust;
 
@@ -128,6 +127,8 @@ class HiringBustRenderObject extends FlareRenderBox {
 
     _actor?.desaturate = _hiringState == HiringBustState.locked ||
         _hiringState == HiringBustState.available;
+    advance(0.0);
+    markNeedsPaint();
   }
 
   double get shadowWidth => min(size.width, size.height) * 0.85;
@@ -177,8 +178,11 @@ class HiringBustRenderObject extends FlareRenderBox {
             offset.dy + size.height / 2.0 - clipDiameter / 2.0) &
         Size(clipDiameter, clipDiameter));
 
-    clip.addRect(const Offset(0.0, 0.0) &
-        Size(ui.window.physicalSize.width, offset.dy + size.height / 1.25));
+    // There's something about using a large clipping area that seems to
+    // negatively affect performance. Keeping this here as reference for the
+    // intended look of the app.
+    // clip.addRect(const Offset(0.0, 0.0) &
+    //     Size(ui.window.physicalSize.width, offset.dy + size.height / 1.25));
     canvas.clipPath(clip);
   }
 

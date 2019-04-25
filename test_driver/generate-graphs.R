@@ -27,6 +27,26 @@ x <- barplot(t(build95$build), xlim = c(0, max(build99$build)), density = len:1 
 title("Build times worst case")
 dev.off()
 
+# CPU time chart
+pdf("test_driver/cpu_time.pdf", width = 4, height = 10)
+stats <- read.csv("test_driver/perf_stats.tsv", sep = "\t")
+mean_with_moe <- function(x) { 
+  m <- mean(x)
+  std_dev <- sd(x)/sqrt(length(x))
+  crit_val <- qt(0.975, df = length(x) - 1)
+  moe <- std_dev * crit_val
+  df <- data.frame(m, m - moe, m + moe)
+  colnames(df) <- c("mean", "lower", "upper")
+  return(df)
+}
+m <- aggregate(expiredTasksDuration ~ description, stats, function(x) mean_with_moe(x)$mean) / 1000
+low <- aggregate(expiredTasksDuration ~ description, stats, function(x) mean_with_moe(x)$lower)  / 1000
+high <- aggregate(expiredTasksDuration ~ description, stats, function(x) mean_with_moe(x)$upper)  / 1000
+x <- barplot(m$expiredTasksDuration, ylim = c(0, max(high$expiredTasksDuration) * 1.1), density = 5, names.arg = m$description, ylab = "CPU time (ms)")
+arrows(x, low$expiredTasksDuration, x, high$expiredTasksDuration, length=0.10, angle=90, code=3)
+title("CPU time (lower is better)")
+dev.off()
+
 # Build durations
 pdf("test_driver/builds.pdf", width = 10, height = 10)
 par(mar = c(15,6,4,2)+0.1, las = 2)

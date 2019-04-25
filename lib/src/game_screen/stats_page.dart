@@ -5,8 +5,8 @@ class StatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Center(
-        child: const Text(
+      child: const Center(
+        child: Text(
           "NOT IMPLEMENTED",
           style: TextStyle(color: Colors.white),
         ),
