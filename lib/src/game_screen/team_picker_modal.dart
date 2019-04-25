@@ -185,7 +185,7 @@ class TeamPickerItem extends StatelessWidget {
                 Expanded(
                   child: HiringBust(
                     filename: characterStyle.flare,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     alignment: Alignment.bottomCenter,
                     hiringState: isDisabled
                         ? HiringBustState.locked
