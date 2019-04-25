@@ -14,31 +14,34 @@ import '../game_over.dart';
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
+	
   bool _handleTap(Task task, BuildContext context) {
+
     if (task.state == TaskState.completed) {
       task.shipFeature();
       switch (task.blueprint.miniGame) {
-        // case MiniGame.none:
-        //   break;
-        // case MiniGame.chomp:
-        //   break;
-        // case MiniGame.sphinx:
-        default:
+        case MiniGame.none:
+          break;
+        case MiniGame.chomp:
+          break;
+        case MiniGame.sphinx:
           {
             // Time to face the Sphinx, game is effectively over.
             var world = Provider.of<World>(context);
             world.pause();
 
-            // Navigator.of(context)
-            //     .pushNamed(SphinxScreen.miniGameRouteName)
-            //     .then((_) {
-            // Escaped the Sphinx.
-            showDialog<void>(
-                context: context,
-                builder: (BuildContext context) {
-                  return GameOver(world);
-                });
-            // });
+            Navigator.of(context)
+                .pushNamed(SphinxScreen.miniGameRouteName)
+                .then((_) {
+					print("ESCAPED IT?");
+              // Escaped the Sphinx.
+              showDialog<void>(
+                  barrierDismissible: false,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return GameOver(world);
+                  });
+            });
             break;
           }
       }

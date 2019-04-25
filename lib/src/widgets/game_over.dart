@@ -8,6 +8,14 @@ import 'package:flutter/material.dart';
 import '../style.dart';
 import 'buttons/wide_button.dart';
 
+var _starGreeting = [
+  "You tried.",
+  "Solid effort!",
+  "Delightful!",
+  "Spectacular!!",
+  "PERFECTION!!!"
+];
+
 /// A super simple Flare Controller that mixes the star value
 /// animation on top of our Build animation
 class _MixStarValueController extends FlareController {
@@ -41,7 +49,8 @@ class _GameOverState extends State<GameOver> {
   _MixStarValueController _starController;
   @override
   void initState() {
-    _starController = _MixStarValueController(4);
+    _starController =
+        _MixStarValueController(widget.world.company.starRating + 1);
     super.initState();
   }
 
@@ -59,6 +68,11 @@ class _GameOverState extends State<GameOver> {
 
   @override
   Widget build(BuildContext context) {
+    var stars = widget.world.company.starRating;
+    assert(stars > 0 && stars <= 4, "Stars must be between 0 and 5.");
+
+    var successMessage = _starGreeting[stars];
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -87,8 +101,10 @@ class _GameOverState extends State<GameOver> {
                     height: 104,
                     child: Transform(
                       transform: Matrix4.translationValues(0, -28, 0),
-                      child: const FlareActor("assets/flare/Joy.flr",
-                          animation: "happy"),
+                      child: FlareActor("assets/flare/Joy.flr",
+                          animation: stars < 2
+                              ? "sad"
+                              : stars < 3 ? "neutral" : "happy"),
                     ),
                   ),
                 ),
@@ -103,11 +119,40 @@ class _GameOverState extends State<GameOver> {
                   ),
                 ),
                 const SizedBox(height: 23),
-                Text("\"Spectacular!!!\"", style: contentLargeStyle),
+                Text(successMessage, style: contentLargeStyle),
                 const SizedBox(height: 19),
-                Text(
-                    "Your purple app with dinosaur mascot shipped to 6.1 millions users and was rated 4/5 stars by ItsAllWidgets Magazine!",
-                    style: contentStyle),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(text: "Your ", style: contentStyle),
+                        primaryCharacteristic,
+                        const TextSpan(text: " app with ", style: contentStyle),
+                        secondaryCharacteristic,
+                        const TextSpan(
+                            text: " shipped to ", style: contentStyle),
+                        TextSpan(
+                            text: "${widget.world.company.users.value} users",
+                            style: contentStyle.apply(
+                                fontFamily: "MontserratBold")),
+                        const TextSpan(
+                            text: " and was rated ", style: contentStyle),
+                        TextSpan(
+                            text: "$stars/5 stars",
+                            style: contentStyle.apply(
+                                fontFamily: "MontserratBold")),
+                        const TextSpan(
+                            text: " by ItsAllWidgets Magazine!",
+                            style: contentStyle),
+                      ],
+                    ),
+                  ),
+                ),
+                // const Text(
+                //     "Your purple app with dinosaur mascot shipped to 6.1 millions users and was rated 4/5 stars by ItsAllWidgets Magazine!",
+                //     style: contentStyle),
                 const SizedBox(height: 26.0),
                 SizedBox(
                   height: 50,
@@ -147,5 +192,44 @@ class _GameOverState extends State<GameOver> {
         ),
       ),
     );
+  }
+
+  TextSpan get primaryCharacteristic {
+    for (final task in widget.world.taskPool.archivedTasks) {
+      switch (task.name) {
+        case "Green Theme":
+          return TextSpan(
+              text: 'green 🎨', style: contentStyle.apply(color: Colors.green));
+        case "Red Theme":
+          return TextSpan(
+              text: 'red 🎨', style: contentStyle.apply(color: Colors.red));
+        case "Blue Theme":
+          return TextSpan(
+              text: 'blue 🎨', style: contentStyle.apply(color: Colors.blue));
+      }
+    }
+    return const TextSpan(text: 'basic 😶', style: contentStyle);
+  }
+
+  TextSpan get secondaryCharacteristic {
+    for (final task in widget.world.taskPool.archivedTasks) {
+      switch (task.name) {
+        case "Dinosaur Mascot & Icon":
+          return const TextSpan(
+              text: 'dinosaur 🦖 mascot', style: contentStyle);
+        case "Bird Mascot & Icon":
+          return const TextSpan(text: 'bird 🐦 mascot', style: contentStyle);
+        case "Cat Mascot & Icon":
+          return const TextSpan(text: 'cat 🐈 mascot', style: contentStyle);
+        case "Retro Design":
+          return const TextSpan(text: 'retro 🕹️ design', style: contentStyle);
+        case "Sci-Fi Design":
+          return const TextSpan(text: 'sci-fi 👽 design', style: contentStyle);
+        case "Mainstream Design":
+          return const TextSpan(
+              text: 'mainstream 💻 design', style: contentStyle);
+      }
+    }
+    return const TextSpan(text: 'simple 😐 design', style: contentStyle);
   }
 }

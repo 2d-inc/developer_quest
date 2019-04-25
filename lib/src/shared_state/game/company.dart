@@ -14,6 +14,15 @@ class Company extends Aspect {
 
   final StatValue<int> coin = StatValue<int>(_initialCoin);
 
+  double maxUsers = 0;
+
+  /// Star rating out of 5. Based on users lost, which is a consequence of
+  /// bugs not resolved in a timely manner.
+  /// Since it's inevitable to lose some, we consider losing 5% 
+  /// exceptional.
+  int get starRating =>
+      ((users.number / maxUsers / 0.95).clamp(0.0, 1.0) * 4).round();
+
   void award(int newUsers, int coinReward) {
     users.number += newUsers;
     coin.number += coinReward;
@@ -38,11 +47,13 @@ class Company extends Aspect {
     }
 
     users.number = max(0.0, users.number + joy.number);
+    maxUsers = max(maxUsers, users.number);
   }
 
   void reset() {
     joy.number = 0;
     users.number = 0;
+    maxUsers = 0;
     coin.number = _initialCoin;
   }
 }

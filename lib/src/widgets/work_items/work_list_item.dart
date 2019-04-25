@@ -43,9 +43,10 @@ class WorkListItem extends StatelessWidget {
       );
 
   Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
-    if (handleTap != null && handleTap()) {
+    if ((handleTap != null && handleTap()) || workItem.isComplete) {
       return;
     }
+	
     var characters = await showModalBottomSheet<Set<Character>>(
       context: context,
       builder: (context) => TeamPickerModal(workItem),
