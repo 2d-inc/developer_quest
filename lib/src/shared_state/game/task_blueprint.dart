@@ -2,6 +2,8 @@ import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_prerequisite.dart';
 import 'package:meta/meta.dart';
 
+enum MiniGame { none, chomp, sphinx }
+
 /// A blueprint of a task.
 ///
 /// This class is immutable. Put runtime state into [Task].
@@ -19,6 +21,8 @@ class TaskBlueprint implements Prerequisite {
 
   final int coinReward;
 
+  final MiniGame miniGame;
+
   /// When sorting several blueprints, the ones with higher priority
   /// come first. This is `0` by default.
   final int priority;
@@ -33,7 +37,8 @@ class TaskBlueprint implements Prerequisite {
       this.userReward = 100,
       this.coinReward = 80,
       this.priority = 0,
-      this.mutuallyExclusive = const []})
+      this.mutuallyExclusive = const [],
+      this.miniGame = MiniGame.none})
       : assert(name != null),
         assert(difficulty != null),
         assert(requirements != null),
