@@ -7,11 +7,12 @@ import 'package:intl/intl.dart';
 /// The company the user is playing on behalf of.
 /// The company owns resources like experience and coin.
 class Company extends Aspect {
+  static const int _initialCoin = 540;
   final StatValue<double> joy = StatValue<double>(0);
 
   final StatValue<double> users = StatValue<double>(0);
 
-  final StatValue<int> coin = StatValue<int>(540);
+  final StatValue<int> coin = StatValue<int>(_initialCoin);
 
   void award(int newUsers, int coinReward) {
     users.number += newUsers;
@@ -37,6 +38,12 @@ class Company extends Aspect {
     }
 
     users.number = max(0.0, users.number + joy.number);
+  }
+
+  void reset() {
+    joy.number = 0;
+    users.number = 0;
+    coin.number = _initialCoin;
   }
 }
 

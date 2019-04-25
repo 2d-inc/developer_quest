@@ -127,9 +127,9 @@ class _BottomNavigationButton extends StatefulWidget {
 }
 
 class __BottomNavigationButtonState extends State<_BottomNavigationButton> {
-  /// We use this variable as a way to determine if this is the first time the 
+  /// We use this variable as a way to determine if this is the first time the
   /// button is being shown.
-  /// If that's the case, we simply pop to the last frame of the animation 
+  /// If that's the case, we simply pop to the last frame of the animation
   /// instead of playing it through.
   /// This prevents all of the bottom navigation buttons from playing an
   /// "intro" animation when the screen is first displayed.

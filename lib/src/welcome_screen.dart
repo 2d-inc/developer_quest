@@ -19,16 +19,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Timer _swapHeroTimer;
   @override
   void initState() {
-    chooseHero();
+    _chooseHero();
     super.initState();
   }
 
-  void chooseHero() {
+  void _chooseHero() {
     setState(() {
       hero = CharacterStyle.random();
     });
+    _startTimer();
+  }
+
+  void _startTimer() {
     _swapHeroTimer?.cancel();
-    _swapHeroTimer = Timer(const Duration(seconds: 10), chooseHero);
+    _swapHeroTimer = Timer(const Duration(seconds: 10), _chooseHero);
   }
 
   @override
@@ -90,7 +94,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       _swapHeroTimer?.cancel();
                       await Navigator.of(context).pushNamed('/gameloop');
                       // Back to cycling.
-                      chooseHero();
+                      _startTimer();
                     },
                     background: hero.accent,
                     icon: Icons.chevron_right,
@@ -107,7 +111,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         SphinxScreen.miniGameRouteName,
                       );
                       // Back to cycling.
-                      chooseHero();
+                      _startTimer();
                     },
                     background: Colors.white.withOpacity(0.15),
                     icon: Icons.settings,
