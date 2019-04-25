@@ -31,7 +31,6 @@ class TaskListItem extends StatelessWidget {
             Navigator.of(context)
                 .pushNamed(SphinxScreen.miniGameRouteName)
                 .then((_) {
-              print("ESCAPED IT?");
               // Escaped the Sphinx.
               showDialog<void>(
                   barrierDismissible: false,
