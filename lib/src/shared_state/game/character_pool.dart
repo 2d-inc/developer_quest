@@ -8,10 +8,11 @@ import 'package:dev_rpg/src/shared_state/game/world.dart';
 class CharacterPool extends AspectContainer<Character> with ChildAspect {
   CharacterPool() {
     addAspects([
-      Character(
-          "jack", {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1}, true),
+      Character("jack", {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1},
+          customHiringCost: 220, costMultiplier: 2),
       Character("sourcerer",
-          {Skill.coding: 1, Skill.coordination: 1, Skill.engineering: 1}, true),
+          {Skill.coding: 1, Skill.coordination: 1, Skill.engineering: 1},
+          customHiringCost: 220, costMultiplier: 2),
       Character("refactorer", {Skill.coding: 1, Skill.engineering: 3}),
       Character("architect", {Skill.coding: 1, Skill.engineering: 4}),
       Character("hacker", {Skill.coding: 3, Skill.engineering: 1}),
@@ -22,6 +23,10 @@ class CharacterPool extends AspectContainer<Character> with ChildAspect {
       Character("tester", {Skill.coding: 2, Skill.coordination: 1}),
     ]);
   }
+
+  /// Get all the characters that have been hired and are part of the
+  /// player's team!
+  List<Character> get fullTeam => children.where((c) => c.isHired).toList();
 
   // get the set of available skills available with the player's hired team
   Set<Skill> get availableSkills => children
