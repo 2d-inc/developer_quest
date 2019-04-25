@@ -9,6 +9,8 @@ import 'package:dev_rpg/src/widgets/work_items/work_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../game_over.dart';
+
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
@@ -16,22 +18,28 @@ class TaskListItem extends StatelessWidget {
     if (task.state == TaskState.completed) {
       task.shipFeature();
       switch (task.blueprint.miniGame) {
-        case MiniGame.none:
-          break;
-        case MiniGame.chomp:
-          break;
-        case MiniGame.sphinx:
+        // case MiniGame.none:
+        //   break;
+        // case MiniGame.chomp:
+        //   break;
+        // case MiniGame.sphinx:
+        default:
           {
             // Time to face the Sphinx, game is effectively over.
             var world = Provider.of<World>(context);
             world.pause();
 
-            Navigator.of(context)
-                .pushNamed(SphinxScreen.miniGameRouteName)
-                .then((_) {
-              // Escaped the Sphinx.
-              // TODO: show the score.
-            });
+            // Navigator.of(context)
+            //     .pushNamed(SphinxScreen.miniGameRouteName)
+            //     .then((_) {
+            // Escaped the Sphinx.
+            showDialog<void>(
+                context: context,
+                builder: (BuildContext context) {
+                  return ChangeNotifierProvider<World>.value(
+                      notifier: world, child: GameOver());
+                });
+            // });
             break;
           }
       }
