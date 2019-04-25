@@ -1,4 +1,4 @@
-# dev_rpg
+# Developer Quest
 
 Become a tech lead, slay bugs, and don't get fired.
 
