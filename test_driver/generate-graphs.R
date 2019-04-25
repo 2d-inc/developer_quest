@@ -28,7 +28,7 @@ title("Build times worst case")
 dev.off()
 
 # CPU time chart
-pdf("test_driver/cpu_time.pdf", width = 4, height = 10)
+pdf("test_driver/cpu_time.pdf", width = 4, height = 8)
 stats <- read.csv("test_driver/perf_stats.tsv", sep = "\t")
 mean_with_moe <- function(x) { 
   m <- mean(x)
