@@ -55,7 +55,8 @@ class Character extends Aspect with ChildAspect {
   int get upgradeCost => !_isHired && customHiringCost != null
       ? customHiringCost
       : prowess.values.fold(0, (int previous, int value) => previous + value) *
-          (_isHired ? 110 : 220) * costMultiplier;
+          (_isHired ? 110 : 220) *
+          costMultiplier;
 
   bool get canUpgrade {
     Company company = get<World>().company;
