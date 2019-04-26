@@ -46,8 +46,12 @@ class CodeChomperScreen extends LeafRenderObjectWidget {
 class CodeChomperController extends ValueNotifier<Offset> {
   final List<String> lines = [];
   List<String> _templateLines;
+  bool _isGameOver;
+  bool get isGameOver => _isGameOver;
+
   bool addCode(Offset gloalPosition) {
     if (_templateLines.isEmpty) {
+      _isGameOver = true;
       return true;
     }
     lines.add(_templateLines.first);
@@ -145,7 +149,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   }
 
   @override
-  bool get isPlaying => attached;
+  bool get isPlaying => attached && !(controller?.isGameOver ?? false);
 
   @override
   bool get sizedByParent => true;

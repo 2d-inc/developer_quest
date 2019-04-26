@@ -6,6 +6,7 @@ import 'code_chomper_screen.dart';
 
 const Color chompBlue = Color(0xFF4CB3FF);
 const Color chompRed = Color(0xFFFC4B67);
+const Color chompBackground = Color.fromRGBO(38, 36, 87, 1);
 const TextStyle chompTextStyle =
     TextStyle(fontFamily: "SpaceMonoRegular", fontSize: 12, color: chompBlue);
 const double _keyDefaultWidth = 32;
@@ -19,6 +20,7 @@ class CodeChomper extends StatefulWidget {
 
 class _CodeChomperState extends State<CodeChomper> {
   final CodeChomperController chomperController = CodeChomperController();
+  bool _isGameOver = false;
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context);
@@ -95,64 +97,97 @@ class _CodeChomperState extends State<CodeChomper> {
                 ],
               ),
             ),
-            // Game renderer goes here
-            Expanded(child: CodeChomperScreen(chomperController)),
-
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTapDown: (details) {
-                if (chomperController.addCode(details.globalPosition)) {
-                  print("DONE!");
-                }
-              },
-              child: Container(
-                color: Colors.black.withOpacity(0.33),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5),
-                    _TapDecorationLine(),
-                    const SizedBox(height: 5),
-                    Text('TAP TO CODE',
-                        style: chompTextStyle.apply(fontSizeDelta: 8)),
-                    const SizedBox(height: 5),
-                    _TapDecorationLine(),
-                    const SizedBox(height: 10),
-                    _KeyboardRow(
-                      (media.size.width / (_keyDefaultWidth + _keyPadding))
-                          .floor(),
-                    ),
-                    _KeyboardRow(
-                      (media.size.width / (_keyDefaultWidth + _keyPadding))
-                              .floor() -
-                          1,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+            Expanded(
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Column(
                       children: [
-                        const _Key(_keyDefaultWidth * 1.25),
-                        const SizedBox(width: 5),
-                        _KeyboardRow(
-                          (media.size.width / (_keyDefaultWidth + _keyPadding))
-                                  .floor() -
-                              3,
+                        // Game renderer goes here
+                        Expanded(
+                          child: CodeChomperScreen(chomperController),
                         ),
-                        const SizedBox(width: 5),
-                        const _Key(_keyDefaultWidth * 1.25),
+
+                        GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTapDown: (details) {
+                            if (chomperController
+                                .addCode(details.globalPosition)) {
+                              setState(() {
+                                _isGameOver = true;
+                              });
+                            }
+                          },
+                          child: Container(
+                            color: Colors.black.withOpacity(0.33),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 5),
+                                _TapDecorationLine(),
+                                const SizedBox(height: 5),
+                                Text('TAP TO CODE',
+                                    style:
+                                        chompTextStyle.apply(fontSizeDelta: 8)),
+                                const SizedBox(height: 5),
+                                _TapDecorationLine(),
+                                const SizedBox(height: 10),
+                                _KeyboardRow(
+                                  (media.size.width /
+                                          (_keyDefaultWidth + _keyPadding))
+                                      .floor(),
+                                ),
+                                _KeyboardRow(
+                                  (media.size.width /
+                                              (_keyDefaultWidth + _keyPadding))
+                                          .floor() -
+                                      1,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const _Key(_keyDefaultWidth * 1.25),
+                                    const SizedBox(width: 5),
+                                    _KeyboardRow(
+                                      (media.size.width /
+                                                  (_keyDefaultWidth +
+                                                      _keyPadding))
+                                              .floor() -
+                                          3,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    const _Key(_keyDefaultWidth * 1.25),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _Key(media.size.width / 5),
+                                    const SizedBox(width: 2),
+                                    _Key(media.size.width / 2),
+                                    const SizedBox(width: 2),
+                                    _Key(media.size.width / 5),
+                                  ],
+                                ),
+                                SizedBox(height: devicePadding.bottom),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _Key(media.size.width / 5),
-                        const SizedBox(width: 2),
-                        _Key(media.size.width / 2),
-                        const SizedBox(width: 2),
-                        _Key(media.size.width / 5),
-                      ],
+                  ),
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      ignoring: !_isGameOver,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        color: _isGameOver
+                            ? chompBackground
+                            : chompBackground.withOpacity(0),
+                      ),
                     ),
-                    SizedBox(height: devicePadding.bottom),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
