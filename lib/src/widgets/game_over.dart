@@ -76,7 +76,7 @@ class _GameOverState extends State<GameOver> {
         padding: const EdgeInsets.all(15),
         child: Material(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: wideLayoutThreshold),
+            constraints: const BoxConstraints(maxWidth: modalMaxWidth),
             child: Container(
               padding: const EdgeInsets.all(15),
               constraints: const BoxConstraints(minWidth: double.infinity),

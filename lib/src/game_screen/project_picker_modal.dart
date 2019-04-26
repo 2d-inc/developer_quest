@@ -154,7 +154,7 @@ class ProjectPickerModal extends StatelessWidget {
     ];
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: wideLayoutThreshold),
+        constraints: const BoxConstraints(maxWidth: modalMaxWidth),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
