@@ -9,10 +9,15 @@ import 'package:dev_rpg/src/widgets/work_items/tasks_section_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+enum TaskPoolDisplay { all, inProgress, completed }
+
 /// Displays a list of the [Task]s the player has interacted with.
 /// These are [Task]s that have been added into the game, are being
 /// actively worked on, or have been completed and/or archived.
 class TaskPoolPage extends StatelessWidget {
+  final TaskPoolDisplay display;
+  const TaskPoolPage({this.display = TaskPoolDisplay.all});
+
   /// Builds a section of the task list with [title] and a list of [workItems].
   /// This returns slivers to be used in a [SliverList].
   void _buildSection(
@@ -38,23 +43,31 @@ class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromRGBO(241, 241, 241, 1),
+      color: display == TaskPoolDisplay.completed
+          ? const Color.fromRGBO(229, 229, 229, 1)
+          : const Color.fromRGBO(241, 241, 241, 1),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
-          var slivers = <Widget>[
-            SliverPersistentHeader(
-              pinned: false,
-              delegate: TasksButtonHeader(taskPool: taskPool),
-            ),
-          ];
-          _buildSection(slivers, 'IN PROGRESS', taskPool.workItems);
-          _buildSection(
-              slivers,
-              'COMPLETED',
-              taskPool.completedTasks
-                  .followedBy(taskPool.archivedTasks)
-                  .toList(growable: false));
+          var slivers = <Widget>[];
 
+          // Add the header only if we show the in progress tasks.
+          if (display == TaskPoolDisplay.all ||
+              display == TaskPoolDisplay.inProgress) {
+            slivers.add(
+              SliverPersistentHeader(
+                pinned: false,
+                delegate: TasksButtonHeader(taskPool: taskPool),
+              ),
+            );
+            _buildSection(slivers, 'IN PROGRESS', taskPool.workItems);
+          } else {
+            _buildSection(
+                slivers,
+                'COMPLETED',
+                taskPool.completedTasks
+                    .followedBy(taskPool.archivedTasks)
+                    .toList(growable: false));
+          }
           return CustomScrollView(slivers: slivers);
         },
       ),
