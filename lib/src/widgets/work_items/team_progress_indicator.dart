@@ -8,7 +8,7 @@ class TeamProgressIndicator extends StatelessWidget {
   const TeamProgressIndicator({
     this.task,
     this.isExpanded,
-    this.progressColor,
+    this.progressColor = const Color.fromRGBO(0, 152, 255, 1.0),
   });
 
   final Task task;
