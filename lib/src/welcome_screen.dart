@@ -65,7 +65,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: Container(
         alignment: Alignment.center,
         color: contentColor,
-        child: MediaQuery.of(context).size.width > wideLayoutThreshold
+        child: MediaQuery.of(context).size.width > modalMaxWidth
             ? _WelcomeScreenWide(
                 hero,
                 start: _pressStartGame,
@@ -98,7 +98,7 @@ class _WelcomeScreenSlim extends StatelessWidget {
           left: _horizontalPadding,
           right: _horizontalPadding),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: wideLayoutThreshold),
+        constraints: const BoxConstraints(maxWidth: modalMaxWidth),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
