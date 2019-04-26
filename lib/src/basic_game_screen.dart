@@ -11,19 +11,19 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GameScreenSlim extends StatefulWidget {
+class BasicGameScreen extends StatefulWidget {
   @override
-  GameScreenSlimState createState() {
-    return GameScreenSlimState();
+  BasicGameScreenState createState() {
+    return BasicGameScreenState();
   }
 }
 
-class GameScreenSlimState extends State<GameScreenSlim> {
+class BasicGameScreenState extends State<BasicGameScreen> {
   int _index = 0;
 
   final _controller = PageController();
 
-  GameScreenSlimState() {
+  BasicGameScreenState() {
     _controller.addListener(() {
       if (_controller.page.round() != _index) {
         setState(() {

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'game_screen/task_pool_page.dart';
 
-class GameScreenWide extends StatelessWidget {
+class ThreeColumnGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
