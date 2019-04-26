@@ -43,6 +43,8 @@ class CodeChomperScreen extends LeafRenderObjectWidget {
   }
 }
 
+/// Game controls for the chomper, instance this and pass it to
+/// the CodeChomperScreen to drive the game.
 class CodeChomperController extends ValueNotifier<Offset> {
   final List<String> lines = [];
   List<String> _templateLines;
@@ -71,6 +73,8 @@ class CodeChomperController extends ValueNotifier<Offset> {
   }
 }
 
+/// Renderer for the game. This advances game logic and draws the lines of code
+/// Flare files for Chompy and the tap FUI.
 class CodeChomperScreenRenderObject extends FlareRenderBox {
   CodeChomperController _controller;
   double _scrollTarget = 0;
@@ -347,12 +351,10 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   }
 }
 
+/// A helper class for measuring text which the [CodeChomperScreenRenderObject]
+/// lays out and paints.
 class _MeasuredText {
-  static const double maxWidth = 4096;
-  static const double fadeIn = 0.5;
-  static const double fadeHold = 0.2;
-  static const double blurFrom = 0.3;
-  static const double fadeOut = 1 - (fadeIn + fadeHold);
+  static const double _maxWidth = 4096;
 
   ui.Paragraph paragraph;
   Size size;
@@ -361,17 +363,13 @@ class _MeasuredText {
   Color color;
 
   _MeasuredText(this.text, {this.color = chompBlue}) {
-    compute();
-  }
-
-  void compute() {
     ui.ParagraphBuilder builder = ui.ParagraphBuilder(_chompParagraphStyle)
       ..pushStyle(
         ui.TextStyle(foreground: Paint()..color = color),
       );
     builder.addText(text);
     paragraph = builder.build();
-    paragraph.layout(const ui.ParagraphConstraints(width: maxWidth));
+    paragraph.layout(const ui.ParagraphConstraints(width: _maxWidth));
     List<ui.TextBox> boxes = paragraph.getBoxesForRange(0, text.length);
     size = boxes.isEmpty
         ? Size.zero

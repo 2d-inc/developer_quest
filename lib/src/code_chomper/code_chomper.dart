@@ -7,7 +7,7 @@ import 'code_chomper_screen.dart';
 
 const Color chompBlue = Color(0xFF4CB3FF);
 const Color chompRed = Color(0xFFFC4B67);
-const Color chompBackground = Color.fromRGBO(38, 36, 87, 1);
+const Color _chompBackground = Color.fromRGBO(38, 36, 87, 1);
 const TextStyle chompTextStyle =
     TextStyle(fontFamily: "SpaceMonoRegular", fontSize: 12, color: chompBlue);
 const double _keyDefaultWidth = 32;
@@ -183,8 +183,8 @@ class _CodeChomperState extends State<CodeChomper> {
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
                         color: _isGameOver
-                            ? chompBackground
-                            : chompBackground.withOpacity(0),
+                            ? _chompBackground
+                            : _chompBackground.withOpacity(0),
                         child: _isGameOver ? Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
