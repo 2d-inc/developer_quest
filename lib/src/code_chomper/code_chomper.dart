@@ -99,10 +99,11 @@ class _CodeChomperState extends State<CodeChomper> {
             Expanded(child: CodeChomperScreen(chomperController)),
 
             GestureDetector(
-				
               behavior: HitTestBehavior.opaque,
               onTapDown: (details) {
-                chomperController.addCode(details.globalPosition);
+                if (chomperController.addCode(details.globalPosition)) {
+                  print("DONE!");
+                }
               },
               child: Container(
                 color: Colors.black.withOpacity(0.33),

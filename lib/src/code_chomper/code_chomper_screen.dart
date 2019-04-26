@@ -44,10 +44,26 @@ class CodeChomperScreen extends LeafRenderObjectWidget {
 }
 
 class CodeChomperController extends ValueNotifier<Offset> {
-  CodeChomperController() : super(Offset.zero);
+  final List<String> lines = [];
+  List<String> _templateLines;
+  bool addCode(Offset gloalPosition) {
+    if (_templateLines.isEmpty) {
+      return true;
+    }
+    lines.add(_templateLines.first);
+    _templateLines.removeAt(0);
 
-  void addCode(Offset gloalPosition) {
     value = gloalPosition;
+
+    return false;
+  }
+
+  CodeChomperController() : super(Offset.zero) {
+    rootBundle
+        .loadString("assets/docs/code_chomper_example_code.dart")
+        .then((code) {
+      _templateLines = code.split("\n");
+    });
   }
 }
 
@@ -62,8 +78,6 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   double _chompTarget = 0;
   //Timer _chompTimer;
   int _numVisibleLines = 0;
-  final List<String> _lines = [];
-  List<String> _templateLines;
   FlutterActorArtboard _chompy;
   ActorAnimation _chompyIdle;
   ActorAnimation _chompyChomp;
@@ -80,12 +94,6 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
 
   CodeChomperScreenRenderObject(AssetBundle bundle) {
     assetBundle = bundle;
-    rootBundle
-        .loadString("assets/docs/code_chomper_example_code.dart")
-        .then((code) {
-      _templateLines = code.split("\n");
-    });
-    //_chompTimer = Timer.periodic(Duration(milliseconds: 100), _chompNext);
 
     loadFlare("assets/flare/Chomper.flr").then((FlutterActor actor) {
       _chompy = actor.artboard.makeInstance() as FlutterActorArtboard;
@@ -102,23 +110,19 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
     });
   }
 
+  List<String> get lines => _controller?.lines ?? [];
+
   void _chompNext() {
     if (_chompTarget == _chomped ||
         _chompTarget < _firstVisibleLine.toDouble()) {
-      _chompTarget = min(_lines.length.toDouble(),
-          max(_firstVisibleLine.toDouble()+1, _chompTarget + 1));
+      _chompTarget = min(lines.length.toDouble(),
+          max(_firstVisibleLine.toDouble() + 1, _chompTarget + 1));
     }
   }
 
   bool addSomeCode() {
-    if (_templateLines.isEmpty) {
-      return true;
-    }
-    _lines.add(_templateLines.first);
-    _templateLines.removeAt(0);
-
-    if (_lines.length > _scrollTarget + _numVisibleLines / 2) {
-      _scrollTarget = _lines.length - _numVisibleLines / 2;
+    if (lines.length > _scrollTarget + _numVisibleLines / 2) {
+      _scrollTarget = lines.length - _numVisibleLines / 2;
     }
 
     if (_controller != null) {
@@ -186,8 +190,8 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
         continue;
       }
       bool chomp = renderLine == _chomped.floor();
-      var line = renderLine >= 0 && renderLine < _lines.length
-          ? _MeasuredText(_lines[renderLine],
+      var line = renderLine >= 0 && renderLine < lines.length
+          ? _MeasuredText(lines[renderLine],
               color: chomp
                   ? Color.lerp(chompBlue, chompRed, _chomped - _chomped.floor())
                   : renderLine < _chomped ? chompRed : chompBlue)
@@ -291,9 +295,9 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   void advance(double elapsedSeconds) {
     _scroll += (_scrollTarget - _scroll) * min(1, elapsedSeconds * 3);
 
-    double diff = _lines.length - _cursor;
+    double diff = lines.length - _cursor;
     if (diff < 0.03) {
-      _cursor = _lines.length.toDouble();
+      _cursor = lines.length.toDouble();
     } else {
       _cursor += diff * min(1, elapsedSeconds * 5);
     }
@@ -330,7 +334,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
       _fui.advance(elapsedSeconds);
     }
 
-	_chompNext();
+    _chompNext();
   }
 
   @override
