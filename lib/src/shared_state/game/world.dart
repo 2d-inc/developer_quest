@@ -43,7 +43,7 @@ class World extends AspectContainer {
   void pause() {
     if (_joyResetTimer?.isActive ?? false) {
       _joyResetTimer.cancel();
-	  _resetJoy();
+      _resetJoy();
     }
 
     _timer.cancel();

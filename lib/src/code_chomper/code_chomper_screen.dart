@@ -1,14 +1,14 @@
 library chompy;
 
 import 'dart:math';
-import "dart:ui" as ui;
+import 'dart:ui' as ui;
 
 import 'package:dev_rpg/src/code_chomper/code_chomper.dart';
 import 'package:flare_dart/math/aabb.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_render_box.dart';
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +17,7 @@ const double _padLeft = 15;
 const double _padCodeLeft = 35;
 const double _padTop = 15;
 final _chompParagraphStyle = ui.ParagraphStyle(
-    textAlign: TextAlign.left, fontFamily: "SpaceMonoRegular", fontSize: 16);
+    textAlign: TextAlign.left, fontFamily: 'SpaceMonoRegular', fontSize: 16);
 
 class CodeChomperScreen extends LeafRenderObjectWidget {
   final CodeChomperController controller;
@@ -66,9 +66,9 @@ class CodeChomperController extends ValueNotifier<Offset> {
 
   CodeChomperController() : super(Offset.zero) {
     rootBundle
-        .loadString("assets/docs/code_chomper_example_code.dart")
+        .loadString('assets/docs/code_chomper_example_code.dart')
         .then((code) {
-      _templateLines = code.split("\n");
+      _templateLines = code.split('\n');
     });
   }
 }
@@ -103,18 +103,18 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   CodeChomperScreenRenderObject(AssetBundle bundle) {
     assetBundle = bundle;
 
-    loadFlare("assets/flare/Chomper.flr").then((FlutterActor actor) {
+    loadFlare('assets/flare/Chomper.flr').then((FlutterActor actor) {
       _chompy = actor.artboard.makeInstance() as FlutterActorArtboard;
       _chompy.initializeGraphics();
-      _chompyIdle = _chompy.getAnimation("Idle");
-      _chompyChomp = _chompy.getAnimation("Chomp");
-      _chompyAppear = _chompy.getAnimation("Appear Line");
+      _chompyIdle = _chompy.getAnimation('Idle');
+      _chompyChomp = _chompy.getAnimation('Chomp');
+      _chompyAppear = _chompy.getAnimation('Appear Line');
     });
 
-    loadFlare("assets/flare/Chomper FUI Type.flr").then((FlutterActor actor) {
+    loadFlare('assets/flare/Chomper FUI Type.flr').then((FlutterActor actor) {
       _fui = actor.artboard.makeInstance() as FlutterActorArtboard;
       _fui.initializeGraphics();
-      _fuiTap = _fui.getAnimation("Tap");
+      _fuiTap = _fui.getAnimation('Tap');
     });
   }
 
@@ -184,7 +184,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
 
     // Pad three extra lines of visibility.
     _numVisibleLines = (size.height / _chompLineHeight).floor() + 3;
-    var chevron = _MeasuredText(">", color: chompBlue.withOpacity(0.4));
+    var chevron = _MeasuredText('>', color: chompBlue.withOpacity(0.4));
     for (int i = 0; i < _numVisibleLines; i++) {
       canvas.drawParagraph(
           chevron.paragraph,
@@ -246,7 +246,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
         double strikeWidth = chomp
             ? Curves.easeInOut
                     .transform(max(0, (_chomped % 1) - _chompAppear) /
-                        (1.0 - _chompAppear))
+                        (1 - _chompAppear))
                     .toDouble() *
                 lineEffectWidth
             : lineEffectWidth;
@@ -268,7 +268,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
         if (chomp && _chompy != null) {
           double chompWidth = Curves.easeInOut
                   .transform(max(0, (_chomped % 1) - _chompAppear) /
-                      (1.0 - _chompAppear))
+                      (1 - _chompAppear))
                   .toDouble() *
               (size.width + _chompy.width * _chompyScale);
           canvas.save();
@@ -320,25 +320,25 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
     _chompyIdle?.apply(
         (DateTime.now().millisecondsSinceEpoch / 1000) % _chompyIdle.duration,
         _chompy,
-        1.0);
+        1);
 
     double chompTime = _chomped % 1;
     if (chompTime < _chompAppear && _chompyAppear != null) {
       double appear = chompTime / _chompAppear * _chompyAppear.duration;
-      _chompyAppear.apply(appear, _chompy, 1.0);
+      _chompyAppear.apply(appear, _chompy, 1);
     } else {
       _chompyChomp?.apply(
           max(0, (_chomped % 1) - _chompAppear) /
-              (1.0 - _chompAppear) *
+              (1 - _chompAppear) *
               _chompyChomp.duration,
           _chompy,
-          1.0);
+          1);
     }
     _chompy?.advance(elapsedSeconds);
 
     if (_fuiOffset != null) {
       _fuiTime += elapsedSeconds;
-      _fuiTap?.apply(_fuiTime, _fui, 1.0);
+      _fuiTap?.apply(_fuiTime, _fui, 1);
       _fui.advance(elapsedSeconds);
     }
 
