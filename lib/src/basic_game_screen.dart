@@ -40,7 +40,6 @@ class BasicGameScreenState extends State<BasicGameScreen> {
     super.initState();
   }
 
-
   void _showPageIndex(int index) {
     setState(() {
       _index = index;

@@ -1,5 +1,6 @@
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
+import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/stat_separator.dart';
@@ -9,7 +10,18 @@ import 'package:provider/provider.dart';
 
 import 'game_screen/task_pool_page.dart';
 
-class ThreeColumnGameScreen extends StatelessWidget {
+class ThreeColumnGameScreen extends StatefulWidget {
+  @override
+  _ThreeColumnGameScreenState createState() => _ThreeColumnGameScreenState();
+}
+
+class _ThreeColumnGameScreenState extends State<ThreeColumnGameScreen> {
+  @override
+  void initState() {
+    Provider.of<World>(context, listen: false).start();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
