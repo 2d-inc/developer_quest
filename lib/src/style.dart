@@ -59,3 +59,16 @@ Map<Skill, String> skillFlareIcon = {
   Skill.ux: 'assets/flare/UxIcon.flr',
   Skill.coordination: 'assets/flare/CoordinationIcon.flr'
 };
+
+class TransparentMaterial extends StatelessWidget {
+  final Widget child;
+  const TransparentMaterial({this.child});
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        type: MaterialType.transparency,
+        borderRadius: const BorderRadius.all(Radius.circular(9)),
+        clipBehavior: Clip.antiAlias,
+        child: child);
+  }
+}
