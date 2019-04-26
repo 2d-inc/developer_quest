@@ -46,10 +46,12 @@ class TaskListItem extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       child: Container(
         decoration: taskListItemDecoration,
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Text(
-            task.name,
+        child: Material(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              task.name,
+            ),
           ),
         ),
       ),
