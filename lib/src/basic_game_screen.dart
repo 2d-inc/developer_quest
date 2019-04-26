@@ -2,6 +2,7 @@ import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
@@ -32,6 +33,13 @@ class BasicGameScreenState extends State<BasicGameScreen> {
       }
     });
   }
+
+  @override
+  void initState() {
+    Provider.of<World>(context, listen: false).start();
+    super.initState();
+  }
+
 
   void _showPageIndex(int index) {
     setState(() {
