@@ -14,13 +14,13 @@ abstract class WorkItem extends Aspect with ChildAspect {
   List<Character> _assignedTeam;
   List<Character> get assignedTeam => _assignedTeam;
 
-  bool get isComplete => percentComplete == 1.0;
+  bool get isComplete => percentComplete == 1;
   List<Skill> get skillsNeeded => difficulty.keys.toList(growable: false);
 
   bool get isBeingWorkedOn => _assignedTeam?.isNotEmpty ?? false;
 
   /// Reduce the length of time to complete a task with a boost.
-  double _boost = 1.0;
+  double _boost = 1;
 
   WorkItem(this.name, this.difficulty)
       : completion = difficulty.map((Skill s, _) => MapEntry(s, 0));
@@ -64,8 +64,8 @@ abstract class WorkItem extends Aspect with ChildAspect {
         completion[skill] += prowess * _boost;
       }
     }
-    _boost = 1.0;
-    if (percentComplete >= 1.0) {
+    _boost = 1;
+    if (percentComplete >= 1) {
       onCompleted();
     }
 
@@ -83,14 +83,14 @@ abstract class WorkItem extends Aspect with ChildAspect {
 
   /// Get progress of this task.
   double get percentComplete {
-    double required = 0.0;
-    double completed = 0.0;
+    double required = 0;
+    double completed = 0;
 
     // accumulate the required skills and the amount completed for each one
     difficulty.forEach((Skill skill, double amount) {
       required += amount;
       // Make sure to not count one skill overworking as another :)
-      completed += min(amount, completion[skill] ?? 0.0);
+      completed += min(amount, completion[skill] ?? 0);
     });
 
     return completed / required;

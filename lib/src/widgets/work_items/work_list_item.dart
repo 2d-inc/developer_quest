@@ -33,19 +33,20 @@ class WorkListItem extends StatelessWidget {
         boxShadow: [
           BoxShadow(
               color: Colors.black.withOpacity(0.03),
-              offset: const Offset(0.0, 10.0),
-              blurRadius: 10.0,
-              spreadRadius: 0.0),
+              offset: const Offset(0, 10),
+              blurRadius: 10,
+              spreadRadius: 0),
         ],
-        borderRadius: const BorderRadius.all(Radius.circular(9.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(9)),
         // **Step 1 in emshack/efortuna live-coding: Change from black to white.
         color: Colors.white,
       );
 
   Future<void> _handleTap(BuildContext context, WorkItem workItem) async {
-    if (handleTap != null && handleTap()) {
+    if ((handleTap != null && handleTap()) || workItem.isComplete) {
       return;
     }
+
     var characters = await showModalBottomSheet<Set<Character>>(
       context: context,
       builder: (context) => TeamPickerModal(workItem),
@@ -62,19 +63,19 @@ class WorkListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
       child: Container(
         decoration: workListItemDecoration,
         child: Material(
           type: MaterialType.transparency,
-          borderRadius: const BorderRadius.all(Radius.circular(9.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(9)),
           clipBehavior: Clip.antiAlias,
           // **Step 5 in emshack/efortuna live-coding: Add InkWell and onTap.
           // Also talk about _handleTap above, but have it pre-written.
           child: InkWell(
             onTap: () => _handleTap(context, workItem),
             child: Padding(
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15),
               // **Step 3 in emshack/efortuna live-coding: Add this Column,
               // plus the heading and SizedBox children.
               child: Column(

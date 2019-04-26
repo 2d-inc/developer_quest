@@ -7,7 +7,7 @@ class StatSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 1,
-      color: const Color.fromRGBO(38, 38, 47, 1.0),
+      color: const Color.fromRGBO(38, 38, 47, 1),
     );
   }
 }

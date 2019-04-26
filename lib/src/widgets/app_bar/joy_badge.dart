@@ -6,12 +6,12 @@ import 'package:dev_rpg/src/widgets/app_bar/stat_badge.dart';
 /// the numeric value changes.
 class JoyBadge extends StatBadge<double> {
   JoyBadge(StatValue<double> listenable)
-      : super("Joy", listenable, flare: "assets/flare/Joy.flr");
+      : super('Joy', listenable, flare: 'assets/flare/Joy.flr');
 
   /// Play the celebration animation whenever there's a change
   /// 0 is a flag for always in this case
   @override
-  double get celebrateAfter => 0.0;
+  double get celebrateAfter => 0;
 
   @override
   JoyBadgeState createState() => JoyBadgeState();
@@ -31,13 +31,13 @@ class JoyBadgeState extends StatBadgeState<double> {
     _emotion = value;
     switch (_emotion) {
       case _Emotion.sad:
-        controls.play("sad");
+        controls.play('sad');
         break;
       case _Emotion.happy:
-        controls.play("happy");
+        controls.play('happy');
         break;
       case _Emotion.neutral:
-        controls.play("neutral");
+        controls.play('neutral');
         break;
     }
   }

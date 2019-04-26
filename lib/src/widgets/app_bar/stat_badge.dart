@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 /// an animated icon. Meant to be implemented by specific stats,
 /// which are expected to either provide their own animation playback
 /// logic, or provide the celebrateAfter amount to automatically play
-/// the "points" animation after the state has changed by this amount.
+/// the 'points' animation after the state has changed by this amount.
 abstract class StatBadge<T extends num> extends StatefulWidget {
   final String stat;
 
@@ -23,14 +23,14 @@ abstract class StatBadge<T extends num> extends StatefulWidget {
 
   /// This is intentionally abstract to allow deriving stats to specify
   /// when they should celebrate. N.B. that a value of 0 means to always
-  /// play the "points" animation.
+  /// play the 'points' animation.
   T get celebrateAfter;
 
   @override
   StatBadgeState<T> createState() => StatBadgeState<T>();
 }
 
-/// The [StatBadge] state will automatically play the Flare "points" animation
+/// The [StatBadge] state will automatically play the Flare 'points' animation
 /// when the stat value [StatBage.celebrateAfter] value has changed by a certain
 /// amount since the last time it has played the animation.
 class StatBadgeState<T extends num> extends State<StatBadge<T>> {
@@ -46,7 +46,7 @@ class StatBadgeState<T extends num> extends State<StatBadge<T>> {
   void valueChanged() {
     T change = widget.listenable.number - _lastStatValue;
     if (widget.celebrateAfter == 0 || change > widget.celebrateAfter) {
-      controls.play("points");
+      controls.play('points');
       _lastStatValue = widget.listenable.number;
     } else if (change < 0) {
       // Make sure to decrement the last points value so we can celebrate
@@ -75,7 +75,7 @@ class StatBadgeState<T extends num> extends State<StatBadge<T>> {
             alignment: Alignment.topCenter,
             shouldClip: false,
             fit: BoxFit.contain,
-            animation: "appear",
+            animation: 'appear',
             controller: controls,
           ),
         ),

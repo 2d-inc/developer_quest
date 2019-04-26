@@ -38,7 +38,7 @@ class Character extends Aspect with ChildAspect {
   }
 
   double getProwessProgress(Skill skill) =>
-      (prowess[skill] ?? 0.0) / maxSkillProwess;
+      (prowess[skill] ?? 0) / maxSkillProwess;
 
   bool contributes(List<Skill> skills) {
     for (final Skill skill in skills) {

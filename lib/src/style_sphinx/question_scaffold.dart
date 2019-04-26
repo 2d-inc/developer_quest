@@ -22,10 +22,10 @@ class QuestionScaffold extends StatelessWidget {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(
-                left: 24.0,
-                right: 24.0,
-                bottom: 24.0,
-                top: 8.0,
+                left: 24,
+                right: 24,
+                bottom: 24,
+                top: 8,
               ),
               child: question,
             ),

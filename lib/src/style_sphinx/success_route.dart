@@ -67,81 +67,43 @@ class SuccessRoute extends PageRoute<Animation<double>> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
+    final screenSize = MediaQuery.of(context).size;
+    final offsetTween = Tween<Offset>(
+      begin: Offset(screenSize.width, -screenSize.height),
+      end: const Offset(0, 24),
+    );
+    final scaleTween = Tween<double>(begin: 0, end: 1);
+
     // Setup the Scale and Offset animations. This requires different
     // animations for the forward and reverse operations to give the appropriate
     // animation depending on whether the sphinx is animating on or off the
     // screen.
-    final forwardCurveTween = CurveTween(curve: Curves.easeIn).chain(
-      CurveTween(
-        curve: Interval(
-          0,
-          0.4,
-        ),
-      ),
-    );
-    final forwardOffsetAnimation = Tween<Offset>(
-      begin: const Offset(500, -500),
-      end: const Offset(
-        0,
-        24,
-      ),
-    ).chain(forwardCurveTween).animate(animation);
-
-    final forwardScaleAnimation = Tween<double>(begin: 0.3, end: 1)
-        .chain(forwardCurveTween)
-        .animate(animation);
+    final forwardCurveTween = CurveTween(curve: Curves.easeIn)
+        .chain(CurveTween(curve: Interval(0, 0.4)));
+    final forwardOffsetAnimation =
+        offsetTween.chain(forwardCurveTween).animate(animation);
+    final forwardScaleAnimation =
+        scaleTween.chain(forwardCurveTween).animate(animation);
 
     // Play the offset and scale animations immediately when the sphinx is
     // dismissed
-    final reverseCurveTween = CurveTween(curve: Curves.easeIn).chain(
-      CurveTween(
-        curve: Interval(
-          0.6,
-          1,
-        ),
-      ),
-    );
-    final reverseOffsetAnimation = Tween<Offset>(
-      begin: const Offset(500, -500),
-      end: const Offset(
-        0,
-        24,
-      ),
-    ).chain(reverseCurveTween).animate(animation);
-
-    final reverseScaleAnimation = Tween<double>(begin: 0.3, end: 1)
-        .chain(forwardCurveTween)
-        .animate(animation);
+    final reverseCurveTween = CurveTween(curve: Curves.easeIn)
+        .chain(CurveTween(curve: Interval(0.6, 1)));
+    final reverseOffsetAnimation =
+        offsetTween.chain(reverseCurveTween).animate(animation);
+    final reverseScaleAnimation =
+        scaleTween.chain(reverseCurveTween).animate(animation);
 
     // Setup the animations for the glasses
     final glassesOpacityAnimation = Tween<double>(begin: 0, end: 1)
-        .chain(
-          CurveTween(
-            curve: Interval(
-              0.4,
-              0.6,
-            ),
-          ),
-        )
+        .chain(CurveTween(curve: Interval(0.4, 0.6)))
         .animate(animation);
+    final glassesOffsetAnimation =
+        Tween<Offset>(begin: const Offset(0, -50), end: const Offset(0, 0))
+            .chain(CurveTween(curve: Interval(0.6, 1)))
+            .animate(animation);
 
-    final glassesOffsetAnimation = Tween<Offset>(
-      begin: const Offset(0, -50),
-      end: const Offset(0, 0),
-    )
-        .chain(
-          CurveTween(
-            curve: Interval(
-              0.6,
-              1,
-            ),
-          ),
-        )
-        .animate(animation);
-
-    void proceed() {
-      Navigator.pop(context, animation);
-    }
+    void proceed() => Navigator.pop(context, animation);
 
     return AnimatedBuilder(
       animation: animation,
@@ -159,7 +121,7 @@ class SuccessRoute extends PageRoute<Animation<double>> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: Material(
           color: Colors.transparent,
           child: Column(
@@ -168,19 +130,11 @@ class SuccessRoute extends PageRoute<Animation<double>> {
               TextBubble(
                 child: Column(
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(fontSize: 18),
-                    ),
+                    Text(title, style: const TextStyle(fontSize: 18)),
                     const SizedBox(height: 16),
-                    Text(
-                      message,
-                    ),
+                    Text(message),
                     const SizedBox(height: 16),
-                    SphinxButton(
-                      child: Text(buttonText),
-                      onPressed: proceed,
-                    ),
+                    SphinxButton(child: Text(buttonText), onPressed: proceed),
                   ],
                 ),
               ),
@@ -276,7 +230,7 @@ Future<void> navigateToNextQuestion(
   // change. When the animation is complete, it navigates to the next question
   // if one is available or back to the original route if the .
   void listener() {
-    if (animation.status == AnimationStatus.reverse && animation.value < 0.4) {
+    if (animation.status == AnimationStatus.reverse && animation.value < 0.6) {
       if (args.hasNextQuestion) {
         final nextQuestion = args.nextQuestion();
 

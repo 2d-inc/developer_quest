@@ -39,77 +39,83 @@ class TeamPickerModalState extends State<TeamPickerModal> {
         _selected.isEmpty;
     var isButtonDisabled = !isUnassigning && _selected.isEmpty;
 
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      child: Container(
-        color: modalBackgroundColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: horizontalPadding,
-              child: Text(widget.workItem.name, style: contentLargeStyle),
-            ),
-            const SizedBox(height: 15),
-            Padding(
-              padding: horizontalPadding,
-              child: Text("SKILLS REQUIRED:",
-                  style: buttonTextStyle.apply(
-                      fontSizeDelta: -4, color: secondaryContentColor)),
-            ),
-            const SizedBox(height: 7),
-            Padding(
-              padding: horizontalPadding,
-              child: Row(
-                  children: widget.workItem.skillsNeeded
-                      .map((skill) => SkillBadge(skill))
-                      .toList()),
-            ),
-            Expanded(
-              child: Consumer<CharacterPool>(
-                builder: (context, characterPool) {
-                  var characters = characterPool.fullTeam;
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: horizontalPadding,
-                      itemCount: characters.length,
-                      itemBuilder: (context, index) {
-                        var character = characters[index];
-                        return TeamPickerItem(
-                          character,
-                          isSelected: _selected.contains(character),
-                          toggleSelection: _toggleCharacterSelected,
-                          // Show the character as not selectable if they are
-                          // currently assigned to another task
-                          isDisabled: character.isBusy &&
-                              !(widget.workItem.assignedTeam
-                                      ?.contains(character) ??
-                                  false),
-                        );
-                      });
-                },
-              ),
-            ),
-            Padding(
-              padding: horizontalPadding.add(EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom)),
-              child: WideButton(
-                  buttonKey: const Key('team_pick_ok'),
-                  onPressed: () => Navigator.pop(context, _selected),
-                  paddingTweak: const EdgeInsets.only(right: -7.0),
-                  background: isButtonDisabled
-                      ? contentColor.withOpacity(0.1)
-                      : const Color.fromRGBO(84, 114, 239, 1.0),
-                  child: Text(isUnassigning ? "UNASSIGN TEAM" : "ASSIGN TEAM",
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: modalMaxWidth),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          child: Container(
+            color: modalBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20),
+                Padding(
+                  padding: horizontalPadding,
+                  child: Text(widget.workItem.name, style: contentLargeStyle),
+                ),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: horizontalPadding,
+                  child: Text('SKILLS REQUIRED:',
                       style: buttonTextStyle.apply(
-                        color: isButtonDisabled
-                            ? contentColor.withOpacity(0.25)
-                            : Colors.white,
-                      ))),
-            )
-          ],
+                          fontSizeDelta: -4, color: secondaryContentColor)),
+                ),
+                const SizedBox(height: 7),
+                Padding(
+                  padding: horizontalPadding,
+                  child: Row(
+                      children: widget.workItem.skillsNeeded
+                          .map((skill) => SkillBadge(skill))
+                          .toList()),
+                ),
+                Expanded(
+                  child: Consumer<CharacterPool>(
+                    builder: (context, characterPool) {
+                      var characters = characterPool.fullTeam;
+                      return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: horizontalPadding,
+                          itemCount: characters.length,
+                          itemBuilder: (context, index) {
+                            var character = characters[index];
+                            return TeamPickerItem(
+                              character,
+                              isSelected: _selected.contains(character),
+                              toggleSelection: _toggleCharacterSelected,
+                              // Show the character as not selectable if
+                              // they are currently assigned to another task
+                              isDisabled: character.isBusy &&
+                                  !(widget.workItem.assignedTeam
+                                          ?.contains(character) ??
+                                      false),
+                            );
+                          });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: horizontalPadding.add(EdgeInsets.only(
+                      bottom: MediaQuery.of(context).padding.bottom)),
+                  child: WideButton(
+                      buttonKey: const Key('team_pick_ok'),
+                      onPressed: () => Navigator.pop(context, _selected),
+                      paddingTweak: const EdgeInsets.only(right: -7),
+                      background: isButtonDisabled
+                          ? contentColor.withOpacity(0.1)
+                          : const Color.fromRGBO(84, 114, 239, 1),
+                      child:
+                          Text(isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
+                              style: buttonTextStyle.apply(
+                                color: isButtonDisabled
+                                    ? contentColor.withOpacity(0.25)
+                                    : Colors.white,
+                              ))),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -151,8 +157,8 @@ class TeamPickerItem extends StatelessWidget {
     var backgroundColor = isDisabled
         ? disabledColor
         : isSelected
-            ? const Color.fromRGBO(84, 114, 239, 1.0)
-            : const Color.fromRGBO(69, 69, 82, 1.0);
+            ? const Color.fromRGBO(84, 114, 239, 1)
+            : const Color.fromRGBO(69, 69, 82, 1);
     return AnimatedPadding(
       padding: isSelected
           ? const EdgeInsets.only(top: 27, bottom: 50)
@@ -164,7 +170,7 @@ class TeamPickerItem extends StatelessWidget {
         onTap: () =>
             isDisabled ? null : toggleSelection(character, !isSelected),
         child: Padding(
-          padding: const EdgeInsets.only(right: 10.0),
+          padding: const EdgeInsets.only(right: 10),
           child: AnimatedContainer(
             duration: animationDuration,
             width: 130,
@@ -174,10 +180,10 @@ class TeamPickerItem extends StatelessWidget {
                     color: isSelected && !isDisabled
                         ? const Color.fromRGBO(26, 50, 155, 0.3)
                         : Colors.black.withOpacity(0.17),
-                    offset: const Offset(0.0, 10.0),
-                    blurRadius: isSelected ? 30.0 : 10.0),
+                    offset: const Offset(0, 10),
+                    blurRadius: isSelected ? 30 : 10),
               ],
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               color: backgroundColor,
             ),
             child: Column(
@@ -216,8 +222,8 @@ class TeamPickerItem extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.15),
                               borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(10.0),
-                                bottomRight: Radius.circular(10.0),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
                               ),
                             ),
                           )
@@ -241,7 +247,7 @@ class TeamPickerItem extends StatelessWidget {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: ProwessProgress(
-                                      innerPadding: const EdgeInsets.all(1.0),
+                                      innerPadding: const EdgeInsets.all(1),
                                       background:
                                           Colors.black.withOpacity(0.28),
                                       color: skillColor[skill],
@@ -291,14 +297,14 @@ class _SelectArrowState extends State<_SelectArrow> {
   bool _snapToEnd;
   @override
   void initState() {
-    _animation = "off";
+    _animation = 'off';
     _snapToEnd = true;
     super.initState();
   }
 
   @override
   void didUpdateWidget(_SelectArrow oldWidget) {
-    String animation = widget.isSelected ? "on" : "off";
+    String animation = widget.isSelected ? 'on' : 'off';
     if (animation != _animation) {
       setState(() {
         _animation = animation;
@@ -313,7 +319,7 @@ class _SelectArrowState extends State<_SelectArrow> {
     return Container(
       width: 16,
       height: 15,
-      child: FlareActor("assets/flare/SelectArrow.flr",
+      child: FlareActor('assets/flare/SelectArrow.flr',
           alignment: Alignment.topCenter,
           shouldClip: false,
           snapToEnd: _snapToEnd,

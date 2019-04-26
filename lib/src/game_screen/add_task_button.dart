@@ -61,11 +61,11 @@ class _AddTaskButtonState extends State<AddTaskButton> {
               : [
                   BoxShadow(
                       color: widget.color.withOpacity(0.3),
-                      offset: const Offset(0.0, 10.0),
-                      blurRadius: _isPressed ? 10.0 : 15.0,
-                      spreadRadius: 0.0),
+                      offset: const Offset(0, 10),
+                      blurRadius: _isPressed ? 10 : 15,
+                      spreadRadius: 0),
                 ],
-          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
           color: isDisabled
               ? disabledTaskColor.withOpacity(0.10)
               : _isPressed ? widget.color.withOpacity(0.8) : widget.color,
@@ -74,7 +74,7 @@ class _AddTaskButtonState extends State<AddTaskButton> {
           children: [
             Icon(widget.icon,
                 color: isDisabled ? disabledTaskColor : Colors.white),
-            const SizedBox(width: 4.0),
+            const SizedBox(width: 4),
             Expanded(
               child: Text(
                 widget.label,
@@ -87,9 +87,9 @@ class _AddTaskButtonState extends State<AddTaskButton> {
                 ? Container()
                 : Container(
                     constraints: const BoxConstraints(
-                      minWidth: 26.0,
-                      minHeight: 26.0,
-                      maxHeight: 26.0,
+                      minWidth: 26,
+                      minHeight: 26,
+                      maxHeight: 26,
                     ),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,

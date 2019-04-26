@@ -34,6 +34,15 @@ abstract class AspectContainer<T extends Aspect> extends Aspect {
   }
 
   void addAspects(Iterable<T> aspects) => aspects.forEach(addAspect);
+  void clearAspects() {
+    _queuedRemoval?.clear();
+    children.clear();
+  }
+
+  void setAspects(Iterable<T> aspects) {
+    clearAspects();
+    addAspects(aspects);
+  }
 
   void addAspect(T aspect) {
     children.add(aspect);

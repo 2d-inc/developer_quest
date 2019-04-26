@@ -90,7 +90,7 @@ class HiringBustRenderObject extends FlareRenderBox {
   }
 
   ActorAnimation _idleAnimation;
-  double _idleTime = 0.0;
+  double _idleTime = 0;
   Color particleColor;
   bool playIdleAnimation = false;
 
@@ -114,20 +114,20 @@ class HiringBustRenderObject extends FlareRenderBox {
     if (_artboard != null) {
       switch (_hiringState) {
         case HiringBustState.working:
-          _idleAnimation = _artboard.getAnimation("working");
+          _idleAnimation = _artboard.getAnimation('working');
           break;
         case HiringBustState.success:
-          _idleAnimation = _artboard.getAnimation("success");
+          _idleAnimation = _artboard.getAnimation('success');
           break;
         default:
-          _idleAnimation = _artboard.getAnimation("idle");
+          _idleAnimation = _artboard.getAnimation('idle');
           break;
       }
     }
 
     _actor?.desaturate = _hiringState == HiringBustState.locked ||
         _hiringState == HiringBustState.available;
-    advance(0.0);
+    advance(0);
     markNeedsPaint();
   }
 
@@ -138,8 +138,8 @@ class HiringBustRenderObject extends FlareRenderBox {
   bool advance(double elapsedSeconds) {
     if (playIdleAnimation && _idleAnimation != null) {
       _idleTime += elapsedSeconds;
-      _idleAnimation.apply(_idleTime % _idleAnimation.duration, _artboard, 1.0);
-      _bust?.apply(0.0, _artboard, 1.0);
+      _idleAnimation.apply(_idleTime % _idleAnimation.duration, _artboard, 1);
+      _bust?.apply(0, _artboard, 1);
     }
     _artboard?.advance(elapsedSeconds);
     _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
@@ -162,7 +162,7 @@ class HiringBustRenderObject extends FlareRenderBox {
     double shadowDiameter = shadowWidth;
 
     canvas.drawOval(
-        Offset(offset.dx + size.width / 2.0 - shadowDiameter / 2.0,
+        Offset(offset.dx + size.width / 2 - shadowDiameter / 2,
                 offset.dy + size.height - shadowHeight) &
             Size(shadowDiameter, shadowHeight),
         Paint()
@@ -171,17 +171,17 @@ class HiringBustRenderObject extends FlareRenderBox {
               : Colors.black.withOpacity(0.15)
           ..style = PaintingStyle.fill);
 
-    canvas.translate(0.0, -shadowHeight / 1.5);
+    canvas.translate(0, -shadowHeight / 1.5);
     Path clip = Path();
     double clipDiameter = min(size.width, size.height);
-    clip.addOval(Offset(offset.dx + size.width / 2.0 - clipDiameter / 2.0,
-            offset.dy + size.height / 2.0 - clipDiameter / 2.0) &
+    clip.addOval(Offset(offset.dx + size.width / 2 - clipDiameter / 2,
+            offset.dy + size.height / 2 - clipDiameter / 2) &
         Size(clipDiameter, clipDiameter));
 
     // There's something about using a large clipping area that seems to
     // negatively affect performance. Keeping this here as reference for the
     // intended look of the app.
-    // clip.addRect(const Offset(0.0, 0.0) &
+    // clip.addRect(const Offset(0, 0) &
     //     Size(ui.window.physicalSize.width, offset.dy + size.height / 1.25));
     canvas.clipPath(clip);
   }
@@ -196,7 +196,7 @@ class HiringBustRenderObject extends FlareRenderBox {
   @override
   void postPaint(Canvas canvas, Offset offset) {
     _particles?.paint(canvas,
-        offset + Offset((size.width - shadowWidth) / 2.0, -shadowHeight / 2.0));
+        offset + Offset((size.width - shadowWidth) / 2, -shadowHeight / 2));
   }
 
   String get filename => _filename;
@@ -221,13 +221,13 @@ class HiringBustRenderObject extends FlareRenderBox {
       _actor.copyFlutterActor(actor);
       _artboard = _actor.artboard as FlutterActorArtboard;
       // apply the bust animation state.
-      _bust = _artboard.getAnimation("bust");
-      _bust?.apply(0.0, _artboard, 1.0);
+      _bust = _artboard.getAnimation('bust');
+      _bust?.apply(0, _artboard, 1);
 
       _artboard.initializeGraphics();
       _updateState();
 
-      advance(0.0);
+      advance(0);
       markNeedsPaint();
     });
   }
