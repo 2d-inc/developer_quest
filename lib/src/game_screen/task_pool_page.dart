@@ -14,21 +14,20 @@ import 'package:provider/provider.dart';
 /// actively worked on, or have been completed and/or archived.
 class TaskPoolPage extends StatelessWidget {
   /// Builds a section of the task list with [title] and a list of [workItems].
-  /// This returns slivers to be used in a [SliverList].
-  void _buildSection(
-      List<Widget> children, String title, List<WorkItem> workItems) {
+  List<Widget> _buildSection(String title, List<WorkItem> workItems) {
     if (workItems.isNotEmpty) {
-      children.add(TasksSectionHeader(title));
-      children.addAll(
-        workItems.map(
+      return [
+        TasksSectionHeader(title),
+        ...workItems.map(
           (WorkItem item) => ChangeNotifierProvider<WorkItem>.value(
                 notifier: item,
                 key: ValueKey(item),
                 child: item is Bug ? BugListItem() : TaskListItem(),
               ),
         ),
-      );
+      ];
     }
+    return <Widget>[];
   }
 
   @override
@@ -37,23 +36,22 @@ class TaskPoolPage extends StatelessWidget {
       color: const Color.fromRGBO(241, 241, 241, 1),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
-          List<Widget> children = <Widget>[
-            TasksButtonHeader(taskPool: taskPool),
-            const SizedBox(height: 12.0),
-          ];
-          _buildSection(
-            children,
-            "IN PROGRESS",
-            taskPool.workItems,
+          return ListView(
+            children: [
+              const TasksButtonHeader(),
+              const SizedBox(height: 12.0),
+              ..._buildSection(
+                "IN PROGRESS",
+                taskPool.workItems,
+              ),
+              ..._buildSection(
+                "COMPLETED",
+                taskPool.completedTasks
+                    .followedBy(taskPool.archivedTasks)
+                    .toList(growable: false),
+              )
+            ],
           );
-          _buildSection(
-            children,
-            "COMPLETED",
-            taskPool.completedTasks
-                .followedBy(taskPool.archivedTasks)
-                .toList(growable: false),
-          );
-          return ListView(children: children);
         },
       ),
     );

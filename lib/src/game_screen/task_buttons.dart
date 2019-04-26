@@ -1,5 +1,11 @@
 import 'package:dev_rpg/src/style.dart';
+import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
+import 'package:dev_rpg/src/game_screen/project_picker_modal.dart';
+import 'package:dev_rpg/src/game_screen/bug_picker_modal.dart';
+import 'package:dev_rpg/src/shared_state/game/bug.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 // A stylized button meant to be used for adding tasks to the task pool.
 class AddTaskButton extends StatefulWidget {
@@ -107,3 +113,52 @@ class _AddTaskButtonState extends State<AddTaskButton> {
     );
   }
 }
+
+class TasksButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Consumer<TaskPool>(builder: (context, taskPool) {
+        return AddTaskButton('Tasks',
+            key: const Key('add_task'),
+            count: taskPool.availableTasks.length,
+            icon: Icons.add,
+            color: const Color(0xff5472ee), onPressed: () async {
+          var project = await showModalBottomSheet<TaskBlueprint>(
+            context: context,
+            builder: (context) => ProjectPickerModal(),
+          );
+          if (project != null) {
+            Provider.of<TaskPool>(context, listen: false).startTask(project);
+          }
+        });
+      }),
+    );
+  }
+}
+
+class BugsButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Consumer<TaskPool>(builder: (context, taskPool) {
+          return AddTaskButton(
+            'Bugs',
+            count: taskPool.availableBugs.length,
+            icon: Icons.bug_report,
+            color: const Color(0xffeb2875),
+            onPressed: () async {
+              var bug = await showModalBottomSheet<Bug>(
+                context: context,
+                builder: (context) => BugPickerModal(),
+              );
+              if (bug != null) {
+                Provider.of<TaskPool>(context, listen: false)
+                    .addWorkItem(bug);
+              }
+            },
+          );
+        }));
+  }
+}
+
