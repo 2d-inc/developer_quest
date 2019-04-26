@@ -42,7 +42,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _swapHeroTimer?.cancel();
   }
 
-  void _pressStartGame() async {
+  Future<void> _pressStartGame() async {
     Provider.of<World>(context, listen: false).start();
     // Stop the hero cycling.
     _swapHeroTimer?.cancel();
@@ -51,7 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _startTimer();
   }
 
-  void _pressAbout() async {
+  Future<void> _pressAbout() async {
     // Stop the hero cycling.
     _swapHeroTimer?.cancel();
     await Navigator.of(context).pushNamed('/about');
