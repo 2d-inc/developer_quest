@@ -9,10 +9,15 @@ import 'package:dev_rpg/src/widgets/work_items/tasks_section_header.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+enum TaskPoolDisplay { all, inProgress, completed }
+
 /// Displays a list of the [Task]s the player has interacted with.
 /// These are [Task]s that have been added into the game, are being
 /// actively worked on, or have been completed and/or archived.
 class TaskPoolPage extends StatelessWidget {
+  final TaskPoolDisplay display;
+  const TaskPoolPage({this.display = TaskPoolDisplay.all});
+
   /// Builds a section of the task list with [title] and a list of [workItems].
   List<Widget> _buildSection(String title, List<WorkItem> workItems) {
     if (workItems.isNotEmpty) {
@@ -33,7 +38,9 @@ class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromRGBO(241, 241, 241, 1),
+      color: display == TaskPoolDisplay.completed
+          ? const Color.fromRGBO(229, 229, 229, 1)
+          : const Color.fromRGBO(241, 241, 241, 1),
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
           return ListView(

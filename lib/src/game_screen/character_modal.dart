@@ -20,14 +20,18 @@ class CharacterModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(
-            left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 280.0),
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [CharacterImage(_controls), CharacterStats(_controls)]),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: wideLayoutThreshold),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 280),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              CharacterImage(_controls),
+              CharacterStats(_controls)
+            ]),
+          ),
         ),
       ),
     );
