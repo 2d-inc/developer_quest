@@ -78,7 +78,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   double _cursor = 0;
   double _chomped = 0;
   static const double _chompyScale = 0.45;
-  static const double _chompAppear = 0.93;
+  static const double _chompAppear = 0.4;
   double _chompTarget = 0;
   //Timer _chompTimer;
   int _numVisibleLines = 0;
@@ -104,7 +104,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
       _chompy.initializeGraphics();
       _chompyIdle = _chompy.getAnimation("Idle");
       _chompyChomp = _chompy.getAnimation("Chomp");
-      _chompyAppear = _chompy.getAnimation("Appear");
+      _chompyAppear = _chompy.getAnimation("Appear Line");
     });
 
     loadFlare("assets/flare/Chomper FUI Type.flr").then((FlutterActor actor) {
@@ -266,7 +266,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
                   .transform(max(0, (_chomped % 1) - _chompAppear) /
                       (1.0 - _chompAppear))
                   .toDouble() *
-              (size.width + _padCodeLeft + _chompy.width * _chompyScale);
+              (size.width + _chompy.width * _chompyScale);
           canvas.save();
           canvas.translate(
               offset.dx +
@@ -307,10 +307,10 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
     }
 
     diff = _chompTarget - _chomped;
-    if (diff < 0.002) {
+    if (diff < 0.03) {
       _chomped = _chompTarget;
     } else {
-      _chomped += diff * min(1, elapsedSeconds * 1.9);
+      _chomped += diff * min(1, elapsedSeconds * 2.5);
     }
 
     _chompyIdle?.apply(
