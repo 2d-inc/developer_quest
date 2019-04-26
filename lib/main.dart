@@ -42,9 +42,7 @@ class _DeveloperQuestState extends State<DeveloperQuest> {
             canvasColor: Colors.transparent,
           ),
           routes: {
-            '/': (context) =>  MediaQuery.of(context).size.width > wideLayoutThreshold
-                ? ThreeColumnGameScreen()
-                : BasicGameScreen(),
+            '/': (context) =>  BasicGameScreen(),
           },
         ));
   }
