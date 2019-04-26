@@ -152,12 +152,17 @@ class ProjectPickerModal extends StatelessWidget {
         }, childCount: v1.length),
       ),
     ];
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      child: Container(
-        color: modalBackgroundColor,
-        child: CustomScrollView(slivers: slivers),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: wideLayoutThreshold),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          child: Container(
+            color: modalBackgroundColor,
+            child: CustomScrollView(slivers: slivers),
+          ),
+        ),
       ),
     );
   }
