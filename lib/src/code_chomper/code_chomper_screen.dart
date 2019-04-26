@@ -58,7 +58,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
   double _scroll = 0;
   double _cursor = 0;
   double _chomped = 0;
-  static const double _chompAppear = 0.5;
+  static const double _chompAppear = 0.6;
   double _chompTarget = 0;
   Timer _chompTimer;
   int _numVisibleLines = 0;
@@ -84,7 +84,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
         .then((code) {
       _templateLines = code.split("\n");
     });
-    _chompTimer = Timer.periodic(Duration(seconds: 2), _chompNext);
+    _chompTimer = Timer.periodic(Duration(milliseconds: 1600), _chompNext);
 
     loadFlare("assets/flare/Chomper.flr").then((FlutterActor actor) {
       _chompy = actor.artboard.makeInstance() as FlutterActorArtboard;
@@ -235,7 +235,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
         double chompWidth = chomp
             ? Curves.easeInOut
                     .transform(
-                        max(0, _chomped - _chomped.floor() - _chompAppear) /
+                        max(0, (_chomped % 1) - _chompAppear) /
                             (1.0 - _chompAppear))
                     .toDouble() *
                 lineEffectWidth
@@ -295,7 +295,7 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
     if (diff < 0.03) {
       _chomped = _chompTarget;
     } else {
-      _chomped += diff * min(1, elapsedSeconds / 2);
+      _chomped += diff * min(1, elapsedSeconds * 1.2);
     }
 
     _chompyIdle?.apply(

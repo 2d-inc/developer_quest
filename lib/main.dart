@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/about_screen.dart';
+import 'package:dev_rpg/src/code_chomper/code_chomper.dart';
 import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
               primarySwatch: Colors.orange,
               canvasColor: Colors.transparent),
           routes: {
-            '/': (context) => WelcomeScreen(),
+            '/': (context) => CodeChomper(),//WelcomeScreen(),
             '/gameloop': (context) => GameScreen(),
             '/about': (context) => AboutScreen(),
             SphinxScreen.miniGameRouteName: (context) => const SphinxScreen(),
