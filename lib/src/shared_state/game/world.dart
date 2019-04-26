@@ -41,7 +41,11 @@ class World extends AspectContainer {
   bool get isRunning => _isRunning;
 
   void pause() {
-    _joyResetTimer?.cancel();
+    if (_joyResetTimer?.isActive ?? false) {
+      _joyResetTimer.cancel();
+	  _resetJoy();
+    }
+
     _timer.cancel();
     _isRunning = false;
     markDirty();
@@ -61,6 +65,12 @@ class World extends AspectContainer {
   ///       (might be another stat for the feature/task).
   static const double featureJoy = 5;
 
+  void _resetJoy() {
+    company.joy.number -= _joyAccumulation;
+    _joyResetTimer = null;
+    _joyAccumulation = 0;
+  }
+
   void shipFeature(Task task) {
     // Todo: modify these values by how quickly the user completed the task
     // some bonus system?
@@ -70,11 +80,7 @@ class World extends AspectContainer {
 
     _joyAccumulation += featureJoy;
     _joyResetTimer?.cancel();
-    _joyResetTimer = Timer(newFeatureJoyDuration, () {
-      company.joy.number -= _joyAccumulation;
-      _joyResetTimer = null;
-      _joyAccumulation = 0;
-    });
+    _joyResetTimer = Timer(newFeatureJoyDuration, _resetJoy);
 
     company.award(task.blueprint.userReward, task.blueprint.coinReward);
   }

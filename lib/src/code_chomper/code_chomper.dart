@@ -15,6 +15,7 @@ const double _keyPadding = 5;
 
 /// The main screen for the code chomper mini game.
 class CodeChomper extends StatefulWidget {
+  static const String miniGameRouteName = "/chompy";
   @override
   _CodeChomperState createState() => _CodeChomperState();
 }
@@ -185,38 +186,45 @@ class _CodeChomperState extends State<CodeChomper> {
                         color: _isGameOver
                             ? _chompBackground
                             : _chompBackground.withOpacity(0),
-                        child: _isGameOver ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 160,
-                              height: 160,
-                              child: FlareActor("assets/flare/Chomper.flr",
-                                  alignment: Alignment.center,
-                                  shouldClip: false,
-                                  fit: BoxFit.contain,
-                                  animation: "Game Over"),
-                            ),
-							const SizedBox(height:50),
-                            Text(
-                              "YOU WIN!",
-                              style: chompTextStyle.apply(fontSizeDelta: 26),
-                            ),
-                            const SizedBox(height: 30),
-                            FlatButton(
-                              onPressed: () => Navigator.pop(context, null),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 10),
-                              color: const Color.fromRGBO(27, 26, 68, 1),
-                              shape: Border.all(width: 1.0, color: chompBlue),
-                              child: Text(
-                                "CONTINUE",
-                                style: chompTextStyle.apply(fontSizeDelta: 8),
-                              ),
-                            ),
-							const SizedBox(height: 40),
-                          ],
-                        ) : Container(),
+                        child: _isGameOver
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(
+                                    width: 160,
+                                    height: 160,
+                                    child: FlareActor(
+                                        "assets/flare/Chomper.flr",
+                                        alignment: Alignment.center,
+                                        shouldClip: false,
+                                        fit: BoxFit.contain,
+                                        animation: "Game Over"),
+                                  ),
+                                  const SizedBox(height: 50),
+                                  Text(
+                                    "YOU WIN!",
+                                    style:
+                                        chompTextStyle.apply(fontSizeDelta: 26),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  FlatButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, null),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 40, vertical: 10),
+                                    color: const Color.fromRGBO(27, 26, 68, 1),
+                                    shape: Border.all(
+                                        width: 1.0, color: chompBlue),
+                                    child: Text(
+                                      "CONTINUE",
+                                      style: chompTextStyle.apply(
+                                          fontSizeDelta: 8),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 40),
+                                ],
+                              )
+                            : Container(),
                       ),
                     ),
                   ),

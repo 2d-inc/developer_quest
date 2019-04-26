@@ -1,3 +1,4 @@
+import 'package:dev_rpg/src/code_chomper/code_chomper.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
@@ -21,6 +22,14 @@ class TaskListItem extends StatelessWidget {
         case MiniGame.none:
           break;
         case MiniGame.chomp:
+          // Time to face chompy, temporarily pause the game.
+          var world = Provider.of<World>(context);
+          world.pause();
+          Navigator.of(context)
+              .pushNamed(CodeChomper.miniGameRouteName)
+              .then((_) {
+            world.start();
+          });
           break;
         case MiniGame.sphinx:
           {
