@@ -35,7 +35,7 @@ class _DeveloperQuestState extends State<DeveloperQuest> {
           ChangeNotifierProvider.value(notifier: world.company),
         ],
         child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Developer Quest',
           theme: ThemeData(
             brightness: Brightness.dark,
             primarySwatch: Colors.orange,

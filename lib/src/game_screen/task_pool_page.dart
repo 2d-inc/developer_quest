@@ -38,9 +38,7 @@ class TaskPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: display == TaskPoolDisplay.completed
-          ? const Color.fromRGBO(229, 229, 229, 1)
-          : const Color.fromRGBO(241, 241, 241, 1),
+      color: _displayColor,
       child: Consumer<TaskPool>(
         builder: (context, taskPool) {
           return ListView(
@@ -63,4 +61,8 @@ class TaskPoolPage extends StatelessWidget {
       ),
     );
   }
+
+  Color get _displayColor => display == TaskPoolDisplay.completed
+      ? const Color.fromRGBO(229, 229, 229, 1)
+      : const Color.fromRGBO(241, 241, 241, 1);
 }
