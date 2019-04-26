@@ -1,0 +1,263 @@
+library chompy;
+
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'code_chomper_screen.dart';
+
+const Color chompBlue = Color(0xFF4CB3FF);
+const Color chompRed = Color(0xFFFC4B67);
+const TextStyle chompTextStyle =
+    TextStyle(fontFamily: "SpaceMonoRegular", fontSize: 12, color: chompBlue);
+const double _keyDefaultWidth = 32;
+const double _keyPadding = 5;
+
+/// The main screen for the code chomper mini game.
+class CodeChomper extends StatefulWidget {
+  @override
+  _CodeChomperState createState() => _CodeChomperState();
+}
+
+class _CodeChomperState extends State<CodeChomper> {
+  final CodeChomperController chomperController = CodeChomperController();
+  @override
+  Widget build(BuildContext context) {
+    var media = MediaQuery.of(context);
+    var devicePadding = media.padding;
+    return Material(
+      color: const Color.fromRGBO(38, 36, 87, 1),
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: devicePadding.top + 11,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        "CODE CHOMPER: ",
+                        style: chompTextStyle,
+                      ),
+                      Text(
+                        "ACTIVE",
+                        style: chompTextStyle.apply(
+                          fontFamily: "SpaceMonoBold",
+                          color: const Color.fromRGBO(206, 83, 83, 1),
+                        ),
+                      ),
+                      Expanded(child: Container()),
+                      Container(
+                        width: 120,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
+                          color: chompBlue.withOpacity(0.24),
+                        ),
+                        child: Row(
+                          children: [
+                            for (int i = 0; i < 5; i++)
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(left: 3, right: 3),
+                                height: 3,
+                                width: 18,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(1.5)),
+                                  color: chompBlue,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Container(height: 1, color: chompBlue),
+                  const SizedBox(height: 6),
+                  Row(
+                    children: [
+                      for (int i = 0; i < 3; i++)
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(right: i == 2 ? 0 : 5),
+                            height: 1,
+                            color: chompBlue.withOpacity(0.5),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Game renderer goes here
+            Expanded(child: CodeChomperScreen(chomperController)),
+
+            GestureDetector(
+				
+              behavior: HitTestBehavior.opaque,
+              onTapDown: (details) {
+                chomperController.addCode(details.globalPosition);
+              },
+              child: Container(
+                color: Colors.black.withOpacity(0.33),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 5),
+                    _TapDecorationLine(),
+                    const SizedBox(height: 5),
+                    Text('TAP TO CODE',
+                        style: chompTextStyle.apply(fontSizeDelta: 8)),
+                    const SizedBox(height: 5),
+                    _TapDecorationLine(),
+                    const SizedBox(height: 10),
+                    _KeyboardRow(
+                      (media.size.width / (_keyDefaultWidth + _keyPadding))
+                          .floor(),
+                    ),
+                    _KeyboardRow(
+                      (media.size.width / (_keyDefaultWidth + _keyPadding))
+                              .floor() -
+                          1,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const _Key(_keyDefaultWidth * 1.25),
+                        const SizedBox(width: 5),
+                        _KeyboardRow(
+                          (media.size.width / (_keyDefaultWidth + _keyPadding))
+                                  .floor() -
+                              3,
+                        ),
+                        const SizedBox(width: 5),
+                        const _Key(_keyDefaultWidth * 1.25),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _Key(media.size.width / 5),
+                        const SizedBox(width: 2),
+                        _Key(media.size.width / 2),
+                        const SizedBox(width: 2),
+                        _Key(media.size.width / 5),
+                      ],
+                    ),
+                    SizedBox(height: devicePadding.bottom),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// A row of keys in the keyboard.
+class _KeyboardRow extends StatelessWidget {
+  final int numKeys;
+  const _KeyboardRow(this.numKeys);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (int i = 0; i < numKeys; i++) const _Key(_keyDefaultWidth)
+      ],
+    );
+  }
+}
+
+class _TapDecorationLine extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const SizedBox(width: 2),
+        Container(
+          height: 1,
+          width: 5,
+          color: chompBlue,
+        ),
+        Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5),
+            height: 1,
+            color: chompBlue,
+          ),
+        ),
+        Container(
+          height: 1,
+          width: 5,
+          color: chompBlue,
+        ),
+        const SizedBox(width: 2),
+      ],
+    );
+  }
+}
+
+/// A single tappable key for the chomper keyboard.
+class _Key extends StatefulWidget {
+  final double width;
+  const _Key(this.width);
+
+  @override
+  _KeyState createState() => _KeyState();
+}
+
+class _KeyState extends State<_Key> with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation<Color> _colorTween;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 122),
+    );
+
+    _colorTween = ColorTween(begin: chompBlue.withOpacity(0), end: Colors.white)
+        .animate(_animationController);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Listener(
+      onPointerDown: (details) {
+        _colorTween =
+            ColorTween(begin: chompBlue.withOpacity(0), end: Colors.white)
+                .animate(_animationController);
+        _animationController.reset();
+        _animationController.forward().whenComplete(() {
+          _animationController.reverse(from: 0.5);
+        });
+      },
+      child: AnimatedBuilder(
+        animation: _animationController,
+        builder: (context, child) => Container(
+              margin: const EdgeInsets.all(_keyPadding / 2),
+              height: 42,
+              width: widget.width,
+              decoration: BoxDecoration(
+                color: _colorTween.value,
+                border: Border.all(
+                  color: chompBlue.withOpacity(0.5),
+                  width: 1.0,
+                ),
+              ),
+            ),
+      ),
+    );
+  }
+}
