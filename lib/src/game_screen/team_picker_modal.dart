@@ -47,12 +47,12 @@ class TeamPickerModalState extends State<TeamPickerModal> {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                   maxWidth: modalMaxWidth,
-				  
-                  // If we're showing the wide layout, make sure this modal 
-				  // isn't too tall by using the same width as a constraint
-				  // for the height.
+
+                  // If we're showing the wide layout, make sure this modal
+                  // isn't too tall by using a factor of the same width 
+				  // constraint as a constraint for the height.
                   maxHeight: layout == RpgLayout.wide
-                      ? modalMaxWidth
+                      ? modalMaxWidth*1.1
                       : double.infinity),
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -110,8 +110,8 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                                             _selected.contains(character),
                                         toggleSelection:
                                             _toggleCharacterSelected,
-                                        // Show the character as not selectable if
-                                        // they are currently assigned to another task
+                                        // Show the character as not selectable 
+										// if they are currently assigned to another task
                                         isDisabled: character.isBusy &&
                                             !(widget.workItem.assignedTeam
                                                     ?.contains(character) ??
@@ -122,22 +122,27 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                         ),
                       ),
                       Padding(
-                        padding: horizontalPadding.add(EdgeInsets.only(
-                            bottom: MediaQuery.of(context).padding.bottom)),
+                        padding: horizontalPadding.add(
+                          EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).padding.bottom + 15),
+                        ),
                         child: WideButton(
-                            buttonKey: const Key('team_pick_ok'),
-                            onPressed: () => Navigator.pop(context, _selected),
-                            paddingTweak: const EdgeInsets.only(right: -7),
-                            background: isButtonDisabled
-                                ? contentColor.withOpacity(0.1)
-                                : const Color.fromRGBO(84, 114, 239, 1),
-                            child: Text(
-                                isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
-                                style: buttonTextStyle.apply(
-                                  color: isButtonDisabled
-                                      ? contentColor.withOpacity(0.25)
-                                      : Colors.white,
-                                ))),
+                          buttonKey: const Key('team_pick_ok'),
+                          onPressed: () => Navigator.pop(context, _selected),
+                          paddingTweak: const EdgeInsets.only(right: -7),
+                          background: isButtonDisabled
+                              ? contentColor.withOpacity(0.1)
+                              : const Color.fromRGBO(84, 114, 239, 1),
+                          child: Text(
+                            isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
+                            style: buttonTextStyle.apply(
+                              color: isButtonDisabled
+                                  ? contentColor.withOpacity(0.25)
+                                  : Colors.white,
+                            ),
+                          ),
+                        ),
                       )
                     ],
                   ),
