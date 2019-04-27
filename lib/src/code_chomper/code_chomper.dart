@@ -120,119 +120,128 @@ class _CodeChomperState extends State<CodeChomper> {
                               });
                             }
                           },
-                          child: Container(
-                            color: Colors.black.withOpacity(0.33),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 5),
-                                _TapDecorationLine(),
-                                const SizedBox(height: 5),
-                                Text('TAP TO CODE',
-                                    style:
-                                        chompTextStyle.apply(fontSizeDelta: 8)),
-                                const SizedBox(height: 5),
-                                _TapDecorationLine(),
-                                const SizedBox(height: 10),
-                                _KeyboardRow(
-                                  (media.size.width /
-                                          (_keyDefaultWidth + _keyPadding))
-                                      .floor(),
-                                ),
-                                _KeyboardRow(
-                                  (media.size.width /
-                                              (_keyDefaultWidth + _keyPadding))
-                                          .floor() -
-                                      1,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const _Key(_keyDefaultWidth * 1.25),
-                                    const SizedBox(width: 5),
-                                    _KeyboardRow(
-                                      (media.size.width /
-                                                  (_keyDefaultWidth +
-                                                      _keyPadding))
-                                              .floor() -
-                                          3,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    const _Key(_keyDefaultWidth * 1.25),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    _Key(media.size.width / 5),
-                                    const SizedBox(width: 2),
-                                    _Key(media.size.width / 2),
-                                    const SizedBox(width: 2),
-                                    _Key(media.size.width / 5),
-                                  ],
-                                ),
-                                SizedBox(height: devicePadding.bottom),
-                              ],
-                            ),
-                          ),
+                          child: _ChompyKeyboard(),
                         ),
                       ],
                     ),
                   ),
                   Positioned.fill(
-                    child: IgnorePointer(
-                      ignoring: !_isGameOver,
-                      child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        color: _isGameOver
-                            ? _chompBackground
-                            : _chompBackground.withOpacity(0),
-                        child: _isGameOver
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SizedBox(
-                                    width: 160,
-                                    height: 160,
-                                    child: FlareActor(
-                                        'assets/flare/Chomper.flr',
-                                        alignment: Alignment.center,
-                                        shouldClip: false,
-                                        fit: BoxFit.contain,
-                                        animation: 'Game Over'),
-                                  ),
-                                  const SizedBox(height: 50),
-                                  Text(
-                                    'YOU WIN!',
-                                    style:
-                                        chompTextStyle.apply(fontSizeDelta: 26),
-                                  ),
-                                  const SizedBox(height: 30),
-                                  FlatButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, null),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 40, vertical: 10),
-                                    color: const Color.fromRGBO(27, 26, 68, 1),
-                                    shape:
-                                        Border.all(width: 1, color: chompBlue),
-                                    child: Text(
-                                      'CONTINUE',
-                                      style: chompTextStyle.apply(
-                                          fontSizeDelta: 8),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 40),
-                                ],
-                              )
-                            : Container(),
-                      ),
-                    ),
+                    child: _GameOverScreen(isGameOver: _isGameOver),
                   ),
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// The game over screen which fades in once the last line in the game
+/// has been typed.
+class _GameOverScreen extends StatelessWidget {
+  final bool isGameOver;
+  const _GameOverScreen({
+    this.isGameOver = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      ignoring: !isGameOver,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        color: isGameOver ? _chompBackground : _chompBackground.withOpacity(0),
+        child: isGameOver
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    width: 160,
+                    height: 160,
+                    child: FlareActor('assets/flare/Chomper.flr',
+                        alignment: Alignment.center,
+                        shouldClip: false,
+                        fit: BoxFit.contain,
+                        animation: 'Game Over'),
+                  ),
+                  const SizedBox(height: 50),
+                  Text(
+                    'YOU WIN!',
+                    style: chompTextStyle.apply(fontSizeDelta: 26),
+                  ),
+                  const SizedBox(height: 30),
+                  FlatButton(
+                    onPressed: () => Navigator.pop(context, null),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 10),
+                    color: const Color.fromRGBO(27, 26, 68, 1),
+                    shape: Border.all(width: 1, color: chompBlue),
+                    child: Text(
+                      'CONTINUE',
+                      style: chompTextStyle.apply(fontSizeDelta: 8),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                ],
+              )
+            : Container(),
+      ),
+    );
+  }
+}
+
+/// The keyboard with the TAP TO CODE text at the bottom of the game.
+class _ChompyKeyboard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var media = MediaQuery.of(context);
+    var devicePadding = media.padding;
+    var defaultKeysPerRow =
+        (media.size.width / (_keyDefaultWidth + _keyPadding)).floor();
+
+    return Container(
+      color: Colors.black.withOpacity(0.33),
+      child: Column(
+        children: [
+          const SizedBox(height: 5),
+          _TapDecorationLine(),
+          const SizedBox(height: 5),
+          Text('TAP TO CODE', style: chompTextStyle.apply(fontSizeDelta: 8)),
+          const SizedBox(height: 5),
+          _TapDecorationLine(),
+          const SizedBox(height: 10),
+          _KeyboardRow(
+            defaultKeysPerRow,
+          ),
+          _KeyboardRow(
+            defaultKeysPerRow - 1,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const _ChompyKey(_keyDefaultWidth * 1.25),
+              const SizedBox(width: 5),
+              _KeyboardRow(
+                defaultKeysPerRow - 3,
+              ),
+              const SizedBox(width: 5),
+              const _ChompyKey(_keyDefaultWidth * 1.25),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _ChompyKey(media.size.width / 5),
+              const SizedBox(width: 2),
+              _ChompyKey(media.size.width / 2),
+              const SizedBox(width: 2),
+              _ChompyKey(media.size.width / 5),
+            ],
+          ),
+          SizedBox(height: devicePadding.bottom),
+        ],
       ),
     );
   }
@@ -248,12 +257,13 @@ class _KeyboardRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for (int i = 0; i < numKeys; i++) const _Key(_keyDefaultWidth)
+        for (int i = 0; i < numKeys; i++) const _ChompyKey(_keyDefaultWidth)
       ],
     );
   }
 }
 
+/// A multi line detail/complication for the UI that is used repeated on the screen.
 class _TapDecorationLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -284,15 +294,16 @@ class _TapDecorationLine extends StatelessWidget {
 }
 
 /// A single tappable key for the chomper keyboard.
-class _Key extends StatefulWidget {
+class _ChompyKey extends StatefulWidget {
   final double width;
-  const _Key(this.width);
+  const _ChompyKey(this.width);
 
   @override
-  _KeyState createState() => _KeyState();
+  _ChompyKeyState createState() => _ChompyKeyState();
 }
 
-class _KeyState extends State<_Key> with SingleTickerProviderStateMixin {
+class _ChompyKeyState extends State<_ChompyKey>
+    with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<Color> _colorTween;
 

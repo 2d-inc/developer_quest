@@ -27,9 +27,7 @@ class TaskListItem extends StatelessWidget {
           world.pause();
           Navigator.of(context)
               .pushNamed(CodeChomper.miniGameRouteName)
-              .then((_) {
-            world.start();
-          });
+              .then((_) => world.start());
           break;
         case MiniGame.sphinx:
           {

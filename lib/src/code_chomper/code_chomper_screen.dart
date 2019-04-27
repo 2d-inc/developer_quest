@@ -51,7 +51,7 @@ class CodeChomperController extends ValueNotifier<Offset> {
   bool _isGameOver;
   bool get isGameOver => _isGameOver;
 
-  bool addCode(Offset gloalPosition) {
+  bool addCode(Offset globalPosition) {
     if (_templateLines.isEmpty) {
       _isGameOver = true;
       return true;
@@ -59,7 +59,7 @@ class CodeChomperController extends ValueNotifier<Offset> {
     lines.add(_templateLines.first);
     _templateLines.removeAt(0);
 
-    value = gloalPosition;
+    value = globalPosition;
 
     return false;
   }
@@ -211,20 +211,17 @@ class CodeChomperScreenRenderObject extends FlareRenderBox {
           (line?.size?.width ?? 0).clamp(10, size.width).toDouble();
       if (clip) {
         double clipWidth = (_cursor - _cursor.floor()) * lineEffectWidth;
+        int msSinceEpoch = DateTime.now().millisecondsSinceEpoch;
+        double cursorOpacity =
+            pow(((msSinceEpoch % 1500) / 1500 * 2 - 1).abs(), 0.4).toDouble();
         canvas.drawRect(
-            Rect.fromLTWH(offset.dx + _padCodeLeft + clipWidth,
-                offset.dy + offsetY + _padTop + i * _chompLineHeight, 3, 31),
-            Paint()
-              ..style = PaintingStyle.fill
-              // Fade the cursor in and out, and hold the out a little
-              ..color = chompBlue.withOpacity(pow(
-                      ((DateTime.now().millisecondsSinceEpoch % 1500) /
-                                  1500 *
-                                  2 -
-                              1)
-                          .abs(),
-                      0.4)
-                  .toDouble()));
+          Rect.fromLTWH(offset.dx + _padCodeLeft + clipWidth,
+              offset.dy + offsetY + _padTop + i * _chompLineHeight, 3, 31),
+          Paint()
+            ..style = PaintingStyle.fill
+            // Fade the cursor in and out, and hold the out a little
+            ..color = chompBlue.withOpacity(cursorOpacity),
+        );
       }
 
       // Draw the line of text
