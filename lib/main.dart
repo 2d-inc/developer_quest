@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/about_screen.dart';
+import 'package:dev_rpg/src/code_chomper/code_chomper.dart';
 import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
@@ -50,6 +51,7 @@ class _MyAppState extends State<MyApp> {
             '/': (context) => WelcomeScreen(),
             '/gameloop': (context) => GameScreen(),
             '/about': (context) => AboutScreen(),
+            CodeChomper.miniGameRouteName: (context) => CodeChomper(),
             SphinxScreen.miniGameRouteName: (context) => const SphinxScreen(),
             SphinxScreen.fullGameRouteName: (context) =>
                 const SphinxScreen(fullGame: true),

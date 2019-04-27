@@ -52,14 +52,24 @@ class GameScreenSlimState extends State<GameScreenSlim> {
             // Using RepaintBoundary here because this part of the UI
             // changes frequently.
             return RepaintBoundary(
-              child: Row(
-                children: [
-                  Expanded(child: UsersBadge(company.users)),
-                  StatSeparator(),
-                  Expanded(child: JoyBadge(company.joy)),
-                  StatSeparator(),
-                  Expanded(child: CoinBadge(company.coin)),
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: const BorderSide(
+                      color: statsSeparatorColor,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(child: UsersBadge(company.users)),
+                    StatSeparator(),
+                    Expanded(child: JoyBadge(company.joy)),
+                    StatSeparator(),
+                    Expanded(child: CoinBadge(company.coin)),
+                  ],
+                ),
               ),
             );
           },
@@ -90,7 +100,7 @@ class GameScreenSlimState extends State<GameScreenSlim> {
       ),
       body: PageView(
         controller: _controller,
-        children: [CharacterPoolPage(), TaskPoolPage()],
+        children: [CharacterPoolPage(), const TaskPoolPage()],
       ),
     );
   }

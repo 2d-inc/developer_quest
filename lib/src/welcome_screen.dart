@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dev_rpg/src/game_screen/character_style.dart';
+import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
@@ -65,17 +66,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: Container(
         alignment: Alignment.center,
         color: contentColor,
-        child: MediaQuery.of(context).size.width > modalMaxWidth
-            ? _WelcomeScreenWide(
-                hero,
-                start: _pressStartGame,
-                about: _pressAbout,
-              )
-            : _WelcomeScreenSlim(
-                hero,
-                start: _pressStartGame,
-                about: _pressAbout,
-              ),
+        child: RpgLayoutBuilder(
+          builder: (context, layout) => layout == RpgLayout.wide
+              ? _WelcomeScreenWide(
+                  hero,
+                  start: _pressStartGame,
+                  about: _pressAbout,
+                )
+              : _WelcomeScreenSlim(
+                  hero,
+                  start: _pressStartGame,
+                  about: _pressAbout,
+                ),
+        ),
       ),
     );
   }
