@@ -49,10 +49,10 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                   maxWidth: modalMaxWidth,
 
                   // If we're showing the wide layout, make sure this modal
-                  // isn't too tall by using a factor of the same width 
-				  // constraint as a constraint for the height.
+                  // isn't too tall by using a factor of the same width
+                  // constraint as a constraint for the height.
                   maxHeight: layout == RpgLayout.wide
-                      ? modalMaxWidth*1.1
+                      ? modalMaxWidth * 1.1
                       : double.infinity),
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
@@ -110,8 +110,8 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                                             _selected.contains(character),
                                         toggleSelection:
                                             _toggleCharacterSelected,
-                                        // Show the character as not selectable 
-										// if they are currently assigned to another task
+                                        // Show the character as not selectable
+                                        // if they are currently assigned to another task
                                         isDisabled: character.isBusy &&
                                             !(widget.workItem.assignedTeam
                                                     ?.contains(character) ??
