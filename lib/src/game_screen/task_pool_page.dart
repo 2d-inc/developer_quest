@@ -60,7 +60,10 @@ class TaskPoolPage extends StatelessWidget {
               ),
             );
             _buildSection(slivers, 'IN PROGRESS', taskPool.workItems);
-          } else {
+          }
+
+          if (display == TaskPoolDisplay.all ||
+              display == TaskPoolDisplay.completed) {
             _buildSection(
                 slivers,
                 'COMPLETED',
