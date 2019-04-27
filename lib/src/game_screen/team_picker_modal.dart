@@ -12,6 +12,8 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../rpg_layout_builder.dart';
+
 /// Present a list of [Character]s for the player to choose from.
 class TeamPickerModal extends StatefulWidget {
   final WorkItem workItem;
@@ -39,93 +41,110 @@ class TeamPickerModalState extends State<TeamPickerModal> {
         _selected.isEmpty;
     var isButtonDisabled = !isUnassigning && _selected.isEmpty;
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: modalMaxWidth),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-          child: Container(
-            color: modalBackgroundColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-                Padding(
-                  padding: horizontalPadding,
-                  child: Text(widget.workItem.name, style: contentLargeStyle),
-                ),
-                const SizedBox(height: 15),
-                Padding(
-                  padding: horizontalPadding,
-                  child: Text('SKILLS REQUIRED:',
-                      style: buttonTextStyle.apply(
-                          fontSizeDelta: -4, color: secondaryContentColor)),
-                ),
-                const SizedBox(height: 7),
-                Padding(
-                  padding: horizontalPadding,
-                  child: Row(
-                      children: widget.workItem.skillsNeeded
-                          .map((skill) => SkillBadge(skill))
-                          .toList()),
-                ),
-                Expanded(
-                  child: Consumer<CharacterPool>(
-                    builder: (context, characterPool) {
-                      var characters = characterPool.fullTeam;
-                      return characters.isEmpty
-                          ? Center(
-                              child: const Text(
-                                "Hire some teammates to complete this task!",
-                                style: contentLargeStyle,
-                                textAlign: TextAlign.center,
-                              ),
-                            )
-                          : ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              padding: horizontalPadding,
-                              itemCount: characters.length,
-                              itemBuilder: (context, index) {
-                                var character = characters[index];
-                                return TeamPickerItem(
-                                  character,
-                                  isSelected: _selected.contains(character),
-                                  toggleSelection: _toggleCharacterSelected,
-                                  // Show the character as not selectable if
-                                  // they are currently assigned to another task
-                                  isDisabled: character.isBusy &&
-                                      !(widget.workItem.assignedTeam
-                                              ?.contains(character) ??
-                                          false),
-                                );
-                              });
-                    },
+    return RpgLayoutBuilder(
+      builder: (context, layout) => Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: modalMaxWidth,
+				  
+                  // If we're showing the wide layout, make sure this modal 
+				  // isn't too tall by using the same width as a constraint
+				  // for the height.
+                  maxHeight: layout == RpgLayout.wide
+                      ? modalMaxWidth
+                      : double.infinity),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+                child: Container(
+                  color: modalBackgroundColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: horizontalPadding,
+                        child: Text(widget.workItem.name,
+                            style: contentLargeStyle),
+                      ),
+                      const SizedBox(height: 15),
+                      Padding(
+                        padding: horizontalPadding,
+                        child: Text('SKILLS REQUIRED:',
+                            style: buttonTextStyle.apply(
+                                fontSizeDelta: -4,
+                                color: secondaryContentColor)),
+                      ),
+                      const SizedBox(height: 7),
+                      Padding(
+                        padding: horizontalPadding,
+                        child: Row(
+                            children: widget.workItem.skillsNeeded
+                                .map((skill) => SkillBadge(skill))
+                                .toList()),
+                      ),
+                      Expanded(
+                        child: Consumer<CharacterPool>(
+                          builder: (context, characterPool) {
+                            var characters = characterPool.fullTeam;
+                            return characters.isEmpty
+                                ? Center(
+                                    child: const Text(
+                                      'Hire some teammates to complete '
+                                      'this task!',
+                                      style: contentLargeStyle,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: horizontalPadding,
+                                    itemCount: characters.length,
+                                    itemBuilder: (context, index) {
+                                      var character = characters[index];
+                                      return TeamPickerItem(
+                                        character,
+                                        isSelected:
+                                            _selected.contains(character),
+                                        toggleSelection:
+                                            _toggleCharacterSelected,
+                                        // Show the character as not selectable if
+                                        // they are currently assigned to another task
+                                        isDisabled: character.isBusy &&
+                                            !(widget.workItem.assignedTeam
+                                                    ?.contains(character) ??
+                                                false),
+                                      );
+                                    });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: horizontalPadding.add(EdgeInsets.only(
+                            bottom: MediaQuery.of(context).padding.bottom)),
+                        child: WideButton(
+                            buttonKey: const Key('team_pick_ok'),
+                            onPressed: () => Navigator.pop(context, _selected),
+                            paddingTweak: const EdgeInsets.only(right: -7),
+                            background: isButtonDisabled
+                                ? contentColor.withOpacity(0.1)
+                                : const Color.fromRGBO(84, 114, 239, 1),
+                            child: Text(
+                                isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
+                                style: buttonTextStyle.apply(
+                                  color: isButtonDisabled
+                                      ? contentColor.withOpacity(0.25)
+                                      : Colors.white,
+                                ))),
+                      )
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: horizontalPadding.add(EdgeInsets.only(
-                      bottom: MediaQuery.of(context).padding.bottom)),
-                  child: WideButton(
-                      buttonKey: const Key('team_pick_ok'),
-                      onPressed: () => Navigator.pop(context, _selected),
-                      paddingTweak: const EdgeInsets.only(right: -7),
-                      background: isButtonDisabled
-                          ? contentColor.withOpacity(0.1)
-                          : const Color.fromRGBO(84, 114, 239, 1),
-                      child:
-                          Text(isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
-                              style: buttonTextStyle.apply(
-                                color: isButtonDisabled
-                                    ? contentColor.withOpacity(0.25)
-                                    : Colors.white,
-                              ))),
-                )
-              ],
+              ),
             ),
           ),
-        ),
-      ),
     );
   }
 
