@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'game_screen/task_pool_page.dart';
+import 'game_screen/three_col_task_pool_page.dart';
 
 class ThreeColumnGameScreen extends StatefulWidget {
   @override
@@ -53,10 +54,10 @@ class _ThreeColumnGameScreenState extends State<ThreeColumnGameScreen> {
             child: CharacterPoolPage(),
           ),
           const Expanded(
-            child: TaskPoolPage(display: TaskPoolDisplay.inProgress),
+            child: ThreeColTaskPoolPage(display: TaskPoolDisplay.inProgress),
           ),
           const Expanded(
-            child: TaskPoolPage(display: TaskPoolDisplay.completed),
+            child: ThreeColTaskPoolPage(display: TaskPoolDisplay.completed),
           ),
         ],
       ),
