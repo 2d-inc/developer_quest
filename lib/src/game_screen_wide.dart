@@ -1,5 +1,6 @@
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/stat_separator.dart';
@@ -22,14 +23,24 @@ class GameScreenWide extends StatelessWidget {
             // Using RepaintBoundary here because this part of the UI
             // changes frequently.
             return RepaintBoundary(
-              child: Row(
-                children: [
-                  Container(width: 125, child: UsersBadge(company.users)),
-                  StatSeparator(),
-                  Container(width: 125, child: JoyBadge(company.joy)),
-                  StatSeparator(),
-                  Expanded(child: CoinBadge(company.coin)),
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: const BorderSide(
+                      color: statsSeparatorColor,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Container(width: 125, child: UsersBadge(company.users)),
+                    StatSeparator(),
+                    Container(width: 125, child: JoyBadge(company.joy)),
+                    StatSeparator(),
+                    Expanded(child: CoinBadge(company.coin)),
+                  ],
+                ),
               ),
             );
           },
