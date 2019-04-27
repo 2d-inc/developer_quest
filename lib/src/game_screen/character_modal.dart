@@ -69,7 +69,7 @@ class CharacterImage extends StatelessWidget {
             Positioned.fill(
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Color.fromRGBO(241, 241, 241, 1),
+                  color: Color.fromRGBO(25, 25, 30, 1),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
@@ -95,7 +95,7 @@ class CharacterImage extends StatelessWidget {
                   onPressed: () => Navigator.pop(context, null),
                   child: const Icon(
                     Icons.cancel,
-                    color: Color.fromRGBO(69, 69, 82, 1),
+                    color: Color.fromRGBO(250, 250, 255, .5),
                   ),
                 ),
               ),
