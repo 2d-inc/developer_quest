@@ -65,7 +65,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       body: Container(
         alignment: Alignment.center,
         color: contentColor,
-        child: MediaQuery.of(context).size.width > modalMaxWidth
+        child: MediaQuery.of(context).size.width > wideLayoutThreshold
             ? _WelcomeScreenWide(
                 hero,
                 start: _pressStartGame,
