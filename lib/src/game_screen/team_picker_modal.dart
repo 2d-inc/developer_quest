@@ -74,24 +74,32 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                   child: Consumer<CharacterPool>(
                     builder: (context, characterPool) {
                       var characters = characterPool.fullTeam;
-                      return ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: horizontalPadding,
-                          itemCount: characters.length,
-                          itemBuilder: (context, index) {
-                            var character = characters[index];
-                            return TeamPickerItem(
-                              character,
-                              isSelected: _selected.contains(character),
-                              toggleSelection: _toggleCharacterSelected,
-                              // Show the character as not selectable if
-                              // they are currently assigned to another task
-                              isDisabled: character.isBusy &&
-                                  !(widget.workItem.assignedTeam
-                                          ?.contains(character) ??
-                                      false),
-                            );
-                          });
+                      return characters.isEmpty
+                          ? Center(
+                              child: const Text(
+                                "Hire some teammates to complete this task!",
+                                style: contentLargeStyle,
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding: horizontalPadding,
+                              itemCount: characters.length,
+                              itemBuilder: (context, index) {
+                                var character = characters[index];
+                                return TeamPickerItem(
+                                  character,
+                                  isSelected: _selected.contains(character),
+                                  toggleSelection: _toggleCharacterSelected,
+                                  // Show the character as not selectable if
+                                  // they are currently assigned to another task
+                                  isDisabled: character.isBusy &&
+                                      !(widget.workItem.assignedTeam
+                                              ?.contains(character) ??
+                                          false),
+                                );
+                              });
                     },
                   ),
                 ),
