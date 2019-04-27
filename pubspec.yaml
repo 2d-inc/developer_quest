@@ -61,8 +61,15 @@ flutter:
     - assets/images/2.0x/
     - assets/images/3.0x/
     - assets/flare/
+    - assets/docs/code_chomper_example_code.dart
 
   fonts:
+      - family: SpaceMonoRegular
+        fonts:
+          - asset: assets/fonts/SpaceMono-Regular.ttf
+      - family: SpaceMonoBold
+        fonts:
+          - asset: assets/fonts/SpaceMono-Bold.ttf
       - family: RobotoCondensedBold
         fonts:
           - asset: assets/fonts/RobotoCondensed-Bold.ttf
