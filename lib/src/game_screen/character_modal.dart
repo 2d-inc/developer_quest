@@ -190,7 +190,14 @@ class UpgradeHireButton extends StatelessWidget {
             ),
           ),
           Expanded(child: Container()),
-          const Icon(Icons.stars, color: Color.fromRGBO(249, 209, 81, 1)),
+          const SizedBox(
+            width: 20,
+            height: 20,
+            child: FlareActor(
+              'assets/flare/Coin.flr',
+              isPaused: true,
+            ),
+          ),
           const SizedBox(width: 4),
           Text(
             character.upgradeCost.toString(),
