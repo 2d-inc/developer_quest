@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../style.dart';
+
 /// A widget to place between [StatBadge] widgets to show clear
 /// separation between them.
 class StatSeparator extends StatelessWidget {
@@ -7,7 +9,7 @@ class StatSeparator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 1,
-      color: const Color.fromRGBO(38, 38, 47, 1),
+      color: statsSeparatorColor,
     );
   }
 }

@@ -75,113 +75,119 @@ class _GameOverState extends State<GameOver> {
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Material(
-          child: Container(
-            padding: const EdgeInsets.all(15),
-            constraints: const BoxConstraints(minWidth: double.infinity),
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    offset: const Offset(0, 100),
-                    blurRadius: 100),
-              ],
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedOverflowBox(
-                  size: const Size.fromHeight(100),
-                  child: SizedBox(
-                    width: 104,
-                    height: 104,
-                    child: Transform(
-                      transform: Matrix4.translationValues(0, -28, 0),
-                      child: FlareActor('assets/flare/Joy.flr',
-                          animation: stars < 2
-                              ? 'sad'
-                              : stars < 3 ? 'neutral' : 'happy'),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: modalMaxWidth),
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              constraints: const BoxConstraints(minWidth: double.infinity),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black.withOpacity(0.5),
+                      offset: const Offset(0, 100),
+                      blurRadius: 100),
+                ],
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                color: Colors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedOverflowBox(
+                    size: const Size.fromHeight(100),
+                    child: SizedBox(
+                      width: 104,
+                      height: 104,
+                      child: Transform(
+                        transform: Matrix4.translationValues(0, -28, 0),
+                        child: FlareActor('assets/flare/Joy.flr',
+                            animation: stars < 2
+                                ? 'sad'
+                                : stars < 3 ? 'neutral' : 'happy'),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 248,
-                  height: 46,
-                  child: FlareActor(
-                    'assets/flare/Stars.flr',
-                    shouldClip: false,
-                    animation: 'Build',
-                    controller: _starController,
+                  SizedBox(
+                    width: 248,
+                    height: 46,
+                    child: FlareActor(
+                      'assets/flare/Stars.flr',
+                      shouldClip: false,
+                      animation: 'Build',
+                      controller: _starController,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 23),
-                Text(successMessage, style: contentLargeStyle),
-                const SizedBox(height: 19),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
+                  const SizedBox(height: 23),
+                  Text(successMessage, style: contentLargeStyle),
+                  const SizedBox(height: 19),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(text: 'Your ', style: contentStyle),
+                          primaryCharacteristic,
+                          const TextSpan(
+                              text: ' app with ', style: contentStyle),
+                          secondaryCharacteristic,
+                          const TextSpan(
+                              text: ' shipped to ', style: contentStyle),
+                          TextSpan(
+                              text: '${widget.world.company.users.value} users',
+                              style: contentStyle.apply(
+                                  fontFamily: 'MontserratBold')),
+                          const TextSpan(
+                              text: ' and was rated ', style: contentStyle),
+                          TextSpan(
+                              text: '${stars + 1}/5 stars',
+                              style: contentStyle.apply(
+                                  fontFamily: 'MontserratBold')),
+                          const TextSpan(
+                              text: ' by ItsAllWidgets Magazine!',
+                              style: contentStyle),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 26),
+                  SizedBox(
+                    height: 50,
+                    child: Row(
                       children: [
-                        const TextSpan(text: 'Your ', style: contentStyle),
-                        primaryCharacteristic,
-                        const TextSpan(text: ' app with ', style: contentStyle),
-                        secondaryCharacteristic,
-                        const TextSpan(
-                            text: ' shipped to ', style: contentStyle),
-                        TextSpan(
-                            text: '${widget.world.company.users.value} users',
-                            style: contentStyle.apply(
-                                fontFamily: 'MontserratBold')),
-                        const TextSpan(
-                            text: ' and was rated ', style: contentStyle),
-                        TextSpan(
-                            text: '${stars + 1}/5 stars',
-                            style: contentStyle.apply(
-                                fontFamily: 'MontserratBold')),
-                        const TextSpan(
-                            text: ' by ItsAllWidgets Magazine!',
-                            style: contentStyle),
+                        Expanded(
+                          child: WideButton(
+                            onPressed: _backToMainMenu,
+                            paddingTweak: const EdgeInsets.only(right: -7),
+                            background: const Color.fromRGBO(84, 114, 239, 1),
+                            shadowColor:
+                                const Color.fromRGBO(84, 114, 244, 0.25),
+                            child: Text(
+                              'MAIN MENU',
+                              style: buttonTextStyle.apply(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: WideButton(
+                            onPressed: () => _playAgain(context),
+                            paddingTweak: const EdgeInsets.only(right: -7),
+                            background: const Color.fromRGBO(236, 41, 117, 1),
+                            shadowColor:
+                                const Color.fromRGBO(244, 84, 84, 0.25),
+                            child: Text(
+                              'PLAY AGAIN',
+                              style: buttonTextStyle.apply(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 26),
-                SizedBox(
-                  height: 50,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: WideButton(
-                          onPressed: _backToMainMenu,
-                          paddingTweak: const EdgeInsets.only(right: -7),
-                          background: const Color.fromRGBO(84, 114, 239, 1),
-                          shadowColor: const Color.fromRGBO(84, 114, 244, 0.25),
-                          child: Text(
-                            'MAIN MENU',
-                            style: buttonTextStyle.apply(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: WideButton(
-                          onPressed: () => _playAgain(context),
-                          paddingTweak: const EdgeInsets.only(right: -7),
-                          background: const Color.fromRGBO(236, 41, 117, 1),
-                          shadowColor: const Color.fromRGBO(244, 84, 84, 0.25),
-                          child: Text(
-                            'PLAY AGAIN',
-                            style: buttonTextStyle.apply(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

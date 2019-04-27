@@ -14,14 +14,12 @@ class StartScreenHero extends LeafRenderObjectWidget {
   final Alignment alignment;
   final String filename;
   final Color gradient;
-  final double horizontalPadding;
 
   const StartScreenHero({
     this.fit = BoxFit.contain,
     this.alignment = Alignment.center,
     this.filename,
     this.gradient,
-    this.horizontalPadding,
   });
 
   @override
@@ -31,8 +29,7 @@ class StartScreenHero extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
-      ..gradient = gradient
-      ..horizontalPadding = horizontalPadding;
+      ..gradient = gradient;
   }
 
   @override
@@ -43,8 +40,7 @@ class StartScreenHero extends LeafRenderObjectWidget {
       ..filename = filename
       ..fit = fit
       ..alignment = alignment
-      ..gradient = gradient
-      ..horizontalPadding = horizontalPadding;
+      ..gradient = gradient;
   }
 
   @override
@@ -63,7 +59,6 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
   String _filename;
   Color gradient;
   double _crossFade = 0;
-  double horizontalPadding;
 
   @override
   bool get isPlaying => true;
@@ -98,11 +93,8 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
       return;
     }
 
-    Mat2D inverseView = Mat2D();
-    double paddingArtboardSpace = horizontalPadding;
-    if (Mat2D.invert(inverseView, viewTransform)) {
-      paddingArtboardSpace = inverseView[0] * horizontalPadding;
-    }
+    double paddingArtboardSpace = _character.width;
+
     _character.draw(canvas);
 
     // Get into artboard space to draw the gradient.
