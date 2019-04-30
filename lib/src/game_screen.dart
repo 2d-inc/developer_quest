@@ -42,6 +42,10 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _demoModeChanged() {
+    // Make sure modals are closed.
+    Navigator.popUntil(context, (route) {
+      return route.settings.name == '/gameloop';
+    });
     var world = Provider.of<World>(context);
     switch (demo.value) {
       case DemoModeAction.showWelcomeScreen:
@@ -69,7 +73,8 @@ class _GameScreenState extends State<GameScreen> {
         break;
       case DemoModeAction.showTasksScreen:
         // Take this opportunity to launch any completed tasks.
-        for (final task in world.taskPool.completedTasks) {
+        var copy = world.taskPool.completedTasks.toList();
+        for (final task in copy) {
           task.shipFeature();
         }
         break;
@@ -93,9 +98,6 @@ class _GameScreenState extends State<GameScreen> {
         break;
 
       default:
-        Navigator.popUntil(context, (route) {
-          return route.settings.name == '/gameloop';
-        });
         break;
     }
   }
