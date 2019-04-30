@@ -104,6 +104,7 @@ class _GameScreenState extends State<GameScreen> {
   Widget build(BuildContext context) {
     return Listener(
       onPointerDown: (_) {
+        demo.cancel();
         _scheduleInactivityTimer(context);
       },
       child: RpgLayoutBuilder(
