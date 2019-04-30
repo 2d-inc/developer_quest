@@ -54,6 +54,7 @@ class _GameOverState extends State<GameOver> {
 
   void _backToMainMenu() {
     widget.world.reset();
+    widget.world.pause();
     Navigator.popUntil(context, (route) {
       return route.settings.name == '/';
     });

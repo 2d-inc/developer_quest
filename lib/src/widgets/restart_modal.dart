@@ -29,24 +29,25 @@ class _RestartModalState extends State<RestartModal> {
 
   void _scheduleCountdown() {
     _countdown?.cancel();
-    _countdown = Timer(
+    _countdown = Timer.periodic(
       Duration(seconds: 1),
-      () {
+      (_) {
         setState(() {
           _secondsRemaining--;
 
           if (_secondsRemaining == 0) {
             _backToMainMenu();
+            _countdown.cancel();
             return;
           }
         });
-        _scheduleCountdown();
       },
     );
   }
 
   void _backToMainMenu() {
     widget.world.reset();
+    widget.world.pause();
     Navigator.popUntil(context, (route) {
       return route.settings.name == '/';
     });
