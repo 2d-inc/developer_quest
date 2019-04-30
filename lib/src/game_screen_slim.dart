@@ -45,10 +45,18 @@ class GameScreenSlimState extends State<GameScreenSlim> {
   void _demoModeChanged() {
     switch (demo.value) {
       case DemoModeAction.showTasksScreen:
-        _controller.jumpToPage(1);
+        _controller.animateToPage(
+          1,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+        );
         break;
       case DemoModeAction.showTeamScreen:
-        _controller.jumpToPage(0);
+        _controller.animateToPage(
+          0,
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+        );
         break;
       default:
         break;
