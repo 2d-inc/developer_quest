@@ -33,8 +33,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void _demoModeChanged() {
     if (demo.value != DemoModeAction.showWelcomeScreen) {
       demo.removeListener(_demoModeChanged);
-	  var world = Provider.of<World>(context, listen: false);
-	  world.reset();
+      var world = Provider.of<World>(context, listen: false);
+      world.reset();
       Navigator.of(context).pushNamed('/gameloop').then((_) {
         world.reset();
         demo.addListener(_demoModeChanged);
