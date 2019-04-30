@@ -13,6 +13,7 @@ import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:dev_rpg/src/welcome_screen.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
