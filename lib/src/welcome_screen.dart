@@ -33,9 +33,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void _demoModeChanged() {
     if (demo.value != DemoModeAction.showWelcomeScreen) {
       demo.removeListener(_demoModeChanged);
-      Provider.of<World>(context, listen: false).start();
+	  var world = Provider.of<World>(context, listen: false);
+	  world.reset();
       Navigator.of(context).pushNamed('/gameloop').then((_) {
-        Provider.of<World>(context, listen: false).reset();
+        world.reset();
         demo.addListener(_demoModeChanged);
         demo.delay();
       });
@@ -63,7 +64,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
   Future<void> _pressStartGame() async {
     demo.delay(indefinitely: true);
-    Provider.of<World>(context, listen: false).start();
+    Provider.of<World>(context, listen: false).reset();
     // Stop the hero cycling.
     _swapHeroTimer?.cancel();
     await Navigator.of(context).pushNamed('/gameloop');

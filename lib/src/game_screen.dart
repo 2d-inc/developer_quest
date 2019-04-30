@@ -43,13 +43,16 @@ class _GameScreenState extends State<GameScreen> {
 
   void _demoModeChanged() {
     // Make sure modals are closed.
-    Navigator.popUntil(context, (route) {
-      return route.settings.name == '/gameloop';
-    });
+    if (demo.value != DemoModeAction.showWelcomeScreen) {
+      Navigator.popUntil(context, (route) {
+        return route.settings.name == '/gameloop';
+      });
+    }
     var world = Provider.of<World>(context);
     switch (demo.value) {
       case DemoModeAction.showWelcomeScreen:
         world.reset();
+        world.pause();
         Navigator.popUntil(context, (route) {
           return route.settings.name == '/';
         });

@@ -51,7 +51,7 @@ class DemoMode extends ValueNotifier<DemoModeAction> {
     delay(seconds: 5);
   }
 
-  void delay({bool indefinitely = false, int seconds = 25}) {
+  void delay({bool indefinitely = false, int seconds = 3}) {
     _timer?.cancel();
     if (!indefinitely) {
       _timer = Timer(Duration(seconds: seconds), _pickNextAction);
@@ -60,7 +60,7 @@ class DemoMode extends ValueNotifier<DemoModeAction> {
 
   void cancel() {
     value = DemoModeAction.showWelcomeScreen;
-    delay();
+    delay(indefinitely: true);
   }
 
   @override
