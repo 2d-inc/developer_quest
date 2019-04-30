@@ -2,6 +2,7 @@ import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
@@ -10,6 +11,8 @@ import 'package:dev_rpg/src/widgets/app_bar/users_badge.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'demo_mode.dart';
 
 class GameScreenSlim extends StatefulWidget {
   @override
@@ -31,6 +34,26 @@ class GameScreenSlimState extends State<GameScreenSlim> {
         });
       }
     });
+    demo.addListener(_demoModeChanged);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    demo.removeListener(_demoModeChanged);
+  }
+
+  void _demoModeChanged() {
+    switch (demo.value) {
+      case DemoModeAction.showTasksScreen:
+        _controller.jumpToPage(1);
+        break;
+      case DemoModeAction.showTeamScreen:
+        _controller.jumpToPage(0);
+        break;
+      default:
+        break;
+    }
   }
 
   void _showPageIndex(int index) {
