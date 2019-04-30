@@ -7,6 +7,7 @@ import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+
 void main() {
   // Don't prune the Flare cache, keep loaded Flare files warm and ready
   // to be re-displayed.
@@ -21,7 +22,13 @@ class DeveloperQuest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: providerList,
+        providers: [
+          ChangeNotifierProvider(builder: (_) => User()),
+          ChangeNotifierProvider.value(notifier: world),
+          ChangeNotifierProvider.value(notifier: world.characterPool),
+          ChangeNotifierProvider.value(notifier: world.taskPool),
+          ChangeNotifierProvider.value(notifier: world.company),
+        ],
         child: MaterialApp(
           title: 'Developer Quest',
           theme: ThemeData(
@@ -29,16 +36,9 @@ class DeveloperQuest extends StatelessWidget {
             canvasColor: Colors.transparent,
           ),
           routes: {
-            '/': (context) => BasicGameScreen(),
+            '/': (context) =>  BasicGameScreen(),
           },
         ));
   }
-
-  List<ChangeNotifierProvider> get providerList => [
-        ChangeNotifierProvider(builder: (_) => User()),
-        ChangeNotifierProvider.value(notifier: world),
-        ChangeNotifierProvider.value(notifier: world.characterPool),
-        ChangeNotifierProvider.value(notifier: world.taskPool),
-        ChangeNotifierProvider.value(notifier: world.company),
-      ];
 }
+
