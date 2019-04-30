@@ -67,8 +67,8 @@ class _WorkTeamState extends State<WorkTeam> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        spacing: 10.0,
-        runSpacing: 10.0,
+        spacing: 10,
+        runSpacing: 10,
         alignment: WrapAlignment.end,
         crossAxisAlignment: WrapCrossAlignment.end,
         children: _workTeam.map((member) {
@@ -76,13 +76,13 @@ class _WorkTeamState extends State<WorkTeam> {
               width: 71,
               height: 71,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color.fromRGBO(69, 69, 82, 1.0),
+                borderRadius: BorderRadius.circular(10),
+                color: const Color.fromRGBO(69, 69, 82, 1),
               ),
               child: HiringBust(
                 filename: member.style.flare,
-                fit: BoxFit.cover,
-                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                alignment: Alignment.bottomCenter,
                 hiringState: member.state,
                 isPlaying: true,
               ));

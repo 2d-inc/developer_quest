@@ -10,7 +10,7 @@ import 'package:dev_rpg/src/widgets/skill_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import "package:flare_flutter/flare_actor.dart";
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 
 /// Displays the stats of an [Character] and offers the option to upgrade them.
@@ -31,15 +31,18 @@ class CharacterModal extends StatelessWidget {
         }
       },
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(
-              left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minWidth: 280.0),
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              CharacterImage(_controls),
-              CharacterStats(_controls)
-            ]),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: modalMaxWidth),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 280),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                CharacterImage(_controls),
+                CharacterStats(_controls)
+              ]),
+            ),
           ),
         ),
       ),
@@ -55,44 +58,50 @@ class CharacterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var characterStyle = CharacterStyle.from(Provider.of<Character>(context));
-    return Expanded(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(241, 241, 241, 1.0),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
+    return Flexible(
+      fit: FlexFit.loose,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxHeight: modalMaxWidth * 0.75,
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(25, 25, 30, 1),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
                 ),
               ),
             ),
-          ),
-          Positioned.fill(
-            child: FlareActor(characterStyle.flare,
-                alignment: Alignment.bottomCenter,
-                shouldClip: false,
-                fit: BoxFit.cover,
-                animation: "idle",
-                controller: _controls),
-          ),
-          Align(
-            alignment: Alignment.topRight,
-            child: ButtonTheme(
-              minWidth: 0.0,
-              child: FlatButton(
-                padding: const EdgeInsets.all(0.0),
-                shape: null,
-                onPressed: () => Navigator.pop(context, null),
-                child: const Icon(
-                  Icons.cancel,
-                  color: Color.fromRGBO(69, 69, 82, 1.0),
+            Positioned.fill(
+              child: FlareActor(characterStyle.flare,
+                  alignment: Alignment.bottomCenter,
+                  shouldClip: false,
+                  fit: BoxFit.contain,
+                  animation: 'idle',
+                  controller: _controls),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: ButtonTheme(
+                minWidth: 0,
+                child: FlatButton(
+                  padding: const EdgeInsets.all(0),
+                  shape: null,
+                  onPressed: () => Navigator.pop(context, null),
+                  child: const Icon(
+                    Icons.cancel,
+                    color: Color.fromRGBO(250, 250, 255, .5),
+                  ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -113,21 +122,21 @@ class CharacterStats extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10.0),
-            bottomRight: Radius.circular(10.0),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Level ${character.level}",
+                'Level ${character.level}',
                 style: contentStyle.apply(color: secondaryContentColor),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 7.0, bottom: 6.0),
+                padding: const EdgeInsets.only(top: 7, bottom: 6),
                 child: Text(
                   characterStyle.name,
                   style: contentLargeStyle,
@@ -163,17 +172,17 @@ class UpgradeHireButton extends StatelessWidget {
     return WideButton(
       onPressed: () {
         if (character.canUpgrade && character.upgrade()) {
-          _controls.play("success");
+          _controls.play('success');
         }
       },
-      paddingTweak: const EdgeInsets.only(right: -7.0),
+      paddingTweak: const EdgeInsets.only(right: -7),
       background: character.canUpgrade
-          ? const Color.fromRGBO(84, 114, 239, 1.0)
+          ? const Color.fromRGBO(84, 114, 239, 1)
           : contentColor.withOpacity(0.1),
       child: Row(
         children: [
           Text(
-            character.isHired ? "UPGRADE" : "HIRE",
+            character.isHired ? 'UPGRADE' : 'HIRE',
             style: buttonTextStyle.apply(
               color: character.canUpgrade
                   ? Colors.white
@@ -181,14 +190,21 @@ class UpgradeHireButton extends StatelessWidget {
             ),
           ),
           Expanded(child: Container()),
-          const Icon(Icons.stars, color: Color.fromRGBO(249, 209, 81, 1.0)),
+          const SizedBox(
+            width: 20,
+            height: 20,
+            child: FlareActor(
+              'assets/flare/Coin.flr',
+              isPaused: true,
+            ),
+          ),
           const SizedBox(width: 4),
           Text(
             character.upgradeCost.toString(),
             style: buttonTextStyle.apply(
               fontSizeDelta: -2,
               color: character.canUpgrade
-                  ? const Color.fromRGBO(241, 241, 241, 1.0)
+                  ? const Color.fromRGBO(241, 241, 241, 1)
                   : contentColor.withOpacity(0.25),
             ),
           )
@@ -207,14 +223,14 @@ class SkillDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     return Padding(
-      padding: const EdgeInsets.only(top: 32.0),
+      padding: const EdgeInsets.only(top: 32),
       child: Column(children: <Widget>[
         Row(
           children: [
             Row(children: [
               SkillIcon(
                 skill,
-                color: const Color.fromRGBO(69, 69, 82, 1.0),
+                color: const Color.fromRGBO(69, 69, 82, 1),
               ),
               const SizedBox(width: 10),
               Text(
@@ -230,7 +246,7 @@ class SkillDisplay extends StatelessWidget {
           ],
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 5.0),
+          padding: const EdgeInsets.only(top: 5),
           child: ProwessProgress(
               color: skillColor[skill],
               borderRadius: BorderRadius.circular(3.5),

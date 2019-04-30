@@ -28,7 +28,7 @@ dependencies:
   flare_flutter:
     git: 
       url: git://github.com/2d-inc/Flare-Flutter.git
-      ref: dev
+      ref: 4aebb0ff5b98c7bcf2183c6bac8226cc7ddf5402
       path: flare_flutter
   auto_size_text: ^1.1.2
 
@@ -61,8 +61,15 @@ flutter:
     - assets/images/2.0x/
     - assets/images/3.0x/
     - assets/flare/
+    - assets/docs/code_chomper_example_code.dart
 
   fonts:
+      - family: SpaceMonoRegular
+        fonts:
+          - asset: assets/fonts/SpaceMono-Regular.ttf
+      - family: SpaceMonoBold
+        fonts:
+          - asset: assets/fonts/SpaceMono-Bold.ttf
       - family: RobotoCondensedBold
         fonts:
           - asset: assets/fonts/RobotoCondensed-Bold.ttf
@@ -75,3 +82,6 @@ flutter:
       - family: MontserratRegular
         fonts:
           - asset: assets/fonts/Montserrat-Regular.otf
+      - family: MontserratBold
+        fonts:
+          - asset: assets/fonts/Montserrat-Bold.otf

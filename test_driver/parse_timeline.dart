@@ -18,7 +18,7 @@ Future<int> main(List<String> args) async {
     return 2;
   }
 
-  log.info("Running on file: ${args.single}");
+  log.info('Running on file: ${args.single}');
 
   var file = File(args.single);
   var contents = await file.readAsString();
@@ -79,7 +79,7 @@ AdditionalResults parse(Timeline timeline, TimelineSummary summary) {
       dartPhaseDuration += ev.duration;
     }
 
-    if (ev.name == 'MessageLoop::RunExpiredTasks') {
+    if (ev.name == 'MessageLoop::FlushTasks') {
       var tid = ev.threadId;
       assert(tid != null);
 

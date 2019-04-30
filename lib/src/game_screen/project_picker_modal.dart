@@ -122,10 +122,10 @@ class ProjectPickerModal extends StatelessWidget {
 
     var slivers = <Widget>[
       SliverPadding(
-        padding: const EdgeInsets.only(top: 15.0),
+        padding: const EdgeInsets.only(top: 15),
         sliver: SliverPersistentHeader(
           pinned: false,
-          delegate: const TaskPickerHeader("Alpha"),
+          delegate: const TaskPickerHeader('Alpha'),
         ),
       ),
       SliverList(
@@ -135,7 +135,7 @@ class ProjectPickerModal extends StatelessWidget {
       ),
       SliverPersistentHeader(
         pinned: false,
-        delegate: const TaskPickerHeader("Beta"),
+        delegate: const TaskPickerHeader('Beta'),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
@@ -144,7 +144,7 @@ class ProjectPickerModal extends StatelessWidget {
       ),
       SliverPersistentHeader(
         pinned: false,
-        delegate: const TaskPickerHeader("Version 1.0", showLine: false),
+        delegate: TaskPickerHeader('Version 1.0', showLine: v1.isNotEmpty),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate((context, index) {
@@ -152,12 +152,17 @@ class ProjectPickerModal extends StatelessWidget {
         }, childCount: v1.length),
       ),
     ];
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      child: Container(
-        color: modalBackgroundColor,
-        child: CustomScrollView(slivers: slivers),
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: modalMaxWidth),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          child: Container(
+            color: modalBackgroundColor,
+            child: CustomScrollView(slivers: slivers),
+          ),
+        ),
       ),
     );
   }

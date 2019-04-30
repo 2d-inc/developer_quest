@@ -13,7 +13,7 @@ class TaskPickerHeader extends SliverPersistentHeaderDelegate {
     return Stack(overflow: Overflow.visible, children: [
       showLine
           ? Positioned.fromRect(
-              rect: Rect.fromLTWH(26, 25.0, 2, 35.0 - shrinkOffset),
+              rect: Rect.fromLTWH(26, 25, 2, 35 - shrinkOffset),
               child: SizedOverflowBox(
                 size: const Size.fromHeight(0),
                 child: Container(color: treeLineColor),
@@ -30,12 +30,12 @@ class TaskPickerHeader extends SliverPersistentHeaderDelegate {
                 boxShadow: [
                   BoxShadow(
                       color: Color.fromRGBO(84, 114, 244, 0.25),
-                      offset: Offset(0.0, 10.0),
+                      offset: Offset(0, 10),
                       blurRadius: 10,
                       spreadRadius: 0),
                 ],
                 borderRadius: BorderRadius.all(Radius.circular(12.5)),
-                color: Color.fromRGBO(84, 114, 239, 1.0),
+                color: Color.fromRGBO(84, 114, 239, 1),
               ),
               child: const Icon(Icons.keyboard_arrow_down)),
           const SizedBox(width: 15),
@@ -49,10 +49,10 @@ class TaskPickerHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 60.0;
+  double get maxExtent => 60;
 
   @override
-  double get minExtent => 60.0;
+  double get minExtent => 60;
 
   @override
   bool shouldRebuild(TaskPickerHeader oldDelegate) {

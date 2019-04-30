@@ -12,6 +12,8 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../rpg_layout_builder.dart';
+
 /// Present a list of [Character]s for the player to choose from.
 class TeamPickerModal extends StatefulWidget {
   final WorkItem workItem;
@@ -35,75 +37,119 @@ class TeamPickerModalState extends State<TeamPickerModal> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-      child: Container(
-        color: modalBackgroundColor,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 30),
-            Padding(
-              padding: horizontalPadding,
-              child: Text(widget.workItem.name, style: contentLargeStyle),
-            ),
-            const SizedBox(height: 26),
-            Padding(
-              padding: horizontalPadding,
-              child: Text("SKILLS REQUIRED:",
-                  style: buttonTextStyle.apply(
-                      fontSizeDelta: -4, color: secondaryContentColor)),
-            ),
-            const SizedBox(height: 7),
-            Padding(
-              padding: horizontalPadding,
-              child: Row(
-                  children: widget.workItem.skillsNeeded
-                      .map((skill) => SkillBadge(skill))
-                      .toList()),
-            ),
-            Expanded(
-              child: Consumer<CharacterPool>(
-                builder: (context, characterPool) {
-                  var characters = characterPool.children
-                      .where((c) => c.isHired && !c.isBusy)
-                      .toList();
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: horizontalPadding,
-                      itemCount: characters.length,
-                      itemBuilder: (context, index) {
-                        var character = characters[index];
-                        return TeamPickerItem(
-                          character,
-                          isSelected: _selected.contains(character),
-                          toggleSelection: _toggleCharacterSelected,
-                        );
-                      });
-                },
+    var isUnassigning = (widget.workItem.assignedTeam?.isNotEmpty ?? false) &&
+        _selected.isEmpty;
+    var isButtonDisabled = !isUnassigning && _selected.isEmpty;
+
+    return RpgLayoutBuilder(
+      builder: (context, layout) => Align(
+            alignment: Alignment.bottomCenter,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxWidth: modalMaxWidth,
+
+                  // If we're showing the wide layout, make sure this modal
+                  // isn't too tall by using a factor of the same width
+                  // constraint as a constraint for the height.
+                  maxHeight: layout == RpgLayout.wide
+                      ? modalMaxWidth * 1.1
+                      : double.infinity),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10)),
+                child: Container(
+                  color: modalBackgroundColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: horizontalPadding,
+                        child: Text(widget.workItem.name,
+                            style: contentLargeStyle),
+                      ),
+                      const SizedBox(height: 15),
+                      Padding(
+                        padding: horizontalPadding,
+                        child: Text('SKILLS REQUIRED:',
+                            style: buttonTextStyle.apply(
+                                fontSizeDelta: -4,
+                                color: secondaryContentColor)),
+                      ),
+                      const SizedBox(height: 7),
+                      Padding(
+                        padding: horizontalPadding,
+                        child: Row(
+                            children: widget.workItem.skillsNeeded
+                                .map((skill) => SkillBadge(skill))
+                                .toList()),
+                      ),
+                      Expanded(
+                        child: Consumer<CharacterPool>(
+                          builder: (context, characterPool) {
+                            var characters = characterPool.fullTeam;
+                            return characters.isEmpty
+                                ? Center(
+                                    child: const Text(
+                                      'Hire some teammates to complete '
+                                      'this task!',
+                                      style: contentLargeStyle,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    padding: horizontalPadding,
+                                    itemCount: characters.length,
+                                    itemBuilder: (context, index) {
+                                      var character = characters[index];
+                                      return TeamPickerItem(
+                                        character,
+                                        isSelected:
+                                            _selected.contains(character),
+                                        toggleSelection:
+                                            _toggleCharacterSelected,
+                                        // Show the character as not selectable
+                                        // if they are currently assigned to another task
+                                        isDisabled: character.isBusy &&
+                                            !(widget.workItem.assignedTeam
+                                                    ?.contains(character) ??
+                                                false),
+                                      );
+                                    });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: horizontalPadding.add(
+                          EdgeInsets.only(
+                              bottom:
+                                  MediaQuery.of(context).padding.bottom + 15),
+                        ),
+                        child: WideButton(
+                          buttonKey: const Key('team_pick_ok'),
+                          onPressed: () => Navigator.pop(context, _selected),
+                          paddingTweak: const EdgeInsets.only(right: -7),
+                          background: isButtonDisabled
+                              ? contentColor.withOpacity(0.1)
+                              : const Color.fromRGBO(84, 114, 239, 1),
+                          child: Text(
+                            isUnassigning ? 'UNASSIGN TEAM' : 'ASSIGN TEAM',
+                            style: buttonTextStyle.apply(
+                              color: isButtonDisabled
+                                  ? contentColor.withOpacity(0.25)
+                                  : Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
-            Padding(
-              padding: horizontalPadding.add(EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom)),
-              child: WideButton(
-                  buttonKey: const Key('team_pick_ok'),
-                  onPressed: () => Navigator.pop(context, _selected),
-                  paddingTweak: const EdgeInsets.only(right: -7.0),
-                  background: _selected.isNotEmpty
-                      ? const Color.fromRGBO(84, 114, 239, 1.0)
-                      : contentColor.withOpacity(0.1),
-                  child: Text("ASSIGN TEAM",
-                      style: buttonTextStyle.apply(
-                        color: _selected.isNotEmpty
-                            ? Colors.white
-                            : contentColor.withOpacity(0.25),
-                      ))),
-            )
-          ],
-        ),
-      ),
+          ),
     );
   }
 
@@ -124,11 +170,12 @@ class TeamPickerModalState extends State<TeamPickerModal> {
 class TeamPickerItem extends StatelessWidget {
   final Character character;
   final bool isSelected;
+  final bool isDisabled;
   final void Function(Character character, bool selected) toggleSelection;
 
   static const Duration animationDuration = Duration(milliseconds: 175);
   const TeamPickerItem(this.character,
-      {this.isSelected = false, this.toggleSelection});
+      {this.isSelected = false, this.toggleSelection, this.isDisabled});
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +186,11 @@ class TeamPickerItem extends StatelessWidget {
         'UI is prepared for max 3 skills, yet '
         'character has ${character.prowess}');
 
+    var backgroundColor = isDisabled
+        ? disabledColor
+        : isSelected
+            ? const Color.fromRGBO(84, 114, 239, 1)
+            : const Color.fromRGBO(69, 69, 82, 1);
     return AnimatedPadding(
       padding: isSelected
           ? const EdgeInsets.only(top: 27, bottom: 50)
@@ -147,34 +199,35 @@ class TeamPickerItem extends StatelessWidget {
       curve: Curves.easeInOut,
       child: InkWell(
         key: Key(character.id),
-        onTap: () => toggleSelection(character, !isSelected),
+        onTap: () =>
+            isDisabled ? null : toggleSelection(character, !isSelected),
         child: Padding(
-          padding: const EdgeInsets.only(right: 10.0),
+          padding: const EdgeInsets.only(right: 10),
           child: AnimatedContainer(
             duration: animationDuration,
-            width: 103,
+            width: 130,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    color: isSelected
+                    color: isSelected && !isDisabled
                         ? const Color.fromRGBO(26, 50, 155, 0.3)
                         : Colors.black.withOpacity(0.17),
-                    offset: const Offset(0.0, 10.0),
-                    blurRadius: isSelected ? 30.0 : 10.0),
+                    offset: const Offset(0, 10),
+                    blurRadius: isSelected ? 30 : 10),
               ],
-              borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-              color: isSelected
-                  ? const Color.fromRGBO(84, 114, 239, 1.0)
-                  : const Color.fromRGBO(69, 69, 82, 1.0),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              color: backgroundColor,
             ),
             child: Column(
               children: <Widget>[
                 Expanded(
                   child: HiringBust(
                     filename: characterStyle.flare,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     alignment: Alignment.bottomCenter,
-                    hiringState: HiringBustState.hired,
+                    hiringState: isDisabled
+                        ? HiringBustState.locked
+                        : HiringBustState.hired,
                     isPlaying: false,
                   ),
                 ),
@@ -201,8 +254,8 @@ class TeamPickerItem extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.15),
                               borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(20.0),
-                                bottomRight: Radius.circular(20.0),
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
                               ),
                             ),
                           )
@@ -226,7 +279,7 @@ class TeamPickerItem extends StatelessWidget {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: ProwessProgress(
-                                      innerPadding: const EdgeInsets.all(1.0),
+                                      innerPadding: const EdgeInsets.all(1),
                                       background:
                                           Colors.black.withOpacity(0.28),
                                       color: skillColor[skill],
@@ -276,14 +329,14 @@ class _SelectArrowState extends State<_SelectArrow> {
   bool _snapToEnd;
   @override
   void initState() {
-    _animation = "off";
+    _animation = 'off';
     _snapToEnd = true;
     super.initState();
   }
 
   @override
   void didUpdateWidget(_SelectArrow oldWidget) {
-    String animation = widget.isSelected ? "on" : "off";
+    String animation = widget.isSelected ? 'on' : 'off';
     if (animation != _animation) {
       setState(() {
         _animation = animation;
@@ -298,7 +351,7 @@ class _SelectArrowState extends State<_SelectArrow> {
     return Container(
       width: 16,
       height: 15,
-      child: FlareActor("assets/flare/SelectArrow.flr",
+      child: FlareActor('assets/flare/SelectArrow.flr',
           alignment: Alignment.topCenter,
           shouldClip: false,
           snapToEnd: _snapToEnd,
