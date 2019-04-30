@@ -1,8 +1,7 @@
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
-import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
-import 'package:dev_rpg/src/shared_state/game/world.dart';
+import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
@@ -60,7 +59,11 @@ class GameScreenSlimState extends State<GameScreenSlim> {
     setState(() {
       _index = index;
     });
-    _controller.jumpToPage(index);
+    _controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOutCubic,
+    );
   }
 
   @override
