@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SphinxButton extends StatelessWidget {
+class RpgButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
 
-  const SphinxButton({
+  const RpgButton({
     @required this.onPressed,
     @required this.child,
     Key key,
