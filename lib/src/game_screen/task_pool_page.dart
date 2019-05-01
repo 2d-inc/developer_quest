@@ -41,7 +41,7 @@ class TaskPoolPage extends StatelessWidget {
           return ListView(
             children: [
               const TasksButtonHeader(),
-              const SizedBox(height: 12.0),
+              const SizedBox(height: 12),
               ..._buildSection(
                 "IN PROGRESS",
                 taskPool.workItems,

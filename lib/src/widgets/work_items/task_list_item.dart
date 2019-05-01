@@ -16,7 +16,7 @@ import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 class TaskListItem extends StatelessWidget {
   BoxDecoration get taskListItemDecoration => BoxDecoration(
         boxShadow: themeTaskShadow,
-        borderRadius: const BorderRadius.all(Radius.circular(9.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(9)),
         color: Colors.black,
       );
 
@@ -34,7 +34,7 @@ class TaskListItem extends StatelessWidget {
         : const Icon(Icons.check_circle, color: disabledColor);
     return [
       heading,
-      const SizedBox(height: 12.0),
+      const SizedBox(height: 12),
     ];
   }
 
@@ -43,12 +43,12 @@ class TaskListItem extends StatelessWidget {
     Task task = Provider.of<WorkItem>(context) as Task;
     bool isExpanded = task.isBeingWorkedOn || task.state == TaskState.completed;
     return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
       child: Container(
         decoration: taskListItemDecoration,
         child: TransparentMaterial(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15),
             child: Text(
               task.name,
             ),

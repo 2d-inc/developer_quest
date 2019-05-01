@@ -22,9 +22,9 @@ const TextStyle contentSmallStyle = TextStyle(
 final List<BoxShadow> themeTaskShadow = [
   BoxShadow(
     color: Colors.black.withOpacity(0.03),
-    offset: const Offset(0.0, 10.0),
-    blurRadius: 10.0,
-    spreadRadius: 0.0,
+    offset: const Offset(0, 10),
+    blurRadius: 10,
+    spreadRadius: 0,
   ),
 ];
 
