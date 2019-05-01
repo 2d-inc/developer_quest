@@ -67,12 +67,16 @@ class _WelcomeButtonState extends State<WelcomeButton>
                 alignment: Alignment.centerLeft,
                 child: Row(
                   children: [
-                    Icon(
-                      widget.icon,
-                      size: 16,
-                      color: Colors.white.withOpacity(0.5),
-                    ),
-                    const SizedBox(width: 13),
+                    widget.icon == null
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.only(right: 13),
+                            child: Icon(
+                              widget.icon,
+                              size: 16,
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                          ),
                     Text(widget.label.toUpperCase(),
                         style: buttonTextStyle.apply(color: Colors.white))
                   ],
