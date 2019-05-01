@@ -17,7 +17,7 @@ class TaskListItem extends StatelessWidget {
   BoxDecoration get taskListItemDecoration => BoxDecoration(
         boxShadow: themeTaskShadow,
         borderRadius: const BorderRadius.all(Radius.circular(9.0)),
-        color: Colors.white,
+        color: Colors.black,
       );
 
   Future<void> _handleTap(BuildContext context, Task task) async {
@@ -47,24 +47,10 @@ class TaskListItem extends StatelessWidget {
       child: Container(
         decoration: taskListItemDecoration,
         child: TransparentMaterial(
-          child: InkWell(
-            onTap: () => _handleTap(context, task),
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ..._getSpacedHeading(task),
-                  Text(
-                    task.name,
-                    style: contentStyle,
-                  ),
-                  TeamProgressIndicator(
-                    isExpanded: isExpanded,
-                    task: task,
-                  ),
-                ],
-              ),
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(
+              task.name,
             ),
           ),
         ),
