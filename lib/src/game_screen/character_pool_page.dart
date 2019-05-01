@@ -16,23 +16,21 @@ class CharacterPoolPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var characterPool = Provider.of<CharacterPool>(context);
-    return Container(
-      child: Stack(
-        children: [
-          GridView.builder(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 128),
-            itemCount: characterPool.children.length,
-            gridDelegate: _gridStructure,
-            itemBuilder: (context, index) =>
-                ChangeNotifierProvider<Character>.value(
-                  notifier: characterPool.children[index],
-                  key: ValueKey(characterPool.children[index]),
-                  child: CharacterListItem(),
-                ),
-          ),
-          _fadeOverlay,
-        ],
-      ),
+    return Stack(
+      children: [
+        GridView.builder(
+          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 128),
+          itemCount: characterPool.children.length,
+          gridDelegate: _gridStructure,
+          itemBuilder: (context, index) =>
+              ChangeNotifierProvider<Character>.value(
+                notifier: characterPool.children[index],
+                key: ValueKey(characterPool.children[index]),
+                child: CharacterListItem(),
+              ),
+        ),
+        _fadeOverlay,
+      ],
     );
   }
 
