@@ -16,13 +16,22 @@ const double _keyPadding = 5;
 /// The main screen for the code chomper mini game.
 class CodeChomper extends StatefulWidget {
   static const String miniGameRouteName = '/chompy';
+  final String codeFilename;
+  const CodeChomper(this.codeFilename);
+
   @override
   _CodeChomperState createState() => _CodeChomperState();
 }
 
 class _CodeChomperState extends State<CodeChomper> {
-  final CodeChomperController chomperController = CodeChomperController();
+  CodeChomperController _chomperController;
   bool _isGameOver = false;
+  @override
+  void initState() {
+    super.initState();
+    _chomperController = CodeChomperController(widget.codeFilename);
+  }
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context);
@@ -107,13 +116,13 @@ class _CodeChomperState extends State<CodeChomper> {
                       children: [
                         // Game renderer goes here
                         Expanded(
-                          child: CodeChomperScreen(chomperController),
+                          child: CodeChomperScreen(_chomperController),
                         ),
 
                         GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTapDown: (details) {
-                            if (chomperController
+                            if (_chomperController
                                 .addCode(details.globalPosition)) {
                               setState(() {
                                 _isGameOver = true;

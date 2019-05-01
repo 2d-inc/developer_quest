@@ -4,6 +4,7 @@ import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
+import 'package:dev_rpg/src/widgets/flare/warmup_flare.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ const double _horizontalPadding = 33;
 class _WelcomeScreenState extends State<WelcomeScreen> {
   CharacterStyle hero;
   Timer _swapHeroTimer;
+  final Timer _warmupTimer =
+      Timer(const Duration(milliseconds: 1500), warmupFlare);
   @override
   void initState() {
     _chooseHero();
@@ -60,6 +63,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     super.dispose();
     _swapHeroTimer?.cancel();
     demo.removeListener(_demoModeChanged);
+    _warmupTimer.cancel();
   }
 
   Future<void> _pressStartGame() async {

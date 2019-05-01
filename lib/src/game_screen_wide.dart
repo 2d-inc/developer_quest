@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/style.dart';
@@ -13,6 +15,12 @@ import 'game_screen/task_pool_page.dart';
 class GameScreenWide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var availableWidth = MediaQuery.of(context).size.width;
+    var taskColumnWidth = min(modalMaxWidth, availableWidth / 3);
+    var charactersWidth = availableWidth - taskColumnWidth * 2;
+    var numCharacterColumns =
+        max(2, (charactersWidth / idealCharacterWidth).round());
+
     return Scaffold(
       backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
       appBar: AppBar(
@@ -48,14 +56,17 @@ class GameScreenWide extends StatelessWidget {
       ),
       body: Row(
         children: [
-          Expanded(
-            child: CharacterPoolPage(),
+          SizedBox(
+            width: charactersWidth,
+            child: CharacterPoolPage(numColumns: numCharacterColumns),
           ),
-          const Expanded(
-            child: TaskPoolPage(display: TaskPoolDisplay.inProgress),
+          SizedBox(
+            width: taskColumnWidth,
+            child: const TaskPoolPage(display: TaskPoolDisplay.inProgress),
           ),
-          const Expanded(
-            child: TaskPoolPage(display: TaskPoolDisplay.completed),
+          SizedBox(
+            width: taskColumnWidth,
+            child: const TaskPoolPage(display: TaskPoolDisplay.completed),
           ),
         ],
       ),

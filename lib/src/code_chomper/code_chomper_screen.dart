@@ -64,10 +64,8 @@ class CodeChomperController extends ValueNotifier<Offset> {
     return false;
   }
 
-  CodeChomperController() : super(Offset.zero) {
-    rootBundle
-        .loadString('assets/docs/code_chomper_example_code.dart')
-        .then((code) {
+  CodeChomperController(String codeFilename) : super(Offset.zero) {
+    rootBundle.loadString(codeFilename).then((code) {
       _templateLines = code.split('\n');
     });
   }

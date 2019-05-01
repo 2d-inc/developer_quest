@@ -61,7 +61,8 @@ flutter:
     - assets/images/2.0x/
     - assets/images/3.0x/
     - assets/flare/
-    - assets/docs/code_chomper_example_code.dart
+    - assets/docs/code_chomper_alpha.dart
+    - assets/docs/code_chomper_beta.dart
 
   fonts:
       - family: SpaceMonoRegular
