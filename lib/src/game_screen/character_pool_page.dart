@@ -132,16 +132,20 @@ class CharacterDisplay extends StatelessWidget {
   RoundedRectangleBorder get _inkWellBorder =>
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(10));
 
-  void _showModal(BuildContext context) {
+  Future<void> _showModal(BuildContext context) async {
     var character = Provider.of<Character>(context);
-    showDialog<void>(
+    FocusNode _focusNode = FocusNode();
+    FocusScope.of(context).requestFocus(_focusNode);
+    await showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return ChangeNotifierProvider<Character>.value(
             notifier: character,
-            child: CharacterModal(),
+            child: CharacterModal(_focusNode),
           );
         });
+    _focusNode.unfocus();
+    _focusNode.dispose();
   }
 }
 

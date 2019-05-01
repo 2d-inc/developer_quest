@@ -15,8 +15,9 @@ import 'package:flare_flutter/flare_controls.dart';
 
 /// Displays the stats of an [Character] and offers the option to upgrade them.
 class CharacterModal extends StatelessWidget {
-  final FlareControls _controls = FlareControls();
-  final FocusNode _focusNode = FocusNode();
+  CharacterModal(this.focusNode) : _controls = FlareControls();
+  final FlareControls _controls;
+  final FocusNode focusNode;
   @override
   Widget build(BuildContext context) {
     return Center(

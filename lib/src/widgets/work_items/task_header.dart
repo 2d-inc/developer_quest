@@ -26,7 +26,6 @@ class TaskHeader extends StatelessWidget {
           style: contentSmallStyle,
         ),
         Expanded(child: Container()),
-        for (Skill skill in taskData.skillsNeeded) SkillDot(skill),
       ],
     );
   }
