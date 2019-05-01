@@ -52,7 +52,11 @@ class _MyAppState extends State<MyApp> {
             '/': (context) => WelcomeScreen(),
             '/gameloop': (context) => GameScreen(),
             '/about': (context) => AboutScreen(),
-            CodeChomper.miniGameRouteName: (context) => CodeChomper(),
+            CodeChomper.miniGameRouteName: (context) {
+              String filename =
+                  ModalRoute.of(context).settings.arguments as String;
+              return CodeChomper(filename);
+            },
             SphinxScreen.miniGameRouteName: (context) => const SphinxScreen(),
             SphinxScreen.fullGameRouteName: (context) =>
                 const SphinxScreen(fullGame: true),
