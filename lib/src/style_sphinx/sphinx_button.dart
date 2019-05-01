@@ -16,6 +16,7 @@ class SphinxButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final radius = BorderRadius.circular(10);
     return Material(
+      color: _pyramidColor,
       shape: RoundedRectangleBorder(borderRadius: radius),
       child: InkWell(
         borderRadius: radius,

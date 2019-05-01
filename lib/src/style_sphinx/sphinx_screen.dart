@@ -1,6 +1,6 @@
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/question_arguments.dart';
-import 'package:dev_rpg/src/style_sphinx/sphinx_buttton.dart';
+import 'package:dev_rpg/src/style_sphinx/sphinx_button.dart';
 import 'package:dev_rpg/src/style_sphinx/sphinx_image.dart';
 import 'package:dev_rpg/src/style_sphinx/text_bubble.dart';
 import 'package:flutter_web/material.dart';
