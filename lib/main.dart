@@ -1,6 +1,8 @@
-import 'package:dev_rpg/src/game.dart';
+import 'package:dev_rpg/src/basic_game_screen.dart';
+import 'package:dev_rpg/src/three_column_game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,9 +36,17 @@ class DeveloperQuest extends StatelessWidget {
             canvasColor: Colors.transparent,
           ),
           routes: {
-            '/': (context) =>  StartGame(),
+            '/': (context) =>  Game(),
           },
         ));
   }
 }
+
+class Game extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BasicGameScreen();
+  }
+}
+
 
