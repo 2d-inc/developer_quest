@@ -13,6 +13,7 @@ import 'package:dev_rpg/src/style_sphinx/sphinx_screen.dart';
 import 'package:dev_rpg/src/welcome_screen.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -51,7 +52,11 @@ class _MyAppState extends State<MyApp> {
             '/': (context) => WelcomeScreen(),
             '/gameloop': (context) => GameScreen(),
             '/about': (context) => AboutScreen(),
-            CodeChomper.miniGameRouteName: (context) => CodeChomper(),
+            CodeChomper.miniGameRouteName: (context) {
+              String filename =
+                  ModalRoute.of(context).settings.arguments as String;
+              return CodeChomper(filename);
+            },
             SphinxScreen.miniGameRouteName: (context) => const SphinxScreen(),
             SphinxScreen.fullGameRouteName: (context) =>
                 const SphinxScreen(fullGame: true),

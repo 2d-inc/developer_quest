@@ -26,7 +26,10 @@ class TaskListItem extends StatelessWidget {
           var world = Provider.of<World>(context);
           world.pause();
           Navigator.of(context)
-              .pushNamed(CodeChomper.miniGameRouteName)
+              .pushNamed(CodeChomper.miniGameRouteName,
+                  arguments: task.blueprint.name == 'Alpha release'
+                      ? 'assets/docs/code_chomper_alpha.dart'
+                      : 'assets/docs/code_chomper_beta.dart')
               .then((_) => world.start());
           break;
         case MiniGame.sphinx:

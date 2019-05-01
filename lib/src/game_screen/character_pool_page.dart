@@ -10,6 +10,9 @@ import 'package:provider/provider.dart';
 
 /// Displays a list of [Character]s that are available to the player.
 class CharacterPoolPage extends StatelessWidget {
+  final int numColumns;
+  const CharacterPoolPage({this.numColumns = 2});
+
   @override
   Widget build(BuildContext context) {
     var characterPool = Provider.of<CharacterPool>(context);
@@ -32,8 +35,8 @@ class CharacterPoolPage extends StatelessWidget {
   }
 
   SliverGridDelegate get _gridStructure =>
-      const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+      SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: numColumns,
           mainAxisSpacing: 0,
           crossAxisSpacing: 15,
           childAspectRatio: 0.65);
