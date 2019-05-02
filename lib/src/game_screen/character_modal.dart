@@ -170,13 +170,12 @@ class UpgradeHireButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     return WideButton(
-      onPressed: character.canUpgradeOrHire
-          ? () {
-              if (character.upgradeOrHire()) {
-                _controls.play('success');
-              }
-            }
-          : null,
+      enabled: character.canUpgradeOrHire,
+      onPressed: () {
+        if (character.upgradeOrHire()) {
+          _controls.play('success');
+        }
+      },
       paddingTweak: const EdgeInsets.only(right: -7),
       background: character.canUpgradeOrHire
           ? const Color.fromRGBO(84, 114, 239, 1)
