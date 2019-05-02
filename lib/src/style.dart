@@ -10,8 +10,10 @@ const Color disabledColor = Color.fromRGBO(116, 116, 126, 1);
 const Color disabledTaskColor = Color.fromRGBO(38, 38, 47, 0.25);
 const Color treeLineColor = Color.fromRGBO(215, 215, 215, 1);
 const Color bugColor = Color.fromRGBO(236, 41, 117, 1);
+const Color statsSeparatorColor = Color.fromRGBO(57, 57, 71, 1);
 const double modalMaxWidth = 400;
 const double wideLayoutThreshold = 500;
+const double idealCharacterWidth = 165;
 
 const TextStyle contentSmallStyle = TextStyle(
   fontFamily: 'MontserratRegular',

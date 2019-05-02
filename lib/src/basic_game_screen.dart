@@ -1,8 +1,8 @@
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
 import 'package:dev_rpg/src/game_screen/task_pool_page.dart';
-import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
+import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
 import 'package:dev_rpg/src/widgets/app_bar/joy_badge.dart';
@@ -44,7 +44,11 @@ class BasicGameScreenState extends State<BasicGameScreen> {
     setState(() {
       _index = index;
     });
-    _controller.jumpToPage(index);
+    _controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOutCubic,
+    );
   }
 
   @override
@@ -59,14 +63,24 @@ class BasicGameScreenState extends State<BasicGameScreen> {
             // Using RepaintBoundary here because this part of the UI
             // changes frequently.
             return RepaintBoundary(
-              child: Row(
-                children: [
-                  Expanded(child: UsersBadge(company.users)),
-                  StatSeparator(),
-                  Expanded(child: JoyBadge(company.joy)),
-                  StatSeparator(),
-                  Expanded(child: CoinBadge(company.coin)),
-                ],
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: const BorderSide(
+                      color: statsSeparatorColor,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(child: UsersBadge(company.users)),
+                    StatSeparator(),
+                    Expanded(child: JoyBadge(company.joy)),
+                    StatSeparator(),
+                    Expanded(child: CoinBadge(company.coin)),
+                  ],
+                ),
               ),
             );
           },
@@ -97,7 +111,7 @@ class BasicGameScreenState extends State<BasicGameScreen> {
       ),
       body: PageView(
         controller: _controller,
-        children: [CharacterPoolPage(), TaskPoolPage()],
+        children: const [CharacterPoolPage(), TaskPoolPage()],
       ),
     );
   }
