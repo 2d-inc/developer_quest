@@ -25,7 +25,7 @@ class SphinxButton extends StatelessWidget {
           child: DefaultTextStyle(
             child: child,
             style: const TextStyle(
-                fontFamily: 'MontserratRegular',
+                fontFamily: 'MontserratMedium',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(85, 34, 34, 1)),
