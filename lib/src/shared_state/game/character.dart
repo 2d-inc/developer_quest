@@ -58,7 +58,7 @@ class Character extends Aspect with ChildAspect {
           (_isHired ? 110 : 220) *
           costMultiplier;
 
-  bool get canUpgrade {
+  bool get canUpgradeOrHire {
     Company company = get<World>().company;
     // Make sure there's some skill that's below max (meaning we can bump
     // it up).
@@ -69,6 +69,8 @@ class Character extends Aspect with ChildAspect {
     }
     return company.coin.number >= upgradeCost;
   }
+
+  bool upgradeOrHire() => _isHired ? upgrade() : hire();
 
   bool hire() {
     assert(!_isHired);
@@ -82,9 +84,7 @@ class Character extends Aspect with ChildAspect {
   }
 
   bool upgrade() {
-    if (!_isHired) {
-      return hire();
-    }
+    assert(_isHired);
     Company company = get<World>().company;
     if (!company.spend(upgradeCost)) {
       return false;
