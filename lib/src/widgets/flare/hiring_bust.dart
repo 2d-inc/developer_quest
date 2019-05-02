@@ -10,6 +10,8 @@ import 'package:flare_dart/math/aabb.dart';
 
 import 'package:flare_flutter/flare_render_box.dart';
 
+import '../../style.dart';
+
 /// The HiringBust displays three different visual states.
 /// [locked] is for when the character is not available for hire,
 /// because presumably the user doesn't have the resources to hire them.
@@ -105,6 +107,7 @@ class HiringBustRenderObject extends FlareRenderBox {
     _updateState();
     if (value == HiringBustState.available) {
       _particles = HiringParticles(color: particleColor);
+      markNeedsLayout();
     } else {
       _particles = null;
     }
@@ -144,6 +147,13 @@ class HiringBustRenderObject extends FlareRenderBox {
     _artboard?.advance(elapsedSeconds);
     _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
     return isPlaying;
+  }
+
+  @override
+  void performLayout() {
+    super.performLayout();
+    _particles?.particleSize =
+        (size.width / idealCharacterWidth) * idealParticleSize;
   }
 
   /// Provide the correct bounding box for the content we want to draw

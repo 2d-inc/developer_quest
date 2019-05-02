@@ -27,7 +27,7 @@ class HiringParticles {
   final Color color;
   final List<HiringParticle> _particles = [];
   static const int particleCount = 20;
-  static const double particleSize = 10;
+  double particleSize = 10;
   final Random _random = Random();
   double elapsedSinceEmission = 0;
 
