@@ -174,7 +174,6 @@ class _MainAxisQuestion extends StatefulWidget {
   final CrossAxisAlignment expectedCrossAxisAlignment;
   final String successMessage;
   final String instructions;
-  final double itemWidth;
 
   const _MainAxisQuestion({
     @required this.flexType,
@@ -182,7 +181,6 @@ class _MainAxisQuestion extends StatefulWidget {
     @required this.instructions,
     this.expectedMainAxisAlignment = MainAxisAlignment.start,
     this.expectedCrossAxisAlignment = CrossAxisAlignment.center,
-    this.itemWidth = 120,
     Key key,
   }) : super(key: key);
 
@@ -204,7 +202,7 @@ class _MainAxisQuestionState extends State<_MainAxisQuestion> {
     const dropdownTextStyle = TextStyle(
       color: Colors.white,
       fontSize: 16,
-      fontFamily: 'MontserratRegular',
+      fontFamily: 'MontserratMedium',
     );
 
     return QuestionScaffold(
@@ -212,7 +210,6 @@ class _MainAxisQuestionState extends State<_MainAxisQuestion> {
         kittens: _kittens,
         flexType: widget.flexType,
         mainAxisAlignment: widget.expectedMainAxisAlignment,
-        bedWidth: widget.itemWidth,
       ),
       actual: _AxisQuestionActual(
         kittens: _kittens,
@@ -221,7 +218,6 @@ class _MainAxisQuestionState extends State<_MainAxisQuestion> {
         expectedCrossAxisAlignment: widget.expectedCrossAxisAlignment,
         expectedMainAxisAlignment: widget.expectedMainAxisAlignment,
         bouncing: !_isCorrect,
-        kittyWidth: widget.itemWidth,
       ),
       question: DefaultTextStyle(
         style: const TextStyle(
@@ -356,12 +352,10 @@ class _AxisQuestionExpected extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
   final CrossAxisAlignment crossAxisAlignment;
   final EdgeInsets iconPadding;
-  final double bedWidth;
 
   const _AxisQuestionExpected({
     @required this.kittens,
     @required this.flexType,
-    @required this.bedWidth,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.crossAxisAlignment = CrossAxisAlignment.center,
     this.iconPadding = const EdgeInsets.all(4),
@@ -370,14 +364,7 @@ class _AxisQuestionExpected extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var children = kittens.map<Widget>((type) {
-      return ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: bedWidth),
-        child: KittyBed(
-          type: type,
-        ),
-      );
-    }).toList();
+    var children = kittens.map<Widget>((type) => KittyBed(type: type)).toList();
 
     switch (flexType) {
       case Column:
@@ -405,14 +392,12 @@ class _AxisQuestionActual extends StatelessWidget {
   final MainAxisAlignment expectedMainAxisAlignment;
   final CrossAxisAlignment expectedCrossAxisAlignment;
   final EdgeInsets iconPadding;
-  final double kittyWidth;
   final bool bouncing;
 
   const _AxisQuestionActual({
     @required this.kittens,
     @required this.flexType,
     @required this.bouncing,
-    @required this.kittyWidth,
     @required this.expectedMainAxisAlignment,
     @required this.expectedCrossAxisAlignment,
     this.actualMainAxisAlignment,
@@ -425,12 +410,8 @@ class _AxisQuestionActual extends StatelessWidget {
   Widget build(BuildContext context) {
     final children = kittens.map<Widget>((type) {
       final kitty = Kitty(type: type);
-      final child = ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: kittyWidth),
-        child: bouncing ? Bouncy(child: kitty) : kitty,
-      );
 
-      return Align(child: child);
+      return Align(child: bouncing ? Bouncy(child: kitty) : kitty);
     }).toList();
 
     // Ensure the starting mainAxisAlignment is not the same as the expected.

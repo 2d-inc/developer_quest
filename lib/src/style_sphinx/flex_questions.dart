@@ -61,13 +61,11 @@ class _FlexQuestion extends StatefulWidget {
   final Type type;
   final String successMessage;
   final String instructions;
-  final double itemWidth;
 
   const _FlexQuestion({
     @required this.type,
     @required this.successMessage,
     @required this.instructions,
-    this.itemWidth = 120,
     Key key,
   }) : super(key: key);
 
@@ -89,21 +87,19 @@ class _FlexQuestionState extends State<_FlexQuestion> {
     const dropdownTextStyle = TextStyle(
       color: Colors.white,
       fontSize: 16,
-      fontFamily: 'MontserratRegular',
+      fontFamily: 'MontserratMedium',
     );
 
     return QuestionScaffold(
       expected: _FlexQuestionExpected(
         kittens: _kittens,
         type: widget.type,
-        bedWidth: widget.itemWidth,
       ),
       actual: _FlexQuestionActual(
         kittens: _kittens,
         actualType: _type,
         expectedType: widget.type,
         bouncing: !_isCorrect,
-        kittyWidth: widget.itemWidth,
       ),
       question: DefaultTextStyle(
         style: const TextStyle(
@@ -214,28 +210,17 @@ class _FlexQuestionExpected extends StatelessWidget {
   final List<KittyType> kittens;
   final Type type;
   final EdgeInsets iconPadding;
-  final double bedWidth;
 
   const _FlexQuestionExpected({
     @required this.kittens,
     @required this.type,
-    @required this.bedWidth,
     this.iconPadding = const EdgeInsets.all(4),
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var children = kittens.map<Widget>((type) {
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: bedWidth,
-        ),
-        child: KittyBed(
-          type: type,
-        ),
-      );
-    }).toList();
+    var children = kittens.map<Widget>((type) => KittyBed(type: type)).toList();
 
     if (type == Column || type == Row) {
       children = children
@@ -260,7 +245,6 @@ class _FlexQuestionActual extends StatelessWidget {
   final Type actualType;
   final Type expectedType;
   final EdgeInsets iconPadding;
-  final double kittyWidth;
   final bool bouncing;
 
   const _FlexQuestionActual({
@@ -268,7 +252,6 @@ class _FlexQuestionActual extends StatelessWidget {
     @required this.actualType,
     @required this.expectedType,
     @required this.bouncing,
-    @required this.kittyWidth,
     this.iconPadding = const EdgeInsets.all(4),
     Key key,
   }) : super(key: key);
@@ -277,10 +260,7 @@ class _FlexQuestionActual extends StatelessWidget {
   Widget build(BuildContext context) {
     final children = kittens.map<Widget>((type) {
       final kitty = Kitty(type: type);
-      final child = ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: kittyWidth),
-        child: bouncing ? Bouncy(child: kitty) : kitty,
-      );
+      final child = bouncing ? Bouncy(child: kitty) : kitty;
 
       return _shouldExpand ? Expanded(child: Align(child: child)) : child;
     }).toList();
