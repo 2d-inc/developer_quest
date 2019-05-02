@@ -51,7 +51,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                   // If we're showing the wide layout, make sure this modal
                   // isn't too tall by using a factor of the same width
                   // constraint as a constraint for the height.
-                  maxHeight: layout == RpgLayout.wide
+                  maxHeight: layout != RpgLayout.slim
                       ? modalMaxWidth * 1.1
                       : double.infinity),
               child: ClipRRect(

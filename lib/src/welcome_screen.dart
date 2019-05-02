@@ -95,7 +95,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           alignment: Alignment.center,
           color: contentColor,
           child: RpgLayoutBuilder(
-            builder: (context, layout) => layout == RpgLayout.wide
+            builder: (context, layout) => layout != RpgLayout.slim
                 ? _WelcomeScreenWide(
                     hero,
                     start: _pressStartGame,

@@ -29,7 +29,7 @@ class _GameScreenState extends State<GameScreen> {
   void _scheduleInactivityTimer(BuildContext context) {
     _inactivityTimer?.cancel();
     _inactivityTimer =
-        Timer(const Duration(seconds: 10), () => _inactivityDetected(context));
+        Timer(const Duration(seconds: 40), () => _inactivityDetected(context));
   }
 
   void _inactivityDetected(BuildContext context) {
@@ -113,8 +113,9 @@ class _GameScreenState extends State<GameScreen> {
         _scheduleInactivityTimer(context);
       },
       child: RpgLayoutBuilder(
-        builder: (context, layout) =>
-            layout == RpgLayout.wide ? GameScreenWide() : GameScreenSlim(),
+        builder: (context, layout) => layout != RpgLayout.slim
+            ? GameScreenWide(layout == RpgLayout.demoTv)
+            : GameScreenSlim(),
       ),
     );
   }

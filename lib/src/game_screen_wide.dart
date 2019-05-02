@@ -13,13 +13,19 @@ import 'package:provider/provider.dart';
 import 'game_screen/task_pool_page.dart';
 
 class GameScreenWide extends StatelessWidget {
+  final bool isDemoTv;
+  const GameScreenWide(this.isDemoTv);
   @override
   Widget build(BuildContext context) {
     var availableWidth = MediaQuery.of(context).size.width;
     var taskColumnWidth = min(modalMaxWidth, availableWidth / 3);
     var charactersWidth = availableWidth - taskColumnWidth * 2;
+    var individualCharacterWidth = idealCharacterWidth;
+    if (isDemoTv) {
+      individualCharacterWidth *= 1.65;
+    }
     var numCharacterColumns =
-        max(2, (charactersWidth / idealCharacterWidth).round());
+        max(2, (charactersWidth / individualCharacterWidth).round());
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
