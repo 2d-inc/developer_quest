@@ -20,12 +20,8 @@ class GameScreenWide extends StatelessWidget {
     var availableWidth = MediaQuery.of(context).size.width;
     var taskColumnWidth = min(modalMaxWidth, availableWidth / 3);
     var charactersWidth = availableWidth - taskColumnWidth * 2;
-    var individualCharacterWidth = idealCharacterWidth;
-    if (isDemoTv) {
-      individualCharacterWidth *= 1.65;
-    }
     var numCharacterColumns =
-        max(2, (charactersWidth / individualCharacterWidth).round());
+        (charactersWidth / idealCharacterWidth).round().clamp(2, 4);
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
