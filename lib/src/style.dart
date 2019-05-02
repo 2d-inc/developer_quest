@@ -14,6 +14,7 @@ const Color statsSeparatorColor = Color.fromRGBO(57, 57, 71, 1);
 const double modalMaxWidth = 400;
 const double wideLayoutThreshold = 500;
 const double idealCharacterWidth = 165;
+const double idealParticleSize = 10;
 
 const TextStyle contentSmallStyle = TextStyle(
   fontFamily: 'MontserratRegular',

@@ -102,7 +102,7 @@ class CharacterDisplay extends StatelessWidget {
     var characterStyle = CharacterStyle.from(character);
     HiringBustState bustState = character.isHired
         ? HiringBustState.hired
-        : character.canUpgrade
+        : character.canUpgradeOrHire
             ? HiringBustState.available
             : HiringBustState.locked;
     return Material(
@@ -161,7 +161,7 @@ class HiringInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     return Opacity(
-      opacity: character.isHired || character.canUpgrade ? 1 : 0.25,
+      opacity: character.isHired || character.canUpgradeOrHire ? 1 : 0.25,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -171,7 +171,7 @@ class HiringInformation extends StatelessWidget {
                   bustState == HiringBustState.available
                       ? Icons.add_circle
                       : Icons.lock,
-                  color: !character.isHired && character.canUpgrade
+                  color: !character.isHired && character.canUpgradeOrHire
                       ? attentionColor
                       : Colors.white),
           const SizedBox(width: 4),

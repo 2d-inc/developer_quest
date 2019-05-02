@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_particles.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_dart/math/aabb.dart';
-
 import 'package:flare_flutter/flare_render_box.dart';
 
 /// The HiringBust displays three different visual states.
@@ -105,6 +105,7 @@ class HiringBustRenderObject extends FlareRenderBox {
     _updateState();
     if (value == HiringBustState.available) {
       _particles = HiringParticles(color: particleColor);
+      markNeedsLayout();
     } else {
       _particles = null;
     }
@@ -144,6 +145,13 @@ class HiringBustRenderObject extends FlareRenderBox {
     _artboard?.advance(elapsedSeconds);
     _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
     return isPlaying;
+  }
+
+  @override
+  void performLayout() {
+    super.performLayout();
+    _particles?.particleSize =
+        (size.width / idealCharacterWidth) * idealParticleSize;
   }
 
   /// Provide the correct bounding box for the content we want to draw
