@@ -104,7 +104,7 @@ class GameScreenSlimState extends State<GameScreenSlim> {
       ),
       body: PageView(
         controller: _controller,
-        children: [CharacterPoolPage(), const TaskPoolPage()],
+        children: const [CharacterPoolPage(), TaskPoolPage()],
       ),
     );
   }

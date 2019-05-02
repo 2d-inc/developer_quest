@@ -51,7 +51,7 @@ class TextBubble extends StatelessWidget {
                 child: child,
                 style: const TextStyle(
                   color: Colors.black,
-                  fontFamily: 'MontserratRegular',
+                  fontFamily: 'MontserratMedium',
                   fontSize: 16,
                 ),
               ),
