@@ -170,13 +170,15 @@ class UpgradeHireButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     return WideButton(
-      onPressed: () {
-        if (character.canUpgrade && character.upgrade()) {
-          _controls.play('success');
-        }
-      },
+      onPressed: character.canUpgradeOrHire
+          ? () {
+              if (character.upgradeOrHire()) {
+                _controls.play('success');
+              }
+            }
+          : null,
       paddingTweak: const EdgeInsets.only(right: -7),
-      background: character.canUpgrade
+      background: character.canUpgradeOrHire
           ? const Color.fromRGBO(84, 114, 239, 1)
           : contentColor.withOpacity(0.1),
       child: Row(
@@ -184,7 +186,7 @@ class UpgradeHireButton extends StatelessWidget {
           Text(
             character.isHired ? 'UPGRADE' : 'HIRE',
             style: buttonTextStyle.apply(
-              color: character.canUpgrade
+              color: character.canUpgradeOrHire
                   ? Colors.white
                   : contentColor.withOpacity(0.25),
             ),
@@ -203,7 +205,7 @@ class UpgradeHireButton extends StatelessWidget {
             character.upgradeCost.toString(),
             style: buttonTextStyle.apply(
               fontSizeDelta: -2,
-              color: character.canUpgrade
+              color: character.canUpgradeOrHire
                   ? const Color.fromRGBO(241, 241, 241, 1)
                   : contentColor.withOpacity(0.25),
             ),
