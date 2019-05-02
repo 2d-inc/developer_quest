@@ -2,20 +2,20 @@ part of task_tree;
 
 const _prototype = TaskBlueprint(
   'Prototype',
-  {Skill.coding: 30},
+  {Skill.coding: 30, Skill.engineering: 30, Skill.ux: 10},
   requirements: none,
 );
 
 const _basicBackend = TaskBlueprint(
   'Basic Backend',
-  {Skill.coding: 100},
+  {Skill.coding: 50, Skill.engineering: 10},
   requirements: AllOf([_prototype]),
   priority: 10,
 );
 
 const _basicUI = TaskBlueprint(
   'Basic UI',
-  {Skill.ux: 100},
+  {Skill.ux: 50, Skill.coordination: 10},
   requirements: AllOf([_prototype]),
   mutuallyExclusive: ['Programmer Art UI'],
 );
