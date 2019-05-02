@@ -2,15 +2,13 @@ import 'dart:math';
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_particles.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_dart/math/aabb.dart';
-
 import 'package:flare_flutter/flare_render_box.dart';
-
-import '../../style.dart';
 
 /// The HiringBust displays three different visual states.
 /// [locked] is for when the character is not available for hire,
