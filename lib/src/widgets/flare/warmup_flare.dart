@@ -1,7 +1,7 @@
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flutter/services.dart';
 
-var _filesToWarmup = [
+const _filesToWarmup = [
   "assets/flare/CodeIcon.flr",
   "assets/flare/Coin.flr",
   "assets/flare/CoordinationIcon.flr",
@@ -25,9 +25,9 @@ var _filesToWarmup = [
 
 /// Ensure all Flare assets used by this app are cached and ready to
 /// be displayed as quickly as possible.
-void warmupFlare() async {
+Future<void> warmupFlare() async {
   for (final filename in _filesToWarmup) {
     await cachedActor(rootBundle, filename);
-    await Future<void>.delayed(Duration(milliseconds: 16));
+    await Future<void>.delayed(const Duration(milliseconds: 16));
   }
 }

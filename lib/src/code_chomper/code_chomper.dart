@@ -3,6 +3,7 @@ library chompy;
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'code_chomper_screen.dart';
 
 const Color chompBlue = Color(0xFF4CB3FF);
@@ -79,9 +80,10 @@ class _CodeChomperState extends State<CodeChomper> {
                                     const EdgeInsets.only(left: 3, right: 3),
                                 height: 3,
                                 width: 18,
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(1.5)),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(1.5),
+                                  ),
                                   color: chompBlue,
                                 ),
                               ),

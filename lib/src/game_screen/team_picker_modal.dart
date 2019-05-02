@@ -111,7 +111,8 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                                         toggleSelection:
                                             _toggleCharacterSelected,
                                         // Show the character as not selectable
-                                        // if they are currently assigned to another task
+                                        // if they are currently assigned to
+                                        // another task
                                         isDisabled: character.isBusy &&
                                             !(widget.workItem.assignedTeam
                                                     ?.contains(character) ??
