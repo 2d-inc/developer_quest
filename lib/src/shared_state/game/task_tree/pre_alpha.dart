@@ -2,7 +2,7 @@ part of task_tree;
 
 const _prototype = TaskBlueprint(
   'Prototype',
-  {Skill.coding: 30},
+  {Skill.coding: 10, Skill.engineering: 10},
   requirements: none,
 );
 
@@ -15,7 +15,8 @@ const _basicBackend = TaskBlueprint(
 
 const _basicUI = TaskBlueprint(
   'Basic UI',
-  {Skill.ux: 100},
+  {Skill.ux: 10},
+  miniGame: MiniGame.sphinx,
   requirements: AllOf([_prototype]),
   mutuallyExclusive: ['Programmer Art UI'],
 );

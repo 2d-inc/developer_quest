@@ -19,8 +19,7 @@ class Character extends Aspect with ChildAspect {
   int _level = 1;
   int get level => _level;
 
-  bool _isHired = false;
-  bool get isHired => _isHired;
+  bool isHired;
 
   final int customHiringCost;
   final int costMultiplier;
@@ -28,7 +27,7 @@ class Character extends Aspect with ChildAspect {
   bool _isBusy = false;
 
   Character(this.id, this.prowess,
-      {this.customHiringCost, this.costMultiplier = 1});
+      {this.customHiringCost, this.costMultiplier = 1, this.isHired = false});
 
   bool get isBusy => _isBusy;
 
@@ -52,10 +51,10 @@ class Character extends Aspect with ChildAspect {
   @override
   String toString() => id;
 
-  int get upgradeCost => !_isHired && customHiringCost != null
+  int get upgradeCost => !isHired && customHiringCost != null
       ? customHiringCost
       : prowess.values.fold(0, (int previous, int value) => previous + value) *
-          (_isHired ? 110 : 220) *
+          (isHired ? 110 : 220) *
           costMultiplier;
 
   bool get canUpgrade {
@@ -71,18 +70,18 @@ class Character extends Aspect with ChildAspect {
   }
 
   bool hire() {
-    assert(!_isHired);
+    assert(!isHired);
     Company company = get<World>().company;
     if (!company.spend(upgradeCost)) {
       return false;
     }
-    _isHired = true;
+    isHired = true;
     markDirty();
     return true;
   }
 
   bool upgrade() {
-    if (!_isHired) {
+    if (!isHired) {
       return hire();
     }
     Company company = get<World>().company;
