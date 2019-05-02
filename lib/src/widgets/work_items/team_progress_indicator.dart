@@ -5,11 +5,11 @@ import 'package:dev_rpg/src/widgets/flare/work_team.dart';
 import 'package:dev_rpg/src/widgets/work_items/work_list_progress.dart';
 
 class TeamProgressIndicator extends StatelessWidget {
-  const TeamProgressIndicator({
+  TeamProgressIndicator({
     this.task,
-    this.isExpanded,
     this.progressColor = const Color.fromRGBO(0, 152, 255, 1),
-  });
+  }) : isExpanded =
+            task.isBeingWorkedOn || task.state == TaskState.completed;
 
   final Task task;
   final bool isExpanded;

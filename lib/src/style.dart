@@ -34,7 +34,7 @@ final List<BoxShadow> themeTaskShadow = [
 const TextStyle contentStyle = TextStyle(
   fontFamily: 'MontserratRegular',
   fontSize: 16,
-  color: contentColor,
+  color: Color.fromRGBO(38, 38, 47, 1),
 );
 
 const TextStyle contentLargeStyle = TextStyle(

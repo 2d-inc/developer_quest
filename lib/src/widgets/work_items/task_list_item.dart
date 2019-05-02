@@ -21,9 +21,7 @@ class TaskListItem extends StatelessWidget {
       );
 
   Future<void> _handleTap(BuildContext context, Task task) async {
-    if (_shipTask(task)) {
-      return;
-    }
+    if (_shipTask(task)) return;
     Set<Character> characters = await _pickCharacters(context, task);
     _onAssigned(task, characters);
   }
@@ -41,7 +39,6 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Task task = Provider.of<WorkItem>(context) as Task;
-    bool isExpanded = task.isBeingWorkedOn || task.state == TaskState.completed;
     return Padding(
       padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
       child: Container(
