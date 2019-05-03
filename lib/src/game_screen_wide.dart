@@ -19,7 +19,7 @@ class GameScreenWide extends StatelessWidget {
     var taskColumnWidth = min(modalMaxWidth, availableWidth / 3);
     var charactersWidth = availableWidth - taskColumnWidth * 2;
     var numCharacterColumns =
-        (charactersWidth / idealCharacterWidth).round().clamp(2, 4).round();
+        (charactersWidth / idealCharacterWidth).round().clamp(2, 4).toInt();
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
@@ -27,7 +27,7 @@ class GameScreenWide extends StatelessWidget {
         automaticallyImplyLeading: false,
         titleSpacing: 0,
         title: Consumer<Company>(
-          builder: (context, company) {
+          builder: (context, company, child) {
             // Using RepaintBoundary here because this part of the UI
             // changes frequently.
             return RepaintBoundary(
