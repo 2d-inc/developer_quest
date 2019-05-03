@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
   const MyApp({Key key, this.state}) : super(key: key);
 
   @override
-  @override
   Widget build(BuildContext context) {
     return SphinxGameStateProvider(
       state: state,
