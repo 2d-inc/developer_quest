@@ -19,7 +19,7 @@ class GameScreenWide extends StatelessWidget {
     var taskColumnWidth = min(modalMaxWidth, availableWidth / 3);
     var charactersWidth = availableWidth - taskColumnWidth * 2;
     var numCharacterColumns =
-        (charactersWidth / idealCharacterWidth).round().clamp(2, 4);
+        (charactersWidth / idealCharacterWidth).round().clamp(2, 4).round();
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(59, 59, 73, 1),

@@ -115,9 +115,8 @@ class TaskNode implements TreeData {
     // We have to do this because some items (like _advancedMotionDesign)
     // are only satisfied when multiple non-direct descendent items in the tree
     // are satisfied.
-    var needsPatch = true;
-    while (needsPatch) {
-      needsPatch = false;
+    while (true) {
+      var patched = false;
       if (isTop) {
         final allPrereqs = allPrerequisites;
         for (final otherBlueprint in taskTree) {
@@ -128,9 +127,12 @@ class TaskNode implements TreeData {
           }
           // This changes the full list of prereqs, so patch again.
           children.add(TaskNode(otherBlueprint));
-          needsPatch = true;
+          patched = true;
           break;
         }
+      }
+      if (!patched) {
+        break;
       }
     }
 
