@@ -87,13 +87,13 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                       ),
                       Expanded(
                         child: Consumer<CharacterPool>(
-                          builder: (context, characterPool) {
+                          builder: (context, characterPool, child) {
                             var characters = characterPool.fullTeam;
                             return characters.isEmpty
                                 ? Center(
                                     child: const Text(
                                       'Hire some teammates to complete '
-                                      'this task!',
+                                          'this task!',
                                       style: contentLargeStyle,
                                       textAlign: TextAlign.center,
                                     ),

@@ -47,7 +47,7 @@ class TaskPoolPage extends StatelessWidget {
           ? const Color.fromRGBO(229, 229, 229, 1)
           : const Color.fromRGBO(241, 241, 241, 1),
       child: Consumer<TaskPool>(
-        builder: (context, taskPool) {
+        builder: (context, taskPool, child) {
           var slivers = <Widget>[];
 
           // Add the header only if we show the in progress tasks.
