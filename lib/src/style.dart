@@ -64,7 +64,7 @@ Map<Skill, String> skillFlareIcon = {
 };
 
 class MaterialContainer extends StatelessWidget {
-  const MaterialContainer({this.child, this.color = Colors.white});
+  const MaterialContainer({this.child, this.color = Colors.black});
   final Widget child;
   final Color color;
   @override

@@ -3,6 +3,8 @@ import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
+import 'package:dev_rpg/src/style.dart';
+import 'package:flutter/material.dart';
 
 /// A single task for the player and her team to complete.
 ///
@@ -27,7 +29,7 @@ class Character extends Aspect with ChildAspect {
   bool _isBusy = false;
 
   Character(this.id, this.prowess,
-      {this.customHiringCost, this.costMultiplier = 1, this.isHired= false});
+      {this.customHiringCost, this.costMultiplier = 1, this.isHired = false});
 
   bool get isBusy => _isBusy;
 
@@ -94,5 +96,24 @@ class Character extends Aspect with ChildAspect {
     _level++;
     markDirty();
     return true;
+  }
+}
+
+class CharacterBoxConstraints extends StatelessWidget {
+  const CharacterBoxConstraints({this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: modalMaxWidth),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+          child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 280), child: child),
+        ),
+      ),
+    );
   }
 }
