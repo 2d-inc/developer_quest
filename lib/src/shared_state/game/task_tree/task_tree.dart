@@ -111,13 +111,14 @@ class TaskNode implements TreeData {
       children.add(TaskNode(otherBlueprint));
     }
 
-    // Patch remaining items that are satisfied by this full set.
-    // We have to do this because some items (like _advancedMotionDesign)
-    // are only satisfied when multiple non-direct descendent items in the tree
-    // are satisfied.
-    while (true) {
-      var patched = false;
-      if (isTop) {
+    if (isTop) {
+      // Patch remaining items that are satisfied by this full set.
+      // We have to do this because some items (like _advancedMotionDesign)
+      // are only satisfied when multiple non-direct descendent items in the
+      // tree are satisfied.
+      while (true) {
+        var patched = false;
+
         final allPrereqs = allPrerequisites;
         for (final otherBlueprint in taskTree) {
           if (_processedTaskTree.contains(otherBlueprint) ||
@@ -130,9 +131,9 @@ class TaskNode implements TreeData {
           patched = true;
           break;
         }
-      }
-      if (!patched) {
-        break;
+        if (!patched) {
+          break;
+        }
       }
     }
 
