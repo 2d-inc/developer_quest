@@ -9,6 +9,7 @@ const _prototype = TaskBlueprint(
 const _basicBackend = TaskBlueprint(
   'Basic Backend',
   {Skill.coding: 100},
+  coinReward: 100,
   requirements: AllOf([_prototype]),
   priority: 10,
 );
@@ -16,6 +17,7 @@ const _basicBackend = TaskBlueprint(
 const _basicUI = TaskBlueprint(
   'Basic UI',
   {Skill.ux: 100},
+  coinReward: 100,
   requirements: AllOf([_prototype]),
   mutuallyExclusive: ['Programmer Art UI'],
 );
@@ -34,4 +36,5 @@ const _alpha =
           _basicBackend,
         ]),
         priority: 100,
+        coinReward: 500,
         miniGame: MiniGame.chomp);

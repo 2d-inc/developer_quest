@@ -14,4 +14,5 @@ const _launch = TaskBlueprint('1.0', {Skill.coordination: 100},
       ]),
     ]),
     priority: 100,
+    coinReward: 5000,
     miniGame: MiniGame.sphinx);

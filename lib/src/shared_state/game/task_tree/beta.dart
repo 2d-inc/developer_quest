@@ -11,4 +11,5 @@ const _beta = TaskBlueprint('Beta', {Skill.coordination: 100},
       AnyOf([_redTheme, _greenTheme, _blueTheme]),
     ]),
     priority: 100,
+    coinReward: 800,
     miniGame: MiniGame.chomp);
