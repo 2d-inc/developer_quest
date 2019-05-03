@@ -20,7 +20,7 @@ class WideButton extends StatelessWidget {
     this.paddingTweak = const EdgeInsets.all(0),
     this.buttonKey,
     this.shadowColor,
-	this.enabled,
+	this.enabled = true,
   });
 
   @override
