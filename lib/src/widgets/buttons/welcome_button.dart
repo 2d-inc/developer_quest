@@ -8,16 +8,18 @@ class WelcomeButton extends StatefulWidget {
   final Color background;
   final IconData icon;
   final String label;
+  final double fontSize;
   @required
   final VoidCallback onPressed;
-  const WelcomeButton(
-      {Key key,
-      this.child,
-      this.onPressed,
-      this.background,
-      this.icon,
-      this.label})
-      : super(key: key);
+  const WelcomeButton({
+    Key key,
+    this.child,
+    this.onPressed,
+    this.background,
+    this.icon,
+    this.label,
+    this.fontSize = 16,
+  }) : super(key: key);
 
   @override
   _WelcomeButtonState createState() => _WelcomeButtonState();
@@ -73,12 +75,15 @@ class _WelcomeButtonState extends State<WelcomeButton>
                             padding: const EdgeInsets.only(right: 13),
                             child: Icon(
                               widget.icon,
-                              size: 16,
+                              size: widget.fontSize,
                               color: Colors.white.withOpacity(0.5),
                             ),
                           ),
                     Text(widget.label.toUpperCase(),
-                        style: buttonTextStyle.apply(color: Colors.white))
+                        style: buttonTextStyle.apply(
+                            color: Colors.white,
+                            fontSizeDelta:
+                                widget.fontSize - buttonTextStyle.fontSize))
                   ],
                 ),
               ),

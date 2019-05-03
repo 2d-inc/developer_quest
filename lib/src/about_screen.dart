@@ -86,28 +86,40 @@ class _AboutScreenState extends State<AboutScreen> {
                         RpgLayoutBuilder(
                           builder: (context, layout) => layout != RpgLayout.slim
                               ? Padding(
-                                  padding: const EdgeInsets.only(top: 58),
+                                  padding: const EdgeInsets.only(top: 28),
                                   child: FractionallySizedBox(
                                     widthFactor: 0.5,
                                     child: Column(
                                       children: <Widget>[
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Is Demo TV",
+                                              style: buttonTextStyle.apply(
+                                                  color: Colors.white),
+                                            ),
+                                            Expanded(child: Container()),
+                                            Checkbox(
+                                              activeColor: attentionColor,
+                                              value: RpgLayoutBuilder
+                                                      .forcedLayout ==
+                                                  RpgLayout.demoTv,
+                                              onChanged: (value) => setState(
+                                                  () => RpgLayoutBuilder
+                                                          .forcedLayout =
+                                                      value
+                                                          ? RpgLayout.demoTv
+                                                          : null),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 15),
                                         WelcomeButton(
                                           onPressed: () =>
                                               Navigator.of(context).pop(),
                                           background:
                                               Colors.white.withOpacity(0.15),
                                           label: 'DONE',
-                                        ),
-                                        CheckboxListTile(
-                                          title: const Text("Is Demo TV"),
-                                          value:
-                                              RpgLayoutBuilder.forcedLayout ==
-                                                  RpgLayout.demoTv,
-                                          onChanged: (value) => setState(() =>
-                                              RpgLayoutBuilder.forcedLayout =
-                                                  value
-                                                      ? RpgLayout.demoTv
-                                                      : null),
                                         ),
                                       ],
                                     ),

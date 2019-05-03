@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dev_rpg/src/game_screen/character_pool_page.dart';
+import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/app_bar/coin_badge.dart';
@@ -23,55 +24,84 @@ class GameScreenWide extends StatelessWidget {
     var numCharacterColumns =
         (charactersWidth / idealCharacterWidth).round().clamp(2, 4);
 
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: Consumer<Company>(
-          builder: (context, company) {
-            // Using RepaintBoundary here because this part of the UI
-            // changes frequently.
-            return RepaintBoundary(
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: const BorderSide(
-                      color: statsSeparatorColor,
-                      style: BorderStyle.solid,
+    return RpgLayoutBuilder(builder: (context, layout) {
+      var statsScale = layout == RpgLayout.demoTv ? 1.25 : 1.0;
+      double statsWidth = layout == RpgLayout.demoTv ? 300 : 125;
+      return Scaffold(
+        backgroundColor: const Color.fromRGBO(59, 59, 73, 1),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          titleSpacing: 0,
+          title: Consumer<Company>(
+            builder: (context, company) {
+              // Using RepaintBoundary here because this part of the UI
+              // changes frequently.
+              return RepaintBoundary(
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: const BorderSide(
+                        color: statsSeparatorColor,
+                        style: BorderStyle.solid,
+                      ),
                     ),
                   ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: statsWidth,
+                        child: UsersBadge(
+                          company.users,
+                          scale: statsScale,
+                          isWide: layout == RpgLayout.demoTv,
+                        ),
+                      ),
+                      StatSeparator(),
+                      Container(
+                        width: statsWidth,
+                        child: JoyBadge(
+                          company.joy,
+                          scale: statsScale,
+                          isWide: layout == RpgLayout.demoTv,
+                        ),
+                      ),
+                      StatSeparator(),
+                      layout == RpgLayout.demoTv
+                          ? Container(
+                              width: statsWidth,
+                              child: CoinBadge(
+                                company.coin,
+                                scale: statsScale,
+                                isWide: layout == RpgLayout.demoTv,
+                              ),
+                            )
+                          : Expanded(
+                              child:
+                                  CoinBadge(company.coin, scale: statsScale)),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Container(width: 125, child: UsersBadge(company.users)),
-                    StatSeparator(),
-                    Container(width: 125, child: JoyBadge(company.joy)),
-                    StatSeparator(),
-                    Expanded(child: CoinBadge(company.coin)),
-                  ],
-                ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
-      ),
-      body: Row(
-        children: [
-          SizedBox(
-            width: charactersWidth,
-            child: CharacterPoolPage(numColumns: numCharacterColumns),
-          ),
-          SizedBox(
-            width: taskColumnWidth,
-            child: const TaskPoolPage(display: TaskPoolDisplay.inProgress),
-          ),
-          SizedBox(
-            width: taskColumnWidth,
-            child: const TaskPoolPage(display: TaskPoolDisplay.completed),
-          ),
-        ],
-      ),
-    );
+        body: Row(
+          children: [
+            SizedBox(
+              width: charactersWidth,
+              child: CharacterPoolPage(numColumns: numCharacterColumns.toInt()),
+            ),
+            SizedBox(
+              width: taskColumnWidth,
+              child: const TaskPoolPage(display: TaskPoolDisplay.inProgress),
+            ),
+            SizedBox(
+              width: taskColumnWidth,
+              child: const TaskPoolPage(display: TaskPoolDisplay.completed),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

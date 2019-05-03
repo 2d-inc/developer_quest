@@ -21,7 +21,8 @@ class TaskListItem extends StatelessWidget {
       // completed (if there is one).
       // This ensures that the BuildContext is still valid after
       // the game completes.
-      switch (task.blueprint.miniGame) {
+      var game = MiniGame.sphinx;
+      switch (game) {
         case MiniGame.none:
           task.shipFeature();
           break;
