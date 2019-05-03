@@ -63,15 +63,26 @@ Map<Skill, String> skillFlareIcon = {
   Skill.coordination: 'assets/flare/CoordinationIcon.flr'
 };
 
-class TransparentMaterial extends StatelessWidget {
+class MaterialContainer extends StatelessWidget {
+  const MaterialContainer({this.child, this.color = Colors.white});
   final Widget child;
-  const TransparentMaterial({this.child});
+  final Color color;
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return Padding(
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+    child: Container(
+    decoration: BoxDecoration(
+      boxShadow: themeTaskShadow,
+      borderRadius: const BorderRadius.all(Radius.circular(9)),
+      color: color,
+    ),
+    child: Material(
         type: MaterialType.transparency,
         borderRadius: const BorderRadius.all(Radius.circular(9)),
         clipBehavior: Clip.antiAlias,
-        child: child);
+        child: child),
+    ),
+    );
   }
 }

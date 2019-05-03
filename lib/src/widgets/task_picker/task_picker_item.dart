@@ -1,6 +1,7 @@
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
+import 'package:dev_rpg/src/widgets/work_items/task_list_item.dart';
 import 'package:flutter/material.dart';
 
 // The display state for a widget in the task picker tree

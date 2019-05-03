@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,18 +9,13 @@ import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/task.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/style.dart';
+import 'package:dev_rpg/src/widgets/work_items/skill_dot.dart';
 import 'package:dev_rpg/src/widgets/work_items/team_progress_indicator.dart';
 import 'package:dev_rpg/src/widgets/work_items/task_header.dart';
 
 /// Displays a [Task] that can be tapped on to assign it to a team.
 /// The task can also be tapped on to award points once it is completed.
 class TaskListItem extends StatelessWidget {
-  BoxDecoration get taskListItemDecoration => BoxDecoration(
-        boxShadow: themeTaskShadow,
-        borderRadius: const BorderRadius.all(Radius.circular(9)),
-        color: Colors.white,
-      );
-
   Future<void> _handleTap(BuildContext context, Task task) async {
     if (_shipTask(task)) return;
     Set<Character> characters = await _pickCharacters(context, task);
@@ -39,11 +35,7 @@ class TaskListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Task task = Provider.of<WorkItem>(context) as Task;
-    return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-      child: Container(
-        decoration: taskListItemDecoration,
-        child: TransparentMaterial(
+    return MaterialContainer(
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Column(
@@ -56,8 +48,6 @@ class TaskListItem extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
     );
   }
 }
@@ -81,4 +71,24 @@ Future<Set<Character>> _pickCharacters(BuildContext context, Task task) async {
     context: context,
     builder: (context) => TeamPickerModal(task),
   );
+}
+
+/// A header for [Task] indicating the rewarded coin and skills
+/// necessary to work on the task.
+class TaskHeader extends StatelessWidget {
+  final TaskBlueprint taskData;
+  const TaskHeader(this.taskData);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CoinImage(),
+        Text(
+          taskData.coinReward.toString(),
+          style: contentSmallStyle,
+        ),
+        Expanded(child: Container()),
+      ],
+    );
+  }
 }
