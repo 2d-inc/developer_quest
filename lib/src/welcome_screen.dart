@@ -67,23 +67,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Listener(
-        child: Container(
-          alignment: Alignment.center,
-          color: contentColor,
-          child: RpgLayoutBuilder(
-            builder: (context, layout) => layout != RpgLayout.slim
-                ? _WelcomeScreenWide(
-                    hero,
-                    start: _pressStartGame,
-                    about: _pressAbout,
-                  )
-                : _WelcomeScreenSlim(
-                    hero,
-                    start: _pressStartGame,
-                    about: _pressAbout,
-                  ),
-          ),
+      body: Container(
+        alignment: Alignment.center,
+        color: contentColor,
+        child: RpgLayoutBuilder(
+          builder: (context, layout) => layout != RpgLayout.slim
+              ? _WelcomeScreenWide(
+                  hero,
+                  start: _pressStartGame,
+                  about: _pressAbout,
+                )
+              : _WelcomeScreenSlim(
+                  hero,
+                  start: _pressStartGame,
+                  about: _pressAbout,
+                ),
         ),
       ),
     );
