@@ -87,9 +87,10 @@ class TaskPool extends AspectContainer with ChildAspect {
           (completedTasks.followedBy(archivedTasks)).map((t) => t.blueprint)) &&
       blueprint.mutuallyExclusive.every(_hasNotStartedTask));
 
-  void startTask(TaskBlueprint projectBlueprint) {
+  Task startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
     addWorkItem(task);
+    return task;
   }
 
   void addWorkItem(WorkItem item) {

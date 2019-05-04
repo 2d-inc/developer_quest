@@ -1,9 +1,12 @@
 import 'package:dev_rpg/src/game_screen/add_task_button.dart';
 import 'package:dev_rpg/src/game_screen/bug_picker_modal.dart';
 import 'package:dev_rpg/src/game_screen/project_picker_modal.dart';
+import 'package:dev_rpg/src/game_screen/team_picker_modal.dart';
 import 'package:dev_rpg/src/shared_state/game/bug.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
+import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +15,18 @@ import 'package:provider/provider.dart';
 class TasksButtonHeader extends SliverPersistentHeaderDelegate {
   final TaskPool taskPool;
   const TasksButtonHeader({this.taskPool});
+
+  void _pickTeam(BuildContext context, WorkItem item) async {
+    // immediately show the character picker for this newly
+    // created task.
+    var characters = await showModalBottomSheet<Set<Character>>(
+      context: context,
+      builder: (context) => TeamPickerModal(item),
+    );
+    if (characters != null && !item.isComplete) {
+      item.assignTeam(characters.toList());
+    }
+  }
 
   @override
   Widget build(
@@ -33,8 +48,9 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                   builder: (context) => ProjectPickerModal(),
                 );
                 if (project != null) {
-                  Provider.of<TaskPool>(context, listen: false)
+                  var task = Provider.of<TaskPool>(context, listen: false)
                       .startTask(project);
+                  _pickTeam(context, task);
                 }
               },
             ),
@@ -54,6 +70,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                 if (bug != null) {
                   Provider.of<TaskPool>(context, listen: false)
                       .addWorkItem(bug);
+                  _pickTeam(context, bug);
                 }
               },
             ),
