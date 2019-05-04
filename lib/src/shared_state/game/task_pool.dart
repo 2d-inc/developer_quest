@@ -117,9 +117,10 @@ class TaskPool extends AspectContainer with ChildAspect {
     completedTasks.add(task);
     markDirty();
 
-    // For now we simply slightly increase the chance of a bug as a task
-    // completes, consider using the time taken as a factor
-    _bugChance += featureBugChance;
+    // Sum bug chances from assigned characters and built-in bug chance.
+    double totalBugChance = task.assignedTeam
+        .fold(featureBugChance, (a, b) => a + b.bugChanceOffset);
+    _bugChance += totalBugChance;
   }
 
   @override
