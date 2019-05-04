@@ -125,8 +125,9 @@ class TaskPool extends AspectContainer with ChildAspect {
     double totalBugChance = task.assignedTeam
         .fold(featureBugChance, (a, b) => a + b.bugChanceOffset);
     _bugChance += totalBugChance;
-    _numberOfBugsAdded = task.assignedTeam
-        .fold(defaultBugNumber, (a, b) => max(a, b.bugQuantity));
+    var maxBugsAdded = bugRandom.nextInt(task.assignedTeam
+        .fold(defaultBugNumber, (a, b) => max(a, b.bugQuantity)));
+    _numberOfBugsAdded = max(defaultBugNumber, bugRandom.nextInt(maxBugsAdded));
   }
 
   @override

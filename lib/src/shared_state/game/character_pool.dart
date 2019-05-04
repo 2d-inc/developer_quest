@@ -22,7 +22,7 @@ class CharacterPool extends AspectContainer<Character> with ChildAspect {
         Character('hacker', {Skill.coding: 3, Skill.engineering: 1},
             bugChanceOffset: 0.03),
         Character('cowboy', {Skill.coding: 4, Skill.engineering: 1},
-            bugChanceOffset: 0.6, bugQuantity: 4),
+            bugChanceOffset: 0.6, bugQuantity: 6),
         Character('pm', {Skill.coordination: 3, Skill.ux: 1}),
         Character('uxr', {Skill.coordination: 1, Skill.ux: 3}),
         Character('avant_garde_designer', {Skill.ux: 4}),

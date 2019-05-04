@@ -52,7 +52,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                 if (project != null) {
                   var task = Provider.of<TaskPool>(context, listen: false)
                       .startTask(project);
-                  _pickTeam(context, task);
+                  await _pickTeam(context, task);
                 }
               },
             ),
@@ -73,7 +73,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                 if (bug != null) {
                   Provider.of<TaskPool>(context, listen: false)
                       .addWorkItem(bug);
-                  _pickTeam(context, bug);
+                  await _pickTeam(context, bug);
                 }
               },
             ),
