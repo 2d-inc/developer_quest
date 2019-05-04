@@ -1,7 +1,9 @@
 import 'package:dev_rpg/src/game_screen/add_task_button.dart';
 import 'package:dev_rpg/src/game_screen/bug_picker_modal.dart';
 import 'package:dev_rpg/src/game_screen/project_picker_modal.dart';
+import 'package:dev_rpg/src/game_screen/team_picker_modal.dart';
 import 'package:dev_rpg/src/shared_state/game/bug.dart';
+import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +35,17 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                   builder: (context) => ProjectPickerModal(),
                 );
                 if (project != null) {
-                  Provider.of<TaskPool>(context, listen: false)
+                  var task = Provider.of<TaskPool>(context, listen: false)
                       .startTask(project);
+                  // immediately show the character picker for this newly
+                  // created task.
+                  var characters = await showModalBottomSheet<Set<Character>>(
+                    context: context,
+                    builder: (context) => TeamPickerModal(task),
+                  );
+                  if (characters != null && !task.isComplete) {
+                    task.assignTeam(characters.toList());
+                  }
                 }
               },
             ),
