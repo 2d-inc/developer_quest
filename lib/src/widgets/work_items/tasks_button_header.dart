@@ -17,7 +17,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
   final double scale;
   const TasksButtonHeader({this.taskPool, this.scale});
 
-  void _pickTeam(BuildContext context, WorkItem item) async {
+  Future<void> _pickTeam(BuildContext context, WorkItem item) async {
     // immediately show the character picker for this newly
     // created task.
     var characters = await showModalBottomSheet<Set<Character>>(
@@ -52,7 +52,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                 if (project != null) {
                   var task = Provider.of<TaskPool>(context, listen: false)
                       .startTask(project);
-                  _pickTeam(context, task);
+                  await _pickTeam(context, task);
                 }
               },
             ),
@@ -73,7 +73,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
                 if (bug != null) {
                   Provider.of<TaskPool>(context, listen: false)
                       .addWorkItem(bug);
-                  _pickTeam(context, bug);
+                  await _pickTeam(context, bug);
                 }
               },
             ),
