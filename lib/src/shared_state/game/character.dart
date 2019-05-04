@@ -25,10 +25,22 @@ class Character extends Aspect with ChildAspect {
   final int customHiringCost;
   final int costMultiplier;
 
+  /// This value will get summed with [TaskPool.featureBugChance]
+  /// after completing work to compute the total bug chance.
+  /// This value can be negative, meaning this character is so
+  /// attentive that they will actually reduce the overall bug
+  /// chance.
+  final double bugChanceOffset;
+
   bool _isBusy = false;
 
-  Character(this.id, this.prowess,
-      {this.customHiringCost, this.costMultiplier = 1});
+  Character(
+    this.id,
+    this.prowess, {
+    this.customHiringCost,
+    this.costMultiplier = 1,
+    this.bugChanceOffset = 0,
+  });
 
   bool get isBusy => _isBusy;
 
