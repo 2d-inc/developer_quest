@@ -14,7 +14,8 @@ import 'package:provider/provider.dart';
 /// for selecting active bugs to add to the working list.
 class TasksButtonHeader extends SliverPersistentHeaderDelegate {
   final TaskPool taskPool;
-  const TasksButtonHeader({this.taskPool});
+  final double scale;
+  const TasksButtonHeader({this.taskPool, this.scale});
 
   void _pickTeam(BuildContext context, WorkItem item) async {
     // immediately show the character picker for this newly
@@ -38,6 +39,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
           Expanded(
             child: AddTaskButton(
               'Tasks',
+              scale: scale,
               key: const Key('add_task'),
               count: taskPool.availableTasks.length,
               icon: Icons.add,
@@ -59,6 +61,7 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
           Expanded(
             child: AddTaskButton(
               'Bugs',
+              scale: scale,
               count: taskPool.availableBugs.length,
               icon: Icons.bug_report,
               color: const Color(0xffeb2875),
@@ -81,10 +84,10 @@ class TasksButtonHeader extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 55;
+  double get maxExtent => 55 * scale;
 
   @override
-  double get minExtent => 55;
+  double get minExtent => 55 * scale;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {

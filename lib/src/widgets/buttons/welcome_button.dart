@@ -8,16 +8,18 @@ class WelcomeButton extends StatefulWidget {
   final Color background;
   final IconData icon;
   final String label;
+  final double fontSize;
   @required
   final VoidCallback onPressed;
-  const WelcomeButton(
-      {Key key,
-      this.child,
-      this.onPressed,
-      this.background,
-      this.icon,
-      this.label})
-      : super(key: key);
+  const WelcomeButton({
+    Key key,
+    this.child,
+    this.onPressed,
+    this.background,
+    this.icon,
+    this.label,
+    this.fontSize = 16,
+  }) : super(key: key);
 
   @override
   _WelcomeButtonState createState() => _WelcomeButtonState();
@@ -59,29 +61,33 @@ class _WelcomeButtonState extends State<WelcomeButton>
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) => WideButton(
-              onPressed: widget.onPressed,
-              background: _colorTween.value,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    widget.icon == null
-                        ? Container()
-                        : Padding(
-                            padding: const EdgeInsets.only(right: 13),
-                            child: Icon(
-                              widget.icon,
-                              size: 16,
-                              color: Colors.white.withOpacity(0.5),
-                            ),
+      animation: _animationController,
+      builder: (context, child) => WideButton(
+            onPressed: widget.onPressed,
+            background: _colorTween.value,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: [
+                  widget.icon == null
+                      ? Container()
+                      : Padding(
+                          padding: const EdgeInsets.only(right: 13),
+                          child: Icon(
+                            widget.icon,
+                            size: widget.fontSize,
+                            color: Colors.white.withOpacity(0.5),
                           ),
-                    Text(widget.label.toUpperCase(),
-                        style: buttonTextStyle.apply(color: Colors.white))
-                  ],
-                ),
+                        ),
+                  Text(widget.label.toUpperCase(),
+                      style: buttonTextStyle.apply(
+                          color: Colors.white,
+                          fontSizeDelta:
+                              widget.fontSize - buttonTextStyle.fontSize))
+                ],
               ),
-            ));
+            ),
+          ),
+    );
   }
 }

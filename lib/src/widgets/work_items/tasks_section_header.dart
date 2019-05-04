@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 /// This is a simple text header for the tasks list.
 class TasksSectionHeader extends SliverPersistentHeaderDelegate {
   final String title;
-  const TasksSectionHeader(this.title);
+  final double scale;
+  const TasksSectionHeader(this.title, this.scale);
 
   @override
   Widget build(
@@ -14,7 +15,9 @@ class TasksSectionHeader extends SliverPersistentHeaderDelegate {
       child: Text(
         title,
         style: buttonTextStyle.apply(
-            fontSizeDelta: -4, color: secondaryContentColor),
+            fontSizeDelta: -4,
+            color: secondaryContentColor,
+            fontSizeFactor: scale),
       ),
     );
   }
@@ -27,6 +30,6 @@ class TasksSectionHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(TasksSectionHeader oldDelegate) {
-    return title != oldDelegate.title;
+    return title != oldDelegate.title || scale != oldDelegate.scale;
   }
 }
