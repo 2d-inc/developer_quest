@@ -98,17 +98,6 @@ class _AboutScreenState extends State<AboutScreen> {
                                               Colors.white.withOpacity(0.15),
                                           label: 'DONE',
                                         ),
-                                        CheckboxListTile(
-                                          title: const Text("Is Demo TV"),
-                                          value:
-                                              RpgLayoutBuilder.forcedLayout ==
-                                                  RpgLayout.demoTv,
-                                          onChanged: (value) => setState(() =>
-                                              RpgLayoutBuilder.forcedLayout =
-                                                  value
-                                                      ? RpgLayout.demoTv
-                                                      : null),
-                                        ),
                                       ],
                                     ),
                                   ),

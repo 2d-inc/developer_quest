@@ -113,9 +113,8 @@ class _GameScreenState extends State<GameScreen> {
         _scheduleInactivityTimer(context);
       },
       child: RpgLayoutBuilder(
-        builder: (context, layout) => layout != RpgLayout.slim
-            ? GameScreenWide(layout == RpgLayout.demoTv)
-            : GameScreenSlim(),
+        builder: (context, layout) =>
+            layout == RpgLayout.slim ? GameScreenSlim() : GameScreenWide(),
       ),
     );
   }
