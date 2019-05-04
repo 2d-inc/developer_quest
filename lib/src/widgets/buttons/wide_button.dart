@@ -6,6 +6,7 @@ class WideButton extends StatelessWidget {
   final Widget child;
   final Color background;
   final Color shadowColor;
+  final bool enabled;
   @required
   final VoidCallback onPressed;
 
@@ -19,6 +20,7 @@ class WideButton extends StatelessWidget {
     this.paddingTweak = const EdgeInsets.all(0),
     this.buttonKey,
     this.shadowColor,
+    this.enabled = true,
   });
 
   @override
@@ -45,7 +47,7 @@ class WideButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(9),
           ),
-          onPressed: onPressed,
+          onPressed: enabled ? onPressed : null,
           color: background,
           child: child),
     );

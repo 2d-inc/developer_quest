@@ -14,10 +14,10 @@ class CharacterPool extends AspectContainer<Character> with ChildAspect {
 
   void initializeCharacters() => setAspects([
         Character('jack', {Skill.coding: 1, Skill.coordination: 1, Skill.ux: 1},
-            customHiringCost: 220, costMultiplier: 2),
+            customHiringCost: 220, costMultiplier: 4),
         Character('sourcerer',
             {Skill.coding: 1, Skill.coordination: 1, Skill.engineering: 1},
-            customHiringCost: 220, costMultiplier: 2),
+            customHiringCost: 220, costMultiplier: 4),
         Character('refactorer', {Skill.coding: 1, Skill.engineering: 3}),
         Character('architect', {Skill.coding: 1, Skill.engineering: 4}),
         Character('hacker', {Skill.coding: 3, Skill.engineering: 1}),
