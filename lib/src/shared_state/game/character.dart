@@ -25,8 +25,8 @@ class Character extends Aspect with ChildAspect {
   final int customHiringCost;
   final int costMultiplier;
 
-  /// This value will get summed with [TaskPool.featureBugChange]
-  /// after completing work to compute the total bug change.
+  /// This value will get summed with [TaskPool.featureBugChance]
+  /// after completing work to compute the total bug chance.
   /// This value can be negative, meaning this character is so
   /// attentive that they will actually reduce the overall bug
   /// chance.
