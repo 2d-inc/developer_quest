@@ -20,7 +20,7 @@ class GameScreenWide extends StatelessWidget {
     var taskColumnWidth = min(modalMaxWidth, availableWidth / 3);
     var charactersWidth = availableWidth - taskColumnWidth * 2;
     var numCharacterColumns =
-        (charactersWidth / idealCharacterWidth).round().clamp(2, 4);
+        (charactersWidth / idealCharacterWidth).round().clamp(2, 4).toInt();
 
     return RpgLayoutBuilder(
       builder: (context, layout) {
