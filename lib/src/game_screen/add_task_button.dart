@@ -8,10 +8,17 @@ class AddTaskButton extends StatefulWidget {
   final String label;
   final int count;
   final VoidCallback onPressed;
+  final double scale;
 
-  const AddTaskButton(this.label,
-      {Key key, this.count = 0, this.icon, this.color, this.onPressed})
-      : super(key: key);
+  const AddTaskButton(
+    this.label, {
+    Key key,
+    this.count = 0,
+    this.icon,
+    this.color,
+    this.onPressed,
+    this.scale = 1.0,
+  }) : super(key: key);
 
   @override
   _AddTaskButtonState createState() => _AddTaskButtonState();
@@ -53,7 +60,7 @@ class _AddTaskButtonState extends State<AddTaskButton> {
       onTap: isDisabled ? null : onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 100),
-        height: 40,
+        height: 40 * widget.scale,
         padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           boxShadow: isDisabled
@@ -65,7 +72,7 @@ class _AddTaskButtonState extends State<AddTaskButton> {
                       blurRadius: _isPressed ? 10 : 15,
                       spreadRadius: 0),
                 ],
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(20 * widget.scale)),
           color: isDisabled
               ? disabledTaskColor.withOpacity(0.10)
               : _isPressed ? widget.color.withOpacity(0.8) : widget.color,
@@ -80,16 +87,17 @@ class _AddTaskButtonState extends State<AddTaskButton> {
                 widget.label,
                 style: buttonTextStyle.apply(
                     fontSizeDelta: -2,
+                    fontSizeFactor: widget.scale,
                     color: isDisabled ? disabledTaskColor : Colors.white),
               ),
             ),
             isDisabled
                 ? Container()
                 : Container(
-                    constraints: const BoxConstraints(
-                      minWidth: 26,
-                      minHeight: 26,
-                      maxHeight: 26,
+                    constraints: BoxConstraints(
+                      minWidth: 26 * widget.scale,
+                      minHeight: 26 * widget.scale,
+                      maxHeight: 26 * widget.scale,
                     ),
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
@@ -98,7 +106,9 @@ class _AddTaskButtonState extends State<AddTaskButton> {
                     child: Center(
                       child: Text(widget.count.toString(),
                           style: buttonTextStyle.apply(
-                              fontSizeDelta: -2, color: widget.color)),
+                              fontSizeDelta: -2,
+                              fontSizeFactor: widget.scale,
+                              color: widget.color)),
                     ),
                   ),
           ],

@@ -79,7 +79,7 @@ class AboutScreen extends StatelessWidget {
                               fontFamily: 'RobotoRegular', fontSize: 20),
                         ),
                         RpgLayoutBuilder(
-                          builder: (context, layout) => layout == RpgLayout.wide
+                          builder: (context, layout) => layout != RpgLayout.slim
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 58),
                                   child: FractionallySizedBox(
