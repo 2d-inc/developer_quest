@@ -60,8 +60,8 @@ class _GameScreenState extends State<GameScreen> {
       case DemoModeAction.showCharacterModal:
         // Hire any available character.
         for (final character in world.characterPool.children) {
-          if (character.canUpgrade) {
-            character.upgrade();
+          if (character.canUpgradeOrHire) {
+            character.hire();
             break;
           }
         }
