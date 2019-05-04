@@ -1,5 +1,6 @@
 import 'package:dev_rpg/src/game_screen/character_modal.dart';
 import 'package:dev_rpg/src/game_screen/character_style.dart';
+import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/style.dart';
@@ -173,33 +174,41 @@ class HiringInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var character = Provider.of<Character>(context);
-    return Opacity(
-      opacity: character.isHired || character.canUpgradeOrHire ? 1 : 0.25,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          character.isHired
-              ? Container()
-              : Icon(
-                  bustState == HiringBustState.available
-                      ? Icons.add_circle
-                      : Icons.lock,
-                  color: !character.isHired && character.canUpgradeOrHire
-                      ? attentionColor
-                      : Colors.white),
-          const SizedBox(width: 4),
-          Text(
-            bustState == HiringBustState.hired
-                ? 'Hired'
-                : bustState == HiringBustState.available ? 'Hire!' : 'Locked',
-            style: contentStyle.apply(
-                color: bustState == HiringBustState.available
-                    ? attentionColor
-                    : Colors.white),
-          )
-        ],
-      ),
+    return RpgLayoutBuilder(
+      builder: (context, layout) {
+        double textScale = layout == RpgLayout.ultrawide ? 1.25 : 1;
+        var character = Provider.of<Character>(context);
+        return Opacity(
+          opacity: character.isHired || character.canUpgradeOrHire ? 1 : 0.25,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              character.isHired
+                  ? Container()
+                  : Icon(
+                      bustState == HiringBustState.available
+                          ? Icons.add_circle
+                          : Icons.lock,
+                      color: !character.isHired && character.canUpgradeOrHire
+                          ? attentionColor
+                          : Colors.white),
+              const SizedBox(width: 4),
+              Text(
+                bustState == HiringBustState.hired
+                    ? 'Hired'
+                    : bustState == HiringBustState.available
+                        ? 'Hire!'
+                        : 'Locked',
+                style: contentStyle.apply(
+                    fontSizeFactor: textScale,
+                    color: bustState == HiringBustState.available
+                        ? attentionColor
+                        : Colors.white),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

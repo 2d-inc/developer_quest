@@ -1,3 +1,4 @@
+import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/task_blueprint.dart';
 import 'package:dev_rpg/src/style.dart';
@@ -13,21 +14,22 @@ class TaskHeader extends StatelessWidget {
   const TaskHeader(this.blueprint);
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 20,
-          height: 20,
-          child: const FlareActor('assets/flare/Coin.flr'),
-        ),
-        const SizedBox(width: 4),
-        Text(
-          blueprint.coinReward.toString(),
-          style: contentSmallStyle,
-        ),
-        Expanded(child: Container()),
-        for (Skill skill in blueprint.skillsNeeded) SkillDot(skill)
-      ],
-    );
+    return RpgLayoutBuilder(builder: (context, layout) {
+      double scale = layout == RpgLayout.ultrawide ? 1.25 : 1.0;
+      return Row(
+        children: [
+          Container(
+            width: 20 * scale,
+            height: 20 * scale,
+            child: const FlareActor('assets/flare/Coin.flr'),
+          ),
+          const SizedBox(width: 4),
+          Text(blueprint.coinReward.toString(),
+              style: contentSmallStyle.apply(fontSizeFactor: scale)),
+          Expanded(child: Container()),
+          for (Skill skill in blueprint.skillsNeeded) SkillDot(skill)
+        ],
+      );
+    });
   }
 }

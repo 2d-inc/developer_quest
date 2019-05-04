@@ -2,7 +2,7 @@ import 'package:dev_rpg/src/style.dart';
 import 'package:flutter/material.dart';
 
 /// Layout for the dev_rpg game.
-enum RpgLayout { slim, wide }
+enum RpgLayout { slim, wide, ultrawide }
 
 /// Signature for a function that builds a widget given an [RpgLayout].
 ///
@@ -22,10 +22,10 @@ class RpgLayoutBuilder extends StatelessWidget {
   final RpgLayoutWidgetBuilder builder;
 
   Widget _build(BuildContext context, BoxConstraints constraints) {
-    final RpgLayout layout =
-        MediaQuery.of(context).size.width > wideLayoutThreshold
-            ? RpgLayout.wide
-            : RpgLayout.slim;
+    var mediaWidth = MediaQuery.of(context).size.width;
+    final RpgLayout layout = mediaWidth >= ultraWideLayoutThreshold
+        ? RpgLayout.ultrawide
+        : mediaWidth > wideLayoutThreshold ? RpgLayout.wide : RpgLayout.slim;
     return builder(context, layout);
   }
 
