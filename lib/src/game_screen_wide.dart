@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 import 'game_screen/task_pool_page.dart';
 
 class GameScreenWide extends StatelessWidget {
+  final bool isDemoTv;
+  const GameScreenWide(this.isDemoTv);
   @override
   Widget build(BuildContext context) {
     var availableWidth = MediaQuery.of(context).size.width;

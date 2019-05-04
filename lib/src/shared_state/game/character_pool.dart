@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
@@ -29,6 +31,11 @@ class CharacterPool extends AspectContainer<Character> with ChildAspect {
   /// Get all the characters that have been hired and are part of the
   /// player's team!
   List<Character> get fullTeam => children.where((c) => c.isHired).toList();
+
+  Character random() {
+    Random rand = Random();
+    return children.elementAt(rand.nextInt(children.length));
+  }
 
   // get the set of available skills available with the player's hired team
   Set<Skill> get availableSkills => children

@@ -3,9 +3,14 @@ import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:flutter/material.dart';
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
   static const double _horizontalPadding = 33;
 
+  @override
+  _AboutScreenState createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +43,7 @@ class AboutScreen extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: _horizontalPadding),
+                      horizontal: AboutScreen._horizontalPadding),
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: modalMaxWidth),
                     child: Column(
@@ -79,17 +84,32 @@ class AboutScreen extends StatelessWidget {
                               fontFamily: 'RobotoRegular', fontSize: 20),
                         ),
                         RpgLayoutBuilder(
-                          builder: (context, layout) => layout == RpgLayout.wide
+                          builder: (context, layout) => layout != RpgLayout.slim
                               ? Padding(
                                   padding: const EdgeInsets.only(top: 58),
                                   child: FractionallySizedBox(
                                     widthFactor: 0.5,
-                                    child: WelcomeButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      background:
-                                          Colors.white.withOpacity(0.15),
-                                      label: 'DONE',
+                                    child: Column(
+                                      children: <Widget>[
+                                        WelcomeButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          background:
+                                              Colors.white.withOpacity(0.15),
+                                          label: 'DONE',
+                                        ),
+                                        CheckboxListTile(
+                                          title: const Text("Is Demo TV"),
+                                          value:
+                                              RpgLayoutBuilder.forcedLayout ==
+                                                  RpgLayout.demoTv,
+                                          onChanged: (value) => setState(() =>
+                                              RpgLayoutBuilder.forcedLayout =
+                                                  value
+                                                      ? RpgLayout.demoTv
+                                                      : null),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 )
@@ -103,7 +123,7 @@ class AboutScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: _horizontalPadding,
+                  horizontal: AboutScreen._horizontalPadding,
                 ),
                 child: RpgLayoutBuilder(
                   builder: (context, layout) => layout == RpgLayout.slim

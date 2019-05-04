@@ -10,6 +10,8 @@ import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'demo_mode.dart';
+
 class WelcomeScreen extends StatefulWidget {
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
@@ -26,6 +28,22 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     _chooseHero();
     super.initState();
+
+    demo.addListener(_demoModeChanged);
+    demo.delay();
+  }
+
+  void _demoModeChanged() {
+    if (demo.value != DemoModeAction.showWelcomeScreen) {
+      demo.removeListener(_demoModeChanged);
+      var world = Provider.of<World>(context, listen: false);
+      world.reset();
+      Navigator.of(context).pushNamed('/gameloop').then((_) {
+        world.reset();
+        demo.addListener(_demoModeChanged);
+        demo.delay();
+      });
+    }
   }
 
   void _chooseHero() {
@@ -44,44 +62,51 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void dispose() {
     super.dispose();
     _swapHeroTimer?.cancel();
+    demo.removeListener(_demoModeChanged);
     _warmupTimer.cancel();
   }
 
   Future<void> _pressStartGame() async {
-    Provider.of<World>(context, listen: false).start();
+    demo.delay(indefinitely: true);
+    Provider.of<World>(context, listen: false).reset();
     // Stop the hero cycling.
     _swapHeroTimer?.cancel();
     await Navigator.of(context).pushNamed('/gameloop');
     // Back to cycling.
     _startTimer();
+    demo.delay();
   }
 
   Future<void> _pressAbout() async {
+    demo.delay(indefinitely: true);
     // Stop the hero cycling.
     _swapHeroTimer?.cancel();
     await Navigator.of(context).pushNamed('/about');
     // Back to cycling.
     _startTimer();
+    demo.delay();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        color: contentColor,
-        child: RpgLayoutBuilder(
-          builder: (context, layout) => layout == RpgLayout.wide
-              ? _WelcomeScreenWide(
-                  hero,
-                  start: _pressStartGame,
-                  about: _pressAbout,
-                )
-              : _WelcomeScreenSlim(
-                  hero,
-                  start: _pressStartGame,
-                  about: _pressAbout,
-                ),
+      body: Listener(
+        child: Container(
+          alignment: Alignment.center,
+          color: contentColor,
+          child: RpgLayoutBuilder(
+            builder: (context, layout) => layout != RpgLayout.slim
+                ? _WelcomeScreenWide(
+                    hero,
+                    start: _pressStartGame,
+                    about: _pressAbout,
+                  )
+                : _WelcomeScreenSlim(
+                    hero,
+                    start: _pressStartGame,
+                    about: _pressAbout,
+                  ),
+          ),
         ),
       ),
     );
