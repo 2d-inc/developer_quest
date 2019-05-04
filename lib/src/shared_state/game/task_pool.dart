@@ -70,7 +70,7 @@ class TaskPool extends AspectContainer with ChildAspect {
   double _bugChance = 0;
   static Random bugRandom = Random();
   int _ticksToBugRoll = 0;
-  int _numberOfBugsAdded = 1;
+  int _numberOfBugsToAdd = 1;
   static const int bugRollTicks = 5;
 
   // Bug chance after adding a feature.
@@ -126,8 +126,8 @@ class TaskPool extends AspectContainer with ChildAspect {
         .fold(featureBugChance, (a, b) => a + b.bugChanceOffset);
     _bugChance += totalBugChance;
     var maxBugsAdded = bugRandom.nextInt(task.assignedTeam
-        .fold(defaultBugNumber, (a, b) => max(a, b.bugQuantity)));
-    _numberOfBugsAdded = max(defaultBugNumber, bugRandom.nextInt(maxBugsAdded));
+        .fold(defaultBugNumber, (a, b) => max(a, b.bugQuantity))) + 1;
+    _numberOfBugsToAdd = max(defaultBugNumber, bugRandom.nextInt(maxBugsAdded));
   }
 
   @override
@@ -142,10 +142,10 @@ class TaskPool extends AspectContainer with ChildAspect {
     if (_ticksToBugRoll == 0 && bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      for (int i = 0; i < _numberOfBugsAdded; i++) {
+      for (int i = 0; i < _numberOfBugsToAdd; i++) {
         addBug(Bug.random(get<World>().characterPool.availableSkills));
       }
-      _numberOfBugsAdded = defaultBugNumber;
+      _numberOfBugsToAdd = defaultBugNumber;
     }
   }
 
