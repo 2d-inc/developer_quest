@@ -2,6 +2,7 @@ import 'package:dev_rpg/src/shared_state/game/company.dart';
 import 'package:dev_rpg/src/shared_state/game/skill.dart';
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
 import 'package:dev_rpg/src/shared_state/game/src/child_aspect.dart';
+import 'package:dev_rpg/src/shared_state/game/task_pool.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 
 /// A single task for the player and her team to complete.
@@ -25,10 +26,27 @@ class Character extends Aspect with ChildAspect {
   final int customHiringCost;
   final int costMultiplier;
 
+  /// This value will get summed with [TaskPool.featureBugChance]
+  /// after completing work to compute the total bug chance.
+  /// This value can be negative, meaning this character is so
+  /// attentive that they will actually reduce the overall bug
+  /// chance.
+  final double bugChanceOffset;
+
+  /// If this character produces bugs, the number of bugs that they often
+  /// tend to produce at once.
+  final int bugQuantity;
+
   bool _isBusy = false;
 
-  Character(this.id, this.prowess,
-      {this.customHiringCost, this.costMultiplier = 1});
+  Character(
+    this.id,
+    this.prowess, {
+    this.customHiringCost,
+    this.costMultiplier = 1,
+    this.bugChanceOffset = 0,
+    this.bugQuantity = TaskPool.defaultBugNumber,
+  });
 
   bool get isBusy => _isBusy;
 
