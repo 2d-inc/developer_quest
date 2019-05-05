@@ -5,7 +5,6 @@ import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -78,8 +77,8 @@ class CharacterListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Stack(
-        children: const [
-          CharacterBox(),
+        children: [
+          const CharacterBox(),
           CharacterDisplay(),
         ],
       ),
@@ -88,7 +87,6 @@ class CharacterListItem extends StatelessWidget {
 }
 
 class CharacterDisplay extends StatelessWidget {
-  const CharacterDisplay();
   @override
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
