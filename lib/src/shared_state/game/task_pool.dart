@@ -70,12 +70,15 @@ class TaskPool extends AspectContainer with ChildAspect {
   double _bugChance = 0;
   static Random bugRandom = Random();
   int _ticksToBugRoll = 0;
+  int _numberOfBugsToAdd = 1;
   static const int bugRollTicks = 5;
 
   // Bug chance after adding a feature.
   static const double featureBugChance = 0.1;
   // Bug chance after a bug hits.
   static const double ambientBugChance = 0.0001;
+  // Default number of bugs to add.
+  static const int defaultBugNumber = 1;
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
@@ -87,9 +90,10 @@ class TaskPool extends AspectContainer with ChildAspect {
           (completedTasks.followedBy(archivedTasks)).map((t) => t.blueprint)) &&
       blueprint.mutuallyExclusive.every(_hasNotStartedTask));
 
-  void startTask(TaskBlueprint projectBlueprint) {
+  Task startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
     addWorkItem(task);
+    return task;
   }
 
   void addWorkItem(WorkItem item) {
@@ -117,9 +121,14 @@ class TaskPool extends AspectContainer with ChildAspect {
     completedTasks.add(task);
     markDirty();
 
-    // For now we simply slightly increase the chance of a bug as a task
-    // completes, consider using the time taken as a factor
-    _bugChance += featureBugChance;
+    // Sum bug chances from assigned characters and built-in bug chance.
+    double totalBugChance = task.assignedTeam
+        .fold(featureBugChance, (a, b) => a + b.bugChanceOffset);
+    _bugChance += totalBugChance;
+    int maxBugsAdded = task.assignedTeam
+        .fold(defaultBugNumber, (a, b) => max(a, b.bugQuantity));
+    _numberOfBugsToAdd =
+        max(defaultBugNumber, bugRandom.nextInt(maxBugsAdded) + 1);
   }
 
   @override
@@ -134,7 +143,10 @@ class TaskPool extends AspectContainer with ChildAspect {
     if (_ticksToBugRoll == 0 && bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      addBug(Bug.random(get<World>().characterPool.availableSkills));
+      for (int i = 0; i < _numberOfBugsToAdd; i++) {
+        addBug(Bug.random(get<World>().characterPool.availableSkills));
+      }
+      _numberOfBugsToAdd = defaultBugNumber;
     }
   }
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SphinxButton extends StatelessWidget {
+class RpgButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
 
-  const SphinxButton({
+  const RpgButton({
     @required this.onPressed,
     @required this.child,
     Key key,
@@ -25,7 +25,7 @@ class SphinxButton extends StatelessWidget {
           child: DefaultTextStyle(
             child: child,
             style: const TextStyle(
-                fontFamily: 'MontserratMedium',
+                fontFamily: 'MontserratRegular',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(85, 34, 34, 1)),
