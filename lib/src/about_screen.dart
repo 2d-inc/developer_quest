@@ -64,7 +64,7 @@ class _AboutScreenState extends State<AboutScreen> {
                         ),
                         const SizedBox(height: 27),
                         Text(
-                          'V 1.0',
+                          'V 1.0 (114)',
                           style: buttonTextStyle.apply(
                               fontSizeDelta: -4,
                               color: Colors.white.withOpacity(0.5)),
