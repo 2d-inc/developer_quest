@@ -21,6 +21,9 @@ void main() {
   // to be re-displayed.
   FlareCache.doesPrune = false;
 
+  // Hide window chrome.
+  SystemChrome.setEnabledSystemUIOverlays([]);
+
   runApp(MyApp());
 }
 
