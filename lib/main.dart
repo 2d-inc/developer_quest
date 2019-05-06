@@ -24,23 +24,6 @@ void main() {
   // to be re-displayed.
   FlareCache.doesPrune = false;
 
-  // // Hide window chrome.
-  // var window = ui.window;
-  // var width = window.physicalSize.width / window.devicePixelRatio;
-  // print("WIDTH $width");
-  // if (width < blockLandscapeThreshold && width != 0) {
-  //   // Disallow rotating to landscape.
-  //   SystemChrome.setPreferredOrientations([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //   ]);
-  // } else if ((width == 0 || width >= ultraWideLayoutThreshold) &&
-  //     window.devicePixelRatio == 1) {
-  //   print("REMOVE?");
-  //   // Remove chrome on chromebox
-  //   SystemChrome.setEnabledSystemUIOverlays([]);
-  // }
-
   runApp(MyApp());
 }
 
@@ -54,6 +37,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(builder: (_) => User()),

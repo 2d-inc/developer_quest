@@ -8,6 +8,7 @@ import 'package:dev_rpg/src/widgets/flare/warmup_flare.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'demo_mode.dart';
@@ -87,8 +88,27 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     demo.delay();
   }
 
+  bool _initialized = false;
   @override
   Widget build(BuildContext context) {
+    // Hide window chrome.
+    var query = MediaQuery.of(context);
+    var width = query.size.width;
+    if (!_initialized && width != 0) {
+      print("W $width");
+      if (width < blockLandscapeThreshold) {
+        // Disallow rotating to landscape.
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ]);
+      } else if ((width >= ultraWideLayoutThreshold) &&
+          query.devicePixelRatio == 1) {
+        print("REMOVE?");
+        // Remove chrome on chromebox
+        SystemChrome.setEnabledSystemUIOverlays([]);
+      }
+    }
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
