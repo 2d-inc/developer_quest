@@ -26,13 +26,13 @@ void main() {
   // Hide window chrome.
   var window = ui.window;
   var width = window.physicalSize.width / window.devicePixelRatio;
-  if (width < blockLandscapeThreshold) {
+  if (width < blockLandscapeThreshold && width != 0) {
     // Disallow rotating to landscape.
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-  } else if (width >= ultraWideLayoutThreshold &&
+  } else if ((width == 0 || width >= ultraWideLayoutThreshold) &&
       window.devicePixelRatio == 1) {
     // Remove chrome on chromebox
     SystemChrome.setEnabledSystemUIOverlays([]);
