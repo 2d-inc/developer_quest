@@ -1,13 +1,9 @@
 import 'dart:async';
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:dev_rpg/src/about_screen.dart';
 import 'package:dev_rpg/src/code_chomper/code_chomper.dart';
 import 'package:dev_rpg/src/game_screen.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/shared_state/user.dart';
-import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/style_sphinx/axis_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/flex_questions.dart';
 import 'package:dev_rpg/src/style_sphinx/kittens.dart';

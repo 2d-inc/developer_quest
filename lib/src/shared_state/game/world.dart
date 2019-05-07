@@ -46,12 +46,13 @@ class World extends AspectContainer {
       _resetJoy();
     }
 
-    _timer.cancel();
+    _timer?.cancel();
     _isRunning = false;
     markDirty();
   }
 
   void start() {
+    _timer?.cancel();
     _timer = Timer.periodic(tickDuration, _performTick);
     _isRunning = true;
     markDirty();
@@ -87,6 +88,7 @@ class World extends AspectContainer {
 
   void reset() {
     _joyResetTimer?.cancel();
+	_timer?.cancel();
     _joyAccumulation = 0;
     company.reset();
     characterPool.reset();
