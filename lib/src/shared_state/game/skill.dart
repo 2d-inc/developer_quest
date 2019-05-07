@@ -9,7 +9,7 @@ Map<Skill, double> randomDifficulty(
   Map<Skill, double> difficulty = {};
 
   List<Skill> availableSkillList = availableSkills.toList();
-  
+
   // Add one or two skills.
   do {
     var skill =

@@ -1,37 +1,43 @@
 part of task_tree;
 
 const _responsiveDesign = TaskBlueprint(
-  "Responsive Design",
+  'Responsive Design',
   {Skill.ux: 100, Skill.coordination: 50, Skill.engineering: 50},
   requirements: AllOf([_basicDesign]),
+  coinReward: 150,
 );
 
 const _tabletUI = TaskBlueprint(
-  "Tablet UI",
+  'Tablet UI',
   {Skill.ux: 100, Skill.coding: 50},
   requirements: AllOf([_basicDesign]),
+  coinReward: 150,
 );
 
 const _desktopUI = TaskBlueprint(
-  "Desktop UI",
+  'Desktop UI',
   {Skill.ux: 100, Skill.coding: 50},
   requirements: AllOf([_basicDesign]),
+  coinReward: 250,
 );
 
 const _iOSDesign = TaskBlueprint(
-  "Custom iOS Design",
+  'Custom iOS Design',
   {Skill.ux: 100, Skill.coding: 50},
   requirements: AllOf([_basicDesign]),
+  coinReward: 150,
 );
 
 const _webVersion = TaskBlueprint(
-  "Web Version",
+  'Web Version',
   {Skill.coding: 100, Skill.ux: 50},
   requirements: AllOf([_desktopUI]),
+  coinReward: 350,
 );
 
 const _desktopVersion = TaskBlueprint(
-  "Desktop Version",
+  'Desktop Version',
   {Skill.coding: 100, Skill.ux: 50},
   requirements: AllOf([_desktopUI]),
+  coinReward: 350,
 );

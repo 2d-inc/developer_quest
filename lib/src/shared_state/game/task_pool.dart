@@ -9,6 +9,18 @@ import 'package:dev_rpg/src/shared_state/game/task_tree/task_tree.dart';
 import 'package:dev_rpg/src/shared_state/game/work_item.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 
+/// A grouping of tasks necessary to complete to achieve a goal,
+/// named by [label]. The tasks can have sub-tasks and are stored
+/// recursively in [TaskNode].
+class Milestone {
+  final String label;
+  final List<TaskNode> tasks = [];
+
+  Milestone(this.label, List<TaskNode> taskNodes) {
+    tasks.addAll(taskNodes);
+  }
+}
+
 /// A list of [Task]s. It represents the problems that need to be solved
 /// before the game (mission) is successfully finished.
 ///
@@ -26,27 +38,47 @@ class TaskPool extends AspectContainer with ChildAspect {
   // The tasks that are archived (user got their rewad).
   final List<Task> archivedTasks = [];
 
-  // The bugs that are in the active work items.
-  // Consider storing these in their own list if performance becomes an issue.
-  Iterable<Bug> get bugs => workItems.whereType<Bug>();
+  /// The bugs that should be presented to the player so they can tackle
+  /// them next.
+  final List<Bug> availableBugs = [];
 
   // The tasks from the active work items.
   Iterable<Task> get tasks => workItems.whereType<Task>();
 
-  TaskPool();
+  final Milestone alpha;
+  final Milestone beta;
+  final Milestone v1;
+  TaskPool()
+      : alpha = Milestone('Alpha', [prototypeTaskNode]),
+        beta = Milestone('Beta', alphaTaskNode.children),
+        v1 = Milestone('Version 1.0', betaTaskNode.children) {
+    // Patch up milestones by adding root task to previous list.
+    // N.B. in Guido's designs this is the 'LAUNCH' task which
+    // triggers a minigame.
+    alphaTaskNode.children.clear();
+    alpha.tasks.add(alphaTaskNode);
+
+    betaTaskNode.children.clear();
+    beta.tasks.add(betaTaskNode);
+
+    v1.tasks.add(launchTaskNode);
+  }
 
   // The chance that a bug will show up on the next update. Mutate this as you
   // wish when tasks are completed. Consider increasing this more if the player
   // completes an issue faster (by tapping on it).
-  double _bugChance = 0.0;
-  static final Random _bugRandom = Random();
+  double _bugChance = 0;
+  static Random bugRandom = Random();
   int _ticksToBugRoll = 0;
+  int _numberOfBugsToAdd = 1;
   static const int bugRollTicks = 5;
 
   // Bug chance after adding a feature.
   static const double featureBugChance = 0.1;
   // Bug chance after a bug hits.
   static const double ambientBugChance = 0.0001;
+  // Default number of bugs to add.
+  static const int defaultBugNumber = 1;
 
   /// The tasks that should be presented to the player so they can tackle
   /// them next.
@@ -58,18 +90,28 @@ class TaskPool extends AspectContainer with ChildAspect {
           (completedTasks.followedBy(archivedTasks)).map((t) => t.blueprint)) &&
       blueprint.mutuallyExclusive.every(_hasNotStartedTask));
 
-  void startTask(TaskBlueprint projectBlueprint) {
+  Task startTask(TaskBlueprint projectBlueprint) {
     Task task = Task(projectBlueprint);
     addWorkItem(task);
+    return task;
   }
 
   void addWorkItem(WorkItem item) {
+    if (item is Bug) {
+      // Take the bug out of the available list as it's now being actively
+      // worked on.
+      assert(availableBugs.contains(item));
+      availableBugs.remove(item);
+    }
+
     addAspect(item);
     workItems.add(item);
-    if (item is Bug) {
-      // Dark days ahead...
-      get<World>().company.joy.number -= item.priority.drainOfJoy;
-    }
+    markDirty();
+  }
+
+  void addBug(Bug bug) {
+    get<World>().company.joy.number -= bug.priority.drainOfJoy;
+    availableBugs.add(bug);
     markDirty();
   }
 
@@ -79,9 +121,14 @@ class TaskPool extends AspectContainer with ChildAspect {
     completedTasks.add(task);
     markDirty();
 
-    // For now we simply slightly increase the chance of a bug as a task
-    // completes, consider using the time taken as a factor
-    _bugChance += featureBugChance;
+    // Sum bug chances from assigned characters and built-in bug chance.
+    double totalBugChance = task.assignedTeam
+        .fold(featureBugChance, (a, b) => a + b.bugChanceOffset);
+    _bugChance += totalBugChance;
+    int maxBugsAdded = task.assignedTeam
+        .fold(defaultBugNumber, (a, b) => max(a, b.bugQuantity));
+    _numberOfBugsToAdd =
+        max(defaultBugNumber, bugRandom.nextInt(maxBugsAdded) + 1);
   }
 
   @override
@@ -93,10 +140,13 @@ class TaskPool extends AspectContainer with ChildAspect {
     _ticksToBugRoll = (_ticksToBugRoll - 1 + bugRollTicks) % bugRollTicks;
 
     // No ticks left, roll the die.
-    if (_ticksToBugRoll == 0 && _bugRandom.nextDouble() < _bugChance) {
+    if (_ticksToBugRoll == 0 && bugRandom.nextDouble() < _bugChance) {
       // Winner! Well...
       _bugChance = ambientBugChance;
-      addWorkItem(Bug.random(get<World>().npcPool.availableSkills));
+      for (int i = 0; i < _numberOfBugsToAdd; i++) {
+        addBug(Bug.random(get<World>().characterPool.availableSkills));
+      }
+      _numberOfBugsToAdd = defaultBugNumber;
     }
   }
 
@@ -127,5 +177,14 @@ class TaskPool extends AspectContainer with ChildAspect {
       if (task.name == name) return false;
     }
     return true;
+  }
+
+  void reset() {
+    _ticksToBugRoll = 0;
+    _bugChance = 0;
+    workItems.clear();
+    completedTasks.clear();
+    archivedTasks.clear();
+    availableBugs.clear();
   }
 }

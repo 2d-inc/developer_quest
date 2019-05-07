@@ -7,16 +7,24 @@ import 'package:intl/intl.dart';
 /// The company the user is playing on behalf of.
 /// The company owns resources like experience and coin.
 class Company extends Aspect {
+  static const int _initialCoin = 540;
   final StatValue<double> joy = StatValue<double>(0);
 
-  final StatValue<double> _users = StatValue<double>(0);
+  final StatValue<double> users = StatValue<double>(0);
 
-  final StatValue<int> coin = StatValue<int>(100);
+  final StatValue<int> coin = StatValue<int>(_initialCoin);
 
-  ValueListenable<String> get users => _users;
+  double maxUsers = 0;
+
+  /// Star rating out of 5. Based on users lost, which is a consequence of
+  /// bugs not resolved in a timely manner.
+  /// Since it's inevitable to lose some, we consider losing 5%
+  /// exceptional.
+  int get starRating =>
+      ((users.number / maxUsers / 0.95).clamp(0, 1) * 4).round();
 
   void award(int newUsers, int coinReward) {
-    _users.number += newUsers;
+    users.number += newUsers;
     coin.number += coinReward;
   }
 
@@ -35,10 +43,18 @@ class Company extends Aspect {
 
     // Generous denorm.
     if (joy.number.abs() < 0.01) {
-      joy.number = 0.0;
+      joy.number = 0;
     }
 
-    _users.number = max(0.0, _users.number + joy.number);
+    users.number = max(0, users.number + joy.number);
+    maxUsers = max(maxUsers, users.number);
+  }
+
+  void reset() {
+    joy.number = 0;
+    users.number = 0;
+    maxUsers = 0;
+    coin.number = _initialCoin;
   }
 }
 
