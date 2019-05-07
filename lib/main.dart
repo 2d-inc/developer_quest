@@ -23,16 +23,6 @@ void main() {
   // to be re-displayed.
   FlareCache.doesPrune = false;
 
-  var window = ui.window;
-  var width = window.physicalSize.width / window.devicePixelRatio;
-  if (width < blockLandscapeThreshold) {
-    // Disallow rotating to landscape.
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  }
-
   runApp(MyApp());
 }
 

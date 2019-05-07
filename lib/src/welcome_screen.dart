@@ -8,6 +8,7 @@ import 'package:dev_rpg/src/widgets/flare/warmup_flare.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -64,8 +65,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _startTimer();
   }
 
+  bool _initialized = false;
   @override
   Widget build(BuildContext context) {
+    // Hide window chrome.
+    var query = MediaQuery.of(context);
+    var width = query.size.width;
+    if (!_initialized && width != 0 && width < blockLandscapeThreshold) {
+      // Disallow rotating to landscape.
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
