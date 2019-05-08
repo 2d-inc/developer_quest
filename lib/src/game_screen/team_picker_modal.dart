@@ -93,7 +93,7 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                                 ? const Center(
                                     child: Text(
                                       'Hire some teammates to complete '
-                                          'this task!',
+                                      'this task!',
                                       style: contentLargeStyle,
                                       textAlign: TextAlign.center,
                                     ),

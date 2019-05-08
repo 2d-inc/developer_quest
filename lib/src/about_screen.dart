@@ -67,14 +67,14 @@ class AboutScreen extends StatelessWidget {
                         const SizedBox(height: 23),
                         const Text(
                           'Flutter Developer Quest is built '
-                              'with Flutter by 2Dimensions.',
+                          'with Flutter by 2Dimensions.',
                           style: TextStyle(
                               fontFamily: 'RobotoRegular', fontSize: 20),
                         ),
                         const SizedBox(height: 23),
                         const Text(
                           'The graphics and animations were '
-                              'created using Flare.',
+                          'created using Flare.',
                           style: TextStyle(
                               fontFamily: 'RobotoRegular', fontSize: 20),
                         ),
