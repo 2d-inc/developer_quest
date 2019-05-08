@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui' as ui;
-
+import 'package:flutter/foundation.dart'
+    show debugDefaultTargetPlatformOverride;
 import 'package:dev_rpg/src/about_screen.dart';
 import 'package:dev_rpg/src/code_chomper/code_chomper.dart';
 import 'package:dev_rpg/src/game_screen.dart';
@@ -22,8 +24,23 @@ void main() {
   // Don't prune the Flare cache, keep loaded Flare files warm and ready
   // to be re-displayed.
   FlareCache.doesPrune = false;
-
+  _setTargetPlatformForDesktop();
   runApp(MyApp());
+}
+
+/// If the current platform is desktop, override the default platform to
+/// a supported platform (iOS for macOS, Android for Linux and Windows).
+/// Otherwise, do nothing.
+void _setTargetPlatformForDesktop() {
+  TargetPlatform targetPlatform;
+  if (Platform.isMacOS) {
+    targetPlatform = TargetPlatform.iOS;
+  } else if (Platform.isLinux || Platform.isWindows) {
+    targetPlatform = TargetPlatform.android;
+  }
+  if (targetPlatform != null) {
+    debugDefaultTargetPlatformOverride = targetPlatform;
+  }
 }
 
 class MyApp extends StatefulWidget {
