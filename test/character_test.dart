@@ -25,7 +25,7 @@ void main() {
   });
 
   test('level goes up when upgraded', () {
-    var world = World()..company.coin.number = 1000;
+    var world = World()..company.coin.number = 10000;
     // Find the first available character that we can hire.
     var character = world.characterPool.children
         .firstWhere((ch) => !ch.isHired && ch.canUpgradeOrHire);
@@ -36,7 +36,7 @@ void main() {
   });
 
   test('skill goes up when upgraded', () {
-    var world = World()..company.coin.number = 1000;
+    var world = World()..company.coin.number = 10000;
     // Find the first available character that we can hire.
     var character = world.characterPool.children
         .firstWhere((ch) => !ch.isHired && ch.canUpgradeOrHire);
