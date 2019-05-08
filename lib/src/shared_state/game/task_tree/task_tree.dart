@@ -116,6 +116,8 @@ class TaskNode implements TreeData {
       // We have to do this because some items (like _advancedMotionDesign)
       // are only satisfied when multiple non-direct descendent items in the
       // tree are satisfied.
+      //
+      // ignore: literal_only_boolean_expressions
       while (true) {
         var patched = false;
 
