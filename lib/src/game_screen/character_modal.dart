@@ -7,11 +7,11 @@ import 'package:dev_rpg/src/widgets/flare/skill_icon.dart';
 import 'package:dev_rpg/src/widgets/keyboard.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:dev_rpg/src/widgets/skill_badge.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:flare_flutter/flare_controls.dart';
 
 /// Displays the stats of an [Character] and offers the option to upgrade them.
 class CharacterModal extends StatelessWidget {
@@ -90,12 +90,14 @@ class CharacterImage extends StatelessWidget {
               child: ButtonTheme(
                 minWidth: 0,
                 child: FlatButton(
+                  key: const ValueKey('close-character-modal'),
                   padding: const EdgeInsets.all(0),
                   shape: null,
                   onPressed: () => Navigator.pop(context, null),
                   child: const Icon(
                     Icons.cancel,
                     color: Color.fromRGBO(250, 250, 255, .5),
+                    semanticLabel: "Close",
                   ),
                 ),
               ),

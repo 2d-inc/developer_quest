@@ -99,6 +99,7 @@ class CharacterDisplay extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
+        key: ValueKey('hire-${character.id}'),
         customBorder: _inkWellBorder,
         onTap: () => _showModal(context),
         child: Column(
