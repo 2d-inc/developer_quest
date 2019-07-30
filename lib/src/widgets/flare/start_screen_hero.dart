@@ -149,24 +149,22 @@ class StartScreenHeroRenderObject extends FlareRenderBox {
   }
 
   @override
-  void load() {
-    super.load();
-    loadFlare(_filename).then((FlutterActor actor) {
-      if (actor == null) {
-        return;
-      }
-      bool sameActor = actor == _lastLoadedActor;
-      _lastLoadedActor = actor;
-      if (_character != null && !sameActor) {
-        _crossFade = double.minPositive;
-        _nextCharacter = actor.artboard.makeInstance() as FlutterActorArtboard;
-        return;
-      }
-      _character = actor.artboard.makeInstance() as FlutterActorArtboard;
-      _idle = _character.getAnimation('idle');
-      _character.initializeGraphics();
-      advance(0);
-      markNeedsPaint();
-    });
+  Future<void> load() async {
+    FlutterActor actor = await loadFlare(_filename);
+    if (actor == null) {
+      return;
+    }
+    bool sameActor = actor == _lastLoadedActor;
+    _lastLoadedActor = actor;
+    if (_character != null && !sameActor) {
+      _crossFade = double.minPositive;
+      _nextCharacter = actor.artboard.makeInstance() as FlutterActorArtboard;
+      return;
+    }
+    _character = actor.artboard.makeInstance() as FlutterActorArtboard;
+    _idle = _character.getAnimation('idle');
+    _character.initializeGraphics();
+    advance(0);
+    markNeedsPaint();
   }
 }

@@ -219,24 +219,22 @@ class HiringBustRenderObject extends FlareRenderBox {
   /// The FlareRenderBox leaves the responsibility of loading content
   /// to the implementation, so we need to load our content here.
   @override
-  void load() {
-    super.load();
-    loadFlare(_filename).then((FlutterActor actor) {
-      if (actor == null) {
-        return;
-      }
-      _actor = DesaturatedActor();
-      _actor.copyFlutterActor(actor);
-      _artboard = _actor.artboard as FlutterActorArtboard;
-      // apply the bust animation state.
-      _bust = _artboard.getAnimation('bust');
-      _bust?.apply(0, _artboard, 1);
+  Future<void> load() async {
+    FlutterActor actor = await loadFlare(_filename);
+    if (actor == null) {
+      return;
+    }
+    _actor = DesaturatedActor();
+    _actor.copyFlutterActor(actor);
+    _artboard = _actor.artboard as FlutterActorArtboard;
+    // apply the bust animation state.
+    _bust = _artboard.getAnimation('bust');
+    _bust?.apply(0, _artboard, 1);
 
-      _artboard.initializeGraphics();
-      _updateState();
+    _artboard.initializeGraphics();
+    _updateState();
 
-      advance(0);
-      markNeedsPaint();
-    });
+    advance(0);
+    markNeedsPaint();
   }
 }
