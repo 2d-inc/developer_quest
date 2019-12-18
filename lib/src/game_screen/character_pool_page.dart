@@ -24,7 +24,7 @@ class CharacterPoolPage extends StatelessWidget {
           gridDelegate: _gridStructure,
           itemBuilder: (context, index) =>
               ChangeNotifierProvider<Character>.value(
-                notifier: characterPool.children[index],
+                value: characterPool.children[index],
                 key: ValueKey(characterPool.children[index]),
                 child: CharacterListItem(),
               ),
@@ -132,7 +132,7 @@ class CharacterDisplay extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return ChangeNotifierProvider<Character>.value(
-            notifier: character,
+            value: character,
             child: CharacterModal(),
           );
         });
