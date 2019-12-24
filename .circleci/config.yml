@@ -41,6 +41,8 @@ jobs:
           name: Build App
           command: |
             ./flutter/bin/flutter build apk
+      - store_artifacts:
+          path: ./build/app/outputs/apk/release/
 
 workflows:
   version: 2
