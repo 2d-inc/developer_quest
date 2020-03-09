@@ -1,18 +1,30 @@
 import 'dart:math';
 
 import 'package:dev_rpg/src/shared_state/game/src/aspect.dart';
+import 'package:dev_rpg/src/shared_state/game/src/aspect_container.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 /// The company the user is playing on behalf of.
-/// The company owns resources like experience and coin.
-class Company extends Aspect {
+///
+/// The company owns [coin], and generates [joy] for its [users].
+class Company extends AspectContainer {
   static const int _initialCoin = 540;
-  final StatValue<double> joy = StatValue<double>(0);
 
-  final StatValue<double> users = StatValue<double>(0);
+  final StatValue<double> users;
 
-  final StatValue<int> coin = StatValue<int>(_initialCoin);
+  final StatValue<double> joy;
+
+  final StatValue<int> coin;
+
+  Company()
+      : users = StatValue<double>(0),
+        joy = StatValue<double>(0),
+        coin = StatValue<int>(_initialCoin) {
+    addAspect(users);
+    addAspect(joy);
+    addAspect(coin);
+  }
 
   double maxUsers = 0;
 
@@ -59,12 +71,13 @@ class Company extends Aspect {
 }
 
 /// A value that is shown to the user. It is backed by a [number], and for
-/// the purposes of UI repainting it is represented by a [String] (via [value]).
-class StatValue<V extends num> extends ChangeNotifier
+/// the purposes of UI repainting it is represented by a [String]
+/// (via [string]).
+class StatValue<V extends num> extends Aspect
     implements ValueListenable<String> {
   /// The default formatter of stats. It uses `package:intl`'s
   /// [NumberFormat.compact].
-  static final Formatter defaultFormatter = NumberFormat.compact().format;
+  static final Formatter<num> defaultFormatter = NumberFormat.compact().format;
 
   /// The current value.
   V _number;
@@ -75,7 +88,7 @@ class StatValue<V extends num> extends ChangeNotifier
   /// already showing the most recent value.
   String _shownValue;
 
-  /// The formatter to be used to convert [number] into a String [value].
+  /// The formatter to be used to convert [number] into a String [string].
   final String Function(V) formatter;
 
   StatValue(this._number, {Formatter statFormatter})
@@ -108,11 +121,9 @@ class StatValue<V extends num> extends ChangeNotifier
     notifyListeners();
   }
 
-  /// This is the [value] from [ValueListenable]'s contract. The UI will
-  /// typically only care about this field.
   @override
   String get value => _shownValue;
 }
 
 /// A function that takes a number and returns its string representation.
-typedef Formatter = String Function(num);
+typedef Formatter<T extends num> = String Function(T);

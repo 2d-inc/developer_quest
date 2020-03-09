@@ -11,8 +11,29 @@ const Color disabledTaskColor = Color.fromRGBO(38, 38, 47, 0.25);
 const Color treeLineColor = Color.fromRGBO(215, 215, 215, 1);
 const Color bugColor = Color.fromRGBO(236, 41, 117, 1);
 const Color statsSeparatorColor = Color.fromRGBO(57, 57, 71, 1);
+
+/// Maximum logical pixel width for a modal window.
 const double modalMaxWidth = 400;
-const double wideLayoutThreshold = 500;
+
+/// Once the logic screen pixel width exceeds this number, show the ultrawide
+/// layout.
+const double ultraWideLayoutThreshold = 1920;
+
+/// Once the logic screen pixel width exceeds this number, show the wide layout.
+const double wideLayoutThreshold = 800;
+
+/// Devices with a logical screen pixel width less than this value
+/// will not be permitted to rotate into landscape mode.
+const double blockLandscapeThreshold = 750;
+
+/// Ideal width of a character cell in the character hiring grid. This is used
+/// to compute the number of columns to display when viewing the character grid.
+const double idealCharacterWidth = 165;
+
+/// Ideal diameter of a particle in the hiring effect. The actual drawn particle
+/// size is computed based on a ratio of this diameter to the ideal character
+/// multiplied by the actual character width displayed.
+const double idealParticleSize = 10;
 
 const TextStyle contentSmallStyle = TextStyle(
   fontFamily: 'MontserratRegular',

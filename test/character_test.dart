@@ -20,24 +20,30 @@ void main() {
     var world = World();
     var unhired = world.characterPool.children.firstWhere((ch) => !ch.isHired);
     var previous = unhired.level;
-    expect(unhired.upgrade(), false);
+    expect(() => unhired.upgrade(), throwsA(isA<AssertionError>()));
     expect(unhired.level, previous);
   });
 
   test('level goes up when upgraded', () {
-    var world = World()..company.coin.number = 1000;
-    var hired = world.characterPool.children.firstWhere((ch) => ch.isHired);
-    var previous = hired.level;
-    expect(hired.upgrade(), true);
-    expect(hired.level, greaterThan(previous));
+    var world = World()..company.coin.number = 10000;
+    // Find the first available character that we can hire.
+    var character = world.characterPool.children
+        .firstWhere((ch) => !ch.isHired && ch.canUpgradeOrHire);
+    character.hire();
+    var previous = character.level;
+    expect(character.upgrade(), true);
+    expect(character.level, greaterThan(previous));
   });
 
   test('skill goes up when upgraded', () {
-    var world = World()..company.coin.number = 1000;
-    var hired = world.characterPool.children.firstWhere((ch) => ch.isHired);
-    var previous = hired.prowess.values.fold<int>(0, (a, b) => a + b);
-    expect(hired.upgrade(), true);
-    expect(hired.prowess.values.fold<int>(0, (a, b) => a + b),
+    var world = World()..company.coin.number = 10000;
+    // Find the first available character that we can hire.
+    var character = world.characterPool.children
+        .firstWhere((ch) => !ch.isHired && ch.canUpgradeOrHire);
+    character.hire();
+    var previous = character.prowess.values.fold<int>(0, (a, b) => a + b);
+    expect(character.upgrade(), true);
+    expect(character.prowess.values.fold<int>(0, (a, b) => a + b),
         greaterThan(previous));
   });
 }

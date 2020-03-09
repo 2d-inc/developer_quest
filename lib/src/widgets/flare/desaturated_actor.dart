@@ -13,7 +13,7 @@ class DesaturatedActor extends FlutterActor {
       return;
     }
     _desaturate = value;
-    artboard.addDirt(artboard.root, DirtyFlags.PaintDirty, true);
+    artboard.addDirt(artboard.root, DirtyFlags.paintDirty, true);
   }
 
   @override

@@ -52,7 +52,7 @@ class GameScreenSlimState extends State<GameScreenSlim> {
         automaticallyImplyLeading: false,
         titleSpacing: 0,
         title: Consumer<Company>(
-          builder: (context, company) {
+          builder: (context, company, child) {
             // Using RepaintBoundary here because this part of the UI
             // changes frequently.
             return RepaintBoundary(
@@ -82,7 +82,7 @@ class GameScreenSlimState extends State<GameScreenSlim> {
       bottomNavigationBar: Row(
         children: [
           Consumer<CharacterPool>(
-            builder: (context, characterPool) => _BottomNavigationButton(
+            builder: (context, characterPool, child) => _BottomNavigationButton(
                   'assets/flare/TeamIcon.flr',
                   label: 'Team',
                   tap: () => _showPageIndex(0),
@@ -104,7 +104,7 @@ class GameScreenSlimState extends State<GameScreenSlim> {
       ),
       body: PageView(
         controller: _controller,
-        children: [CharacterPoolPage(), const TaskPoolPage()],
+        children: const [CharacterPoolPage(), TaskPoolPage()],
       ),
     );
   }

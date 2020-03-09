@@ -13,23 +13,18 @@ environment:
   # For Google I/O we are being very specific about pinning to specific branch revision.
   # This is flutter commit hash b593f5167bce84fb3cad5c258477bf3abc1b14eb, tagged
   # as Flutter version 1.5.4.
-  #sdk: ">=2.3.0-dev.0.1 <3.0.0"
-  sdk: "2.3.0-dev.0.1.flutter-cf4444b803"
+  sdk: ">=2.3.0-dev.0.1 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   intl: any
-  provider: ^2.0.0-dev
+  provider: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  flare_flutter:
-    git: 
-      url: git://github.com/2d-inc/Flare-Flutter.git
-      ref: 4aebb0ff5b98c7bcf2183c6bac8226cc7ddf5402
-      path: flare_flutter
+  flare_flutter: ^1.8.3
   auto_size_text: ^1.1.2
 
 dev_dependencies:
@@ -61,7 +56,8 @@ flutter:
     - assets/images/2.0x/
     - assets/images/3.0x/
     - assets/flare/
-    - assets/docs/code_chomper_example_code.dart
+    - assets/docs/code_chomper_alpha.dart
+    - assets/docs/code_chomper_beta.dart
 
   fonts:
       - family: SpaceMonoRegular

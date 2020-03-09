@@ -8,7 +8,7 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return RpgLayoutBuilder(
       builder: (context, layout) =>
-          layout == RpgLayout.wide ? GameScreenWide() : GameScreenSlim(),
+          layout == RpgLayout.slim ? GameScreenSlim() : GameScreenWide(),
     );
   }
 }

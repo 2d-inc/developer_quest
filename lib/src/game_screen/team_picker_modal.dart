@@ -51,9 +51,9 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                   // If we're showing the wide layout, make sure this modal
                   // isn't too tall by using a factor of the same width
                   // constraint as a constraint for the height.
-                  maxHeight: layout == RpgLayout.wide
-                      ? modalMaxWidth * 1.1
-                      : double.infinity),
+                  maxHeight: layout == RpgLayout.slim
+                      ? double.infinity
+                      : modalMaxWidth * 1.1),
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
@@ -87,11 +87,11 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                       ),
                       Expanded(
                         child: Consumer<CharacterPool>(
-                          builder: (context, characterPool) {
+                          builder: (context, characterPool, child) {
                             var characters = characterPool.fullTeam;
                             return characters.isEmpty
-                                ? Center(
-                                    child: const Text(
+                                ? const Center(
+                                    child: Text(
                                       'Hire some teammates to complete '
                                       'this task!',
                                       style: contentLargeStyle,
@@ -111,7 +111,8 @@ class TeamPickerModalState extends State<TeamPickerModal> {
                                         toggleSelection:
                                             _toggleCharacterSelected,
                                         // Show the character as not selectable
-                                        // if they are currently assigned to another task
+                                        // if they are currently assigned to
+                                        // another task
                                         isDisabled: character.isBusy &&
                                             !(widget.workItem.assignedTeam
                                                     ?.contains(character) ??

@@ -1,15 +1,18 @@
 import 'package:dev_rpg/src/game_screen/character_modal.dart';
 import 'package:dev_rpg/src/game_screen/character_style.dart';
+import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/character.dart';
 import 'package:dev_rpg/src/shared_state/game/character_pool.dart';
 import 'package:dev_rpg/src/style.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_bust.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Displays a list of [Character]s that are available to the player.
 class CharacterPoolPage extends StatelessWidget {
+  final int numColumns;
+  const CharacterPoolPage({this.numColumns = 2});
+
   @override
   Widget build(BuildContext context) {
     var characterPool = Provider.of<CharacterPool>(context);
@@ -32,8 +35,8 @@ class CharacterPoolPage extends StatelessWidget {
   }
 
   SliverGridDelegate get _gridStructure =>
-      const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+      SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: numColumns,
           mainAxisSpacing: 0,
           crossAxisSpacing: 15,
           childAspectRatio: 0.65);
@@ -68,61 +71,35 @@ class CharacterPoolPage extends StatelessWidget {
 /// Displays the current state of an individual [Character]
 /// Tapping on the [Character] opens up a modal window which
 /// offers more details about stats and options to upgrade.
-class CharacterListItem extends StatefulWidget {
-  @override
-  _CharacterListItemState createState() => _CharacterListItemState();
-}
-
-class _CharacterListItemState extends State<CharacterListItem> {
-  // True if the *mouse* is hovering over this widget.
-  bool _isOver;
-
-  @override
-  void initState() {
-    super.initState();
-    _isOver = false;
-  }
-
-  void _startPlaying(PointerEnterEvent _) => setState(() => _isOver = true);
-  void _stopPlaying(PointerExitEvent _) => setState(() => _isOver = false);
-
+class CharacterListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerEnter: _startPlaying,
-      onPointerExit: _stopPlaying,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 40),
-        child: Stack(
-          children: <Widget>[
-            const CharacterBox(),
-            CharacterDisplay(isAnimating: _isOver),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 40),
+      child: Stack(
+        children: [
+          const CharacterBox(),
+          CharacterDisplay(),
+        ],
       ),
     );
   }
 }
 
 class CharacterDisplay extends StatelessWidget {
-  const CharacterDisplay({
-    bool isAnimating,
-  }) : _isAnimating = isAnimating;
-
-  final bool _isAnimating;
-
   @override
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     var characterStyle = CharacterStyle.from(character);
     HiringBustState bustState = character.isHired
         ? HiringBustState.hired
-        : character.canUpgrade
+        : character.canUpgradeOrHire
             ? HiringBustState.available
             : HiringBustState.locked;
     return Material(
       type: MaterialType.transparency,
       child: InkWell(
+        key: ValueKey('hire-${character.id}'),
         customBorder: _inkWellBorder,
         onTap: () => _showModal(context),
         child: Column(
@@ -135,7 +112,6 @@ class CharacterDisplay extends StatelessWidget {
                 fit: BoxFit.contain,
                 alignment: Alignment.bottomCenter,
                 hiringState: bustState,
-                isPlaying: _isAnimating,
               ),
             ),
             const SizedBox(height: 20),
@@ -170,33 +146,41 @@ class HiringInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var character = Provider.of<Character>(context);
-    return Opacity(
-      opacity: character.isHired || character.canUpgrade ? 1 : 0.25,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          character.isHired
-              ? Container()
-              : Icon(
-                  bustState == HiringBustState.available
-                      ? Icons.add_circle
-                      : Icons.lock,
-                  color: !character.isHired && character.canUpgrade
-                      ? attentionColor
-                      : Colors.white),
-          const SizedBox(width: 4),
-          Text(
-            bustState == HiringBustState.hired
-                ? 'Hired'
-                : bustState == HiringBustState.available ? 'Hire!' : 'Locked',
-            style: contentStyle.apply(
-                color: bustState == HiringBustState.available
-                    ? attentionColor
-                    : Colors.white),
-          )
-        ],
-      ),
+    return RpgLayoutBuilder(
+      builder: (context, layout) {
+        double textScale = layout == RpgLayout.ultrawide ? 1.25 : 1;
+        var character = Provider.of<Character>(context);
+        return Opacity(
+          opacity: character.isHired || character.canUpgradeOrHire ? 1 : 0.25,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              character.isHired
+                  ? Container()
+                  : Icon(
+                      bustState == HiringBustState.available
+                          ? Icons.add_circle
+                          : Icons.lock,
+                      color: !character.isHired && character.canUpgradeOrHire
+                          ? attentionColor
+                          : Colors.white),
+              const SizedBox(width: 4),
+              Text(
+                bustState == HiringBustState.hired
+                    ? 'Hired'
+                    : bustState == HiringBustState.available
+                        ? 'Hire!'
+                        : 'Locked',
+                style: contentStyle.apply(
+                    fontSizeFactor: textScale,
+                    color: bustState == HiringBustState.available
+                        ? attentionColor
+                        : Colors.white),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

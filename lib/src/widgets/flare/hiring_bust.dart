@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:dev_rpg/src/widgets/flare/desaturated_actor.dart';
 import 'package:dev_rpg/src/widgets/flare/hiring_particles.dart';
+import 'package:dev_rpg/src/style.dart';
 import 'package:flare_flutter/flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flare_dart/math/mat2d.dart';
 import 'package:flare_dart/math/aabb.dart';
-
 import 'package:flare_flutter/flare_render_box.dart';
 
 /// The HiringBust displays three different visual states.
@@ -105,6 +105,7 @@ class HiringBustRenderObject extends FlareRenderBox {
     _updateState();
     if (value == HiringBustState.available) {
       _particles = HiringParticles(color: particleColor);
+      markNeedsLayout();
     } else {
       _particles = null;
     }
@@ -144,6 +145,13 @@ class HiringBustRenderObject extends FlareRenderBox {
     _artboard?.advance(elapsedSeconds);
     _particles?.advance(elapsedSeconds, Size(shadowWidth, size.height));
     return isPlaying;
+  }
+
+  @override
+  void performLayout() {
+    super.performLayout();
+    _particles?.particleSize =
+        (size.width / idealCharacterWidth) * idealParticleSize;
   }
 
   /// Provide the correct bounding box for the content we want to draw
@@ -211,24 +219,22 @@ class HiringBustRenderObject extends FlareRenderBox {
   /// The FlareRenderBox leaves the responsibility of loading content
   /// to the implementation, so we need to load our content here.
   @override
-  void load() {
-    super.load();
-    loadFlare(_filename).then((FlutterActor actor) {
-      if (actor == null) {
-        return;
-      }
-      _actor = DesaturatedActor();
-      _actor.copyFlutterActor(actor);
-      _artboard = _actor.artboard as FlutterActorArtboard;
-      // apply the bust animation state.
-      _bust = _artboard.getAnimation('bust');
-      _bust?.apply(0, _artboard, 1);
+  Future<void> load() async {
+    FlutterActor actor = await loadFlare(_filename);
+    if (actor == null) {
+      return;
+    }
+    _actor = DesaturatedActor();
+    _actor.copyFlutterActor(actor);
+    _artboard = _actor.artboard as FlutterActorArtboard;
+    // apply the bust animation state.
+    _bust = _artboard.getAnimation('bust');
+    _bust?.apply(0, _artboard, 1);
 
-      _artboard.initializeGraphics();
-      _updateState();
+    _artboard.initializeGraphics();
+    _updateState();
 
-      advance(0);
-      markNeedsPaint();
-    });
+    advance(0);
+    markNeedsPaint();
   }
 }

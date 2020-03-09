@@ -17,17 +17,27 @@ import '../game_over.dart';
 class TaskListItem extends StatelessWidget {
   bool _handleTap(Task task, BuildContext context) {
     if (task.state == TaskState.completed) {
-      task.shipFeature();
+      // N.B. we ship the feature only once a minigame has
+      // completed (if there is one).
+      // This ensures that the BuildContext is still valid after
+      // the game completes.
       switch (task.blueprint.miniGame) {
         case MiniGame.none:
+          task.shipFeature();
           break;
         case MiniGame.chomp:
           // Time to face chompy, temporarily pause the game.
           var world = Provider.of<World>(context);
           world.pause();
           Navigator.of(context)
-              .pushNamed(CodeChomper.miniGameRouteName)
-              .then((_) => world.start());
+              .pushNamed(CodeChomper.miniGameRouteName,
+                  arguments: task.blueprint.name == 'Alpha release'
+                      ? 'assets/docs/code_chomper_alpha.dart'
+                      : 'assets/docs/code_chomper_beta.dart')
+              .then((_) {
+            world.start();
+            task.shipFeature();
+          });
           break;
         case MiniGame.sphinx:
           {
@@ -39,6 +49,7 @@ class TaskListItem extends StatelessWidget {
                 .pushNamed(SphinxScreen.miniGameRouteName)
                 .then((_) {
               // Escaped the Sphinx.
+              task.shipFeature();
               showDialog<void>(
                   barrierDismissible: false,
                   context: context,

@@ -4,9 +4,11 @@ import 'package:dev_rpg/src/game_screen/character_style.dart';
 import 'package:dev_rpg/src/rpg_layout_builder.dart';
 import 'package:dev_rpg/src/shared_state/game/world.dart';
 import 'package:dev_rpg/src/style.dart';
+import 'package:dev_rpg/src/widgets/flare/warmup_flare.dart';
 import 'package:dev_rpg/src/widgets/buttons/welcome_button.dart';
 import 'package:dev_rpg/src/widgets/flare/start_screen_hero.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -19,6 +21,8 @@ const double _horizontalPadding = 33;
 class _WelcomeScreenState extends State<WelcomeScreen> {
   CharacterStyle hero;
   Timer _swapHeroTimer;
+  final Timer _warmupTimer =
+      Timer(const Duration(milliseconds: 1500), warmupFlare);
   @override
   void initState() {
     _chooseHero();
@@ -41,10 +45,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void dispose() {
     super.dispose();
     _swapHeroTimer?.cancel();
+    _warmupTimer.cancel();
   }
 
   Future<void> _pressStartGame() async {
-    Provider.of<World>(context, listen: false).start();
+    Provider.of<World>(context, listen: false).reset();
     // Stop the hero cycling.
     _swapHeroTimer?.cancel();
     await Navigator.of(context).pushNamed('/gameloop');
@@ -60,14 +65,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     _startTimer();
   }
 
+  bool _initialized = false;
   @override
   Widget build(BuildContext context) {
+    // Hide window chrome.
+    var query = MediaQuery.of(context);
+    var width = query.size.width;
+    if (!_initialized && width != 0 && width < blockLandscapeThreshold) {
+      // Disallow rotating to landscape.
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
         color: contentColor,
         child: RpgLayoutBuilder(
-          builder: (context, layout) => layout == RpgLayout.wide
+          builder: (context, layout) => layout != RpgLayout.slim
               ? _WelcomeScreenWide(
                   hero,
                   start: _pressStartGame,
@@ -140,25 +156,39 @@ class _WelcomeScreenSlim extends StatelessWidget {
 class _Title extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text(
-        'FLUTTER\nDEVELOPER QUEST',
-        style: TextStyle(
-            fontFamily: 'RobotoCondensedBold', fontSize: 30, letterSpacing: 5),
-      ),
-      const SizedBox(height: 12),
-      Container(
-        height: 2,
-        color: Colors.white.withOpacity(0.19),
-      ),
-      const SizedBox(height: 12),
-      const Text(
-        'Build your team, slay bugs,\ndon\'t get fired.',
-        style: TextStyle(fontFamily: 'RobotoRegular', fontSize: 20),
-      ),
-      const SizedBox(height: 25),
-      Image.asset('assets/images/2dimensions.png')
-    ]);
+    return RpgLayoutBuilder(
+      builder: (context, layout) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'FLUTTER\nDEVELOPER QUEST',
+                style: TextStyle(
+                    fontFamily: 'RobotoCondensedBold',
+                    fontSize: layout == RpgLayout.ultrawide ? 48 : 30,
+                    letterSpacing: 5),
+              ),
+              SizedBox(height: layout == RpgLayout.ultrawide ? 24 : 12),
+              Container(
+                height: 2,
+                color: Colors.white.withOpacity(0.19),
+              ),
+              SizedBox(height: layout == RpgLayout.ultrawide ? 28 : 12),
+              Text(
+                layout == RpgLayout.ultrawide
+                    ? 'Build your team, slay bugs, don\'t get fired.'
+                    : 'Build your team, slay bugs,\ndon\'t get fired.',
+                style: TextStyle(
+                    fontFamily: 'RobotoRegular',
+                    fontSize: layout == RpgLayout.ultrawide ? 24 : 20),
+              ),
+              const SizedBox(height: 25),
+              layout == RpgLayout.ultrawide
+                  ? Image.asset('assets/images/2.0x/2dimensions.png',
+                      scale: 1.75)
+                  : Image.asset('assets/images/2dimensions.png')
+            ],
+          ),
+    );
   }
 }
 
@@ -175,50 +205,56 @@ class _WelcomeScreenWide extends StatelessWidget {
     var thirdWidth = size.width / 3;
     var thirdHeight = size.height / 3;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: thirdWidth,
-          height: thirdHeight * 2,
-          child: StartScreenHero(
-              filename: hero.flare,
-              alignment: Alignment.center,
-              fit: BoxFit.fitHeight,
-              gradient: contentColor),
-        ),
-        const SizedBox(width: 10),
-        SizedBox(
-          width: thirdWidth,
-          child: Column(
+    return RpgLayoutBuilder(
+      builder: (context, layout) => Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _Title(),
-              const SizedBox(height: 29),
-              Row(
-                children: [
-                  Expanded(
-                    child: WelcomeButton(
-                        key: const Key('start_game'),
-                        onPressed: start,
-                        background: hero.accent,
-                        icon: Icons.chevron_right,
-                        label: 'Start'),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: WelcomeButton(
-                        onPressed: about,
-                        background: Colors.white.withOpacity(0.15),
-                        icon: Icons.settings,
-                        label: 'About'),
-                  ),
-                ],
+              Container(
+                width: thirdWidth,
+                height: thirdHeight * 2,
+                child: StartScreenHero(
+                    filename: hero.flare,
+                    alignment: Alignment.center,
+                    fit: BoxFit.fitHeight,
+                    gradient: contentColor),
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: layout == RpgLayout.ultrawide
+                    ? thirdWidth * 0.702
+                    : thirdWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _Title(),
+                    SizedBox(height: layout == RpgLayout.ultrawide ? 87 : 29),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: WelcomeButton(
+                              key: const Key('start_game'),
+                              fontSize: layout == RpgLayout.ultrawide ? 20 : 16,
+                              onPressed: start,
+                              background: hero.accent,
+                              icon: Icons.chevron_right,
+                              label: 'Start'),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: WelcomeButton(
+                              fontSize: layout == RpgLayout.ultrawide ? 20 : 16,
+                              onPressed: about,
+                              background: Colors.white.withOpacity(0.15),
+                              icon: Icons.settings,
+                              label: 'About'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-      ],
     );
   }
 }

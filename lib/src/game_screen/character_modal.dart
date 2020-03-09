@@ -7,11 +7,11 @@ import 'package:dev_rpg/src/widgets/flare/skill_icon.dart';
 import 'package:dev_rpg/src/widgets/keyboard.dart';
 import 'package:dev_rpg/src/widgets/prowess_progress.dart';
 import 'package:dev_rpg/src/widgets/skill_badge.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:flare_flutter/flare_actor.dart';
-import 'package:flare_flutter/flare_controls.dart';
 
 /// Displays the stats of an [Character] and offers the option to upgrade them.
 class CharacterModal extends StatelessWidget {
@@ -90,12 +90,14 @@ class CharacterImage extends StatelessWidget {
               child: ButtonTheme(
                 minWidth: 0,
                 child: FlatButton(
+                  key: const ValueKey('close-character-modal'),
                   padding: const EdgeInsets.all(0),
                   shape: null,
                   onPressed: () => Navigator.pop(context, null),
                   child: const Icon(
                     Icons.cancel,
                     color: Color.fromRGBO(250, 250, 255, .5),
+                    semanticLabel: "Close",
                   ),
                 ),
               ),
@@ -170,13 +172,14 @@ class UpgradeHireButton extends StatelessWidget {
   Widget build(BuildContext context) {
     var character = Provider.of<Character>(context);
     return WideButton(
+      enabled: character.canUpgradeOrHire,
       onPressed: () {
-        if (character.canUpgrade && character.upgrade()) {
+        if (character.upgradeOrHire()) {
           _controls.play('success');
         }
       },
       paddingTweak: const EdgeInsets.only(right: -7),
-      background: character.canUpgrade
+      background: character.canUpgradeOrHire
           ? const Color.fromRGBO(84, 114, 239, 1)
           : contentColor.withOpacity(0.1),
       child: Row(
@@ -184,7 +187,7 @@ class UpgradeHireButton extends StatelessWidget {
           Text(
             character.isHired ? 'UPGRADE' : 'HIRE',
             style: buttonTextStyle.apply(
-              color: character.canUpgrade
+              color: character.canUpgradeOrHire
                   ? Colors.white
                   : contentColor.withOpacity(0.25),
             ),
@@ -203,7 +206,7 @@ class UpgradeHireButton extends StatelessWidget {
             character.upgradeCost.toString(),
             style: buttonTextStyle.apply(
               fontSizeDelta: -2,
-              color: character.canUpgrade
+              color: character.canUpgradeOrHire
                   ? const Color.fromRGBO(241, 241, 241, 1)
                   : contentColor.withOpacity(0.25),
             ),

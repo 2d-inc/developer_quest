@@ -34,10 +34,6 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   var taskBlueprint = find.text(taskName);
   await driver.tap(taskBlueprint);
 
-  var task = find.byType('TaskListItem');
-  await driver.waitFor(task);
-  await driver.tap(find.text(taskName));
-
   var jack = find.byValueKey('jack');
   await driver.tap(jack);
 
@@ -47,8 +43,6 @@ Future _completeTask(FlutterDriver driver, String taskName) async {
   await driver.tap(_teamPickOkButtonFinder);
 
   var shipIt = find.text('LAUNCH!');
-  // Need to run these next operations unsynchronized as the working/idle
-  // animations for the characters are playing.
   await driver.waitFor(shipIt);
   await driver.tap(find.text(taskName));
 }
@@ -62,7 +56,18 @@ Future<Timeline> _run(FlutterDriver driver) async {
   // Need to run this unsynchronized as the idle (looping) animation for
   // the home screen is playing.
   await driver.runUnsynchronized(() async {
+    // Wait for the game to settle first.
+    await Future<void>.delayed(const Duration(seconds: 2));
     await driver.tap(_startGameFinder);
+
+    // Hire the two founders.
+    await driver.tap(find.byValueKey('hire-jack'));
+    await driver.tap(find.text('HIRE'));
+    await driver.tap(find.byValueKey('close-character-modal'));
+    await driver.tap(find.byValueKey('hire-sourcerer'));
+    await driver.tap(find.text('HIRE'));
+    await driver.tap(find.byValueKey('close-character-modal'));
+
     await driver.tap(find.text('Tasks'));
   });
 
