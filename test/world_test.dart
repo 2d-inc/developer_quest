@@ -9,14 +9,14 @@ void main() {
 
     await tester.pumpWidget(
       ChangeNotifierProvider(
-        builder: (_) => World(),
+        create: (_) => World(),
         child: MaterialApp(
           home: Consumer<World>(
             builder: (context, world, child) => FlatButton(
-                  key: buttonKey,
-                  onPressed: () => world.start(),
-                  child: Text(world.isRunning ? 'Stop' : 'Start'),
-                ),
+              key: buttonKey,
+              onPressed: () => world.start(),
+              child: Text(world.isRunning ? 'Stop' : 'Start'),
+            ),
           ),
         ),
       ),

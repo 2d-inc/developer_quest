@@ -54,7 +54,7 @@ class StatBadgeState<T extends num> extends State<StatBadge<T>> {
   /// Since [widget.statValue] is [ValueListenable], we can subscribe to
   /// its changes in [didUpdateWidget].
   void valueChanged() {
-    T change = widget.statValue.number - _lastStatValue;
+    T change = widget.statValue.number - _lastStatValue as T;
     if (widget.celebrateAfter == 0 || change > widget.celebrateAfter) {
       controls.play('points');
       _lastStatValue = widget.statValue.number;

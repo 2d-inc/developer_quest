@@ -36,14 +36,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(builder: (_) => User()),
-          ChangeNotifierProvider.value(notifier: world),
-          ChangeNotifierProvider.value(notifier: world.characterPool),
-          ChangeNotifierProvider.value(notifier: world.taskPool),
-          ChangeNotifierProvider.value(notifier: world.company),
-          ChangeNotifierProvider.value(notifier: world.company.users),
-          ChangeNotifierProvider.value(notifier: world.company.joy),
-          ChangeNotifierProvider.value(notifier: world.company.coin),
+          ChangeNotifierProvider(create: (_) => User()),
+          ChangeNotifierProvider.value(value: world),
+          ChangeNotifierProvider.value(value: world.characterPool),
+          ChangeNotifierProvider.value(value: world.taskPool),
+          ChangeNotifierProvider.value(value: world.company),
+          ChangeNotifierProvider.value(value: world.company.users),
+          ChangeNotifierProvider.value(value: world.company.joy),
+          ChangeNotifierProvider.value(value: world.company.coin),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
